@@ -1,0 +1,21 @@
+<section class="section" x-show="busy || status || progress > 0 || downloadUrl" x-cloak>
+    <div class="section-head">
+        <h2>Build</h2>
+        <p>Progresso da compilação</p>
+    </div>
+    <div class="make-panel make-output">
+        <p class="make-status"><span class="make-status__prompt">&gt;</span> <span x-text="status || 'Iniciando…'"></span></p>
+        <div class="make-progress" role="progressbar" :aria-valuenow="progress" aria-valuemin="0" aria-valuemax="100">
+            <div class="make-progress__bar" :style="`width: ${progress}%`"></div>
+        </div>
+        <p class="make-progress__pct" x-text="`${progress}%`"></p>
+        <a class="btn btn-download" x-show="downloadUrl" :href="downloadUrl">
+            <svg class="btn-build__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M8 2v7" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
+                <path d="M5.5 6.5 8 9 10.5 6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter"/>
+                <path d="M3 12.5h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
+            </svg>
+            <span>Baixar APK</span>
+        </a>
+    </div>
+</section>

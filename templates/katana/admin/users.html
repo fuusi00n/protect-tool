@@ -1,0 +1,97 @@
+{% extends "katana/admin/base.html" %}
+{% block title %}Admin Users{% endblock %}
+{% block body %}
+<div class="portal layout" x-data="katanaUsers()" x-init="load()">
+    {% include "katana/admin/_nav.html" %}
+    <div class="main">
+        <header class="page-head">
+            <h1>Users</h1>
+            <p>Gerencie operadores, licenças e limites diários</p>
+        </header>
+
+        <section class="section">
+            <div class="section-head">
+                <h2>Criar operador</h2>
+                <p>Novo usuário com licença e limite diário</p>
+            </div>
+            <div class="portal-panel">
+                <div class="form-grid portal-form">
+                    <div class="field">
+                        <label for="newUser">Usuário</label>
+                        <input id="newUser" type="text" x-model="form.username" placeholder="usuário">
+                    </div>
+                    <div class="field">
+                        <label for="newPass">Senha</label>
+                        <input id="newPass" type="password" x-model="form.password" placeholder="senha">
+                    </div>
+                    <div class="field">
+                        <label for="licenseDays">Dias de licença</label>
+                        <input id="licenseDays" type="number" x-model="form.license_days" placeholder="30">
+                    </div>
+                    <div class="field">
+                        <label for="dailyLimit">Limite diário</label>
+                        <input id="dailyLimit" type="number" x-model="form.daily_build_limit" placeholder="3">
+                    </div>
+                    <button type="button" class="btn btn-action" @click="createUser">
+                        <svg class="btn-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                            <path d="M8 3.5v9M3.5 8h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
+                        </svg>
+                        <span>Criar</span>
+                    </button>
+                </div>
+                <p class="portal-msg" x-show="message" x-text="message"></p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-head">
+                <h2>Operadores</h2>
+                <p>Lista de contas e ações de gestão</p>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Usuário</th><th>Status</th><th>Hoje</th><th>Limite</th><th>Total</th><th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template x-for="u in users" :key="u.username">
+                            <tr>
+                                <td x-text="u.username"></td>
+                                <td>
+                                    <span class="badge"
+                                        :class="u.status === 'active' ? 'badge-ok' : 'badge-error'"
+                                        x-text="u.status"></span>
+                                </td>
+                                <td x-text="u.daily_builds"></td>
+                                <td>
+                                    <input class="table-input" type="number" x-model="u.daily_build_limit" @change="saveLimit(u)">
+                                </td>
+                                <td x-text="u.total_builds"></td>
+                                <td>
+                                    <div class="table-actions">
+                                        <button type="button" class="btn btn-ghost" @click="toggle(u.username)">
+                                            <svg class="btn-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                                                <path d="M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
+                                                <path d="M8 3v10" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
+                                            </svg>
+                                            <span>Toggle</span>
+                                        </button>
+                                        <button type="button" class="btn btn-ghost btn-danger" @click="remove(u.username)">
+                                            <svg class="btn-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                                                <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
+                                            </svg>
+                                            <span>Deletar</span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}

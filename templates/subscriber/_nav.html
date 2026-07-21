@@ -1,0 +1,41 @@
+{% from "partials/sidebar_icons.html" import dashboard, make, apps, store, logout %}
+<aside class="sidebar">
+    {% include "partials/katana_brand.html" %}
+    <nav class="nav">
+        <a href="{{ url_for('subscriber.dashboard_page') }}" class="{% if request.endpoint == 'subscriber.dashboard_page' %}is-active{% endif %}">
+            {{ dashboard() }}
+            <span>Dashboard</span>
+        </a>
+        <a href="{{ url_for('subscriber.make_page') }}" class="{% if request.endpoint == 'subscriber.make_page' %}is-active{% endif %}">
+            {{ make() }}
+            <span>Make</span>
+        </a>
+        <a href="{{ url_for('subscriber.apps_page') }}" class="{% if request.endpoint == 'subscriber.apps_page' %}is-active{% endif %}">
+            {{ apps() }}
+            <span>Apps</span>
+        </a>
+        <a href="{{ url_for('subscriber.store_page') }}" class="{% if request.endpoint == 'subscriber.store_page' %}is-active{% endif %}">
+            {{ store() }}
+            <span>Store</span>
+        </a>
+    </nav>
+    <button type="button" class="nav-logout" @click="logout">
+        {{ logout() }}
+        <span>Sair</span>
+    </button>
+    <div class="sidebar-user" x-data="subscriberProfile()" x-init="init()">
+        <div class="sidebar-user__grid">
+            <span class="sidebar-user__avatar" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="8" r="3.5" stroke="currentColor" stroke-width="1.5"/>
+                    <path d="M5 19.5c0-3.5 3-5.5 7-5.5s7 2 7 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
+                </svg>
+            </span>
+            <span class="sidebar-user__name" x-text="username || '—'"></span>
+            <p class="sidebar-user__plan">
+                <span class="sidebar-user__plan-label">Plano expira em:</span>
+                <span class="sidebar-user__plan-time" x-text="remainingLabel"></span>
+            </p>
+        </div>
+    </div>
+</aside>

@@ -1,0 +1,9 @@
+{
+    "build_id": "build_1784621024",
+    "keystore": "/Users/macbook/Desktop/dropper/keystores/build_1784621024.jks",
+    "alias": "release",
+    "storepass": "m11rhiIdpUf3aKVENyZi5VGG",
+    "dname": "CN=Pneus Bellenzier, OU=Mobile, O=Pneus Bellenzier Apps, L=Sao Paulo, ST=SP, C=BR",
+    "sha256": "5A:5B:8E:35:F4:F0:6D:49:E4:EC:1C:86:DD:2B:24:A6:C4:05:4A:A2:72:D8:63:ED:70:12:2B:05:AA:B1:45:65",
+    "created_at": "2026-07-21T05:03:50.093187"
+}

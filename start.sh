@@ -1,46 +1,71 @@
 #!/bin/bash
 
+if [ -d "/opt/homebrew/opt/openjdk@17" ]; then
+    export JAVA_HOME="/opt/homebrew/opt/openjdk@17"
+elif [ -d "/opt/homebrew/opt/openjdk" ]; then
+    export JAVA_HOME="/opt/homebrew/opt/openjdk"
+elif [ -d "/usr/local/opt/openjdk@17" ]; then
+    export JAVA_HOME="/usr/local/opt/openjdk@17"
+fi
+if [ -n "$JAVA_HOME" ]; then
+    export PATH="$JAVA_HOME/bin:$PATH"
+fi
+
 echo "╔════════════════════════════════════════╗"
-echo "║   SIBERIAN KL REMOTE - Painel Elite       ║"
+echo "║   KATANA - Painel de Builds APK        ║"
 echo "║   Iniciando servidor...                ║"
 echo "╚════════════════════════════════════════╝"
 echo ""
 
-# Verificar dependências
-echo "[*] Verificando dependências..."
+echo "[*] Verificando dependencias..."
 
 if ! command -v python3 &> /dev/null; then
-    echo "[✗] Python3 não encontrado!"
+    echo "[x] Python3 nao encontrado!"
     exit 1
 fi
 
 if ! command -v java &> /dev/null; then
-    echo "[✗] Java não encontrado!"
+    echo "[x] Java nao encontrado!"
     exit 1
 fi
 
-echo "[✓] Python3 encontrado"
-echo "[✓] Java encontrado"
+echo "[ok] Python3 encontrado"
+echo "[ok] Java encontrado"
 echo ""
 
-# Instalar dependências Python
-echo "[*] Instalando dependências Python..."
-pip3 install -q -r requirements.txt 2>/dev/null
+if [ -f ".venv/bin/activate" ]; then
+    source .venv/bin/activate
+    PYTHON=".venv/bin/python"
+    PIP=".venv/bin/pip"
+else
+    PYTHON="python3"
+    PIP="pip3"
+fi
 
-# Criar diretórios se não existirem
-mkdir -p uploads outputs apk_dropper
+echo "[*] Instalando dependencias Python..."
+$PIP install -q -r requirements.txt 2>/dev/null
 
-echo "[✓] Ambiente preparado"
+mkdir -p uploads outputs
+
+if [ -f ".env" ]; then
+    echo "[*] Executando migrations..."
+    $PYTHON migrations/run_migrations.py 2>/dev/null || echo "[!] Migrations falharam — verifique .env e PostgreSQL"
+fi
+
+echo "[ok] Ambiente preparado"
 echo ""
+
+export FLASK_DEBUG="${FLASK_DEBUG:-1}"
+
 echo "╔════════════════════════════════════════╗"
-echo "║   Servidor iniciado em:                ║"
-echo "║   http://localhost:5000                ║"
+echo "║   Servidor: http://localhost:5000      ║"
 echo "║                                        ║"
-echo "║   Credenciais padrão:                  ║"
-echo "║   Usuário: admin                       ║"
-echo "║   Senha: admin123                      ║"
+echo "║   Operador: /subscriber/login          ║"
+echo "║   Master:   /katana/admin/login        ║"
+echo "║                                        ║"
+echo "║   Master:   admin / Admin@2026         ║"
+echo "║   Operador: operador / Operador@2026   ║"
 echo "╚════════════════════════════════════════╝"
 echo ""
 
-# Iniciar servidor
-python3 app.py
+$PYTHON app.py

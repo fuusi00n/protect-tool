@@ -1,82 +1,116 @@
-# 🚀 SIBERIAN KL REMOTE - Guia de Deploy
+# Katana — Guia de Deploy
 
-## Deploy Local (Desenvolvimento)
+## Deploy local (desenvolvimento)
 
-### 1. Preparação Inicial
+### Preparação
+
 ```bash
-# Extrair o projeto
-unzip gangstar_remote.zip
-cd gangstar_remote
-
-# Instalar dependências
-pip3 install -r requirements.txt
-
-# Dar permissão ao script
-chmod +x start.sh
+cd dropper
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env
 ```
 
-### 2. Iniciar o Servidor
+Configure `.env` com `SECRET_KEY` e PostgreSQL.
+
+### Migrations
+
 ```bash
+python migrations/run_migrations.py
+```
+
+### Iniciar
+
+```bash
+chmod +x start.sh
 ./start.sh
 ```
 
-**Acesso:** http://localhost:5000
-**Credenciais:** admin / admin123
+| Item | Valor |
+|------|-------|
+| Operador | http://localhost:5000/subscriber/login |
+| Master | http://localhost:5000/katana/admin/login |
+| Master user | `admin` / `Admin@2026` |
+| Operador user | `operador` / `Operador@2026` |
 
 ---
 
-## Deploy em Produção (Linux/VPS)
+## Deploy em produção (Linux/VPS)
 
-### 1. Preparação do Servidor
+### Servidor
 
 ```bash
-# Atualizar sistema
 sudo apt-get update && sudo apt-get upgrade -y
-
-# Instalar dependências
-sudo apt-get install -y python3 python3-pip openjdk-17-jdk git
-
-# Criar diretório do projeto
-sudo mkdir -p /var/www/gangstar
-cd /var/www/gangstar
-
-# Extrair projeto
-sudo unzip gangstar_remote.zip -d .
-sudo chown -R $USER:$USER /var/www/gangstar
+sudo apt-get install -y python3 python3-pip python3-venv openjdk-17-jdk postgresql nginx
+sudo mkdir -p /var/www/katana
+cd /var/www/katana
 ```
 
-### 2. Instalar Dependências Python
+Copie o projeto para `/var/www/katana` e ajuste permissões:
 
 ```bash
-cd /var/www/gangstar
-pip3 install -r requirements.txt
+sudo chown -R $USER:$USER /var/www/katana
 ```
 
-### 3. Usar Gunicorn (Servidor WSGI)
+### Python e dependências
 
 ```bash
-# Instalar Gunicorn
-pip3 install gunicorn
-
-# Testar com Gunicorn
-gunicorn -w 4 -b 0.0.0.0:5000 app:app
+cd /var/www/katana
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+pip install gunicorn
 ```
 
-### 4. Configurar com Systemd (Auto-start)
+### PostgreSQL
 
-Criar arquivo `/etc/systemd/system/gangstar.service`:
+```bash
+sudo -u postgres createuser katana -P
+sudo -u postgres createdb dropper -O katana
+```
+
+Configure `.env`:
+
+```env
+SECRET_KEY=sua_chave_secreta_longa
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+POSTGRES_DB=dropper
+POSTGRES_USER=katana
+POSTGRES_PASSWORD=sua_senha
+```
+
+Rode migrations:
+
+```bash
+python migrations/run_migrations.py
+```
+
+### Gunicorn
+
+Teste:
+
+```bash
+gunicorn -w 4 -b 127.0.0.1:5000 app:app
+```
+
+### Systemd
+
+Arquivo `/etc/systemd/system/katana.service`:
 
 ```ini
 [Unit]
-Description=Siberian KL - APK Builder
-After=network.target
+Description=Katana APK Builder
+After=network.target postgresql.service
 
 [Service]
 Type=notify
 User=www-data
-WorkingDirectory=/var/www/gangstar
-Environment="PATH=/usr/local/bin:/usr/bin:/bin"
-ExecStart=/usr/local/bin/gunicorn -w 4 -b 127.0.0.1:5000 app:app
+WorkingDirectory=/var/www/katana
+Environment="PATH=/var/www/katana/.venv/bin:/usr/local/bin:/usr/bin:/bin"
+EnvironmentFile=/var/www/katana/.env
+ExecStart=/var/www/katana/.venv/bin/gunicorn -w 4 -b 127.0.0.1:5000 app:app
 Restart=always
 RestartSec=10
 
@@ -84,18 +118,18 @@ RestartSec=10
 WantedBy=multi-user.target
 ```
 
-Ativar o serviço:
+Ativar:
 
 ```bash
 sudo systemctl daemon-reload
-sudo systemctl enable gangstar
-sudo systemctl start gangstar
-sudo systemctl status gangstar
+sudo systemctl enable katana
+sudo systemctl start katana
+sudo systemctl status katana
 ```
 
-### 5. Configurar Nginx como Reverse Proxy
+### Nginx
 
-Criar arquivo `/etc/nginx/sites-available/gangstar`:
+Arquivo `/etc/nginx/sites-available/katana`:
 
 ```nginx
 server {
@@ -108,8 +142,6 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
-        
-        # Timeout para builds longos
         proxy_connect_timeout 600s;
         proxy_send_timeout 600s;
         proxy_read_timeout 600s;
@@ -117,24 +149,19 @@ server {
 }
 ```
 
-Ativar o site:
+Ativar:
 
 ```bash
-sudo ln -s /etc/nginx/sites-available/gangstar /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/katana /etc/nginx/sites-enabled/
 sudo nginx -t
 sudo systemctl restart nginx
 ```
 
-### 6. Configurar SSL com Let's Encrypt
+### SSL (Let's Encrypt)
 
 ```bash
-# Instalar Certbot
 sudo apt-get install -y certbot python3-certbot-nginx
-
-# Gerar certificado
 sudo certbot --nginx -d seu-dominio.com
-
-# Auto-renovação
 sudo systemctl enable certbot.timer
 sudo systemctl start certbot.timer
 ```
@@ -150,173 +177,162 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Instalar Java
 RUN apt-get update && apt-get install -y openjdk-17-jdk && rm -rf /var/lib/apt/lists/*
 
-# Copiar arquivos
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt gunicorn
 
 COPY . .
 
-# Criar diretórios
-RUN mkdir -p uploads outputs apk_dropper
+RUN mkdir -p uploads outputs
 
 EXPOSE 5000
 
-CMD ["python3", "app.py"]
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "app:app"]
 ```
 
 ### docker-compose.yml
 
 ```yaml
-version: '3.8'
+version: "3.8"
 
 services:
-  gangstar:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: dropper
+      POSTGRES_USER: katana
+      POSTGRES_PASSWORD: katana_secret
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  katana:
     build: .
     ports:
       - "5000:5000"
     volumes:
       - ./uploads:/app/uploads
       - ./outputs:/app/outputs
-      - ./apk_dropper:/app/apk_dropper
     environment:
-      - FLASK_ENV=production
+      SECRET_KEY: change_me
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: dropper
+      POSTGRES_USER: katana
+      POSTGRES_PASSWORD: katana_secret
+    depends_on:
+      - db
     restart: always
+
+volumes:
+  pgdata:
 ```
 
 Iniciar:
 
 ```bash
-docker-compose up -d
+docker compose up -d
+docker compose exec katana python migrations/run_migrations.py
 ```
 
 ---
 
-## Monitoramento e Manutenção
+## Monitoramento e manutenção
 
-### Verificar Status
+### Status
 
 ```bash
-# Ver logs do Gunicorn
-sudo journalctl -u gangstar -f
-
-# Ver uso de disco
-du -sh /var/www/gangstar/*
-
-# Ver processo Python
+sudo journalctl -u katana -f
+du -sh /var/www/katana/*
 ps aux | grep gunicorn
+curl -s http://127.0.0.1:5000/health
 ```
 
-### Limpeza de Arquivos Antigos
+### Limpeza de arquivos antigos
 
-Criar script `/var/www/gangstar/cleanup.sh`:
+Script `/var/www/katana/cleanup.sh`:
 
 ```bash
 #!/bin/bash
-
-# Remover builds com mais de 7 dias
-find /var/www/gangstar/outputs -type f -mtime +7 -delete
-find /var/www/gangstar/uploads -type f -mtime +7 -delete
-
-echo "Limpeza concluída em $(date)"
+find /var/www/katana/outputs -type f -mtime +7 -delete
+find /var/www/katana/uploads -type f -mtime +7 -delete
+echo "Limpeza concluida em $(date)"
 ```
 
-Adicionar ao crontab:
+Crontab:
 
 ```bash
-crontab -e
-# Adicionar linha:
-0 2 * * * /var/www/gangstar/cleanup.sh >> /var/log/gangstar-cleanup.log 2>&1
+0 2 * * * /var/www/katana/cleanup.sh >> /var/log/katana-cleanup.log 2>&1
 ```
 
-### Backup de Dados
+### Backup do PostgreSQL
+
+Script `/var/www/katana/backup.sh`:
 
 ```bash
 #!/bin/bash
-
-BACKUP_DIR="/backups/gangstar"
-mkdir -p $BACKUP_DIR
-
-# Backup do banco de dados
-cp /var/www/gangstar/apk_dropper/data.json $BACKUP_DIR/data_$(date +%Y%m%d_%H%M%S).json
-
-# Manter apenas últimos 30 backups
-ls -t $BACKUP_DIR/data_*.json | tail -n +31 | xargs rm -f
-
-echo "Backup concluído"
+BACKUP_DIR="/backups/katana"
+mkdir -p "$BACKUP_DIR"
+pg_dump -h localhost -U katana dropper > "$BACKUP_DIR/dropper_$(date +%Y%m%d_%H%M%S).sql"
+ls -t "$BACKUP_DIR"/dropper_*.sql | tail -n +31 | xargs rm -f
+echo "Backup concluido"
 ```
 
-Adicionar ao crontab:
+Crontab:
 
 ```bash
-0 3 * * * /var/www/gangstar/backup.sh >> /var/log/gangstar-backup.log 2>&1
+0 3 * * * /var/www/katana/backup.sh >> /var/log/katana-backup.log 2>&1
 ```
 
 ---
 
 ## Troubleshooting
 
-### Erro: "Permission denied" ao iniciar
+### Permission denied
 
 ```bash
-# Dar permissão ao usuário
-sudo chown -R www-data:www-data /var/www/gangstar
-sudo chmod -R 755 /var/www/gangstar
+sudo chown -R www-data:www-data /var/www/katana
+sudo chmod -R 755 /var/www/katana
 ```
 
-### Erro: "Java: command not found"
+### Java não encontrado
 
 ```bash
-# Instalar Java
 sudo apt-get install -y openjdk-17-jdk
-
-# Verificar
 java -version
 ```
 
-### Erro: "Porta 5000 já em uso"
+### Porta 5000 em uso
 
 ```bash
-# Encontrar processo
 lsof -i :5000
-
-# Matar processo
 kill -9 <PID>
 ```
 
-### Build muito lento
+### Build lento
 
-- Aumentar limite de memória: `ulimit -v unlimited`
-- Usar SSD em vez de HDD
-- Aumentar workers do Gunicorn: `-w 8`
+- Prefira SSD
+- Ajuste workers: `2 * CPU_CORES + 1`
+- Aumente timeouts do Nginx para builds longos
 
 ---
 
-## Checklist de Segurança
+## Checklist de segurança
 
-- [ ] Alterar senha padrão do admin
+- [ ] Alterar senhas padrão (`admin`, `operador`)
 - [ ] Configurar firewall (ufw)
 - [ ] Habilitar SSL/TLS
-- [ ] Fazer backup regular de `data.json`
-- [ ] Limpar arquivos antigos regularmente
+- [ ] Backup regular do PostgreSQL
+- [ ] Limpar uploads/outputs antigos
 - [ ] Monitorar uso de disco
-- [ ] Configurar fail2ban para proteção contra brute force
-- [ ] Usar senhas fortes para todos os usuários
+- [ ] Configurar fail2ban
+- [ ] `SECRET_KEY` forte em `.env`
 
 ---
 
 ## Performance
 
-### Otimizações Recomendadas
-
-1. **Nginx:** Aumentar `worker_processes` e `worker_connections`
-2. **Gunicorn:** Usar `--workers` baseado em CPU cores: `2 * CPU_CORES + 1`
-3. **Python:** Usar `PyPy` em vez de CPython para melhor performance
-4. **Banco de Dados:** Migrar `data.json` para PostgreSQL/MySQL em produção
-
-### Exemplo de Configuração Otimizada
+Exemplo Gunicorn:
 
 ```bash
 gunicorn -w 9 \
@@ -333,9 +349,10 @@ gunicorn -w 9 \
 
 ## Suporte
 
-Para problemas, verifique:
-1. Logs do servidor: `journalctl -u gangstar -f`
-2. Arquivo `apk_dropper/data.json` (integridade)
-3. Espaço em disco: `df -h`
-4. Permissões de arquivo: `ls -la /var/www/gangstar`
+Em caso de problemas, verifique:
 
+1. Logs: `journalctl -u katana -f`
+2. Health: `curl http://127.0.0.1:5000/health`
+3. PostgreSQL: `pg_isready` e credenciais em `.env`
+4. Disco: `df -h`
+5. Permissões: `ls -la /var/www/katana`

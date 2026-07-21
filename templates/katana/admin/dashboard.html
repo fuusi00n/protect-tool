@@ -1,0 +1,40 @@
+{% extends "katana/admin/base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block body %}
+<div class="portal layout" x-data="katanaDashboard()" x-init="load()">
+    {% include "katana/admin/_nav.html" %}
+    <div class="main">
+        <header class="page-head">
+            <h1>Dashboard</h1>
+            <p>Métricas globais do servidor e operações</p>
+        </header>
+
+        <section class="section">
+            <div class="section-head">
+                <h2>Servidor</h2>
+                <p>Status de saúde da aplicação</p>
+            </div>
+            <div class="section-panel">
+                <div class="metrics">
+                    <article class="metric metric-accent"><h3>Health</h3><p x-text="metrics.server_health ?? '-'"></p></article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-head">
+                <h2>Operações</h2>
+                <p>Usuários e builds processados na plataforma</p>
+            </div>
+            <div class="section-panel">
+                <div class="metrics">
+                    <article class="metric"><h3>Usuários</h3><p x-text="metrics.users_count ?? '-'"></p></article>
+                    <article class="metric"><h3>Apps processados</h3><p x-text="metrics.builds_count ?? '-'"></p></article>
+                    <article class="metric metric-success"><h3>Concluídos</h3><p x-text="metrics.completed_builds ?? '-'"></p></article>
+                    <article class="metric metric-danger"><h3>Erros</h3><p x-text="metrics.failed_builds ?? '-'"></p></article>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,63 @@
+<div class="notify"
+    x-data="{ open: false, ringing: true, hasUnread: true }"
+    x-init="setTimeout(() => ringing = false, 1400)">
+    <button type="button"
+        class="notify__bell"
+        :class="{ 'is-ringing': ringing, 'has-unread': hasUnread }"
+        @click="open = !open; hasUnread = false"
+        aria-label="Notificações"
+        :aria-expanded="open">
+        <svg class="notify__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="notify__dot" x-show="hasUnread" aria-hidden="true"></span>
+    </button>
+
+    <div class="notify__panel" x-show="open" x-cloak @click.outside="open = false" @keydown.escape.window="open = false">
+        <div class="notify__panel-head">
+            <div class="notify__panel-headline">
+                <span class="notify__panel-tag">Store</span>
+                <span class="notify__panel-badge">Novo</span>
+            </div>
+            <button type="button" class="notify__panel-close" @click="open = false" aria-label="Fechar">×</button>
+        </div>
+
+        {% if store_highlight %}
+        <article class="notify__card">
+            <div class="notify__card-top">
+                <span class="notify__card-icon" aria-hidden="true">
+                    <svg viewBox="0 0 16 16" fill="none">
+                        <path d="M1.5 1.5h1.8l1.1 5.7h7.8l1.6-4.2H4.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <circle cx="5.8" cy="12.8" r="1" stroke="currentColor" stroke-width="1.2"/>
+                        <circle cx="11.8" cy="12.8" r="1" stroke="currentColor" stroke-width="1.2"/>
+                    </svg>
+                </span>
+                <div class="notify__card-meta">
+                    <h3 class="notify__card-title">{{ store_highlight.name }}</h3>
+                    <p class="notify__card-price">{{ store_highlight.price_display }}</p>
+                </div>
+            </div>
+            <p class="notify__card-desc">{{ store_highlight.description }}</p>
+            <ul class="notify__card-tags">
+                {% for tag in store_highlight.get('tags', [])[:3] %}
+                <li>{{ tag }}</li>
+                {% endfor %}
+            </ul>
+        </article>
+        {% else %}
+        <article class="notify__card">
+            <p class="notify__card-desc">Novas injections HTML disponíveis no catálogo com preview protegido.</p>
+        </article>
+        {% endif %}
+
+        <a class="notify__cta btn btn-action" href="{{ url_for('subscriber.store_page') }}" @click="open = false">
+            <svg class="btn-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M1.5 1.5h1.8l1.1 5.7h7.8l1.6-4.2H4.2" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="5.8" cy="12.8" r="1" stroke="currentColor" stroke-width="1.25"/>
+                <circle cx="11.8" cy="12.8" r="1" stroke="currentColor" stroke-width="1.25"/>
+            </svg>
+            <span>Abrir Store</span>
+        </a>
+    </div>
+</div>

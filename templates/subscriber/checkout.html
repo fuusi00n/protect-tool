@@ -1,0 +1,126 @@
+{% extends "subscriber/base.html" %}
+{% block title %}Pagamento — {{ product.name }}{% endblock %}
+{% block body %}
+<div class="portal layout" x-data="subscriberCheckout()" x-init="boot('{{ product.id }}')">
+    {% include "subscriber/_nav.html" %}
+    <div class="main">
+        <header class="page-head">
+            <h1>Pagamento</h1>
+            <p>Finalize a compra do produto selecionado</p>
+        </header>
+
+        <section class="section">
+            <div class="section-head">
+                <h2>Resumo</h2>
+                <p>Confira o item antes de pagar</p>
+            </div>
+            <div class="portal-panel checkout-summary">
+                <div class="checkout-summary__row">
+                    <span class="checkout-summary__label">Produto</span>
+                    <span class="checkout-summary__value">{{ product.name }}</span>
+                </div>
+                <div class="checkout-summary__row">
+                    <span class="checkout-summary__label">Total</span>
+                    <span class="checkout-summary__price">{{ product.price_display }}</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-head">
+                <h2>Método</h2>
+                <p>Escolha como deseja pagar</p>
+            </div>
+            <div class="portal-panel checkout-form">
+                <div class="checkout-methods">
+                    <label class="checkout-method" :class="{ 'is-active': method === 'pix' }">
+                        <input type="radio" name="pay-method" value="pix" x-model="method">
+                        <span class="checkout-method__icon checkout-method__icon--pix">
+                            <img src="{{ url_for('static', filename='img/payments/pix.svg') }}?v=2" alt="" width="24" height="24">
+                        </span>
+                        <span class="checkout-method__name">Pix</span>
+                        <span class="checkout-method__hint">Em breve</span>
+                    </label>
+                    <label class="checkout-method" :class="{ 'is-active': method === 'bitcoin' }">
+                        <input type="radio" name="pay-method" value="bitcoin" x-model="method">
+                        <span class="checkout-method__icon checkout-method__icon--btc">₿</span>
+                        <span class="checkout-method__name">Bitcoin</span>
+                        <span class="checkout-method__hint">On-chain</span>
+                    </label>
+                </div>
+                <div class="checkout-actions">
+                    <a class="btn btn-ghost" href="{{ url_for('subscriber.store_page') }}">Voltar</a>
+                    <button type="button" class="btn btn-action" @click="pay()" :disabled="busy">
+                        <svg class="btn-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                            <path d="M2 8h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
+                            <path d="M9 4.5 13 8 9 11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter"/>
+                        </svg>
+                        <span>Pagar</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="checkout-modal" x-show="payModalOpen" x-cloak @keydown.escape.window="closePayModal()">
+        <div class="checkout-modal__backdrop" @click="closePayModal()"></div>
+        <div class="checkout-modal__dialog" role="dialog" aria-modal="true" aria-label="Pagamento">
+            <header class="checkout-modal__head">
+                <div>
+                    <p class="checkout-modal__tag" x-text="payPhase === 'loading' ? 'PROCESSANDO' : (payPhase === 'bitcoin' ? 'BITCOIN' : 'AVISO')"></p>
+                    <h2 class="checkout-modal__title" x-text="payPhase === 'loading' ? 'Preparando pagamento' : (payPhase === 'bitcoin' ? 'Escaneie ou copie' : 'Indisponível')"></h2>
+                </div>
+                <button type="button" class="checkout-modal__close" @click="closePayModal()" aria-label="Fechar">×</button>
+            </header>
+
+            <div class="checkout-modal__body" x-show="payPhase === 'loading'">
+                <div class="checkout-loading checkout-loading--modal">
+                    <div class="checkout-loading__ring" aria-hidden="true">
+                        <span class="checkout-loading__spinner"></span>
+                        <span class="checkout-loading__pulse"></span>
+                    </div>
+                    <p class="checkout-loading__sub" x-text="loadingMessage">Aguarde um instante…</p>
+                    <ul class="checkout-loading__steps">
+                        <template x-for="(step, index) in loadingSteps" :key="step">
+                            <li
+                                class="checkout-loading__step"
+                                :class="{ 'is-done': loadingIndex > index, 'is-active': loadingIndex === index }">
+                                <span class="checkout-loading__dot"></span>
+                                <span x-text="step"></span>
+                            </li>
+                        </template>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="checkout-modal__body" x-show="payPhase === 'unavailable'">
+                <div class="checkout-alert checkout-alert--warn">
+                    <p class="checkout-alert__title">Pix indisponível</p>
+                    <p class="checkout-alert__text" x-text="result && result.message ? result.message : 'Pix ainda não configurado.'"></p>
+                </div>
+            </div>
+
+            <div class="checkout-modal__body" x-show="payPhase === 'bitcoin'">
+                <div class="checkout-btc">
+                    <p class="checkout-btc__label">QR Code</p>
+                    <div class="checkout-btc__qr-wrap" :class="{ 'is-visible': qrReady }">
+                        <img
+                            class="checkout-btc__qr"
+                            :src="result && result.qr_url ? result.qr_url : ''"
+                            alt="QR Code Bitcoin"
+                            @load="qrReady = true">
+                    </div>
+                    <p class="checkout-btc__label">Endereço Bitcoin</p>
+                    <div class="checkout-btc__address">
+                        <code x-text="result && result.address ? result.address : ''"></code>
+                        <button type="button" class="btn btn-ghost" @click="copyAddress()">
+                            <span x-text="copied ? 'Copiado' : 'Copiar'"></span>
+                        </button>
+                    </div>
+                    <p class="checkout-btc__hint">Envie exatamente {{ product.price_display }} em BTC.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,9 +1,9 @@
 {
     "users": {
-        "admin": {
-            "password": "admin123",
+        "owner": {
+            "password": "Dropper@2026!",
             "role": "owner",
-            "created_at": "2026-05-05T16:46:18.963200",
+            "created_at": "2026-07-21T03:45:00.000000",
             "license_days": null,
             "license_expires_at": null,
             "status": "active",
@@ -15,753 +15,152 @@
                 "failed_builds": 0
             }
         },
-        "aa": {
-            "password": "aa",
+        "teste": {
+            "password": "teste",
             "role": "admin",
-            "created_at": "2026-05-05T16:46:52.490461",
+            "created_at": "2026-07-21T04:16:03.690244",
             "license_days": 30,
-            "license_expires_at": "2026-06-04T16:46:52.490426",
+            "license_expires_at": "2026-08-20T04:16:03.690217",
             "status": "active",
             "builds": [],
-            "team_id": "32a74d6c-bddd-4973-a668-b12ea765a1c9",
+            "team_id": "f1c74333-2305-4db3-a9ff-565ca0d36cc1",
             "amplification": {
                 "total_builds": 0,
                 "successful_builds": 0,
                 "failed_builds": 0
             }
         },
-        "ww": {
-            "password": "ww",
+        "teste1": {
+            "password": "teste1",
             "role": "operator",
-            "created_at": "2026-05-05T16:47:02.617906",
+            "created_at": "2026-07-21T04:16:41.104045",
             "license_days": 30,
-            "license_expires_at": "2026-06-04T16:47:02.617864",
+            "license_expires_at": "2026-08-20T04:16:41.104027",
             "status": "active",
             "builds": [
                 {
-                    "build_id": "build_1778043873",
-                    "app_name": "NUBANK",
-                    "status": "concluido",
-                    "timestamp": "2026-05-06T02:04:41.697264",
-                    "date_display": "06/05/2026 02:04:41"
-                },
-                {
-                    "build_id": "build_1778043873",
-                    "app_name": "NUBANK",
-                    "status": "processando",
-                    "timestamp": "2026-05-06T02:04:33.062053",
-                    "date_display": "06/05/2026 02:04:33"
-                },
-                {
-                    "build_id": "build_1778010448",
-                    "app_name": "qsasas",
-                    "status": "concluido",
-                    "timestamp": "2026-05-05T16:47:43.665504",
-                    "date_display": "05/05/2026 16:47:43"
-                },
-                {
-                    "build_id": "build_1778010448",
-                    "app_name": "qsasas",
-                    "status": "processando",
-                    "timestamp": "2026-05-05T16:47:28.319545",
-                    "date_display": "05/05/2026 16:47:28"
-                }
-            ],
-            "team_id": "32a74d6c-bddd-4973-a668-b12ea765a1c9",
-            "amplification": {
-                "total_builds": 2,
-                "successful_builds": 2,
-                "failed_builds": 0
-            }
-        },
-        "siberian": {
-            "password": "siberiankl",
-            "role": "admin",
-            "created_at": "2026-05-05T16:50:16.114265",
-            "license_days": 500,
-            "license_expires_at": "2027-09-17T16:50:16.114215",
-            "status": "active",
-            "builds": [],
-            "team_id": "2eea9076-cc58-4947-b1c4-ba5bb9538f9b",
-            "amplification": {
-                "total_builds": 0,
-                "successful_builds": 0,
-                "failed_builds": 0
-            }
-        },
-        "paladino": {
-            "password": "paladino123",
-            "role": "operator",
-            "created_at": "2026-05-05T16:50:43.806535",
-            "license_days": 7,
-            "license_expires_at": "2026-05-12T20:21:29.355800",
-            "status": "active",
-            "builds": [
-                {
-                    "build_id": "build_1778030246",
-                    "app_name": "masterseu",
-                    "status": "concluido",
-                    "timestamp": "2026-05-05T22:17:50.614424",
-                    "date_display": "05/05/2026 22:17:50"
-                },
-                {
-                    "build_id": "build_1778030246",
-                    "app_name": "masterseu",
-                    "status": "processando",
-                    "timestamp": "2026-05-05T22:17:26.456008",
-                    "date_display": "05/05/2026 22:17:26"
-                },
-                {
-                    "build_id": "build_1778027524",
-                    "app_name": "masterseu",
-                    "status": "concluido",
-                    "timestamp": "2026-05-05T21:32:28.640825",
-                    "date_display": "05/05/2026 21:32:28"
-                },
-                {
-                    "build_id": "build_1778027524",
-                    "app_name": "masterseu",
-                    "status": "processando",
-                    "timestamp": "2026-05-05T21:32:04.269160",
-                    "date_display": "05/05/2026 21:32:04"
-                }
-            ],
-            "team_id": "2eea9076-cc58-4947-b1c4-ba5bb9538f9b",
-            "amplification": {
-                "total_builds": 2,
-                "successful_builds": 2,
-                "failed_builds": 0
-            }
-        },
-        "eu": {
-            "password": "eu",
-            "role": "operator",
-            "created_at": "2026-05-05T16:51:17.766246",
-            "license_days": 30,
-            "license_expires_at": "2026-06-04T16:51:17.766201",
-            "status": "active",
-            "builds": [],
-            "team_id": "2eea9076-cc58-4947-b1c4-ba5bb9538f9b",
-            "amplification": {
-                "total_builds": 0,
-                "successful_builds": 0,
-                "failed_builds": 0
-            }
-        },
-        "operador": {
-            "password": "operador123",
-            "role": "operator",
-            "created_at": "2026-05-05T19:23:00.672905",
-            "license_days": 7,
-            "license_expires_at": "2026-05-12T19:23:00.672849",
-            "status": "active",
-            "builds": [],
-            "team_id": "2eea9076-cc58-4947-b1c4-ba5bb9538f9b",
-            "amplification": {
-                "total_builds": 0,
-                "successful_builds": 0,
-                "failed_builds": 0
-            }
-        },
-        "hazard": {
-            "password": "hazard123",
-            "role": "operator",
-            "created_at": "2026-05-05T20:22:02.279116",
-            "license_days": 7,
-            "license_expires_at": "2026-05-12T20:22:02.279056",
-            "status": "active",
-            "builds": [
-                {
-                    "build_id": "build_1778024184",
-                    "app_name": "Claro Empresas",
-                    "status": "concluido",
-                    "timestamp": "2026-05-05T20:36:35.457570",
-                    "date_display": "05/05/2026 20:36:35"
-                },
-                {
-                    "build_id": "build_1778024184",
-                    "app_name": "Claro Empresas",
-                    "status": "processando",
-                    "timestamp": "2026-05-05T20:36:24.437108",
-                    "date_display": "05/05/2026 20:36:24"
-                },
-                {
-                    "build_id": "build_1778023602",
-                    "app_name": "4545554",
-                    "status": "concluido",
-                    "timestamp": "2026-05-05T20:26:51.317314",
-                    "date_display": "05/05/2026 20:26:51"
-                },
-                {
-                    "build_id": "build_1778023602",
-                    "app_name": "4545554",
-                    "status": "processando",
-                    "timestamp": "2026-05-05T20:26:42.382214",
-                    "date_display": "05/05/2026 20:26:42"
-                },
-                {
-                    "build_id": "build_1778023576",
-                    "app_name": "Claro Empresas",
-                    "status": "concluido",
-                    "timestamp": "2026-05-05T20:26:26.497546",
-                    "date_display": "05/05/2026 20:26:26"
-                },
-                {
-                    "build_id": "build_1778023576",
-                    "app_name": "Claro Empresas",
-                    "status": "processando",
-                    "timestamp": "2026-05-05T20:26:16.370038",
-                    "date_display": "05/05/2026 20:26:16"
-                },
-                {
-                    "build_id": "build_1778023540",
-                    "app_name": "Claro Empresa",
+                    "build_id": "build_1784621463",
+                    "app_name": "Pneus Bellenzier",
                     "status": "erro",
-                    "timestamp": "2026-05-05T20:25:47.494531",
-                    "date_display": "05/05/2026 20:25:47"
+                    "timestamp": "2026-07-21T05:11:05.971324",
+                    "date_display": "21/07/2026 05:11:05"
                 },
                 {
-                    "build_id": "build_1778023540",
-                    "app_name": "Claro Empresa",
+                    "build_id": "build_1784621463",
+                    "app_name": "Pneus Bellenzier",
                     "status": "processando",
-                    "timestamp": "2026-05-05T20:25:40.477791",
-                    "date_display": "05/05/2026 20:25:40"
+                    "timestamp": "2026-07-21T05:11:03.133126",
+                    "date_display": "21/07/2026 05:11:03"
                 },
                 {
-                    "build_id": "build_1778023466",
-                    "app_name": "Claro Empresa",
+                    "build_id": "build_1784618605",
+                    "app_name": "Pneus Bellenzier",
+                    "status": "concluido",
+                    "timestamp": "2026-07-21T04:23:31.939150",
+                    "date_display": "21/07/2026 04:23:31"
+                },
+                {
+                    "build_id": "build_1784618605",
+                    "app_name": "Pneus Bellenzier",
+                    "status": "processando",
+                    "timestamp": "2026-07-21T04:23:25.320850",
+                    "date_display": "21/07/2026 04:23:25"
+                },
+                {
+                    "build_id": "build_1784618391",
+                    "app_name": "Pneus Bellenzier",
                     "status": "erro",
-                    "timestamp": "2026-05-05T20:24:33.451960",
-                    "date_display": "05/05/2026 20:24:33"
+                    "timestamp": "2026-07-21T04:19:54.090027",
+                    "date_display": "21/07/2026 04:19:54"
                 },
                 {
-                    "build_id": "build_1778023466",
-                    "app_name": "Claro Empresa",
+                    "build_id": "build_1784618391",
+                    "app_name": "Pneus Bellenzier",
                     "status": "processando",
-                    "timestamp": "2026-05-05T20:24:26.269414",
-                    "date_display": "05/05/2026 20:24:26"
+                    "timestamp": "2026-07-21T04:19:51.328984",
+                    "date_display": "21/07/2026 04:19:51"
                 }
             ],
-            "team_id": "2eea9076-cc58-4947-b1c4-ba5bb9538f9b",
+            "team_id": "f1c74333-2305-4db3-a9ff-565ca0d36cc1",
             "amplification": {
-                "total_builds": 5,
-                "successful_builds": 3,
+                "total_builds": 3,
+                "successful_builds": 1,
                 "failed_builds": 2
-            }
-        },
-        "ducati": {
-            "password": "ducati123",
-            "role": "operator",
-            "created_at": "2026-05-05T22:23:03.679145",
-            "license_days": 7,
-            "license_expires_at": "2026-05-12T22:23:03.679097",
-            "status": "active",
-            "builds": [
-                {
-                    "build_id": "build_1778033820",
-                    "app_name": "Sem Parar",
-                    "status": "concluido",
-                    "timestamp": "2026-05-05T23:17:22.198275",
-                    "date_display": "05/05/2026 23:17:22"
-                },
-                {
-                    "build_id": "build_1778033820",
-                    "app_name": "Sem Parar",
-                    "status": "processando",
-                    "timestamp": "2026-05-05T23:17:00.938480",
-                    "date_display": "05/05/2026 23:17:00"
-                },
-                {
-                    "build_id": "build_1778033436",
-                    "app_name": "AmBev",
-                    "status": "concluido",
-                    "timestamp": "2026-05-05T23:10:58.245439",
-                    "date_display": "05/05/2026 23:10:58"
-                },
-                {
-                    "build_id": "build_1778033436",
-                    "app_name": "AmBev",
-                    "status": "processando",
-                    "timestamp": "2026-05-05T23:10:36.351092",
-                    "date_display": "05/05/2026 23:10:36"
-                },
-                {
-                    "build_id": "build_1778032801",
-                    "app_name": "AmBev",
-                    "status": "concluido",
-                    "timestamp": "2026-05-05T23:00:22.668940",
-                    "date_display": "05/05/2026 23:00:22"
-                },
-                {
-                    "build_id": "build_1778032801",
-                    "app_name": "AmBev",
-                    "status": "processando",
-                    "timestamp": "2026-05-05T23:00:01.134740",
-                    "date_display": "05/05/2026 23:00:01"
-                },
-                {
-                    "build_id": "build_1778031462",
-                    "app_name": "22222222",
-                    "status": "concluido",
-                    "timestamp": "2026-05-05T22:38:03.985152",
-                    "date_display": "05/05/2026 22:38:03"
-                },
-                {
-                    "build_id": "build_1778031462",
-                    "app_name": "22222222",
-                    "status": "processando",
-                    "timestamp": "2026-05-05T22:37:42.927789",
-                    "date_display": "05/05/2026 22:37:42"
-                },
-                {
-                    "build_id": "build_1778030695",
-                    "app_name": "11111111",
-                    "status": "concluido",
-                    "timestamp": "2026-05-05T22:25:23.320483",
-                    "date_display": "05/05/2026 22:25:23"
-                },
-                {
-                    "build_id": "build_1778030695",
-                    "app_name": "11111111",
-                    "status": "processando",
-                    "timestamp": "2026-05-05T22:24:55.076937",
-                    "date_display": "05/05/2026 22:24:55"
-                }
-            ],
-            "team_id": "2eea9076-cc58-4947-b1c4-ba5bb9538f9b",
-            "amplification": {
-                "total_builds": 5,
-                "successful_builds": 5,
-                "failed_builds": 0
-            }
-        },
-        "JOE": {
-            "password": "JOE123456",
-            "role": "operator",
-            "created_at": "2026-05-05T23:59:21.429117",
-            "license_days": 7,
-            "license_expires_at": "2026-05-12T23:59:46.591536",
-            "status": "active",
-            "builds": [],
-            "team_id": "2eea9076-cc58-4947-b1c4-ba5bb9538f9b",
-            "amplification": {
-                "total_builds": 0,
-                "successful_builds": 0,
-                "failed_builds": 0
-            }
-        },
-        "light": {
-            "password": "light",
-            "role": "operator",
-            "created_at": "2026-05-06T08:21:24.094580",
-            "license_days": 30,
-            "license_expires_at": "2026-06-05T08:21:24.094516",
-            "status": "active",
-            "builds": [],
-            "team_id": "2eea9076-cc58-4947-b1c4-ba5bb9538f9b",
-            "amplification": {
-                "total_builds": 0,
-                "successful_builds": 0,
-                "failed_builds": 0
             }
         }
     },
     "teams": {},
     "history": [
         {
-            "user": "ww",
-            "action": "Login",
-            "details": "Acesso ao painel",
-            "timestamp": "06/05/2026 08:22:09"
+            "user": "teste",
+            "action": "Logout",
+            "details": "Saida",
+            "timestamp": "21/07/2026 08:30:34"
         },
         {
-            "user": "siberian",
+            "user": "teste",
+            "action": "Login",
+            "details": "Acesso ao painel",
+            "timestamp": "21/07/2026 05:39:47"
+        },
+        {
+            "user": "teste1",
+            "action": "Logout",
+            "details": "Saida",
+            "timestamp": "21/07/2026 05:39:42"
+        },
+        {
+            "user": "teste1",
+            "action": "Build APK",
+            "details": "App: Pneus Bellenzier",
+            "timestamp": "21/07/2026 04:23:31"
+        },
+        {
+            "user": "teste1",
+            "action": "Login",
+            "details": "Acesso ao painel",
+            "timestamp": "21/07/2026 04:16:55"
+        },
+        {
+            "user": "teste",
+            "action": "Logout",
+            "details": "Saida",
+            "timestamp": "21/07/2026 04:16:45"
+        },
+        {
+            "user": "teste",
             "action": "Criar Usu\u00e1rio",
-            "details": "Novo operator: light (30 dias)",
-            "timestamp": "06/05/2026 08:21:24"
+            "details": "Novo operator: teste1 (30 dias)",
+            "timestamp": "21/07/2026 04:16:41"
         },
         {
-            "user": "siberian",
+            "user": "teste",
             "action": "Login",
             "details": "Acesso ao painel",
-            "timestamp": "06/05/2026 08:21:08"
+            "timestamp": "21/07/2026 04:16:18"
         },
         {
-            "user": "admin",
+            "user": "owner",
             "action": "Logout",
             "details": "Saida",
-            "timestamp": "06/05/2026 08:20:59"
+            "timestamp": "21/07/2026 04:16:11"
         },
         {
-            "user": "ww",
-            "action": "Login",
-            "details": "Acesso ao painel",
-            "timestamp": "06/05/2026 08:12:54"
-        },
-        {
-            "user": "ww",
-            "action": "Login",
-            "details": "Acesso ao painel",
-            "timestamp": "06/05/2026 08:10:53"
-        },
-        {
-            "user": "admin",
-            "action": "Logout",
-            "details": "Saida",
-            "timestamp": "06/05/2026 08:10:49"
-        },
-        {
-            "user": "ww",
-            "action": "Build APK",
-            "details": "App: NUBANK",
-            "timestamp": "06/05/2026 02:04:41"
-        },
-        {
-            "user": "ww",
-            "action": "Login",
-            "details": "Acesso ao painel",
-            "timestamp": "06/05/2026 02:03:35"
-        },
-        {
-            "user": "ww",
-            "action": "Login",
-            "details": "Acesso ao painel",
-            "timestamp": "06/05/2026 02:03:07"
-        },
-        {
-            "user": "ww",
-            "action": "Login",
-            "details": "Acesso ao painel",
-            "timestamp": "06/05/2026 02:01:23"
-        },
-        {
-            "user": "ww",
-            "action": "Login",
-            "details": "Acesso ao painel",
-            "timestamp": "06/05/2026 02:00:16"
-        },
-        {
-            "user": "ww",
-            "action": "Login",
-            "details": "Acesso ao painel",
-            "timestamp": "06/05/2026 01:59:46"
-        },
-        {
-            "user": "siberian",
-            "action": "Login",
-            "details": "Acesso ao painel",
-            "timestamp": "06/05/2026 00:00:42"
-        },
-        {
-            "user": "JOE",
-            "action": "Logout",
-            "details": "Saida",
-            "timestamp": "06/05/2026 00:00:35"
-        },
-        {
-            "user": "JOE",
-            "action": "Login",
-            "details": "Acesso ao painel",
-            "timestamp": "06/05/2026 00:00:33"
-        },
-        {
-            "user": "siberian",
-            "action": "Logout",
-            "details": "Saida",
-            "timestamp": "06/05/2026 00:00:24"
-        },
-        {
-            "user": "siberian",
-            "action": "Renovar Licen\u00e7a",
-            "details": "Usu\u00e1rio: JOE (+7 dias)",
-            "timestamp": "05/05/2026 23:59:46"
-        },
-        {
-            "user": "siberian",
-            "action": "Toggle Usu\u00e1rio",
-            "details": "Usu\u00e1rio: JOE -> active",
-            "timestamp": "05/05/2026 23:59:33"
-        },
-        {
-            "user": "siberian",
-            "action": "Toggle Usu\u00e1rio",
-            "details": "Usu\u00e1rio: JOE -> inactive",
-            "timestamp": "05/05/2026 23:59:27"
-        },
-        {
-            "user": "siberian",
+            "user": "owner",
             "action": "Criar Usu\u00e1rio",
-            "details": "Novo operator: JOE (7 dias)",
-            "timestamp": "05/05/2026 23:59:21"
+            "details": "Novo admin: teste (30 dias)",
+            "timestamp": "21/07/2026 04:16:03"
         },
         {
-            "user": "ducati",
-            "action": "Build APK",
-            "details": "App: Sem Parar",
-            "timestamp": "05/05/2026 23:17:22"
-        },
-        {
-            "user": "ducati",
-            "action": "Build APK",
-            "details": "App: AmBev",
-            "timestamp": "05/05/2026 23:10:58"
-        },
-        {
-            "user": "ducati",
-            "action": "Build APK",
-            "details": "App: AmBev",
-            "timestamp": "05/05/2026 23:00:22"
-        },
-        {
-            "user": "ducati",
-            "action": "Build APK",
-            "details": "App: 22222222",
-            "timestamp": "05/05/2026 22:38:03"
-        },
-        {
-            "user": "ducati",
-            "action": "Build APK",
-            "details": "App: 11111111",
-            "timestamp": "05/05/2026 22:25:23"
-        },
-        {
-            "user": "ducati",
+            "user": "owner",
             "action": "Login",
             "details": "Acesso ao painel",
-            "timestamp": "05/05/2026 22:23:18"
-        },
-        {
-            "user": "siberian",
-            "action": "Criar Usu\u00e1rio",
-            "details": "Novo operator: ducati (7 dias)",
-            "timestamp": "05/05/2026 22:23:03"
-        },
-        {
-            "user": "paladino",
-            "action": "Build APK",
-            "details": "App: masterseu",
-            "timestamp": "05/05/2026 22:17:50"
-        },
-        {
-            "user": "paladino",
-            "action": "Build APK",
-            "details": "App: masterseu",
-            "timestamp": "05/05/2026 21:32:28"
-        },
-        {
-            "user": "siberian",
-            "action": "Login",
-            "details": "Acesso ao painel",
-            "timestamp": "05/05/2026 21:31:21"
-        },
-        {
-            "user": "hazard",
-            "action": "Logout",
-            "details": "Saida",
-            "timestamp": "05/05/2026 21:31:12"
-        },
-        {
-            "user": "paladino",
-            "action": "Login",
-            "details": "Acesso ao painel",
-            "timestamp": "05/05/2026 21:30:42"
-        },
-        {
-            "user": "hazard",
-            "action": "Build APK",
-            "details": "App: Claro Empresas",
-            "timestamp": "05/05/2026 20:36:35"
-        },
-        {
-            "user": "hazard",
-            "action": "Build APK",
-            "details": "App: 4545554",
-            "timestamp": "05/05/2026 20:26:51"
-        },
-        {
-            "user": "hazard",
-            "action": "Build APK",
-            "details": "App: Claro Empresas",
-            "timestamp": "05/05/2026 20:26:26"
-        },
-        {
-            "user": "hazard",
-            "action": "Login",
-            "details": "Acesso ao painel",
-            "timestamp": "05/05/2026 20:26:04"
-        },
-        {
-            "user": "siberian",
-            "action": "Logout",
-            "details": "Saida",
-            "timestamp": "05/05/2026 20:25:55"
-        },
-        {
-            "user": "hazard",
-            "action": "Login",
-            "details": "Acesso ao painel",
-            "timestamp": "05/05/2026 20:22:37"
-        },
-        {
-            "user": "siberian",
-            "action": "Criar Usu\u00e1rio",
-            "details": "Novo operator: hazard (7 dias)",
-            "timestamp": "05/05/2026 20:22:02"
-        },
-        {
-            "user": "Hazard",
-            "action": "Logout",
-            "details": "Saida",
-            "timestamp": "05/05/2026 20:22:01"
-        },
-        {
-            "user": "siberian",
-            "action": "Renovar Licen\u00e7a",
-            "details": "Usu\u00e1rio: paladino (+7 dias)",
-            "timestamp": "05/05/2026 20:21:29"
-        },
-        {
-            "user": "operador",
-            "action": "Login",
-            "details": "Acesso ao painel",
-            "timestamp": "05/05/2026 19:58:10"
-        },
-        {
-            "user": "siberian",
-            "action": "Criar Usu\u00e1rio",
-            "details": "Novo operator: operador (7 dias)",
-            "timestamp": "05/05/2026 19:23:00"
-        },
-        {
-            "user": "siberian",
-            "action": "Login",
-            "details": "Acesso ao painel",
-            "timestamp": "05/05/2026 19:22:36"
-        },
-        {
-            "user": "eu",
-            "action": "Logout",
-            "details": "Saida",
-            "timestamp": "05/05/2026 19:22:27"
-        },
-        {
-            "user": "Paladino",
-            "action": "Build APK",
-            "details": "App: masterip",
-            "timestamp": "05/05/2026 17:30:39"
-        },
-        {
-            "user": "eu",
-            "action": "Login",
-            "details": "Acesso ao painel",
-            "timestamp": "05/05/2026 16:51:23"
-        },
-        {
-            "user": "siberian",
-            "action": "Logout",
-            "details": "Saida",
-            "timestamp": "05/05/2026 16:51:19"
-        },
-        {
-            "user": "siberian",
-            "action": "Criar Usu\u00e1rio",
-            "details": "Novo operator: eu (30 dias)",
-            "timestamp": "05/05/2026 16:51:17"
-        },
-        {
-            "user": "siberian",
-            "action": "Criar Usu\u00e1rio",
-            "details": "Novo operator: paladino (30 dias)",
-            "timestamp": "05/05/2026 16:50:43"
-        },
-        {
-            "user": "siberian",
-            "action": "Login",
-            "details": "Acesso ao painel",
-            "timestamp": "05/05/2026 16:50:26"
-        },
-        {
-            "user": "admin",
-            "action": "Criar Usu\u00e1rio",
-            "details": "Novo admin: siberian (500 dias)",
-            "timestamp": "05/05/2026 16:50:16"
-        },
-        {
-            "user": "admin",
-            "action": "Login",
-            "details": "Acesso ao painel",
-            "timestamp": "05/05/2026 16:49:52"
-        },
-        {
-            "user": "ww",
-            "action": "Logout",
-            "details": "Saida",
-            "timestamp": "05/05/2026 16:49:40"
-        },
-        {
-            "user": "eu",
-            "action": "Logout",
-            "details": "Saida",
-            "timestamp": "05/05/2026 16:48:45"
-        },
-        {
-            "user": "ww",
-            "action": "Build APK",
-            "details": "App: qsasas",
-            "timestamp": "05/05/2026 16:47:43"
-        },
-        {
-            "user": "ww",
-            "action": "Login",
-            "details": "Acesso ao painel",
-            "timestamp": "05/05/2026 16:47:07"
-        },
-        {
-            "user": "aa",
-            "action": "Logout",
-            "details": "Saida",
-            "timestamp": "05/05/2026 16:47:04"
-        },
-        {
-            "user": "aa",
-            "action": "Criar Usu\u00e1rio",
-            "details": "Novo operator: ww (30 dias)",
-            "timestamp": "05/05/2026 16:47:02"
-        },
-        {
-            "user": "aa",
-            "action": "Login",
-            "details": "Acesso ao painel",
-            "timestamp": "05/05/2026 16:46:57"
-        },
-        {
-            "user": "admin",
-            "action": "Logout",
-            "details": "Saida",
-            "timestamp": "05/05/2026 16:46:55"
-        },
-        {
-            "user": "admin",
-            "action": "Criar Usu\u00e1rio",
-            "details": "Novo admin: aa (30 dias)",
-            "timestamp": "05/05/2026 16:46:52"
-        },
-        {
-            "user": "admin",
-            "action": "Login",
-            "details": "Acesso ao painel",
-            "timestamp": "05/05/2026 16:46:30"
-        },
-        {
-            "user": "qq",
-            "action": "Logout",
-            "details": "Saida",
-            "timestamp": "05/05/2026 16:46:20"
+            "timestamp": "21/07/2026 03:47:23"
         }
     ],
     "settings": {
-        "max_users_per_admin": 10,
-        "default_license_days": 30,
-        "auto_cleanup_days": 7
+        "max_users_per_admin": 999,
+        "default_license_days": 3650,
+        "auto_cleanup_days": 365
     }
 }

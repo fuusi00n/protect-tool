@@ -1,0 +1,44 @@
+{% extends "subscriber/base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block body %}
+<div class="portal layout" x-data="subscriberDashboard()" x-init="load()">
+    {% include "subscriber/_nav.html" %}
+    <div class="main">
+        <header class="page-head page-head--with-notify">
+            <div class="page-head__copy">
+                <h1>Dashboard</h1>
+                <p>Visão geral dos seus builds e limites diários</p>
+            </div>
+            {% include "partials/notifications_bell.html" with context %}
+        </header>
+
+        <section class="section">
+            <div class="section-head">
+                <h2>Quota diária</h2>
+                <p>Uso e disponibilidade de builds para hoje</p>
+            </div>
+            <div class="section-panel">
+                <div class="metrics">
+                    <article class="metric metric-accent"><h3>Builds hoje</h3><p x-text="metrics.daily_builds ?? '-'"></p></article>
+                    <article class="metric"><h3>Limite diário</h3><p x-text="metrics.daily_build_limit ?? '-'"></p></article>
+                    <article class="metric"><h3>Restantes</h3><p x-text="metrics.remaining_today ?? '-'"></p></article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-head">
+                <h2>Performance</h2>
+                <p>Histórico acumulado de builds</p>
+            </div>
+            <div class="section-panel">
+                <div class="metrics">
+                    <article class="metric"><h3>Total</h3><p x-text="metrics.total_builds ?? '-'"></p></article>
+                    <article class="metric metric-success"><h3>Concluídos</h3><p x-text="metrics.successful_builds ?? '-'"></p></article>
+                    <article class="metric metric-danger"><h3>Erros</h3><p x-text="metrics.failed_builds ?? '-'"></p></article>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}

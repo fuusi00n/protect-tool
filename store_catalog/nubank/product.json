@@ -1,0 +1,8 @@
+{
+  "id": "nubank",
+  "name": "Nubank",
+  "bank": "Nubank",
+  "description": "Injection HTML com fluxo de boas-vindas e captura de senha transacional de 4 dígitos.",
+  "price_cents": 19900,
+  "tags": ["injection", "webview", "pin"]
+}

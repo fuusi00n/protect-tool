@@ -1,0 +1,8 @@
+<span class="badge"
+    :class="{
+        'badge-ok': item.status === 'concluido',
+        'badge-pending': item.status === 'processando',
+        'badge-error': item.status === 'erro',
+        'badge-neutral': !['concluido','processando','erro'].includes(item.status)
+    }"
+    x-text="item.status"></span>

@@ -1,0 +1,26 @@
+{% from "partials/sidebar_icons.html" import dashboard, make, apps, store, users, logout %}
+<aside class="sidebar">
+    {% include "partials/katana_brand.html" %}
+    <nav class="nav">
+        <a href="{{ url_for('katana.dashboard_page') }}" class="{% if request.endpoint == 'katana.dashboard_page' %}is-active{% endif %}">
+            {{ dashboard() }}
+            <span>Dashboard</span>
+        </a>
+        <a href="{{ url_for('katana.make_page') }}" class="{% if request.endpoint == 'katana.make_page' %}is-active{% endif %}">
+            {{ make() }}
+            <span>Make</span>
+        </a>
+        <a href="{{ url_for('katana.users_page') }}" class="{% if request.endpoint == 'katana.users_page' %}is-active{% endif %}">
+            {{ users() }}
+            <span>Users</span>
+        </a>
+        <a href="{{ url_for('katana.apps_page') }}" class="{% if request.endpoint == 'katana.apps_page' %}is-active{% endif %}">
+            {{ apps() }}
+            <span>Apps</span>
+        </a>
+        <button type="button" class="nav-logout" @click="logout">
+            {{ logout() }}
+            <span>Sair</span>
+        </button>
+    </nav>
+</aside>

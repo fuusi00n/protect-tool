@@ -1,0 +1,19 @@
+<form class="stack" @submit.prevent="login">
+    <div class="field">
+        <label for="username">Usuário</label>
+        <input id="username" type="text" x-model="username" placeholder="User" required>
+    </div>
+    <div class="field">
+        <label for="password">Senha</label>
+        <input id="password" type="password" x-model="password" placeholder="Password" required>
+    </div>
+    <button type="submit" class="btn btn-enter">
+        <svg class="btn-enter__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M2 8h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
+            <path d="M9 4.5 13 8 9 11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter"/>
+        </svg>
+        <span>Entrar</span>
+    </button>
+    <p class="msg auth-error" x-show="message" x-text="message"></p>
+    <p class="auth-tag">{{ login_tag }}</p>
+</form>

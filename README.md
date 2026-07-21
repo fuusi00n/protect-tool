@@ -1,305 +1,226 @@
-# 🔥 SIBERIAN KL REMOTE - Painel de Controle Elite
+# Katana — Painel de Builds APK
 
-**Siberian KL** é um painel profissional de controle para criação de APKs modificados com sistema avançado de licenciamento por dias, gerenciamento de usuários e estatísticas em tempo real.
+**Katana** é um painel para criação de APKs modificados com licenciamento por dias, gerenciamento de operadores e métricas em tempo real. O backend usa Flask, PostgreSQL e dois portais independentes.
 
-## 🎯 Características Principais
+## Características
 
-### 🔐 Sistema de Licenciamento
-- **Licenças por Dias:** Admin define quantos dias cada operador tem de acesso
-- **Renovação Automática:** Renovar licenças com um clique
-- **Expiração Automática:** Usuários com licença expirada são bloqueados automaticamente
-- **Controle Total:** Owner vê e gerencia todas as licenças
+### Licenciamento
+- Licenças por dias por operador
+- Renovação e bloqueio automático ao expirar
+- Limite diário de builds configurável por usuário
 
-### 👥 Hierarquia de Usuários
-- **Owner (Dono):** Controle total do sistema, gerencia admins e operadores
-- **Admin (Gerente):** Gerencia sua equipe de operadores e suas licenças
-- **Operator (Operador):** Cria builds de APK (acesso limitado por licença)
+### Portais
+- **Katana Admin** (`/katana/admin/*`) — master gerencia operadores, métricas globais e builds efêmeros
+- **Subscriber** (`/subscriber/*`) — operadores fazem login, builds e consultam histórico
 
-### 📊 Sistema de Amplificação
-- **Estatísticas em Tempo Real:** Total de builds, sucessos e falhas
-- **Dashboard Inteligente:** Visualize performance de cada usuário
-- **Histórico Completo:** Rastreie todas as ações do sistema
+### Métricas
+- Dashboard com builds do dia, limite, total, concluídos e erros
+- Histórico de apps processados
+- Health check em `/health`
 
-### 🎨 Interface Moderna
-- **Design Sofisticado:** Verde neon sobre fundo dark
-- **Animações Fluidas:** Transições suaves e efeitos glassmorphism
-- **Responsivo:** Funciona em desktop e tablets
-- **Drag & Drop:** Arraste APKs e ícones facilmente
+## Requisitos
 
-## 📋 Requisitos
+- Python 3.11+
+- Java 17+ (apktool e signer)
+- PostgreSQL 14+
+- Linux ou macOS
 
-- **Python 3.8+**
-- **Java 17+** (para apktool e signer)
-- **Linux/Mac** (ou WSL no Windows)
+## Instalação
 
-## 🚀 Instalação Rápida
+### 1. Clonar ou extrair o projeto
 
-### 1. Extrair o projeto
 ```bash
-unzip gangstar_remote.zip
-cd gangstar_remote
+cd dropper
 ```
 
-### 2. Instalar dependências
+### 2. Ambiente Python
+
 ```bash
-pip3 install -r requirements.txt
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
 ```
 
-### 3. Iniciar o servidor
+### 3. Variáveis de ambiente
+
+```bash
+cp .env.example .env
+```
+
+Edite `.env` com `SECRET_KEY` e credenciais do PostgreSQL.
+
+### 4. Banco de dados
+
+```bash
+python migrations/run_migrations.py
+```
+
+### 5. Iniciar
+
 ```bash
 ./start.sh
 ```
 
-O painel estará disponível em: **http://localhost:5000**
+## Acesso
 
-### 4. Login Padrão
-- **Usuário:** `admin`
-- **Senha:** `admin123`
+| Portal | URL |
+|--------|-----|
+| Operador | http://localhost:5000/subscriber/login |
+| Master | http://localhost:5000/katana/admin/login |
+| Health | http://localhost:5000/health |
 
-## 📖 Guia de Uso
+### Contas padrão (após migrations)
 
-### Para o Owner (Dono)
+| Portal | Usuário | Senha |
+|--------|---------|-------|
+| Katana Admin | `admin` | `Admin@2026` |
+| Subscriber | `operador` | `Operador@2026` |
 
-#### Criar um Novo Admin
-1. Acesse a aba **"Usuários"**
-2. Clique em **"Novo ADM"**
-3. Preencha:
-   - Usuário (nome único)
-   - Senha
-   - Dias de Licença (ex: 30)
-4. Clique em **"Criar ADM"**
+Altere essas senhas em produção.
 
-#### Renovar Licença de um Usuário
-1. Acesse a aba **"Usuários"**
-2. Encontre o usuário na tabela
-3. Clique em **"Renovar"**
-4. Digite quantos dias deseja adicionar
-5. Confirme
+## Uso
 
-#### Deletar um Usuário
-1. Acesse a aba **"Usuários"**
-2. Encontre o usuário na tabela
-3. Clique em **"Deletar"**
-4. Confirme a exclusão
+### Master (Katana Admin)
 
-#### Ver Histórico de Atividades
-1. Acesse a aba **"Histórico"**
-2. Veja todas as ações do sistema (logins, builds, criações de usuários, etc.)
+1. Acesse `/katana/admin/login`
+2. **Dashboard** — métricas do servidor, usuários e builds
+3. **Make** — build efêmero (não persiste logs/contagens)
+4. **Users** — criar operadores, ajustar limite diário, ativar/desativar, deletar
+5. **Apps** — histórico completo de builds no servidor
 
-### Para o Admin (Gerente)
+### Operador (Subscriber)
 
-#### Criar um Novo Operador
-1. Acesse a aba **"Minha Equipe"**
-2. Clique em **"Novo Operador"**
-3. Preencha:
-   - Usuário (nome único)
-   - Senha
-   - Dias de Licença (ex: 30)
-4. Clique em **"Criar Operador"**
+1. Acesse `/subscriber/login`
+2. **Dashboard** — builds hoje, limite, restantes, totais
+3. **Make** — enviar APK, ícone opcional, acompanhar progresso e baixar
+4. **Apps** — histórico pessoal de uploads
 
-#### Renovar Licença de um Operador
-1. Acesse a aba **"Minha Equipe"**
-2. Encontre o operador na tabela
-3. Clique em **"Renovar"**
-4. Digite quantos dias deseja adicionar
+## Configuração
 
-#### Ativar/Desativar um Operador
-1. Acesse a aba **"Minha Equipe"**
-2. Encontre o operador na tabela
-3. Clique em **"Toggle"** para ativar ou desativar
+### Upload máximo
 
-### Para o Operator (Operador)
-
-#### Criar um Build de APK
-1. Acesse a aba **"Build APK"**
-2. Preencha o **"Nome do Aplicativo"** (ex: "Meu App")
-3. Clique na área de upload ou arraste um arquivo `.apk`
-4. (Opcional) Selecione um ícone `.png` ou `.jpg`
-5. Clique em **"Iniciar Build"**
-6. Aguarde o processamento
-7. Quando concluído, clique em **"Baixar APK"**
-
-#### Ver Histórico de Builds
-1. Acesse a aba **"Meus Builds"**
-2. Veja todos os seus builds anteriores
-3. Clique em **"Baixar"** para baixar um build concluído
-
-#### Ver Estatísticas Pessoais
-1. Acesse o **"Dashboard"**
-2. Veja seus stats:
-   - Total de Builds
-   - Builds Concluídos
-   - Builds em Processamento
-
-## 🔧 Configuração Avançada
-
-### Modificar Credenciais Padrão
-
-Edite `app.py` e procure pela função `load_data()`:
+Em `config.py`:
 
 ```python
-"admin": {
-    "password": "admin123",  # Altere aqui
-    "role": "owner",
-    ...
-}
+MAX_CONTENT_LENGTH = 2048 * 1024 * 1024
 ```
 
-### Aumentar Limite de Upload
+### Porta
 
-Em `app.py`, altere a linha:
+Em `app.py`:
 
 ```python
-app.config['MAX_CONTENT_LENGTH'] = 2048 * 1024 * 1024  # 2GB
+app.run(debug=False, host="0.0.0.0", port=5000)
 ```
 
-Para um valor maior ou menor conforme necessário.
-
-### Mudar Porta do Servidor
-
-No final de `app.py`:
-
-```python
-app.run(debug=False, host='0.0.0.0', port=5000)  # Altere 5000 para outra porta
-```
-
-## 📁 Estrutura de Arquivos
+## Estrutura do projeto
 
 ```
-gangstar_remote/
-├── app.py                    # Backend Flask
-├── requirements.txt          # Dependências Python
-├── start.sh                  # Script de inicialização
-├── apktool.jar              # Ferramenta de compilação APK
-├── signer.jar               # Ferramenta de assinatura APK
-├── dropper_rebuild/         # Template do dropper (modificado)
+dropper/
+├── app.py
+├── config.py
+├── requirements.txt
+├── start.sh
+├── .env.example
+├── migrations/
+├── routes/
+│   ├── health.py
+│   ├── katana.py
+│   └── subscriber.py
+├── services/
+│   ├── apk.py
+│   ├── build_service.py
+│   ├── build_state.py
+│   ├── data.py
+│   ├── database.py
+│   ├── java_runtime.py
+│   └── session_guard.py
 ├── templates/
-│   └── index.html           # Interface web
+│   ├── katana/admin/
+│   └── subscriber/
 ├── static/
-│   └── img/
-│       ├── logo_v1.png      # Logo versão 1
-│       └── logo_v2.png      # Logo versão 2
-├── uploads/                 # APKs e ícones enviados
-├── outputs/                 # APKs processados
-└── apk_dropper/
-    └── data.json            # Banco de dados (usuários, builds, histórico)
+│   ├── css/portal.css
+│   └── js/
+├── uploads/
+├── outputs/
+├── dropper_rebuild/
+├── apktool.jar
+└── signer.jar
 ```
 
-## 🐛 Troubleshooting
+## API
 
-### Erro: "apktool.jar não encontrado"
+### Subscriber
+
+| Método | Rota | Descrição |
+|--------|------|-----------|
+| POST | `/subscriber/login` | Login operador |
+| POST | `/subscriber/logout` | Logout |
+| GET | `/subscriber/api/session` | Sessão ativa |
+| GET | `/subscriber/api/dashboard/metrics` | Métricas |
+| POST | `/subscriber/api/build` | Iniciar build |
+| GET | `/subscriber/api/build/<id>/status` | Status do build |
+| GET | `/subscriber/api/build/<id>/download` | Download APK |
+| GET | `/subscriber/api/apps` | Histórico de builds |
+
+### Katana Admin
+
+| Método | Rota | Descrição |
+|--------|------|-----------|
+| POST | `/katana/admin/login` | Login master |
+| POST | `/katana/admin/logout` | Logout |
+| GET | `/katana/admin/api/session` | Sessão ativa |
+| GET | `/katana/admin/api/dashboard/metrics` | Métricas globais |
+| POST | `/katana/admin/api/build` | Build efêmero |
+| GET | `/katana/admin/api/build/<id>/status` | Status do build |
+| GET | `/katana/admin/api/build/<id>/download` | Download APK |
+| GET | `/katana/admin/api/users` | Listar operadores |
+| POST | `/katana/admin/api/users` | Criar operador |
+| PATCH | `/katana/admin/api/users/<user>` | Atualizar operador |
+| POST | `/katana/admin/api/users/<user>/toggle` | Ativar/desativar |
+| DELETE | `/katana/admin/api/users/<user>` | Remover operador |
+| GET | `/katana/admin/api/apps` | Histórico global |
+
+## Troubleshooting
+
+### Java não encontrado
+
 ```bash
-# Verifique se o arquivo existe
-ls -la apktool.jar
-
-# Se não existir, copie do backup ou baixe novamente
-```
-
-### Erro: "Java não encontrado"
-```bash
-# Instale Java 17
-sudo apt-get install openjdk-17-jdk
-
-# Verifique a instalação
 java -version
 ```
 
-### Erro: "Porta 5000 já está em uso"
+No macOS com Homebrew:
+
 ```bash
-# Encontre o processo usando a porta
+brew install openjdk@17
+```
+
+### PostgreSQL inacessível
+
+Confirme `.env` e se o serviço está ativo:
+
+```bash
+pg_isready -h localhost -p 5432
+```
+
+### Porta 5000 em uso
+
+```bash
 lsof -i :5000
-
-# Mate o processo ou mude a porta em app.py
 ```
 
-### Licença expirada ao fazer login
-- Isso é normal! O admin precisa renovar a licença do usuário
-- Acesse como admin/owner e renove a licença na aba de usuários
+### Licença expirada
 
-## 🔒 Segurança
+Renove pelo portal Katana Admin em **Users**.
 
-### Recomendações
+## Segurança
 
-1. **Altere a Senha Padrão:** Mude a senha do admin na primeira inicialização
-2. **Use HTTPS em Produção:** Configure um reverse proxy com SSL (Nginx + Let's Encrypt)
-3. **Backup Regular:** Faça backup de `apk_dropper/data.json` regularmente
-4. **Firewall:** Restrinja acesso à porta 5000 apenas para IPs confiáveis
+1. Troque as senhas padrão após o primeiro deploy
+2. Use HTTPS em produção (Nginx + Let's Encrypt)
+3. Faça backup regular do PostgreSQL
+4. Restrinja acesso às portas expostas
+5. Defina `SECRET_KEY` forte em `.env`
 
-### Dados Sensíveis
+## Licença
 
-- Senhas são armazenadas em texto puro (considere usar bcrypt em produção)
-- Licenças são armazenadas em JSON (considere usar um banco de dados real)
-- Todos os builds são armazenados em `outputs/` (limpe regularmente)
-
-## 📊 Estrutura de Dados
-
-### Usuário
-```json
-{
-  "username": "operador1",
-  "password": "senha123",
-  "role": "operator",
-  "status": "active",
-  "license_days": 30,
-  "license_expires_at": "2026-06-03T06:52:00.000000",
-  "created_at": "2026-05-04T06:52:00.000000",
-  "team_id": "uuid-do-admin",
-  "builds": [],
-  "amplification": {
-    "total_builds": 5,
-    "successful_builds": 4,
-    "failed_builds": 1
-  }
-}
-```
-
-### Build
-```json
-{
-  "build_id": "build_1714814400",
-  "app_name": "Meu App",
-  "status": "concluido",
-  "timestamp": "2026-05-04T06:52:00.000000",
-  "date_display": "04/05/2026 06:52:00"
-}
-```
-
-## 🎓 API Endpoints
-
-### Autenticação
-- `POST /login` - Fazer login
-- `GET /logout` - Fazer logout
-- `GET /check-session` - Verificar sessão ativa
-
-### Builds
-- `POST /upload` - Enviar APK para build
-- `GET /status/<build_id>` - Verificar status do build
-- `GET /download/<build_id>` - Baixar APK processado
-- `GET /user/builds` - Listar builds do usuário
-
-### Usuários
-- `GET /user/profile` - Perfil do usuário logado
-- `GET /admin/users` - Listar usuários (admin/owner)
-- `POST /admin/create-user` - Criar novo usuário
-- `POST /admin/renew-license` - Renovar licença
-- `POST /admin/toggle-user` - Ativar/desativar usuário
-- `POST /admin/delete-user` - Deletar usuário
-
-### Histórico
-- `GET /admin/history` - Histórico de atividades (owner)
-
-## 📞 Suporte
-
-Para problemas ou dúvidas:
-1. Verifique o arquivo `apk_dropper/data.json` para ver o estado do sistema
-2. Verifique os logs do servidor (output do terminal)
-3. Limpe a cache do navegador (Ctrl+Shift+Del)
-4. Reinicie o servidor
-
-## 📝 Licença
-
-Siberian KL © 2026. Todos os direitos reservados.
-
----
-
-**Desenvolvido com ❤️ para elite**
+Katana © 2026. Todos os direitos reservados.
