@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Siberian KL - Painel de Controle Elite</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: #0a0e1a;
+            color: #e0e0e0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* ===== BACKGROUND EFFECTS ===== */
+        #grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background-image: 
+                linear-gradient(rgba(34, 197, 94, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(34, 197, 94, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(50px); }
+        }
+
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.08;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, #ff4500, transparent);
+            top: -100px;
+            right: -100px;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .orb-2 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, #16a34a, transparent);
+            bottom: -50px;
+            left: -50px;
+            animation: float 25s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(30px, -30px); }
+            50% { transform: translate(-20px, 20px); }
+            75% { transform: translate(20px, 30px); }
+        }
+
+        @keyframes fadeInUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes bounce-in {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { opacity: 1; }
+            70% { transform: scale(1.05); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes pulse-ring {
+            0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(34, 197, 94, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(34, 197, 94, 0.3), inset 0 0 20px rgba(34, 197, 94, 0.1); }
+            50% { box-shadow: 0 0 40px rgba(34, 197, 94, 0.6), inset 0 0 30px rgba(34, 197, 94, 0.2); }
+        }
+
+        /* ===== GLASS MORPHISM ===== */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            border-radius: 16px;
+        }
+
+        /* ===== LOGIN SCREEN ===== */
+        #login-container {
+            animation: fadeInUp 0.8s ease-out;
+            position: relative;
+            z-index: 100;
+        }
+
+        .login-card {
+            animation: bounce-in 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-title {
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: #ff4500;
+            letter-spacing: 3px;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 20px rgba(255, 69, 0, 0.5);
+        }
+
+        .login-subtitle {
+            font-size: 0.75rem;
+            letter-spacing: 4px;
+            color: #16a34a;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.8s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: #ff4500;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(34, 197, 94, 0.2);
+            border-radius: 10px;
+            color: #e0e0e0;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            background: rgba(0, 0, 0, 0.7);
+            border-color: #ff4500;
+            box-shadow: 0 0 30px rgba(34, 197, 94, 0.4), inset 0 0 10px rgba(34, 197, 94, 0.1);
+            outline: none;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #ff4500 0%, #16a34a 100%);
+            color: #000;
+            font-weight: 700;
+            font-size: 1rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            box-shadow: 0 0 30px rgba(34, 197, 94, 0.3);
+            animation: pulse-ring 2s infinite;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 50px rgba(255, 69, 0, 0.5);
+        }
+
+        .login-error {
+            color: #ff6b6b;
+            font-size: 0.875rem;
+            text-align: center;
+            padding: 12px;
+            background: rgba(255, 107, 107, 0.15);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            margin-bottom: 1rem;
+        }
+
+        /* ===== DASHBOARD ===== */
+        .dashboard-container {
+            position: relative;
+            z-index: 50;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: rgba(10, 14, 26, 0.8);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(34, 197, 94, 0.1);
+            overflow-y: auto;
+            padding: 2rem 0;
+        }
+
+        .logo-section {
+            padding: 0 1.5rem 2rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(34, 197, 94, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .logo-img {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem;
+            filter: drop-shadow(0 0 10px rgba(255, 69, 0, 0.5));
+        }
+
+        .logo-text {
+            font-size: 1.2rem;
+            font-weight: 900;
+            color: #ff4500;
+            letter-spacing: 2px;
+        }
+
+        .nav-item {
+            padding: 1rem 1.5rem;
+            color: #888;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 3px solid transparent;
+            margin: 0.5rem 0;
+        }
+
+        .nav-item:hover {
+            color: #ff4500;
+            background: rgba(34, 197, 94, 0.1);
+            border-left-color: #ff4500;
+        }
+
+        .nav-item.active {
+            color: #ff4500;
+            background: rgba(34, 197, 94, 0.15);
+            border-left-color: #ff4500;
+            font-weight: 700;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .top-bar {
+            background: rgba(10, 14, 26, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(34, 197, 94, 0.1);
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top-bar-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #ff4500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-badge {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: #ff4500;
+            font-weight: 700;
+        }
+
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeInUp 0.3s ease-out;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(34, 197, 94, 0.15);
+            border-radius: 14px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(34, 197, 94, 0.6), transparent);
+        }
+
+        .card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(34, 197, 94, 0.3);
+            box-shadow: 0 15px 50px rgba(34, 197, 94, 0.15);
+            transform: translateY(-5px);
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #ff4500;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .card-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #ff4500, #16a34a);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-size: 1rem;
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
+        }
+
+        /* ===== STATS ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-widget {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(34, 197, 94, 0.15);
+            border-radius: 14px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            animation: bounce-in 0.6s ease-out;
+        }
+
+        .stat-widget:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(34, 197, 94, 0.3);
+            box-shadow: 0 15px 50px rgba(34, 197, 94, 0.15);
+            transform: translateY(-5px);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #ff4500;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 20px rgba(255, 69, 0, 0.5);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        /* ===== FORMS ===== */
+        .form-field {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-field label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: #ff4500;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .form-field input,
+        .form-field select {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(34, 197, 94, 0.2);
+            border-radius: 10px;
+            color: #e0e0e0;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-field input:focus,
+        .form-field select:focus {
+            background: rgba(0, 0, 0, 0.7);
+            border-color: #ff4500;
+            box-shadow: 0 0 30px rgba(34, 197, 94, 0.4), inset 0 0 10px rgba(34, 197, 94, 0.1);
+            outline: none;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #ff4500 0%, #16a34a 100%);
+            color: #000;
+            box-shadow: 0 0 30px rgba(34, 197, 94, 0.3);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 50px rgba(255, 69, 0, 0.5);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff5252 100%);
+            color: #fff;
+            box-shadow: 0 0 30px rgba(255, 107, 107, 0.3);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 50px rgba(255, 107, 107, 0.5);
+        }
+
+        .btn-secondary {
+            background: rgba(34, 197, 94, 0.1);
+            color: #ff4500;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(34, 197, 94, 0.2);
+            border-color: #ff4500;
+        }
+
+        /* ===== TABLES ===== */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 10px;
+            border: 2px solid rgba(34, 197, 94, 0.15);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: rgba(34, 197, 94, 0.1);
+            border-bottom: 2px solid rgba(34, 197, 94, 0.2);
+        }
+
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 700;
+            color: #ff4500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(34, 197, 94, 0.1);
+            color: #e0e0e0;
+        }
+
+        tbody tr:hover {
+            background: rgba(34, 197, 94, 0.05);
+        }
+
+        /* ===== MODALS ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeInUp 0.3s ease-out;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: rgba(10, 14, 26, 0.95);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(34, 197, 94, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 25px 50px rgba(34, 197, 94, 0.2);
+            animation: bounce-in 0.4s ease-out;
+        }
+
+        .modal-header {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #ff4500;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(34, 197, 94, 0.1);
+            border: none;
+            color: #ff4500;
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(34, 197, 94, 0.2);
+            transform: rotate(90deg);
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(34, 197, 94, 0.05);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(34, 197, 94, 0.3);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 69, 0, 0.5);
+        }
+
+        /* ===== ROLE-SPECIFIC ===== */
+        .owner-only { display: none; }
+        .admin-only { display: none; }
+        .operator-only { display: none; }
+
+        .role-owner .owner-only { display: block; }
+        .role-admin .admin-only { display: block; }
+        .role-operator .operator-only { display: block; }
+
+        /* ===== UPLOAD AREA ===== */
+        .upload-area {
+            border: 2px dashed rgba(34, 197, 94, 0.3);
+            border-radius: 12px;
+            padding: 3rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(34, 197, 94, 0.05);
+        }
+
+        .upload-area:hover {
+            border-color: rgba(34, 197, 94, 0.6);
+            background: rgba(34, 197, 94, 0.1);
+        }
+
+        .upload-area.active {
+            border-color: #ff4500;
+            background: rgba(34, 197, 94, 0.15);
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: #ff4500;
+            margin-bottom: 1rem;
+        }
+
+        /* ===== PROGRESS BAR ===== */
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(34, 197, 94, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff4500, #16a34a);
+            transition: width 0.3s ease;
+            box-shadow: 0 0 20px rgba(255, 69, 0, 0.5);
+        }
+
+        .progress-fill.error {
+            background: linear-gradient(90deg, #ff6b6b, #ff5252);
+        }
+
+        /* ===== ACTIVITY LOG ===== */
+        .activity-log {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .log-entry {
+            padding: 1rem;
+            border-left: 3px solid rgba(34, 197, 94, 0.3);
+            margin-bottom: 0.5rem;
+            background: rgba(34, 197, 94, 0.05);
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .log-entry:hover {
+            background: rgba(34, 197, 94, 0.1);
+            border-left-color: #ff4500;
+        }
+
+        .log-time {
+            font-size: 0.75rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.25rem;
+        }
+
+        .log-action {
+            font-weight: 700;
+            color: #ff4500;
+            margin-bottom: 0.25rem;
+        }
+
+        .log-details {
+            font-size: 0.85rem;
+            color: #aaa;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .w-full {
+            width: 100%;
+        }
+
+        .mb-4 {
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- BACKGROUND EFFECTS -->
+    <div id="grid-bg"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <!-- LOGIN CONTAINER -->
+    <div id="login-container" class="fixed inset-0 flex items-center justify-center z-50">
+        <div class="login-card glass w-96 p-8">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <img src="/static/img/logo_v2.png" style="width: 100px; height: 100px; margin: 0 auto 1rem; filter: drop-shadow(0 0 10px rgba(255, 69, 0, 0.5));">
+                <h1 class="login-title">SIBERIAN KL REMOTE</h1>
+                <p class="login-subtitle">Painel de Controle Elite</p>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label">Usuário</label>
+                    <input type="text" id="loginUser" class="input-field" placeholder="Digite seu usuário" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Senha</label>
+                    <input type="password" id="loginPass" class="input-field" placeholder="Digite sua senha" required>
+                </div>
+                <div id="loginError" class="login-error hidden"></div>
+                <button type="submit" class="btn-primary">Entrar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="dashboard-container hidden">
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+            <div class="logo-section">
+                <img src="/static/img/logo_v1.png" class="logo-img">
+                <div class="logo-text">SIBERIAN KL</div>
+            </div>
+            
+            <nav>
+                <div class="nav-item active" onclick="showTab('dashboard')">
+                    <i class="fas fa-chart-line"></i>
+                    Dashboard
+                </div>
+                <div class="nav-item operator-only" onclick="showTab('build')">
+                    <i class="fas fa-hammer"></i>
+                    Build APK
+                </div>
+                <div class="nav-item" onclick="showTab('mybuilds')">
+                    <i class="fas fa-list"></i>
+                    Meus Builds
+                </div>
+                <div class="nav-item admin-only" onclick="showTab('team')">
+                    <i class="fas fa-users"></i>
+                    Minha Equipe
+                </div>
+                <div class="nav-item owner-only" onclick="showTab('users')">
+                    <i class="fas fa-user-shield"></i>
+                    Usuários
+                </div>
+                <div class="nav-item owner-only" onclick="showTab('history')">
+                    <i class="fas fa-history"></i>
+                    Histórico
+                </div>
+                <div class="nav-item" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Sair
+                </div>
+            </nav>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <!-- TOP BAR -->
+            <div class="top-bar">
+                <div class="top-bar-title" id="tabTitle">Dashboard</div>
+                <div class="user-info">
+                    <div>
+                        <div style="font-size: 0.85rem; color: #888;">Usuário</div>
+                        <div style="font-weight: 700; color: #ff4500;" id="currentUser">-</div>
+                    </div>
+                    <div class="user-badge" id="currentRole">-</div>
+                </div>
+            </div>
+
+            <!-- CONTENT AREA -->
+            <div class="content-area">
+                <!-- DASHBOARD TAB -->
+                <div id="tab-dashboard" class="tab-content active">
+                    <div class="stats-grid">
+                        <div class="stat-widget">
+                            <div class="stat-value" id="statBuilds">0</div>
+                            <div class="stat-label">Total de Builds</div>
+                        </div>
+                        <div class="stat-widget">
+                            <div class="stat-value" id="statCompleted">0</div>
+                            <div class="stat-label">Concluídos</div>
+                        </div>
+                        <div class="stat-widget">
+                            <div class="stat-value" id="statProcessing">0</div>
+                            <div class="stat-label">Em Processamento</div>
+                        </div>
+                        <div class="stat-widget owner-only">
+                            <div class="stat-value" id="statUsers">0</div>
+                            <div class="stat-label">Usuários</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">
+                            <div class="card-icon"><i class="fas fa-history"></i></div>
+                            Atividades Recentes
+                        </div>
+                        <div class="activity-log" id="historyContent">
+                            <div class="log-entry">
+                                <div class="log-time">Carregando...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BUILD TAB -->
+                <div id="tab-build" class="tab-content operator-only">
+                    <div class="card">
+                        <div class="card-title">
+                            <div class="card-icon"><i class="fas fa-hammer"></i></div>
+                            Criar Novo Build
+                        </div>
+                        
+                        <div class="form-field">
+                            <label>Nome do Aplicativo</label>
+                            <input type="text" id="appName" placeholder="Ex: Meu App" class="input-field">
+                        </div>
+
+                        <div class="form-field">
+                            <label>Selecionar APK</label>
+                            <div class="upload-area" id="uploadArea">
+                                <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                                <div id="uploadText" style="color: #ff4500; font-weight: 700;">Clique ou arraste um APK aqui</div>
+                                <div id="fileName" style="font-size: 0.85rem; color: #888; margin-top: 0.5rem;"></div>
+                            </div>
+                            <input type="file" id="fileInput" accept=".apk" style="display: none;">
+                        </div>
+
+                        <div class="form-field">
+                            <label>Ícone do App (Opcional)</label>
+                            <div style="display: flex; gap: 1rem;">
+                                <input type="file" id="iconInput" accept=".png,.jpg" style="flex: 1;">
+                                <button type="button" id="clearIcon" class="btn btn-secondary hidden" onclick="clearIconSelection()">Limpar</button>
+                            </div>
+                            <div id="iconFileName" style="font-size: 0.85rem; color: #888; margin-top: 0.5rem;">Selecionar PNG/JPG</div>
+                        </div>
+
+                        <button id="buildBtn" class="btn btn-success w-full" disabled>
+                            <i class="fas fa-play"></i>
+                            Iniciar Build
+                        </button>
+                    </div>
+
+                    <div id="progressSection" class="card hidden">
+                        <div class="card-title">
+                            <div class="card-icon"><i class="fas fa-spinner"></i></div>
+                            Progresso do Build
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span id="statusMessage" style="color: #ff4500; font-weight: 700;">Iniciando...</span>
+                                <span id="progressPercent" style="color: #888;">0%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div id="progressFill" class="progress-fill" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                        <button id="downloadBtn" class="btn btn-success w-full hidden">
+                            <i class="fas fa-download"></i>
+                            Baixar APK
+                        </button>
+                    </div>
+                </div>
+
+                <!-- MY BUILDS TAB -->
+                <div id="tab-mybuilds" class="tab-content">
+                    <div class="card">
+                        <div class="card-title">
+                            <div class="card-icon"><i class="fas fa-list"></i></div>
+                            Histórico de Builds
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Aplicativo</th>
+                                        <th>Data</th>
+                                        <th>Status</th>
+                                        <th>Ação</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="buildsTableBody">
+                                    <tr><td colspan="4" style="text-align: center; color: #888;">Carregando...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TEAM TAB -->
+                <div id="tab-team" class="tab-content admin-only">
+                    <div class="card">
+                        <div class="card-title">
+                            <div class="card-icon"><i class="fas fa-users"></i></div>
+                            Minha Equipe
+                        </div>
+                        <button onclick="document.getElementById('createUserModal').classList.add('active')" class="btn btn-success mb-4">
+                            <i class="fas fa-plus"></i>
+                            Novo Operador
+                        </button>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Usuário</th>
+                                        <th>Status</th>
+                                        <th>Licença</th>
+                                        <th>Builds</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="teamTableBody">
+                                    <tr><td colspan="5" style="text-align: center; color: #888;">Carregando...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- USERS TAB -->
+                <div id="tab-users" class="tab-content owner-only">
+                    <div class="card">
+                        <div class="card-title">
+                            <div class="card-icon"><i class="fas fa-user-shield"></i></div>
+                            Gerenciar Usuários
+                        </div>
+                        <button onclick="document.getElementById('createAdminModal').classList.add('active')" class="btn btn-success mb-4">
+                            <i class="fas fa-plus"></i>
+                            Novo ADM
+                        </button>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Usuário</th>
+                                        <th>Função</th>
+                                        <th>Status</th>
+                                        <th>Licença</th>
+                                        <th>Builds</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="userTableBody">
+                                    <tr><td colspan="6" style="text-align: center; color: #888;">Carregando...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HISTORY TAB -->
+                <div id="tab-history" class="tab-content owner-only">
+                    <div class="card">
+                        <div class="card-title">
+                            <div class="card-icon"><i class="fas fa-history"></i></div>
+                            Histórico de Atividades
+                        </div>
+                        <div class="activity-log" id="historyFullContent">
+                            <div class="log-entry">
+                                <div class="log-time">Carregando...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALS -->
+    <div id="createUserModal" class="modal">
+        <div class="modal-content" style="position: relative;">
+            <button onclick="this.closest('.modal').classList.remove('active')" class="modal-close"><i class="fas fa-times"></i></button>
+            <div class="modal-header">
+                <i class="fas fa-user-plus"></i>
+                Criar Operador
+            </div>
+            <div class="form-field">
+                <label>Usuário</label>
+                <input type="text" id="newUsername" placeholder="Nome de usuário" class="input-field">
+            </div>
+            <div class="form-field">
+                <label>Senha</label>
+                <input type="password" id="newPassword" placeholder="Senha" class="input-field">
+            </div>
+            <div class="form-field">
+                <label>Dias de Licença</label>
+                <input type="number" id="newLicenseDays" placeholder="30" value="30" class="input-field" min="1">
+            </div>
+            <button onclick="createUser('operator')" class="btn btn-success w-full">Criar Operador</button>
+        </div>
+    </div>
+
+    <div id="createAdminModal" class="modal">
+        <div class="modal-content" style="position: relative;">
+            <button onclick="this.closest('.modal').classList.remove('active')" class="modal-close"><i class="fas fa-times"></i></button>
+            <div class="modal-header">
+                <i class="fas fa-user-shield"></i>
+                Criar ADM
+            </div>
+            <div class="form-field">
+                <label>Usuário</label>
+                <input type="text" id="newAdminUsername" placeholder="Nome de usuário" class="input-field">
+            </div>
+            <div class="form-field">
+                <label>Senha</label>
+                <input type="password" id="newAdminPassword" placeholder="Senha" class="input-field">
+            </div>
+            <div class="form-field">
+                <label>Dias de Licença</label>
+                <input type="number" id="newAdminLicenseDays" placeholder="30" value="30" class="input-field" min="1">
+            </div>
+            <button onclick="createUser('admin')" class="btn btn-success w-full">Criar ADM</button>
+        </div>
+    </div>
+
+    <script>
+        // ===== LOGIN FUNCTIONALITY =====
+        const loginContainer = document.getElementById('login-container');
+        const dashboard = document.getElementById('dashboard');
+        const loginForm = document.getElementById('loginForm');
+        const loginUser = document.getElementById('loginUser');
+        const loginPass = document.getElementById('loginPass');
+        const loginError = document.getElementById('loginError');
+
+        loginForm.onsubmit = async (e) => {
+            e.preventDefault();
+            loginError.classList.add('hidden');
+            
+            const res = await fetch('/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username: loginUser.value, password: loginPass.value })
+            });
+            const data = await res.json();
+            if (data.success) {
+                document.getElementById('currentUser').textContent = loginUser.value;
+                document.getElementById('currentRole').textContent = data.role === 'admin' ? 'Administrador' : (data.role === 'owner' ? 'Dono' : 'Operador');
+                
+                dashboard.className = `dashboard-container role-${data.role}`;
+                loginContainer.classList.add('hidden');
+                
+                loadDashboardStats();
+                showTab('dashboard');
+            } else {
+                loginError.textContent = data.message || 'Erro ao fazer login';
+                loginError.classList.remove('hidden');
+            }
+        };
+
+        function logout() {
+            window.location.href = '/logout';
+        }
+
+        function showTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            const targetTab = document.getElementById(`tab-${tab}`);
+            if (targetTab) targetTab.classList.add('active');
+            
+            document.querySelectorAll('.nav-item').forEach(el => {
+                el.classList.remove('active');
+                if (el.getAttribute('onclick') && el.getAttribute('onclick').includes(`'${tab}'`)) {
+                    el.classList.add('active');
+                }
+            });
+            
+            const titles = { 
+                dashboard: 'Dashboard',
+                build: 'Build APK', 
+                mybuilds: 'Meus Builds', 
+                team: 'Minha Equipe',
+                users: 'Gerenciar Usuários', 
+                history: 'Histórico de Atividades'
+            };
+            document.getElementById('tabTitle').textContent = titles[tab] || 'Painel';
+            
+            if (tab === 'users') loadUsers();
+            if (tab === 'history') loadHistory();
+            if (tab === 'mybuilds') loadMyBuilds();
+            if (tab === 'team') loadTeam();
+            if (tab === 'dashboard') loadDashboardStats();
+        }
+
+        // ===== FILE UPLOAD =====
+        let currentBuildId = null;
+        let selectedFile = null;
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const buildBtn = document.getElementById('buildBtn');
+        const iconInput = document.getElementById('iconInput');
+        const iconFileName = document.getElementById('iconFileName');
+        const clearIconBtn = document.getElementById('clearIcon');
+
+        window.clearIconSelection = () => {
+            iconInput.value = '';
+            iconFileName.textContent = 'Selecionar PNG/JPG';
+            clearIconBtn.classList.add('hidden');
+        };
+        
+        uploadArea.onclick = () => fileInput.click();
+        
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+            }, false);
+        });
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, () => {
+                uploadArea.classList.add('active');
+            }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, () => {
+                uploadArea.classList.remove('active');
+            }, false);
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            handleFiles(e.dataTransfer.files);
+        }, false);
+
+        fileInput.onchange = (e) => {
+            handleFiles(e.target.files);
+        };
+
+        function handleFiles(files) {
+            if (files.length > 0 && files[0].name.endsWith('.apk')) {
+                selectedFile = files[0];
+                document.getElementById('fileName').textContent = "Arquivo: " + selectedFile.name;
+                document.getElementById('uploadText').textContent = "APK Selecionado: " + selectedFile.name;
+                buildBtn.disabled = false;
+            } else {
+                alert("Selecione apenas arquivos .apk");
+            }
+        }
+
+        buildBtn.onclick = async () => {
+            const appName = document.getElementById('appName').value.trim();
+            if (!appName) return alert("Digite o nome do app");
+            
+            buildBtn.disabled = true;
+            document.getElementById('progressSection').classList.remove('hidden');
+            
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+            formData.append('app_name', appName);
+            if (iconInput.files.length > 0) {
+                formData.append('icon', iconInput.files[0]);
+            }
+            
+            const response = await fetch('/upload', {method: 'POST', body: formData});
+            const data = await response.json();
+            if (data.build_id) {
+                currentBuildId = data.build_id;
+                document.getElementById('statusMessage').textContent = "Iniciando processamento";
+                document.getElementById('progressFill').style.width = '5%';
+                document.getElementById('progressPercent').textContent = '5%';
+                startPolling();
+            }
+        };
+
+        function startPolling() {
+            const interval = setInterval(async () => {
+                const response = await fetch('/status/' + currentBuildId);
+                const data = await response.json();
+                
+                if (data.error) {
+                    clearInterval(interval);
+                    document.getElementById('progressFill').classList.add('error');
+                    document.getElementById('statusMessage').textContent = data.status;
+                    buildBtn.disabled = false;
+                    return;
+                }
+
+                document.getElementById('progressFill').style.width = data.progress + '%';
+                document.getElementById('progressPercent').textContent = data.progress + '%';
+                document.getElementById('statusMessage').textContent = data.status;
+                
+                if (data.progress === 100) {
+                    clearInterval(interval);
+                    document.getElementById('downloadBtn').classList.remove('hidden');
+                    buildBtn.disabled = false;
+                }
+            }, 2000);
+        }
+
+        document.getElementById('downloadBtn').onclick = () => {
+            window.location.href = '/download/' + currentBuildId;
+        };
+
+        async function loadDashboardStats() {
+            const response = await fetch('/user/builds');
+            const builds = await response.json();
+            const completed = builds.filter(b => b.status === 'concluido').length;
+            const processing = builds.filter(b => b.status === 'processando').length;
+            
+            document.getElementById('statBuilds').textContent = builds.length;
+            document.getElementById('statCompleted').textContent = completed;
+            document.getElementById('statProcessing').textContent = processing;
+            
+            const adminResponse = await fetch('/admin/users').catch(() => null);
+            if (adminResponse && adminResponse.ok) {
+                const users = await adminResponse.json();
+                document.getElementById('statUsers').textContent = users.length;
+            }
+
+            loadHistory();
+        }
+
+        async function loadMyBuilds() {
+            const response = await fetch('/user/builds');
+            const builds = await response.json();
+            const body = document.getElementById('buildsTableBody');
+            body.innerHTML = builds.map(b => `
+                <tr>
+                    <td>${b.app_name}</td>
+                    <td style="font-size: 0.85rem; color: #888;">${b.date_display}</td>
+                    <td><span style="padding: 0.25rem 0.75rem; background: rgba(34, 197, 94, 0.1); border-radius: 4px; color: #ff4500; font-size: 0.75rem; font-weight: 700;">${b.status.toUpperCase()}</span></td>
+                    <td>
+                        ${b.status === 'concluido' ? `<a href="/download/${b.build_id}" style="color: #ff4500; text-decoration: none; font-weight: 700;">Baixar</a>` : '-'}
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function loadTeam() {
+            const response = await fetch('/admin/users');
+            if (!response.ok) return;
+            const users = await response.json();
+            const body = document.getElementById('teamTableBody');
+            body.innerHTML = users.map(u => `
+                <tr>
+                    <td>${u.username}</td>
+                    <td><span style="padding: 0.25rem 0.75rem; background: rgba(34, 197, 94, 0.1); border-radius: 4px; color: #ff4500; font-size: 0.75rem; font-weight: 700;">${u.status.toUpperCase()}</span></td>
+                    <td style="font-size: 0.85rem; color: #888;">${u.license_expires_at ? new Date(u.license_expires_at).toLocaleDateString('pt-BR') : 'Ilimitado'}</td>
+                    <td>${u.builds_count}</td>
+                    <td>
+                        <button class="btn btn-secondary" style="font-size: 0.75rem; padding: 0.5rem 1rem;" onclick="renewLicense('${u.username}')">Renovar</button>
+                        <button class="btn btn-danger" style="font-size: 0.75rem; padding: 0.5rem 1rem;" onclick="toggleUser('${u.username}')">Toggle</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function loadUsers() {
+            const response = await fetch('/admin/users');
+            if (!response.ok) return;
+            const users = await response.json();
+            const body = document.getElementById('userTableBody');
+            body.innerHTML = users.map(u => `
+                <tr>
+                    <td>${u.username}</td>
+                    <td><span style="padding: 0.25rem 0.75rem; background: rgba(34, 197, 94, 0.1); border-radius: 4px; color: #ff4500; font-size: 0.75rem; font-weight: 700;">${u.role.toUpperCase()}</span></td>
+                    <td><span style="padding: 0.25rem 0.75rem; background: rgba(34, 197, 94, 0.1); border-radius: 4px; color: #ff4500; font-size: 0.75rem; font-weight: 700;">${u.status.toUpperCase()}</span></td>
+                    <td style="font-size: 0.85rem; color: #888;">${u.license_expires_at ? new Date(u.license_expires_at).toLocaleDateString('pt-BR') : 'Ilimitado'}</td>
+                    <td>${u.builds_count}</td>
+                    <td>
+                        <button class="btn btn-secondary" style="font-size: 0.75rem; padding: 0.5rem 1rem;" onclick="renewLicense('${u.username}')">Renovar</button>
+                        <button class="btn btn-danger" style="font-size: 0.75rem; padding: 0.5rem 1rem;" onclick="deleteUser('${u.username}')">Deletar</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function loadHistory() {
+            const response = await fetch('/admin/history');
+            if (!response.ok) return;
+            const history = await response.json();
+            const container = document.getElementById('historyFullContent');
+            container.innerHTML = history.map(h => `
+                <div class="log-entry">
+                    <div class="log-time">${h.timestamp}</div>
+                    <div class="log-action">${h.user} - ${h.action}</div>
+                    <div class="log-details">${h.details}</div>
+                </div>
+            `).join('');
+
+            const dashboardHistory = document.getElementById('historyContent');
+            if (dashboardHistory) {
+                dashboardHistory.innerHTML = history.slice(0, 5).map(h => `
+                    <div class="log-entry">
+                        <div class="log-time">${h.timestamp}</div>
+                        <div class="log-action">${h.user} - ${h.action}</div>
+                        <div class="log-details">${h.details}</div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        async function createUser(role) {
+            let username, password, license_days;
+            if (role === 'operator') {
+                username = document.getElementById('newUsername').value;
+                password = document.getElementById('newPassword').value;
+                license_days = parseInt(document.getElementById('newLicenseDays').value) || 30;
+            } else {
+                username = document.getElementById('newAdminUsername').value;
+                password = document.getElementById('newAdminPassword').value;
+                license_days = parseInt(document.getElementById('newAdminLicenseDays').value) || 30;
+            }
+
+            if (!username || !password) return alert('Preencha todos os campos');
+
+            const response = await fetch('/admin/create-user', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password, role, license_days })
+            });
+            const data = await response.json();
+            if (data.success) {
+                alert(data.message);
+                document.getElementById(`create${role === 'operator' ? 'User' : 'Admin'}Modal`).classList.remove('active');
+                if (role === 'operator') loadTeam();
+                else loadUsers();
+            } else {
+                alert('Erro: ' + data.message);
+            }
+        }
+
+        async function renewLicense(username) {
+            const days = prompt('Quantos dias de licença?', '30');
+            if (!days) return;
+            
+            const response = await fetch('/admin/renew-license', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, days: parseInt(days) })
+            });
+            const data = await response.json();
+            if (data.success) {
+                alert(data.message);
+                loadTeam();
+                loadUsers();
+            } else {
+                alert('Erro: ' + data.message);
+            }
+        }
+
+        async function toggleUser(username) {
+            const response = await fetch('/admin/toggle-user', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username })
+            });
+            const data = await response.json();
+            if (data.success) {
+                alert(data.message);
+                loadTeam();
+                loadUsers();
+            } else {
+                alert('Erro: ' + data.message);
+            }
+        }
+
+        async function deleteUser(username) {
+            if (!confirm(`Tem certeza que deseja deletar ${username}?`)) return;
+            
+            const response = await fetch('/admin/delete-user', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username })
+            });
+            const data = await response.json();
+            if (data.success) {
+                alert(data.message);
+                loadUsers();
+            } else {
+                alert('Erro: ' + data.message);
+            }
+        }
+
+        // Check session on load
+        fetch('/check-session').then(r => r.json()).then(data => {
+            if (data.logged_in) {
+                document.getElementById('currentUser').textContent = data.username;
+                document.getElementById('currentRole').textContent = data.role === 'admin' ? 'Administrador' : (data.role === 'owner' ? 'Dono' : 'Operador');
+                dashboard.className = `dashboard-container role-${data.role}`;
+                loginContainer.classList.add('hidden');
+                loadDashboardStats();
+            }
+        });
+    </script>
+</body>
+</html>
