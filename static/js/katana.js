@@ -58,6 +58,7 @@ function katanaMake() {
         appName: "",
         apk: null,
         icon: null,
+        iconPreview: "",
         iconError: "",
         busy: false,
         status: "",
@@ -65,11 +66,18 @@ function katanaMake() {
         downloadUrl: "",
         buildId: "",
         pollTimer: null,
-        onApk(e) { this.apk = e.target.files[0]; },
+        clearIconPreview() {
+            if (this.iconPreview) {
+                URL.revokeObjectURL(this.iconPreview);
+                this.iconPreview = "";
+            }
+        },
+        onApk(e) { this.apk = e.target.files[0] || null; },
         onIcon(e) {
             const input = e.target;
             const file = input.files[0];
             this.iconError = "";
+            this.clearIconPreview();
             if (!file) {
                 this.icon = null;
                 return;
@@ -82,6 +90,7 @@ function katanaMake() {
                 return;
             }
             this.icon = file;
+            this.iconPreview = URL.createObjectURL(file);
         },
         async submit() {
             if (!this.apk) return;

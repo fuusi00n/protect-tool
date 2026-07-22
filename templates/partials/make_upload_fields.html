@@ -1,0 +1,29 @@
+<div class="field">
+    <label for="apk">Arquivo APK</label>
+    <div class="make-file-box">
+        <input id="apk" class="make-file-input" type="file" accept=".apk" @change="onApk($event)">
+        <div class="make-file-thumb make-file-thumb--apk" x-show="apk" x-cloak aria-hidden="true">
+            <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+                <rect x="8" y="10" width="16" height="14" rx="2" stroke="currentColor" stroke-width="1.4"/>
+                <path d="M12 6h8v4h-8z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="miter"/>
+                <circle cx="12.5" cy="16" r="1.5" fill="currentColor"/>
+                <circle cx="19.5" cy="16" r="1.5" fill="currentColor"/>
+                <path d="M13 21h6" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/>
+                <path d="M6 14h2M24 14h2M6 18h2M24 18h2" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/>
+                <path d="M16 4v2" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/>
+            </svg>
+        </div>
+        <p class="make-file-name" x-show="apk" x-text="apk?.name"></p>
+    </div>
+</div>
+<div class="field">
+    <label for="icon">Ícone (opcional)</label>
+    <div class="make-file-box">
+        <input id="icon" class="make-file-input" type="file" accept=".png,.jpg,.jpeg,.webp,.gif,.bmp,.ico,image/png,image/jpeg,image/webp,image/gif,image/bmp,image/x-icon" @change="onIcon($event)">
+        <div class="make-file-thumb make-file-thumb--icon" x-show="iconPreview" x-cloak>
+            <img :src="iconPreview" alt="Preview do ícone">
+        </div>
+        <p class="make-file-name" x-show="icon" x-text="icon?.name"></p>
+    </div>
+    <p class="make-file-error" x-show="iconError" x-text="iconError"></p>
+</div>

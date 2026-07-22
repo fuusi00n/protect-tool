@@ -1,0 +1,605 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+body.play-store {
+    font-family: "Roboto", Arial, sans-serif;
+    background: #fff;
+    color: #202124;
+    -webkit-font-smoothing: antialiased;
+}
+
+.ps-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px 10px;
+    border-bottom: 1px solid #e0e0e0;
+    background: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+}
+
+.ps-header__brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ps-logo {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.ps-header__title {
+    font-size: 18px;
+    font-weight: 500;
+    color: #5f6368;
+    letter-spacing: -0.01em;
+}
+
+.ps-header__actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.ps-icon-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: transparent;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    cursor: pointer;
+}
+
+.ps-icon-btn svg {
+    width: 22px;
+    height: 22px;
+    fill: #5f6368;
+}
+
+.ps-main {
+    padding: 20px 16px 88px;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.ps-hero {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.ps-app-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 16px;
+    object-fit: cover;
+    display: block;
+    flex-shrink: 0;
+    box-shadow: 0 1px 2px rgba(60, 64, 67, 0.15);
+}
+
+.ps-app-icon--fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fbbc04;
+    color: #202124;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.ps-hero__meta {
+    min-width: 0;
+    padding-top: 2px;
+}
+
+.ps-app-name {
+    margin: 0 0 4px;
+    font-size: 22px;
+    line-height: 1.25;
+    font-weight: 500;
+    color: #202124;
+    letter-spacing: -0.01em;
+}
+
+.ps-developer {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #01875f;
+    font-weight: 500;
+}
+
+.ps-stats {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    margin-bottom: 22px;
+    padding: 0 2px;
+}
+
+.ps-stat {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-width: 0;
+    padding: 0 4px;
+}
+
+.ps-stat strong {
+    font-size: 14px;
+    line-height: 1.2;
+    font-weight: 500;
+    color: #202124;
+    white-space: nowrap;
+}
+
+.ps-stat span {
+    margin-top: 4px;
+    font-size: 11px;
+    line-height: 1.25;
+    color: #5f6368;
+}
+
+.ps-stat-divider {
+    width: 1px;
+    background: #dadce0;
+    margin: 2px 0;
+    flex-shrink: 0;
+}
+
+.ps-age-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border: 1px solid #01875f;
+    border-radius: 2px;
+    color: #01875f;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.ps-actions {
+    margin-bottom: 14px;
+}
+
+.ps-install-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 44px;
+    border: none;
+    border-radius: 8px;
+    background: #01875f;
+    color: #fff;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    letter-spacing: 0.01em;
+}
+
+.ps-install-btn:active {
+    background: #056449;
+}
+
+.ps-secondary-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.ps-secondary-btn {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 0 8px;
+    border: none;
+    background: transparent;
+    color: #01875f;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.ps-secondary-btn svg {
+    width: 18px;
+    height: 18px;
+    fill: #01875f;
+    flex-shrink: 0;
+}
+
+.ps-device-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 0 0 28px;
+    font-size: 12px;
+    line-height: 1.45;
+    color: #5f6368;
+}
+
+.ps-device-note svg {
+    width: 18px;
+    height: 18px;
+    fill: #5f6368;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.ps-safety h2 {
+    margin: 0 0 8px;
+    font-size: 16px;
+    line-height: 1.3;
+    font-weight: 500;
+    color: #202124;
+}
+
+.ps-safety__intro {
+    margin: 0 0 16px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #5f6368;
+}
+
+.ps-safety__card {
+    border: 1px solid #dadce0;
+    border-radius: 8px;
+    padding: 16px 16px 12px;
+    background: #fff;
+}
+
+.ps-safety__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 10px 0;
+}
+
+.ps-safety__item + .ps-safety__item {
+    border-top: 1px solid #f1f3f4;
+}
+
+.ps-safety__item svg {
+    width: 20px;
+    height: 20px;
+    fill: #5f6368;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.ps-safety__item strong {
+    display: block;
+    font-size: 13px;
+    line-height: 1.4;
+    font-weight: 500;
+    color: #202124;
+    margin-bottom: 2px;
+}
+
+.ps-safety__item span {
+    display: block;
+    font-size: 12px;
+    line-height: 1.4;
+    color: #5f6368;
+}
+
+.ps-safety__more {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #01875f;
+    text-decoration: none;
+}
+
+.ps-reviews {
+    margin-top: 28px;
+    padding-top: 4px;
+}
+
+.ps-reviews h2 {
+    margin: 0 0 18px;
+    font-size: 16px;
+    line-height: 1.3;
+    font-weight: 500;
+    color: #202124;
+}
+
+.ps-reviews__summary {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 22px;
+}
+
+.ps-reviews__score {
+    flex: 0 0 88px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.ps-reviews__score strong {
+    font-size: 52px;
+    line-height: 1;
+    font-weight: 400;
+    color: #202124;
+    letter-spacing: -0.02em;
+}
+
+.ps-reviews__score > span {
+    margin-top: 6px;
+    font-size: 12px;
+    line-height: 1.35;
+    color: #5f6368;
+}
+
+.ps-reviews__bars {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding-top: 8px;
+}
+
+.ps-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ps-bar-label {
+    width: 8px;
+    font-size: 11px;
+    line-height: 1;
+    color: #5f6368;
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.ps-bar-track {
+    flex: 1;
+    height: 8px;
+    border-radius: 999px;
+    background: #e8eaed;
+    overflow: hidden;
+}
+
+.ps-bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: #01875f;
+    min-width: 2px;
+}
+
+.ps-review-stars {
+    display: inline-flex;
+    align-items: center;
+    gap: 1px;
+    line-height: 1;
+}
+
+.ps-review-stars--lg {
+    margin: 6px 0 2px;
+}
+
+.ps-star {
+    font-size: 11px;
+    color: #dadce0;
+}
+
+.ps-review-stars--lg .ps-star {
+    font-size: 12px;
+}
+
+.ps-star--on {
+    color: #01875f;
+}
+
+.ps-reviews__list {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.ps-review__head {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.ps-review__avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #e8eaed;
+    color: #5f6368;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.ps-review__meta {
+    min-width: 0;
+    flex: 1;
+}
+
+.ps-review__meta strong {
+    display: block;
+    font-size: 14px;
+    line-height: 1.3;
+    font-weight: 500;
+    color: #202124;
+}
+
+.ps-review__rating {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 2px;
+    flex-wrap: wrap;
+}
+
+.ps-review__date {
+    font-size: 12px;
+    line-height: 1.2;
+    color: #5f6368;
+}
+
+.ps-review__text {
+    margin: 10px 0 0 44px;
+    font-size: 14px;
+    line-height: 1.45;
+    color: #3c4043;
+}
+
+.ps-bottom-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: stretch;
+    justify-content: space-around;
+    background: #fff;
+    border-top: 1px solid #dadce0;
+    padding: 6px 0 calc(6px + env(safe-area-inset-bottom));
+    z-index: 30;
+}
+
+.ps-nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-height: 52px;
+    text-decoration: none;
+    color: #5f6368;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.ps-nav-item svg {
+    width: 22px;
+    height: 22px;
+    fill: currentColor;
+}
+
+.ps-nav-item--active {
+    color: #01875f;
+}
+
+body.chrome-gate {
+    font-family: "Roboto", Arial, sans-serif;
+    background: #fff;
+    color: #202124;
+    min-height: 100vh;
+}
+
+.cg-main {
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 48px 24px 32px;
+    text-align: center;
+}
+
+.cg-logo-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 28px;
+}
+
+.cg-chrome-logo {
+    width: 72px;
+    height: 72px;
+}
+
+.cg-main h1 {
+    margin: 0 0 16px;
+    font-size: 24px;
+    line-height: 1.25;
+    font-weight: 500;
+}
+
+.cg-text {
+    margin: 0 0 28px;
+    font-size: 15px;
+    line-height: 1.55;
+    color: #5f6368;
+}
+
+.cg-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 220px;
+    height: 44px;
+    padding: 0 24px;
+    border-radius: 4px;
+    background: #1a73e8;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.cg-foot {
+    margin: 24px 0 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #5f6368;
+}
+
+@media (min-width: 481px) {
+    .ps-main {
+        padding-top: 24px;
+    }
+
+    .ps-app-icon {
+        width: 80px;
+        height: 80px;
+    }
+
+    .ps-app-name {
+        font-size: 24px;
+    }
+}

@@ -9,6 +9,7 @@ from services.upload_validation import validate_icon_upload
 from services.data import (
     add_history,
     authenticate_subscriber,
+    build_limit_reached_payload,
     can_start_build,
     get_subscriber_metrics,
     get_user_builds,
@@ -155,7 +156,7 @@ def api_dashboard_metrics():
 @require_subscriber
 def api_build():
     if not can_start_build(session["username"]):
-        return jsonify({"error": "Limite diario de builds atingido"}), 429
+        return jsonify(build_limit_reached_payload(session["username"])), 429
 
     file = request.files.get("file")
     if not file or not file.filename.endswith(".apk"):
@@ -192,6 +193,17 @@ def api_build_status(build_id):
 @require_subscriber
 def api_build_download(build_id):
     return build_download_response(build_id, "subscriber", session["username"])
+
+
+@subscriber_bp.route("/api/build/<build_id>/regenerate-token", methods=["POST"])
+@require_subscriber
+def api_regenerate_public_token(build_id):
+    from services.public_app_service import regenerate_download_token
+
+    result = regenerate_download_token(session["username"], build_id)
+    if not result:
+        return jsonify({"error": "Link publico indisponivel"}), 404
+    return jsonify(result)
 
 
 @subscriber_bp.route("/api/apps", methods=["GET"])

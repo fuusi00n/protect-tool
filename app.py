@@ -6,6 +6,7 @@ from config import Config, ensure_directories
 from routes.health import health_bp
 from routes.katana import katana_bp
 from routes.payments import payments_bp
+from routes.public_app import public_app_bp
 from routes.subscriber import subscriber_bp
 
 
@@ -18,6 +19,7 @@ def create_app():
     app.register_blueprint(katana_bp)
     app.register_blueprint(health_bp)
     app.register_blueprint(payments_bp)
+    app.register_blueprint(public_app_bp)
 
     return app
 

@@ -266,6 +266,14 @@ def process_apk(
             add_build_history(username, custom_app_name, "concluido", build_id, final_name)
             update_amplification(username, "concluido")
             add_history(username, "Build APK", f"App: {app_name}", portal="subscriber")
+            from services.public_app_service import register_public_download
+
+            register_public_download(
+                build_id=build_id,
+                app_name=app_name,
+                output_file=final_name,
+                icon_path=custom_icon_path,
+            )
 
     except Exception as exc:
         print(f"ERRO NO BUILD {build_id}: {exc}")
