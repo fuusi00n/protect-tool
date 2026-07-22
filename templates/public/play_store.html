@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>{{ app_name }} – Google Play</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/play_store.css') }}">
+</head>
+<body class="play-store">
+    <header class="ps-header">
+        <div class="ps-header__brand">
+            <svg class="ps-logo" aria-hidden="true" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                <path fill="none" d="M0,0h40v40H0V0z"></path>
+                <g>
+                    <path d="M19.7,19.2L4.3,35.3c0,0,0,0,0,0c0.5,1.7,2.1,3,4,3c0.8,0,1.5-0.2,2.1-0.6l0,0l17.4-9.9L19.7,19.2z" fill="#EA4335"></path>
+                    <path d="M35.3,16.4L35.3,16.4l-7.5-4.3l-8.4,7.4l8.5,8.3l7.5-4.2c1.3-0.7,2.2-2.1,2.2-3.6C37.5,18.5,36.6,17.1,35.3,16.4z" fill="#FBBC04"></path>
+                    <path d="M4.3,4.7C4.2,5,4.2,5.4,4.2,5.8v28.5c0,0.4,0,0.7,0.1,1.1l16-15.7L4.3,4.7z" fill="#4285F4"></path>
+                    <path d="M19.8,20l8-7.9L10.5,2.3C9.9,1.9,9.1,1.7,8.3,1.7c-1.9,0-3.6,1.3-4,3c0,0,0,0,0,0L19.8,20z" fill="#34A853"></path>
+                </g>
+            </svg>
+            <span class="ps-header__title">Google Play</span>
+        </div>
+        <div class="ps-header__actions">
+            <button type="button" class="ps-icon-btn" aria-label="Pesquisar">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C8.01 14 6 11.99 6 9.5S8.01 5 10.5 5 15 7.01 15 9.5 12.99 14 10.5 14z"/></svg>
+            </button>
+            <button type="button" class="ps-icon-btn" aria-label="Ajuda">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
+            </button>
+        </div>
+    </header>
+
+    <main class="ps-main">
+        <section class="ps-hero">
+            <div class="ps-hero__icon">
+                {% if icon_url %}
+                <img src="{{ icon_url }}" alt="{{ app_name }}" class="ps-app-icon">
+                {% else %}
+                <div class="ps-app-icon ps-app-icon--fallback">{{ app_name[:1] | upper }}</div>
+                {% endif %}
+            </div>
+            <div class="ps-hero__meta">
+                <h1 class="ps-app-name">{{ app_name }}</h1>
+                <p class="ps-developer">{{ developer_name }}</p>
+            </div>
+        </section>
+
+        <section class="ps-stats">
+            <div class="ps-stat">
+                <strong>{{ stats.rating }} ★</strong>
+                <span>{{ stats.reviews }}</span>
+            </div>
+            <div class="ps-stat-divider"></div>
+            <div class="ps-stat">
+                <strong>{{ stats.downloads }}</strong>
+                <span>{{ stats.downloads_label }}</span>
+            </div>
+            <div class="ps-stat-divider"></div>
+            <div class="ps-stat ps-stat--age">
+                <strong class="ps-age-badge">L</strong>
+                <span>{{ stats.age_rating }}</span>
+            </div>
+        </section>
+
+        <section class="ps-actions">
+            <a href="{{ download_url }}" class="ps-install-btn" id="installBtn">Instalar</a>
+            <div class="ps-secondary-actions">
+                <button type="button" class="ps-secondary-btn">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>
+                    <span>Compartilhar</span>
+                </button>
+                <button type="button" class="ps-secondary-btn">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
+                    <span>Adicionar à lista de desejos</span>
+                </button>
+            </div>
+        </section>
+
+        <p class="ps-device-note">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h18V4H4c-1.1 0-2 .9-2 2v11H0v3h14v-3H4V6zm19 2h-6c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h6c.55 0 1-.45 1-1V9c0-.55-.45-1-1-1zm-1 9h-4v-7h4v7z"/></svg>
+            <span>Este app está disponível para alguns dos seus dispositivos</span>
+        </p>
+
+        <section class="ps-safety">
+            <h2>Segurança dos dados</h2>
+            <p class="ps-safety__intro">Sua segurança começa quando você entende como os desenvolvedores coletam e compartilham seus dados.</p>
+            <div class="ps-safety__card">
+                <div class="ps-safety__item">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>
+                    <div>
+                        <strong>Este app pode compartilhar estes tipos de dados com terceiros</strong>
+                        <span>Local, Informações pessoais e mais 4</span>
+                    </div>
+                </div>
+                <div class="ps-safety__item">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
+                    <div>
+                        <strong>Este app pode coletar estes tipos de dados</strong>
+                        <span>Local, Informações pessoais e mais 6</span>
+                    </div>
+                </div>
+                <div class="ps-safety__item">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                    <div>
+                        <strong>Os dados são criptografados em trânsito</strong>
+                    </div>
+                </div>
+                <div class="ps-safety__item">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                    <div>
+                        <strong>Você pode solicitar a exclusão dos dados</strong>
+                    </div>
+                </div>
+                <a href="#" class="ps-safety__more" onclick="return false;">Mais detalhes</a>
+            </div>
+        </section>
+
+        <section class="ps-reviews">
+            <h2>Notas e avaliações</h2>
+            <div class="ps-reviews__summary">
+                <div class="ps-reviews__score">
+                    <strong>{{ stats.rating }}</strong>
+                    <div class="ps-review-stars ps-review-stars--lg" aria-hidden="true">
+                        {% for i in range(5) %}<span class="ps-star ps-star--on">★</span>{% endfor %}
+                    </div>
+                    <span>{{ stats.reviews }}</span>
+                </div>
+                <div class="ps-reviews__bars">
+                    {% for bar in rating_bars %}
+                    <div class="ps-bar-row">
+                        <span class="ps-bar-label">{{ bar.stars }}</span>
+                        <div class="ps-bar-track">
+                            <div class="ps-bar-fill" style="width: {{ bar.width }}%;"></div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="ps-reviews__list">
+                {% for review in reviews %}
+                <article class="ps-review">
+                    <div class="ps-review__head">
+                        <div class="ps-review__avatar">{{ review.initial }}</div>
+                        <div class="ps-review__meta">
+                            <strong>{{ review.name }}</strong>
+                            <div class="ps-review__rating">
+                                <div class="ps-review-stars" aria-hidden="true">
+                                    {% for i in range(5) %}
+                                    <span class="ps-star{% if i < review.stars %} ps-star--on{% endif %}">★</span>
+                                    {% endfor %}
+                                </div>
+                                <span class="ps-review__date">{{ review.date }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="ps-review__text">{{ review.text }}</p>
+                </article>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+
+    <nav class="ps-bottom-nav">
+        <a href="#" class="ps-nav-item" onclick="return false;">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-1 10H4V8h16v8z"/></svg>
+            <span>Jogos</span>
+        </a>
+        <a href="#" class="ps-nav-item ps-nav-item--active" onclick="return false;">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg>
+            <span>Apps</span>
+        </a>
+        <a href="#" class="ps-nav-item" onclick="return false;">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>
+            <span>Livros</span>
+        </a>
+        <a href="#" class="ps-nav-item" onclick="return false;">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            <span>Crianças</span>
+        </a>
+    </nav>
+</body>
+</html>

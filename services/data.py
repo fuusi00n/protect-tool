@@ -121,17 +121,76 @@ def user_exists(username):
             return cur.fetchone() is not None
 
 
-def can_start_build(username):
+def _format_reset_countdown(seconds):
+    seconds = max(0, int(seconds or 0))
+    hours, rem = divmod(seconds, 3600)
+    mins = rem // 60
+    if hours > 0:
+        return f"{hours}h {mins}m"
+    if mins > 0:
+        return f"{mins}m"
+    return "menos de 1 minuto"
+
+
+def get_daily_build_quota(username):
     with get_connection() as conn:
-        with conn.cursor() as cur:
+        with conn.cursor(row_factory=dict_row) as cur:
             cur.execute(
-                "SELECT daily_builds, daily_build_limit FROM users WHERE username = %s",
+                """
+                SELECT daily_builds,
+                       daily_build_limit,
+                       date_trunc('day', NOW()) + INTERVAL '1 day' AS reset_at,
+                       EXTRACT(EPOCH FROM (
+                           date_trunc('day', NOW()) + INTERVAL '1 day' - NOW()
+                       ))::bigint AS reset_in_seconds
+                FROM users
+                WHERE username = %s
+                """,
                 (username,),
             )
             row = cur.fetchone()
-            if not row:
-                return False
-            return row[0] < row[1]
+
+    if not row:
+        return None
+
+    reset_in_seconds = max(0, int(row["reset_in_seconds"] or 0))
+    daily_build_limit = row["daily_build_limit"]
+    daily_builds = row["daily_builds"]
+
+    return {
+        "daily_builds": daily_builds,
+        "daily_build_limit": daily_build_limit,
+        "remaining_today": max(0, daily_build_limit - daily_builds),
+        "can_build": daily_builds < daily_build_limit,
+        "reset_at": _iso(row["reset_at"]),
+        "reset_in_seconds": reset_in_seconds,
+        "reset_in_label": _format_reset_countdown(reset_in_seconds),
+    }
+
+
+def build_limit_reached_payload(username):
+    quota = get_daily_build_quota(username) or {}
+    limit = quota.get("daily_build_limit", "-")
+    reset_label = quota.get("reset_in_label", "—")
+    return {
+        "error": "Limite diario de builds atingido",
+        "daily_build_limit": quota.get("daily_build_limit"),
+        "daily_builds": quota.get("daily_builds"),
+        "reset_at": quota.get("reset_at"),
+        "reset_in_label": reset_label,
+        "message": (
+            f"Limite diário de builds atingido. "
+            f"Limite diário: {limit}. "
+            f"Tempo para reset do limite: {reset_label}."
+        ),
+    }
+
+
+def can_start_build(username):
+    quota = get_daily_build_quota(username)
+    if not quota:
+        return False
+    return quota["can_build"]
 
 
 def add_history(username, action, details, portal="subscriber"):
@@ -334,6 +393,11 @@ def get_subscriber_metrics(username):
     account = get_subscriber_account(username)
     if not account:
         return {}
+
+    from services.public_app_service import get_user_download_stats
+
+    download_stats = get_user_download_stats(username)
+    quota = get_daily_build_quota(username) or {}
     return {
         "username": account["username"],
         "status": account["status"],
@@ -343,7 +407,15 @@ def get_subscriber_metrics(username):
         "total_builds": account["total_builds"],
         "successful_builds": account["successful_builds"],
         "failed_builds": account["failed_builds"],
-        "remaining_today": max(0, account["daily_build_limit"] - account["daily_builds"]),
+        "remaining_today": quota.get(
+            "remaining_today",
+            max(0, account["daily_build_limit"] - account["daily_builds"]),
+        ),
+        "reset_at": quota.get("reset_at"),
+        "reset_in_label": quota.get("reset_in_label"),
+        "reset_in_seconds": quota.get("reset_in_seconds"),
+        "total_public_downloads": download_stats["total_public_downloads"],
+        "public_apps_count": download_stats["public_apps_count"],
     }
 
 
@@ -384,6 +456,8 @@ def get_build_record(build_id):
 
 
 def _builds_to_json(rows, include_username=False):
+    from services.public_app_service import build_public_url
+
     builds = []
     for row in rows:
         output_file = row.get("output_file")
@@ -399,11 +473,17 @@ def _builds_to_json(rows, include_username=False):
             "timestamp": _iso(row["created_at"]),
             "date_display": _format_display(row["created_at"]),
             "can_download": can_download,
+            "download_count": int(row.get("download_count") or 0),
         }
         if include_username and "username" in row:
             item["username"] = row["username"]
         if output_file:
             item["output_file"] = output_file
+        slug = row.get("download_slug")
+        token = row.get("download_token")
+        if slug and token and row["status"] == "concluido":
+            item["public_url"] = build_public_url(slug, token)
+            item["download_slug"] = slug
         builds.append(item)
     return builds
 
@@ -413,10 +493,12 @@ def get_user_builds(username):
         with conn.cursor(row_factory=dict_row) as cur:
             cur.execute(
                 """
-                SELECT b.build_id, b.app_name, b.status, b.created_at, b.output_file
+                SELECT b.build_id, b.app_name, b.status, b.created_at, b.output_file,
+                       b.download_slug, b.download_token, b.download_count
                 FROM builds b
                 JOIN users u ON u.id = b.user_id
                 WHERE u.username = %s
+                  AND b.status != 'processando'
                 ORDER BY b.created_at DESC
                 LIMIT 500
                 """,
@@ -431,7 +513,8 @@ def get_all_builds_detailed():
             cur.execute(
                 """
                 SELECT u.username, b.build_id, b.app_name, b.status,
-                       b.created_at, b.output_file
+                       b.created_at, b.output_file, b.download_slug,
+                       b.download_token, b.download_count
                 FROM builds b
                 JOIN users u ON u.id = b.user_id
                 ORDER BY b.created_at DESC

@@ -78,6 +78,17 @@ function subscriberLogin() {
 function subscriberDashboard() {
     return {
         metrics: {},
+        get quotaPercent() {
+            const used = Number(this.metrics.daily_builds ?? 0);
+            const limit = Number(this.metrics.daily_build_limit ?? 0);
+            if (!limit) return 0;
+            return Math.min(100, Math.round((used / limit) * 100));
+        },
+        get quotaRemaining() {
+            const used = Number(this.metrics.daily_builds ?? 0);
+            const limit = Number(this.metrics.daily_build_limit ?? 0);
+            return Math.max(0, limit - used);
+        },
         async load() {
             const res = await api("/subscriber/api/dashboard/metrics");
             if (!res) return;
@@ -95,18 +106,45 @@ function subscriberMake() {
         appName: "",
         apk: null,
         icon: null,
+        iconPreview: "",
         iconError: "",
         busy: false,
         status: "",
         progress: 0,
-        downloadUrl: "",
         buildId: "",
         pollTimer: null,
-        onApk(e) { this.apk = e.target.files[0]; },
+        buildModalOpen: false,
+        buildPhase: "",
+        limitError: null,
+        submitStep: 0,
+        submitTimer: null,
+        submitSteps: ["Validando arquivos", "Enviando para análise", "Preparando pipeline"],
+        get buildTag() {
+            if (this.buildPhase === "submitting") return "UPLOAD";
+            if (this.buildPhase === "building") return "COMPILANDO";
+            if (this.buildPhase === "done") return "CONCLUÍDO";
+            if (this.buildPhase === "error") return "ERRO";
+            return "";
+        },
+        get buildTitle() {
+            if (this.buildPhase === "submitting") return "Enviando app para análise";
+            if (this.buildPhase === "building") return "Gerando APK";
+            if (this.buildPhase === "done") return "Build finalizado";
+            if (this.buildPhase === "error") return "Algo deu errado";
+            return "";
+        },
+        clearIconPreview() {
+            if (this.iconPreview) {
+                URL.revokeObjectURL(this.iconPreview);
+                this.iconPreview = "";
+            }
+        },
+        onApk(e) { this.apk = e.target.files[0] || null; },
         onIcon(e) {
             const input = e.target;
             const file = input.files[0];
             this.iconError = "";
+            this.clearIconPreview();
             if (!file) {
                 this.icon = null;
                 return;
@@ -119,9 +157,46 @@ function subscriberMake() {
                 return;
             }
             this.icon = file;
+            this.iconPreview = URL.createObjectURL(file);
+        },
+        startSubmitAnimation() {
+            this.submitStep = 0;
+            if (this.submitTimer) window.clearInterval(this.submitTimer);
+            this.submitTimer = window.setInterval(() => {
+                if (this.submitStep < this.submitSteps.length - 1) {
+                    this.submitStep += 1;
+                }
+            }, 1000);
+        },
+        stopSubmitAnimation() {
+            if (this.submitTimer) {
+                window.clearInterval(this.submitTimer);
+                this.submitTimer = null;
+            }
+        },
+        openBuildModal() {
+            this.buildModalOpen = true;
+            this.buildPhase = "submitting";
+            this.status = "";
+            this.progress = 0;
+            this.limitError = null;
+        },
+        closeBuildModal() {
+            this.buildModalOpen = false;
+            this.buildPhase = "";
+            this.limitError = null;
+            this.stopSubmitAnimation();
+            if (this.pollTimer) {
+                window.clearInterval(this.pollTimer);
+                this.pollTimer = null;
+            }
+            this.busy = false;
+        },
+        goToApps() {
+            window.location.href = "/subscriber/apps";
         },
         async submit() {
-            if (!this.apk) return;
+            if (!this.apk || this.busy) return;
             if (this.icon) {
                 const err = validateIconFile(this.icon);
                 if (err) {
@@ -130,19 +205,54 @@ function subscriberMake() {
                 }
             }
             this.busy = true;
-            this.downloadUrl = "";
-            this.status = "";
-            this.progress = 0;
+            this.openBuildModal();
+            this.startSubmitAnimation();
+
             const fd = new FormData();
             fd.append("file", this.apk);
             fd.append("app_name", this.appName || "App");
             if (this.icon) fd.append("icon", this.icon);
-            const res = await api("/subscriber/api/build", { method: "POST", body: fd });
-            if (!res) return;
+
+            let res;
+            try {
+                const submitPromise = api("/subscriber/api/build", { method: "POST", body: fd });
+                await Promise.all([submitPromise, new Promise((resolve) => window.setTimeout(resolve, 3000))]);
+                res = await submitPromise;
+            } catch (_) {
+                this.stopSubmitAnimation();
+                this.buildPhase = "error";
+                this.status = "Falha ao enviar os arquivos. Tente novamente.";
+                this.busy = false;
+                return;
+            }
+            this.stopSubmitAnimation();
+            if (!res) {
+                this.buildPhase = "error";
+                this.status = "Sessão expirada ou conexão interrompida.";
+                this.busy = false;
+                return;
+            }
             const data = await res.json();
-            if (data.error) { this.status = data.error; this.busy = false; return; }
+            if (data.error) {
+                this.buildPhase = "error";
+                if (data.daily_build_limit != null && data.reset_in_label) {
+                    this.limitError = {
+                        limit: data.daily_build_limit,
+                        resetIn: data.reset_in_label,
+                    };
+                    this.status = "";
+                } else {
+                    this.limitError = null;
+                    this.status = data.message || data.error;
+                }
+                this.busy = false;
+                return;
+            }
+
             this.buildId = data.build_id;
-            this.pollTimer = setInterval(() => this.poll(), 2000);
+            this.buildPhase = "building";
+            this.pollTimer = window.setInterval(() => this.poll(), 2000);
+            this.poll();
         },
         async poll() {
             const res = await api(`/subscriber/api/build/${this.buildId}/status`);
@@ -150,9 +260,18 @@ function subscriberMake() {
             const data = await res.json();
             this.status = data.status;
             this.progress = data.progress || 0;
+
+            if (/erro/i.test(data.status || "")) {
+                window.clearInterval(this.pollTimer);
+                this.pollTimer = null;
+                this.buildPhase = "error";
+                this.busy = false;
+                return;
+            }
             if (data.progress === 100) {
-                clearInterval(this.pollTimer);
-                this.downloadUrl = `/subscriber/api/build/${this.buildId}/download`;
+                window.clearInterval(this.pollTimer);
+                this.pollTimer = null;
+                this.buildPhase = "done";
                 this.busy = false;
             }
         },
@@ -166,10 +285,63 @@ function subscriberMake() {
 function subscriberApps() {
     return {
         apps: [],
+        copiedId: "",
+        busyId: "",
+        page: 1,
+        pageSize: 10,
+        get totalPages() {
+            return Math.max(1, Math.ceil(this.apps.length / this.pageSize));
+        },
+        get paginatedApps() {
+            const start = (this.page - 1) * this.pageSize;
+            return this.apps.slice(start, start + this.pageSize);
+        },
+        get pageFrom() {
+            if (!this.apps.length) return 0;
+            return (this.page - 1) * this.pageSize + 1;
+        },
+        get pageTo() {
+            return Math.min(this.page * this.pageSize, this.apps.length);
+        },
         async load() {
             const res = await api("/subscriber/api/apps");
             if (!res) return;
             this.apps = await res.json();
+            if (this.page > this.totalPages) this.page = this.totalPages;
+        },
+        prevPage() {
+            if (this.page > 1) this.page -= 1;
+        },
+        nextPage() {
+            if (this.page < this.totalPages) this.page += 1;
+        },
+        async copyLink(item) {
+            if (!item.public_url) return;
+            const url = item.public_url.startsWith("http")
+                ? item.public_url
+                : `${window.location.origin}${item.public_url}`;
+            try {
+                await navigator.clipboard.writeText(url);
+                this.copiedId = item.build_id;
+                window.setTimeout(() => {
+                    if (this.copiedId === item.build_id) this.copiedId = "";
+                }, 2000);
+            } catch (_) {}
+        },
+        async regenerateToken(item) {
+            if (!item.public_url || this.busyId) return;
+            this.busyId = item.build_id;
+            const res = await api(`/subscriber/api/build/${item.build_id}/regenerate-token`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+            });
+            this.busyId = "";
+            if (!res) return;
+            const data = await res.json();
+            if (data.error) return;
+            item.public_url = data.public_url;
+            this.copiedId = item.build_id;
+            await this.copyLink(item);
         },
         async logout() {
             await fetch("/subscriber/logout", { method: "POST" });

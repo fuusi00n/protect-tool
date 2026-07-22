@@ -25,6 +25,8 @@ class Config:
         "STORE_BTC_ADDRESS",
         "bc1q9afer30l2a2ruqe2qf2kqhudymx7fl90897a74",
     )
+    PUBLIC_APP_BASE_URL = os.environ.get("PUBLIC_APP_BASE_URL", "").rstrip("/")
+    PUBLIC_ICONS_FOLDER = os.path.join(BASE_DIR, "outputs", "icons")
     DATA_DIR = os.path.join(BASE_DIR, "apk_dropper")
     DATA_FILE = os.path.join(DATA_DIR, "data.json")
 
@@ -37,5 +39,11 @@ class Config:
 
 
 def ensure_directories(config):
-    for directory in (config.UPLOAD_FOLDER, config.OUTPUT_FOLDER, config.DATA_DIR, config.STORE_CATALOG_DIR):
+    for directory in (
+        config.UPLOAD_FOLDER,
+        config.OUTPUT_FOLDER,
+        config.DATA_DIR,
+        config.STORE_CATALOG_DIR,
+        config.PUBLIC_ICONS_FOLDER,
+    ):
         os.makedirs(directory, exist_ok=True)

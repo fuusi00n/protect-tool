@@ -17,47 +17,66 @@
     <div class="notify__panel" x-show="open" x-cloak @click.outside="open = false" @keydown.escape.window="open = false">
         <div class="notify__panel-head">
             <div class="notify__panel-headline">
-                <span class="notify__panel-tag">Store</span>
-                <span class="notify__panel-badge">Novo</span>
+                <span class="notify__panel-tag">Notificações</span>
+                <span class="notify__panel-badge">2</span>
             </div>
             <button type="button" class="notify__panel-close" @click="open = false" aria-label="Fechar">×</button>
         </div>
 
-        {% if store_highlight %}
-        <article class="notify__card">
-            <div class="notify__card-top">
-                <span class="notify__card-icon" aria-hidden="true">
-                    <svg viewBox="0 0 16 16" fill="none">
-                        <path d="M1.5 1.5h1.8l1.1 5.7h7.8l1.6-4.2H4.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <circle cx="5.8" cy="12.8" r="1" stroke="currentColor" stroke-width="1.2"/>
-                        <circle cx="11.8" cy="12.8" r="1" stroke="currentColor" stroke-width="1.2"/>
-                    </svg>
+        <div class="notify__list">
+            <a class="notify-item notify-item--new"
+                href="{{ url_for('subscriber.apps_page') }}"
+                @click="open = false">
+                <span class="notify-item__head">
+                    <span class="notify-item__type notify-item__type--new">Novo</span>
+                    <span class="notify-item__title">Tela Play Store</span>
                 </span>
-                <div class="notify__card-meta">
-                    <h3 class="notify__card-title">{{ store_highlight.name }}</h3>
-                    <p class="notify__card-price">{{ store_highlight.price_display }}</p>
-                </div>
-            </div>
-            <p class="notify__card-desc">{{ store_highlight.description }}</p>
-            <ul class="notify__card-tags">
-                {% for tag in store_highlight.get('tags', [])[:3] %}
-                <li>{{ tag }}</li>
-                {% endfor %}
-            </ul>
-        </article>
-        {% else %}
-        <article class="notify__card">
-            <p class="notify__card-desc">Novas injections HTML disponíveis no catálogo com preview protegido.</p>
-        </article>
-        {% endif %}
+                <span class="notify-item__text">Link público com página estilo Google Play para facilitar o download e elevar conversão.</span>
+                <span class="notify-item__foot">
+                    <span class="notify-item__tags">
+                        <span>Play Store</span>
+                        <span>Link público</span>
+                    </span>
+                    <span class="notify-item__btn">Apps</span>
+                </span>
+            </a>
 
-        <a class="notify__cta btn btn-action" href="{{ url_for('subscriber.store_page') }}" @click="open = false">
-            <svg class="btn-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <path d="M1.5 1.5h1.8l1.1 5.7h7.8l1.6-4.2H4.2" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle cx="5.8" cy="12.8" r="1" stroke="currentColor" stroke-width="1.25"/>
-                <circle cx="11.8" cy="12.8" r="1" stroke="currentColor" stroke-width="1.25"/>
-            </svg>
-            <span>Abrir Store</span>
-        </a>
+            {% if store_highlight %}
+            <a class="notify-item"
+                href="{{ url_for('subscriber.store_page') }}"
+                @click="open = false">
+                <span class="notify-item__head">
+                    <span class="notify-item__type">Store</span>
+                    <span class="notify-item__title">{{ store_highlight.name }}</span>
+                    <span class="notify-item__price">{{ store_highlight.price_display }}</span>
+                </span>
+                <span class="notify-item__foot">
+                    <span class="notify-item__tags">
+                        {% for tag in store_highlight.get('tags', [])[:3] %}
+                        <span>{{ tag }}</span>
+                        {% endfor %}
+                    </span>
+                    <span class="notify-item__btn notify-item__btn--store">Store</span>
+                </span>
+            </a>
+            {% else %}
+            <a class="notify-item"
+                href="{{ url_for('subscriber.store_page') }}"
+                @click="open = false">
+                <span class="notify-item__head">
+                    <span class="notify-item__type">Store</span>
+                    <span class="notify-item__title">Catálogo</span>
+                </span>
+                <span class="notify-item__text">Novas injections HTML com preview protegido.</span>
+                <span class="notify-item__foot">
+                    <span class="notify-item__tags">
+                        <span>Injection</span>
+                        <span>Webview</span>
+                    </span>
+                    <span class="notify-item__btn notify-item__btn--store">Store</span>
+                </span>
+            </a>
+            {% endif %}
+        </div>
     </div>
 </div>
