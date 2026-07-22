@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Pagamento seguro com Bitcoin">
+  <title>Pagamento com Bitcoin</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/payment.css') }}">
+</head>
+<body>
+  <main class="page-shell">
+    <section class="hero">
+      <p class="eyebrow">PAGAMENTO EM BITCOIN</p>
+      <h1>Simples, direto e seguro.</h1>
+      <p class="hero-copy">Conclua seu pagamento pelo checkout protegido do nosso BTCPay Server.</p>
+      <div class="security-note"><span></span> Pagamento direto pela rede Bitcoin</div>
+    </section>
+
+    <section class="payment-card" aria-labelledby="payment-title">
+      <div class="bitcoin-mark">₿</div>
+      <p class="card-label">VALOR DO PAGAMENTO</p>
+      {% if settings_error %}
+        <h2 id="payment-title">Indisponível</h2>
+        <p class="error-box">A configuração do pagamento ainda não foi concluída.</p>
+      {% else %}
+        <h2 id="payment-title">{{ currency }} {{ "%.2f"|format(amount) }}</h2>
+        <p class="card-copy">Ao continuar, você será direcionado ao checkout para pagar com Bitcoin.</p>
+        <button id="pay-button" type="button">Gerar pagamento <span>↗</span></button>
+        <p id="payment-feedback" class="feedback" role="status"></p>
+      {% endif %}
+      <footer>Processado com <strong>BTCPay Server</strong></footer>
+    </section>
+  </main>
+  <script src="{{ url_for('static', filename='js/payment.js') }}"></script>
+</body>
+</html>

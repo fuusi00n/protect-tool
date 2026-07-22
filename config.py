@@ -18,6 +18,11 @@ class Config:
 
     TEMPLATES_AUTO_RELOAD = True
 
+    BTCPAY_URL = os.environ.get("BTCPAY_URL", "").rstrip("/")
+    BTCPAY_STORE_ID = os.environ.get("BTCPAY_STORE_ID", "")
+    BTCPAY_API_KEY = os.environ.get("BTCPAY_API_KEY", "")
+    BTCPAY_WEBHOOK_SECRET = os.environ.get("BTCPAY_WEBHOOK_SECRET", "")
+
     UPLOAD_FOLDER = os.path.join(BASE_DIR, "uploads")
     OUTPUT_FOLDER = os.path.join(BASE_DIR, "outputs")
     STORE_CATALOG_DIR = os.path.join(BASE_DIR, "store_catalog")
