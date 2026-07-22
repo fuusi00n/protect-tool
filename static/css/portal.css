@@ -322,8 +322,8 @@ body:has(> .auth-card) > .auth-card {
     display: grid;
     grid-template-columns: 240px minmax(0, 1fr);
     min-height: 100vh;
-    max-width: 1280px;
-    margin: 0 auto;
+    max-width: none;
+    margin: 0;
     width: 100%;
 }
 
@@ -3417,11 +3417,6 @@ tbody tr:last-child td {
     }
 }
 
-@media (min-width: 1440px) {
-    .layout {
-        max-width: 1400px;
-    }
-}
 
 @media (max-width: 1024px) {
     .main {

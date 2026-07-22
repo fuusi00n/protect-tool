@@ -1,20 +1,26 @@
-const button = document.querySelector('#pay-button');
+const buttons = [...document.querySelectorAll('[data-plan-code]')];
 const feedback = document.querySelector('#payment-feedback');
 
-if (button && feedback) {
-  button.addEventListener('click', async () => {
-    button.disabled = true;
-    feedback.className = 'feedback';
-    feedback.textContent = 'Criando cobrança segura…';
+if (buttons.length && feedback) {
+  buttons.forEach((button) => button.addEventListener('click', async () => {
+    buttons.forEach((item) => { item.disabled = true; });
+    feedback.className = 'payment-feedback';
+    feedback.textContent = 'Criando cobranca segura...';
     try {
-      const response = await fetch('/api/payments', {method: 'POST'});
+      const response = await fetch('/api/payments', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+        body: JSON.stringify({plan_code: button.dataset.planCode}),
+      });
       const result = await response.json();
-      if (!response.ok) throw new Error(result.error || 'Não foi possível gerar o pagamento.');
+      if (!response.ok) {
+        throw new Error(result.error || 'Nao foi possivel gerar o pagamento.');
+      }
       window.location.assign(result.checkout_url);
     } catch (error) {
-      feedback.className = 'feedback is-error';
+      feedback.className = 'payment-feedback is-error';
       feedback.textContent = error.message;
-      button.disabled = false;
+      buttons.forEach((item) => { item.disabled = false; });
     }
-  });
+  }));
 }

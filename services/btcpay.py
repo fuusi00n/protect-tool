@@ -41,15 +41,17 @@ class BTCPayClient:
                 "Configuração BTCPay incompleta: " + ", ".join(missing)
             )
 
-    def create_invoice(self, amount, currency):
+    def create_invoice(self, amount, currency, metadata=None):
         self.validate_api_configuration()
+        invoice_metadata = {"source": "landing-page"}
+        invoice_metadata.update(metadata or {})
         return self._request(
             f"/api/v1/stores/{self.store_id}/invoices",
             method="POST",
             payload={
                 "amount": str(amount),
                 "currency": currency,
-                "metadata": {"source": "landing-page"},
+                "metadata": invoice_metadata,
                 "checkout": {"redirectAutomatically": False},
             },
         )

@@ -1,36 +1,902 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Pagamento seguro com Bitcoin">
-  <title>Pagamento com Bitcoin</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/payment.css') }}">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Katana — Todos os seus links, em um só lugar.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   DESIGN SYSTEM — Katana (extraído de referencia/portal.css)
+   ============================================================ */
+:root{
+  /* superfícies */
+  --bg:#0b0d11;
+  --panel:#12151c;
+  --line:#2a3140;
+  --surface:rgba(255,255,255,.025);
+  --surface-hover:rgba(255,255,255,.04);
+
+  /* texto */
+  --text:#e5e7eb;
+  --text-muted:#94a3b8;
+  --text-dim:#64748b;
+
+  /* acentos */
+  --accent:#38bdf8;
+  --accent-soft:#7dd3fc;
+  --accent-2:#818cf8;
+  --success:#34d399;
+
+  /* aliases usados pelos SVGs herdados */
+  --theme:#38bdf8;
+  --theme-glow:#7dd3fc;
+  --theme-dark:#0369a1;
+  --theme-rgb:56 189 248;
+  --color-theme:var(--theme);
+  --color-theme-glow:var(--theme-glow);
+  --color-theme-dark:var(--theme-dark);
+
+  /* forma */
+  --radius:12px;
+  --radius-sm:8px;
+  --radius-xs:6px;
+
+  --font:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --font-mono:ui-monospace,"SF Mono","Cascadia Code",Menlo,monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;color-scheme:dark}
+/* suave so quando o usuario navega por ancora; na restauracao do F5 nada tem foco */
+@media (prefers-reduced-motion:no-preference){html:focus-within{scroll-behavior:smooth}}
+[id]{scroll-margin-top:6rem}
+body{
+  font-family:var(--font);
+  background:var(--bg);color:var(--text);line-height:1.55;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+}
+img,svg{display:block;max-width:100%}
+a{text-decoration:none;color:inherit}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* rótulo monoespaçado — a "voz" do painel */
+.mono-tag{
+  font-family:var(--font-mono);font-size:.625rem;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim);
+}
+
+/* clip, nao hidden: hidden criaria container de rolagem e a navegacao
+   por ancora rolaria o main em vez do documento */
+main{position:relative;overflow:clip}
+
+/* ===================== FUNDOS GLOBAIS (body::before/::after do painel) ===================== */
+.bg-grid-top{
+  pointer-events:none;position:fixed;inset:0;z-index:-1;
+  background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:48px 48px;
+  -webkit-mask-image:radial-gradient(circle at center,#000 30%,transparent 88%);
+  mask-image:radial-gradient(circle at center,#000 30%,transparent 88%);
+}
+.bg-tint{
+  pointer-events:none;position:fixed;inset:0;z-index:-1;
+  background:
+    radial-gradient(circle at 15% 10%,rgba(56,189,248,.12),transparent 34%),
+    radial-gradient(circle at 85% 18%,rgba(129,140,248,.14),transparent 30%),
+    radial-gradient(circle at 50% 100%,rgba(52,211,153,.06),transparent 40%);
+}
+.orb{pointer-events:none;position:absolute;border-radius:9999px;filter:blur(140px)}
+.orb-1{left:10%;top:140vh;width:600px;height:600px;background:rgba(56,189,248,.05)}
+.orb-2{right:8%;top:220vh;width:500px;height:500px;background:rgba(129,140,248,.05)}
+.orb-3{left:20%;top:320vh;width:700px;height:500px;background:rgba(56,189,248,.035);filter:blur(160px)}
+
+/* ============================ NAVBAR ============================ */
+.navbar{
+  position:fixed;left:1rem;right:1rem;top:.75rem;z-index:99;
+  transform:translateZ(0);
+}
+.navbar .bar{
+  position:relative;margin:0 auto;width:100%;max-width:1200px;
+  display:flex;align-items:center;justify-content:space-between;gap:.75rem;
+  padding:.6rem 1rem;border-radius:var(--radius);
+  border:1px solid var(--line);background:var(--panel);
+  box-shadow:0 0 0 1px rgba(255,255,255,.02) inset,0 10px 30px -12px rgba(0,0,0,.7);
+}
+
+/* --- marca: pet Katana --- */
+.katana-brand{display:inline-flex;align-items:center;gap:.75rem}
+.katana-face{
+  width:2.5rem;height:2.5rem;padding-bottom:.55rem;
+  display:flex;flex-shrink:0;align-items:flex-end;justify-content:center;
+  border:1px solid #d1d5db;border-radius:50%;background:#fff;
+  transition:transform .2s;
+}
+.katana-brand:hover .katana-face{transform:scale(1.05)}
+.katana-eyes{display:flex;gap:.5rem;animation:katana-look 6s ease-in-out infinite}
+.katana-eye{
+  width:.42rem;height:.88rem;border-radius:999px;background:#111;
+  transform-origin:center;animation:katana-blink 6s ease-in-out infinite;
+}
+.katana-brand-title{
+  color:var(--text);font-size:1.125rem;font-weight:600;
+  letter-spacing:.16em;text-transform:uppercase;
+}
+
+/* --- links --- */
+.nav-links{
+  display:none;align-items:center;list-style:none;
+  position:absolute;left:50%;transform:translateX(-50%);gap:.35rem;
+}
+.nav-links a{
+  display:block;padding:.5rem .75rem;border:1px solid transparent;border-radius:var(--radius-xs);
+  font-family:var(--font-mono);font-size:.75rem;font-weight:500;letter-spacing:.04em;
+  color:var(--text-muted);white-space:nowrap;cursor:pointer;
+  transition:background .15s,color .15s,border-color .15s;
+}
+.nav-links a:hover{color:var(--text);background:rgba(255,255,255,.03);border-color:var(--line)}
+
+.nav-actions{display:none;align-items:center;gap:.4rem;margin-left:auto}
+.nav-register{
+  display:inline-flex;align-items:center;gap:.4rem;padding:.55rem .9rem;
+  border-radius:var(--radius-xs);background:#0a1018;
+  border:1px solid rgba(56,189,248,.42);color:var(--accent-soft);
+  box-shadow:inset 0 0 0 1px rgba(56,189,248,.06);
+  font-family:var(--font-mono);font-size:.75rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;
+  cursor:pointer;transition:background .15s,border-color .15s,color .15s;
+}
+.nav-register:hover{background:rgba(56,189,248,.08);border-color:rgba(56,189,248,.6);color:#bae6fd}
+.nav-lang{
+  display:inline-flex;align-items:center;gap:.5rem;height:2.25rem;padding:0 .7rem;
+  border-radius:var(--radius-xs);background:rgba(255,255,255,.025);border:1px solid var(--line);
+  font-family:var(--font-mono);font-size:.6875rem;color:var(--text-muted);cursor:pointer;
+  transition:background .15s,color .15s;
+}
+.nav-lang:hover{background:rgba(255,255,255,.045);color:var(--text)}
+.nav-lang .flag{flex-shrink:0;border-radius:2px;overflow:hidden}
+.nav-lang .label{font-weight:600;letter-spacing:.06em}
+.nav-lang .caret{width:.75rem;height:.75rem;opacity:.6;transform:rotate(180deg)}
+
+.nav-mobile{display:flex;align-items:center;gap:.4rem;margin-left:auto}
+.nav-lang-sm{
+  display:inline-flex;align-items:center;gap:.25rem;height:2.15rem;padding:0 .5rem;
+  border-radius:var(--radius-xs);background:rgba(255,255,255,.025);border:1px solid var(--line);
+  color:var(--text-muted);cursor:pointer;transition:background .15s;
+}
+.nav-lang-sm:hover{background:rgba(255,255,255,.045)}
+.nav-lang-sm .caret{width:.75rem;height:.75rem;opacity:.6;transform:rotate(180deg)}
+.nav-burger{
+  display:inline-flex;align-items:center;justify-content:center;width:2.15rem;height:2.15rem;
+  border-radius:var(--radius-xs);background:transparent;border:1px solid transparent;
+  color:var(--text-muted);cursor:pointer;transition:background .15s,border-color .15s,color .15s;
+}
+.nav-burger:hover{background:rgba(255,255,255,.03);border-color:var(--line);color:var(--text)}
+.nav-burger svg{width:1.1rem;height:1.1rem}
+
+/* menu mobile: checkbox + label, sem JS */
+.nav-toggle{position:absolute;width:0;height:0;opacity:0;pointer-events:none}
+.nav-toggle:focus-visible ~ .bar .nav-burger{outline:2px solid var(--accent);outline-offset:2px}
+.nav-drawer{
+  display:none;margin:.5rem auto 0;width:100%;max-width:1200px;padding:.5rem;
+  border-radius:var(--radius);border:1px solid var(--line);background:var(--panel);
+  box-shadow:0 0 0 1px rgba(255,255,255,.02) inset,0 10px 30px -12px rgba(0,0,0,.7);
+}
+.nav-toggle:checked ~ .nav-drawer{display:grid;gap:.15rem}
+.nav-drawer a{
+  padding:.7rem .85rem;border:1px solid transparent;border-radius:var(--radius-xs);
+  font-family:var(--font-mono);font-size:.75rem;font-weight:500;letter-spacing:.04em;
+  color:var(--text-muted);transition:background .15s,color .15s,border-color .15s;
+}
+.nav-drawer a:hover{color:var(--text);background:rgba(255,255,255,.03);border-color:var(--line)}
+.nav-drawer__cta{
+  margin-top:.3rem;text-align:center;background:#0a1018!important;
+  border-color:rgba(56,189,248,.42)!important;color:var(--accent-soft)!important;
+  text-transform:uppercase;letter-spacing:.08em;
+}
+
+/* ============================ ANIMAÇÕES ============================ */
+@keyframes marquee-left{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes marquee-right{0%{transform:translateX(-50%)}100%{transform:translateX(0)}}
+@keyframes katana-blink{0%,36%,40%,74%,78%,100%{transform:scaleY(1)}38%,76%{transform:scaleY(.05)}}
+@keyframes katana-look{
+  0%,14%,52%,100%{transform:translate(0,0)}
+  20%,30%{transform:translate(-5px,1px)}
+  34%,44%{transform:translate(5px,1px)}
+  58%,68%{transform:translate(-4px,-2px)}
+  72%,82%{transform:translate(4px,-1px)}
+}
+
+/* ============================ HERO ============================ */
+.hero{
+  position:relative;display:flex;flex-direction:column;align-items:center;
+  padding:11rem 1rem 4rem;overflow:clip;isolation:isolate;
+}
+.hero-bg{pointer-events:none;position:absolute;inset:0;overflow:hidden}
+.hero-bg .g1{position:absolute;top:55%;left:20%;height:500px;width:500px;border-radius:9999px;background:rgba(56,189,248,.05);filter:blur(120px)}
+.hero-bg .g2{position:absolute;top:40%;right:15%;height:450px;width:450px;border-radius:9999px;background:rgba(129,140,248,.05);filter:blur(120px)}
+.hero-bg .g3{position:absolute;left:0;right:0;top:0;height:60vh;opacity:.5;
+  background:radial-gradient(ellipse 60% 40% at 50% 0%,rgba(56,189,248,.07),transparent 70%)}
+.hero-bg .snakes{position:absolute;inset:0;height:100%;width:100%;opacity:.7}
+.hero-bg .fade{position:absolute;left:0;right:0;bottom:0;height:15rem;
+  background:linear-gradient(to bottom,transparent 0%,rgba(11,13,17,.6) 70%,rgba(11,13,17,.9) 100%)}
+
+.hero-inner{position:relative;flex:1;width:100%;max-width:80rem;margin:0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.hero-copy{display:flex;flex-direction:column;align-items:center;text-align:center}
+
+/* pill = .dash-card__pill do painel */
+.pill{
+  margin-bottom:2rem;display:inline-flex;align-items:center;gap:.5rem;
+  padding:.3rem .7rem;border-radius:999px;border:none;
+  background:rgba(56,189,248,.1);color:var(--accent-soft);
+}
+.pill span{font-family:var(--font-mono);font-size:.5625rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+.pill svg{width:.75rem;height:.75rem}
+
+h1.hero-title{
+  font-size:3rem;font-weight:700;letter-spacing:-.03em;line-height:1.06;color:var(--text);max-width:15ch;
+}
+.text-gradient-primary{
+  background:linear-gradient(135deg,var(--accent-soft),var(--accent),var(--accent-2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.brk{display:none}
+.hero-sub{margin-top:1.35rem;max-width:34rem;font-size:.9375rem;color:var(--text-muted);line-height:1.65}
+
+.hero-cta{margin-top:2.25rem}
+/* CTA primário = .btn-enter do painel */
+.btn-primary{
+  position:relative;display:inline-flex;align-items:center;justify-content:center;gap:.55rem;
+  padding:.85rem 1.35rem;border-radius:var(--radius-xs);
+  background:#0a1018;border:1px solid rgba(56,189,248,.42);color:var(--accent-soft);
+  box-shadow:inset 0 0 0 1px rgba(56,189,248,.06);
+  font-family:var(--font-mono);font-size:.75rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
+  overflow:hidden;cursor:pointer;transition:background .15s,border-color .15s,color .15s;
+}
+.btn-primary:hover{background:rgba(56,189,248,.08);border-color:rgba(56,189,248,.65);color:#bae6fd}
+.btn-primary .shine{
+  position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(56,189,248,.14),transparent);
+  transform:translateX(-100%);transition:transform .7s;
+}
+.btn-primary:hover .shine{transform:translateX(100%)}
+.btn-primary span,.btn-primary svg{position:relative}
+.btn-primary svg{width:.875rem;height:.875rem;transition:transform .2s}
+.btn-primary:hover svg{transform:translateX(2px)}
+
+/* ---------------------- MARQUEE DE PERFIS ---------------------- */
+/* fora do .hero-inner: ancora no rodape do hero, o texto centraliza no resto */
+.marquee-wrap{position:relative;margin-top:4rem;width:100%}
+.profiles{position:relative;margin:0 auto;width:100%;max-width:80rem;padding:.25rem 0}
+.rows{position:relative;display:flex;width:100%;flex-direction:column;gap:.75rem}
+.marquee-fade{
+  overflow:hidden;padding:.125rem 0;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 10%,#000 90%,transparent 100%);
+  mask-image:linear-gradient(90deg,transparent 0%,#000 10%,#000 90%,transparent 100%);
+}
+.track{display:flex;width:max-content;gap:.75rem;will-change:transform}
+.track.left{animation:marquee-left var(--marquee-duration,70s) linear infinite}
+.track.right{animation:marquee-right var(--marquee-duration,70s) linear infinite}
+.marquee-fade:hover .track{animation-play-state:paused}
+
+/* card de banco = .dash-card */
+.pcard{
+  display:flex;width:11.5rem;flex-shrink:0;align-items:center;gap:.7rem;
+  border-radius:var(--radius);border:none;background:var(--surface);
+  padding:.6rem .75rem;transition:background .2s;
+}
+.pcard:hover{background:var(--surface-hover)}
+/* tile claro: a maioria das marcas tem logo escura */
+.pav{
+  display:grid;place-items:center;height:2.35rem;width:2.35rem;flex-shrink:0;
+  overflow:hidden;border-radius:var(--radius-sm);background:#fff;padding:.3rem;
+}
+.pav img{height:100%;width:100%;object-fit:contain}
+/* excecao: marcas com logo branca */
+.pcard--dark .pav{background:#12151c;box-shadow:inset 0 0 0 1px var(--line);padding:.35rem}
+.pname{
+  min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  font-size:.8125rem;font-weight:600;color:var(--text);
+}
+
+/* ============================ RECURSOS ============================ */
+.features{position:relative;overflow:clip;padding:6rem 1rem 3.85rem}
+.features .dots{display:none}
+.features .container{position:relative;max-width:80rem;margin:0 auto}
+.features .grid{display:grid;grid-template-columns:1fr;gap:3rem;align-items:start}
+
+.eyebrow,.eyebrow-c{
+  display:inline-block;font-family:var(--font-mono);font-size:.6875rem;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim);
+}
+h2.features-title,h2.connections-title{
+  margin-top:1rem;font-size:1.875rem;font-weight:600;color:var(--text);
+  letter-spacing:.02em;line-height:1.25;text-transform:uppercase;
+}
+.title-glow{color:var(--accent-soft)}
+.features-sub,.connections-sub{margin-top:1rem;color:var(--text-muted);font-size:.9375rem;line-height:1.7}
+.link-arrow{
+  display:inline-flex;align-items:center;gap:.45rem;margin-top:1.75rem;
+  font-family:var(--font-mono);font-size:.6875rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--accent-soft);transition:gap .2s,color .2s;
+}
+.link-arrow:hover{gap:.7rem;color:#bae6fd}
+.link-arrow svg{width:.875rem;height:.875rem}
+
+.cards{display:grid;grid-template-columns:1fr;gap:.75rem;position:relative}
+/* card de recurso = .dash-card */
+.card{
+  position:relative;padding:1.25rem 1.35rem;background:var(--surface);
+  border:none;border-radius:var(--radius);overflow:hidden;transition:background .2s;
+}
+.card:hover{background:var(--surface-hover)}
+.card .wash{display:none}
+.card .topline{display:none}
+/* = .dash-card__glow */
+.card .corner{
+  position:absolute;top:-3rem;right:-2rem;width:10rem;height:10rem;border-radius:50%;
+  background:radial-gradient(circle,rgba(56,189,248,.06) 0%,transparent 70%);pointer-events:none;
+}
+.card:nth-child(even) .corner{background:radial-gradient(circle,rgba(129,140,248,.06) 0%,transparent 70%)}
+.card .body{position:relative}
+/* = .dash-stat__icon */
+.card .icon{
+  display:grid;place-items:center;width:2.35rem;height:2.35rem;
+  border-radius:var(--radius-sm);border:none;background:rgba(255,255,255,.04);
+  color:var(--accent-soft);margin-bottom:1.1rem;
+}
+.card .icon svg{width:1rem;height:1rem}
+.card h3{font-size:.875rem;font-weight:600;color:var(--text);margin-bottom:.45rem}
+.card p{font-size:.8125rem;color:var(--text-dim);line-height:1.65}
+
+/* ============================ PLANOS ============================ */
+.pricing{position:relative;overflow:clip;padding:3.85rem 1rem 3.85rem}
+.pricing .halo-1{pointer-events:none;position:absolute;top:38%;left:50%;height:420px;width:720px;
+  transform:translate(-50%,-50%);border-radius:9999px;background:rgba(56,189,248,.05);filter:blur(150px)}
+.pricing .halo-2{pointer-events:none;position:absolute;top:62%;right:8%;height:280px;width:320px;
+  border-radius:9999px;background:rgba(129,140,248,.05);filter:blur(120px)}
+.pricing .container{position:relative;margin:0 auto;max-width:72rem}
+.pricing .head{margin:0 auto;max-width:48rem;text-align:center}
+.connections-note{
+  margin-top:2rem;text-align:center;font-family:var(--font-mono);
+  font-size:.6875rem;letter-spacing:.04em;color:var(--text-dim);
+}
+
+/* stretch: cards com a mesma altura, para o margin-top:auto alinhar os CTAs na base */
+.plans{display:grid;grid-template-columns:1fr;gap:1rem;margin-top:3rem;align-items:stretch}
+
+/* card = .dash-card */
+.plan{
+  position:relative;border-radius:var(--radius);background:var(--surface);
+  border:1px solid transparent;transition:background .2s;
+}
+.plan:hover{background:var(--surface-hover)}
+.plan__body{position:relative;z-index:1;display:flex;flex-direction:column;height:100%;padding:1.75rem 1.5rem}
+
+/* --- destaque: contorno + brilho no fundo --- */
+.plan--featured{
+  background:rgba(56,189,248,.05);
+  border-color:rgba(56,189,248,.42);
+  box-shadow:inset 0 0 0 1px rgba(56,189,248,.06);
+}
+.plan--featured:hover{background:rgba(56,189,248,.08)}
+.plan__glow{
+  pointer-events:none;position:absolute;left:50%;top:50%;
+  width:118%;height:118%;transform:translate(-50%,-50%);
+  border-radius:50%;background:rgba(56,189,248,.16);filter:blur(72px);
+}
+
+.plan__badge{
+  position:absolute;top:-.7rem;left:50%;transform:translateX(-50%);white-space:nowrap;
+  padding:.2rem .55rem;border-radius:999px;background:rgba(56,189,248,.14);
+  border:1px solid rgba(56,189,248,.32);color:var(--accent-soft);
+  font-family:var(--font-mono);font-size:.5625rem;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;
+}
+/* = .dash-card__head */
+.plan__head{display:flex;align-items:center;justify-content:space-between;gap:.75rem}
+/* = .dash-card__pill */
+.plan__duration{
+  flex-shrink:0;padding:.2rem .55rem;border-radius:999px;background:rgba(255,255,255,.05);
+  font-family:var(--font-mono);font-size:.5625rem;font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);white-space:nowrap;
+}
+.plan--featured .plan__duration{background:rgba(56,189,248,.12);color:var(--accent-soft)}
+.plan__tag{
+  font-family:var(--font-mono);font-size:.6875rem;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim);
+}
+.plan__tag--accent{color:var(--accent-soft)}
+.plan__desc{margin-top:.5rem;font-size:.8125rem;color:var(--text-dim);line-height:1.6;min-height:2.6em}
+
+/* preço = .dash-stat__value */
+.plan__price{
+  margin-top:1.25rem;display:flex;align-items:baseline;gap:.15rem;
+  font-size:2.5rem;font-weight:700;line-height:1;color:var(--text);
+  font-variant-numeric:tabular-nums;
+}
+.plan__currency{font-size:1.125rem;font-weight:600;color:var(--text-muted);margin-right:.1rem}
+.plan__period{
+  font-family:var(--font-mono);font-size:.6875rem;font-weight:500;
+  letter-spacing:.06em;color:var(--text-dim);
+}
+
+.plan__features{list-style:none;display:grid;gap:.7rem;margin:1.5rem 0 1.75rem}
+.plan__features li{display:flex;align-items:flex-start;gap:.6rem;font-size:.8125rem;color:var(--text-muted);line-height:1.5}
+/* = .dash-stat__icon--ok */
+.plan__check{
+  display:grid;place-items:center;flex-shrink:0;width:1.25rem;height:1.25rem;margin-top:.05rem;
+  border-radius:var(--radius-xs);background:rgba(255,255,255,.04);color:var(--success);
+}
+.plan__check--accent{background:rgba(56,189,248,.1);color:var(--accent-soft)}
+.plan__check svg{width:.8rem;height:.8rem}
+
+/* CTA = .btn-enter */
+.plan__cta{
+  margin-top:1.75rem;display:inline-flex;align-items:center;justify-content:center;
+  padding:.8rem 1rem;border-radius:var(--radius-xs);
+  background:var(--surface);border:1px solid transparent;color:var(--text-muted);
+  font-family:var(--font-mono);font-size:.6875rem;font-weight:500;
+  letter-spacing:.14em;text-transform:uppercase;
+  cursor:pointer;transition:background .15s,color .15s,border-color .15s;
+}
+.plan__cta:hover{background:var(--surface-hover);color:var(--text);border-color:var(--line)}
+.plan__cta--accent{
+  background:#0a1018;border-color:rgba(56,189,248,.42);color:var(--accent-soft);
+  box-shadow:inset 0 0 0 1px rgba(56,189,248,.06);
+}
+.plan__cta--accent:hover{background:rgba(56,189,248,.1);border-color:rgba(56,189,248,.65);color:#bae6fd}
+.plan__cta:disabled{opacity:.5;cursor:not-allowed}
+.payment-feedback{min-height:1.5rem;margin-top:1.25rem;text-align:center;color:var(--text-muted)}
+.payment-feedback.is-error{color:#fb7185}
+
+/* ============================ RESPONSIVO ============================ */
+@media (min-width:640px){
+  h1.hero-title{font-size:3.5rem}
+  .rows{gap:.75rem}
+  .pcard{width:12rem}
+  .features{padding:7rem 1rem 4.5rem}
+  .pricing{padding:4.5rem 1rem 4.5rem}
+  .cards{grid-template-columns:repeat(2,1fr)}
+  h2.features-title,h2.connections-title{font-size:2.25rem}
+}
+@media (min-width:768px){
+  .navbar .bar{padding-left:1.15rem;padding-right:.75rem}
+  .nav-links{display:flex}
+  .nav-actions{display:flex}
+  .nav-mobile{display:none}
+  .nav-drawer,.nav-toggle:checked ~ .nav-drawer{display:none}
+  h1.hero-title{font-size:4.25rem}
+  .hero-sub{font-size:1rem}
+}
+@media (min-width:1024px){
+  .navbar{left:0;right:0}
+  h1.hero-title{font-size:5rem;max-width:none}
+  .brk{display:inline}
+  .features .grid{grid-template-columns:.85fr 1.15fr;gap:4rem}
+  .features .col-left{position:sticky;top:8rem}
+  h2.features-title,h2.connections-title{font-size:2.5rem}
+  .plans{grid-template-columns:repeat(3,1fr)}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+</style>
 </head>
 <body>
-  <main class="page-shell">
-    <section class="hero">
-      <p class="eyebrow">PAGAMENTO EM BITCOIN</p>
-      <h1>Simples, direto e seguro.</h1>
-      <p class="hero-copy">Conclua seu pagamento pelo checkout protegido do nosso BTCPay Server.</p>
-      <div class="security-note"><span></span> Pagamento direto pela rede Bitcoin</div>
-    </section>
 
-    <section class="payment-card" aria-labelledby="payment-title">
-      <div class="bitcoin-mark">₿</div>
-      <p class="card-label">VALOR DO PAGAMENTO</p>
-      {% if settings_error %}
-        <h2 id="payment-title">Indisponível</h2>
-        <p class="error-box">A configuração do pagamento ainda não foi concluída.</p>
-      {% else %}
-        <h2 id="payment-title">{{ currency }} {{ "%.2f"|format(amount) }}</h2>
-        <p class="card-copy">Ao continuar, você será direcionado ao checkout para pagar com Bitcoin.</p>
-        <button id="pay-button" type="button">Gerar pagamento <span>↗</span></button>
-        <p id="payment-feedback" class="feedback" role="status"></p>
-      {% endif %}
-      <footer>Processado com <strong>BTCPay Server</strong></footer>
-    </section>
-  </main>
-  <script src="{{ url_for('static', filename='js/payment.js') }}"></script>
+<!-- ===================== NAVBAR ===================== -->
+<nav class="navbar">
+  <input type="checkbox" id="nav-toggle" class="nav-toggle">
+  <div class="bar">
+    <a class="katana-brand" href="/" aria-label="Katana">
+      <span class="katana-face" aria-hidden="true">
+        <span class="katana-eyes">
+          <span class="katana-eye"></span>
+          <span class="katana-eye"></span>
+        </span>
+      </span>
+      <span class="katana-brand-title">Katana</span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#recursos">Recursos</a></li>
+      <li><a href="#planos">Planos</a></li>
+      <li><a href="https://discord.gg/ceebio" target="_blank" rel="noopener noreferrer">Discord</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <button type="button" class="nav-lang" aria-haspopup="menu" aria-expanded="false" aria-label="Idioma: PT-BR">
+        <svg class="flag" viewBox="0 0 28 20" width="20" height="14" aria-hidden="true" focusable="false">
+          <rect width="28" height="20" fill="#009C3B"></rect>
+          <polygon points="14,3 25,10 14,17 3,10" fill="#FFDF00"></polygon>
+          <circle cx="14" cy="10" r="4" fill="#002776"></circle>
+          <path d="M10.5 10.6 a4 4 0 0 1 7 -0.6" stroke="#fff" stroke-width="0.7" fill="none"></path>
+        </svg>
+        <span class="label">PT-BR</span>
+        <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+          <path d="M19.92 15.05 13.4 8.53a2 2 0 0 0-2.8 0l-6.52 6.52"></path>
+        </svg>
+      </button>
+    </div>
+
+    <div class="nav-mobile">
+      <button type="button" class="nav-lang-sm" aria-haspopup="menu" aria-expanded="false" aria-label="Idioma: PT-BR">
+        <svg class="flag" viewBox="0 0 28 20" width="20" height="14" aria-hidden="true" focusable="false">
+          <rect width="28" height="20" fill="#009C3B"></rect>
+          <polygon points="14,3 25,10 14,17 3,10" fill="#FFDF00"></polygon>
+          <circle cx="14" cy="10" r="4" fill="#002776"></circle>
+          <path d="M10.5 10.6 a4 4 0 0 1 7 -0.6" stroke="#fff" stroke-width="0.7" fill="none"></path>
+        </svg>
+        <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+          <path d="M19.92 15.05 13.4 8.53a2 2 0 0 0-2.8 0l-6.52 6.52"></path>
+        </svg>
+      </button>
+      <label for="nav-toggle" class="nav-burger" aria-label="Abrir menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="17.54" cy="18.15" r="2.46"></circle>
+          <circle cx="17.54" cy="5.85" r="2.46"></circle>
+          <circle cx="6.46" cy="18.15" r="2.46"></circle>
+          <circle cx="6.46" cy="5.85" r="2.46"></circle>
+        </svg>
+      </label>
+    </div>
+  </div>
+
+  <div class="nav-drawer">
+    <a href="#recursos">Recursos</a>
+    <a href="#planos">Planos</a>
+    <a href="https://discord.gg/ceebio" target="_blank" rel="noopener noreferrer">Discord</a>
+  </div>
+</nav>
+
+<div class="bg-grid-top" aria-hidden="true"></div>
+<div class="bg-tint" aria-hidden="true"></div>
+
+<main>
+  <div class="orb orb-1" aria-hidden="true"></div>
+  <div class="orb orb-2" aria-hidden="true"></div>
+  <div class="orb orb-3" aria-hidden="true"></div>
+
+  <!-- ===================== SEÇÃO 1 — HERO ===================== -->
+  <section class="hero">
+    <div class="hero-bg" aria-hidden="true">
+      <div class="g1"></div>
+      <div class="g2"></div>
+      <div class="g3"></div>
+      <svg class="snakes" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <linearGradient id="snake-bottom" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="var(--theme-glow)" stop-opacity="0"></stop>
+            <stop offset="50%" stop-color="var(--theme)" stop-opacity=".2"></stop>
+            <stop offset="100%" stop-color="var(--theme-dark)" stop-opacity="0"></stop>
+          </linearGradient>
+          <linearGradient id="snake-top" x1="0" y1="0" x2="1" y2="0.6">
+            <stop offset="0%" stop-color="var(--theme-glow)" stop-opacity="0"></stop>
+            <stop offset="45%" stop-color="var(--theme)" stop-opacity=".28"></stop>
+            <stop offset="100%" stop-color="var(--theme-dark)" stop-opacity="0"></stop>
+          </linearGradient>
+          <filter id="snake-blur"><feGaussianBlur stdDeviation="2"></feGaussianBlur></filter>
+        </defs>
+        <path d="M -100 720 Q 240 600 460 660 T 900 540 T 1540 380" stroke="url(#snake-bottom)" stroke-width="2" fill="none" filter="url(#snake-blur)" vector-effect="non-scaling-stroke"></path>
+        <path d="M -100 160 Q 300 260 520 180 T 960 300 T 1540 200" stroke="url(#snake-top)" stroke-width="2" fill="none" filter="url(#snake-blur)" vector-effect="non-scaling-stroke"></path>
+      </svg>
+      <div class="fade"></div>
+    </div>
+
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <div class="pill">
+          <span>Junte-se a nós</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+            <path d="m12.5 15 3-3-3-3"></path><path d="M8.5 12h6"></path><circle cx="12" cy="12" r="10"></circle>
+          </svg>
+        </div>
+
+        <h1 class="hero-title">O melhor <span class="text-gradient-primary">Bypass APK Crypter</span></h1>
+
+        <p class="hero-sub">Instalação rápida em apenas 2 clicks e funcionamento contínuo em segundo plano.</p>
+
+        <div class="hero-cta">
+          <a class="btn-primary" href="/register">
+            <span class="shine"></span>
+            <span>Começar agora</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+              <path d="m12.5 15 3-3-3-3"></path><path d="M8.5 12h6"></path><circle cx="12" cy="12" r="10"></circle>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
+    <div class="marquee-wrap">
+      <section class="profiles" aria-label="Bancos e carteiras suportados">
+        <div class="rows">
+          <div class="marquee-fade">
+            <div class="track left" style="--marquee-duration:56s;animation-delay:0s">
+              <div class="pcard">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/bradesco.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pname">Bradesco</span>
+              </div>
+              <div class="pcard">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/picpay.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pname">PicPay</span>
+              </div>
+              <div class="pcard">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/pagbank.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pname">PagBank</span>
+              </div>
+              <div class="pcard">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/xp.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pname">XP</span>
+              </div>
+              <div class="pcard">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/mercadopago.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pname">Mercado Pago</span>
+              </div>
+              <div class="pcard">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/cresol.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pname">Cresol</span>
+              </div>
+              <div class="pcard">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/santander.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pname">Santander</span>
+              </div>
+              <div class="pcard pcard--dark">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/next.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pname">Next</span>
+              </div>
+              <div class="pcard">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/neon.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pname">Neon</span>
+              </div>
+              <div class="pcard">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/c6.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pname">C6 Bank</span>
+              </div>
+              <div class="pcard">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/cora.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pname">Cora</span>
+              </div>
+              <div class="pcard">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/infinitepay.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pname">InfinitePay</span>
+              </div>
+              <div class="pcard">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/sofisa.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pname">Sofisa</span>
+              </div>
+              <div class="pcard">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/wise.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pname">Wise</span>
+              </div>
+              <div class="pcard">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/bradesco.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pname">Bradesco</span>
+              </div>
+              <div class="pcard">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/picpay.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pname">PicPay</span>
+              </div>
+              <div class="pcard">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/pagbank.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pname">PagBank</span>
+              </div>
+              <div class="pcard">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/xp.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pname">XP</span>
+              </div>
+              <div class="pcard">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/mercadopago.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pname">Mercado Pago</span>
+              </div>
+              <div class="pcard">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/cresol.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pname">Cresol</span>
+              </div>
+              <div class="pcard">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/santander.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pname">Santander</span>
+              </div>
+              <div class="pcard pcard--dark">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/next.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pname">Next</span>
+              </div>
+              <div class="pcard">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/neon.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pname">Neon</span>
+              </div>
+              <div class="pcard">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/c6.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pname">C6 Bank</span>
+              </div>
+              <div class="pcard">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/cora.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pname">Cora</span>
+              </div>
+              <div class="pcard">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/infinitepay.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pname">InfinitePay</span>
+              </div>
+              <div class="pcard">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/sofisa.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pname">Sofisa</span>
+              </div>
+              <div class="pcard">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/wise.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pname">Wise</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <!-- ===================== SEÇÃO 2 — RECURSOS ===================== -->
+  <section class="features" id="recursos">
+    <div class="dots" aria-hidden="true"></div>
+    <div class="container">
+      <div class="grid">
+        <div class="col-left">
+          <div><span class="eyebrow">Recursos</span></div>
+          <div>
+            <h2 class="features-title">Tudo que você precisa para um bypass <span class="title-glow">perfeito.</span></h2>
+          </div>
+          <p class="features-sub">Katana Apk Fud</p>
+          <div>
+            <a class="link-arrow" href="/register">Ver todos os recursos
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+                <path d="m12.5 15 3-3-3-3"></path><path d="M8.5 12h6"></path><circle cx="12" cy="12" r="10"></circle>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="cards">
+          <!-- 1 -->
+          <div class="card">
+            <div class="wash"></div><div class="topline" aria-hidden="true"></div><div class="corner"></div>
+            <div class="body">
+              <div class="icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M4.81 21.82a3.84 3.84 0 0 1-2.63-2.63 4 4 0 0 0 2.63 2.63"></path>
+                  <path d="M8.82 20.83a3 3 0 0 1-.28.25 3.5 3.5 0 0 1-.99.6 5 5 0 0 1-.33.13A3.9 3.9 0 0 1 6 22a4.3 4.3 0 0 1-.8-.08 6 6 0 0 1-.39-.1 4 4 0 0 1-.46-.17 4.7 4.7 0 0 1-.81-.49 3 3 0 0 1-.37-.33 12 12 0 0 1-.33-.37 5 5 0 0 1-.49-.8 7 7 0 0 1-.17-.47 6 6 0 0 1-.1-.39A4.3 4.3 0 0 1 2 18V4.5C2 3 3 2 4.5 2h3C9 2 10 3 10 4.5V18a4 4 0 0 1-1.14 2.79l9.51-9.5c1.06-1.06 1.06-2.48 0-3.54l-2.12-2.12c-1.06-1.06-2.48-1.06-3.54 0L10 8.34V18a4 4 0 0 1-1.14 2.79za3 3 0 0 1-.28.25 3.5 3.5 0 0 1-.99.6 5 5 0 0 1-.33.13A3.9 3.9 0 0 1 6 22h13.5c1.5 0 2.5-1 2.5-2.5v-3c0-1.5-1-2.5-2.5-2.5h-3.84"></path>
+                  <circle cx="6" cy="18" r="1"></circle>
+                </svg>
+              </div>
+              <h3>Bypass All Permissions Play Protect</h3>
+              <p>Instalação rápida em apenas 2 clicks passe de forma indetectável.</p>
+            </div>
+          </div>
+          <!-- 2 -->
+          <div class="card">
+            <div class="wash"></div><div class="topline" aria-hidden="true"></div><div class="corner"></div>
+            <div class="body">
+              <div class="icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M14.5 11h4"></path><path d="M14.5 15h.5"></path><path d="M18 15h.5"></path><path d="M7 2v3"></path>
+                  <path d="M7 5c-3 0-5 2-5 5v7c0 3 2 5 5 5h10c3 0 5-2 5-5v-7c0-3-2-5-5-5z"></path>
+                  <circle cx="8.5" cy="13.5" r="2.5"></circle>
+                </svg>
+              </div>
+              <h3>Bypass Restricted Settings</h3>
+              <p>Bypass da configuração que restringe o app de ter a acessibilidade concedida.</p>
+            </div>
+          </div>
+          <!-- 3 -->
+          <div class="card">
+            <div class="wash"></div><div class="topline" aria-hidden="true"></div><div class="corner"></div>
+            <div class="body">
+              <div class="icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 22h18"></path>
+                  <rect x="10.2" y="5.19" width="3.6" height="13.81" rx="1"></rect>
+                  <rect x="17.4" y="2" width="3.6" height="17" rx="1"></rect>
+                  <rect x="3" y="8.38" width="3.6" height="10.62" rx="1"></rect>
+                </svg>
+              </div>
+              <h3>Only Two Apps</h3>
+              <p>Diferente dos demais, ele utiliza apenas dois apps no fluxo, o que não causa aquecimento no celular.</p>
+            </div>
+          </div>
+          <!-- 4 -->
+          <div class="card">
+            <div class="wash"></div><div class="topline" aria-hidden="true"></div><div class="corner"></div>
+            <div class="body">
+              <div class="icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M15 3a28.42 28.42 0 0 1 0 18"></path>
+                  <path d="M3 16v-1a28.42 28.42 0 0 0 18 0v1"></path>
+                  <path d="M3 9a28.42 28.42 0 0 1 18 0"></path>
+                  <path d="M8 3h1a28.42 28.42 0 0 0 0 18H8"></path>
+                  <circle cx="12" cy="12" r="10"></circle>
+                </svg>
+              </div>
+              <h3>Connection Retries</h3>
+              <p>Seu app abre em segundo plano mesmo após ser encerrado ou após a reinicialização do celular.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SEÇÃO 3 — PLANOS ===================== -->
+  <section class="pricing" id="planos">
+    <div class="halo-1" aria-hidden="true"></div>
+    <div class="halo-2" aria-hidden="true"></div>
+    <div class="container">
+      <div class="head">
+        <div><span class="eyebrow-c">Planos</span></div>
+        <div><h2 class="connections-title">Escolha o seu Plano</h2></div>
+        <p class="connections-sub">Escolha quantos dias você precisa e pague só por eles.</p>
+      </div>
+
+      <div class="plans">
+        <!-- 1 -->
+        <article class="plan">
+          <div class="plan__body">
+            <div class="plan__head">
+              <span class="plan__tag">Free</span>
+              <span class="plan__duration">7 dias</span>
+            </div>
+            <p class="plan__desc">Pra testar a ferramenta sem compromisso.</p>
+            <p class="plan__price"><span class="plan__currency">{{ plans["7d"]["currency"] if plans.get("7d") else "" }}</span>{{ plans["7d"]["display_amount"] if plans.get("7d") else "--" }}<span class="plan__period">/7 dias</span></p>
+            <ul class="plan__features">
+              <li><span class="plan__check">✓</span><span>2 builds por dia</span></li>
+              <li><span class="plan__check">✓</span><span>Painel completo</span></li>
+              <li><span class="plan__check">✓</span><span>Tela PlayStore</span></li>
+            </ul>
+            <button type="button" class="plan__cta" data-plan-code="7d" {% if not plans.get("7d") %}disabled{% endif %}>Liberar 7 dias</button>
+          </div>
+        </article>
+
+        <!-- 2 -->
+        <article class="plan">
+          <div class="plan__body">
+            <div class="plan__head">
+              <span class="plan__tag">Pro</span>
+              <span class="plan__duration">15 dias</span>
+            </div>
+            <p class="plan__desc">Pra quem publica atualização toda semana.</p>
+            <p class="plan__price"><span class="plan__currency">{{ plans["15d"]["currency"] if plans.get("15d") else "" }}</span>{{ plans["15d"]["display_amount"] if plans.get("15d") else "--" }}<span class="plan__period">/15 dias</span></p>
+            <ul class="plan__features">
+              <li><span class="plan__check">✓</span><span>4 builds por dia</span></li>
+              <li><span class="plan__check">✓</span><span>Painel completo</span></li>
+              <li><span class="plan__check">✓</span><span>Tela PlayStore</span></li>
+            </ul>
+            <button type="button" class="plan__cta" data-plan-code="15d" {% if not plans.get("15d") %}disabled{% endif %}>Liberar 15 dias</button>
+          </div>
+        </article>
+
+        <!-- 3 — destaque -->
+        <article class="plan plan--featured">
+          <div class="plan__glow" aria-hidden="true"></div>
+          <div class="plan__body">
+            <span class="plan__badge">Mais completo</span>
+            <div class="plan__head">
+              <span class="plan__tag plan__tag--accent">Studio</span>
+              <span class="plan__duration">30 dias</span>
+            </div>
+            <p class="plan__desc">Pra agências e times que entregam em escala.</p>
+            <p class="plan__price"><span class="plan__currency">{{ plans["30d"]["currency"] if plans.get("30d") else "" }}</span>{{ plans["30d"]["display_amount"] if plans.get("30d") else "--" }}<span class="plan__period">/30 dias</span></p>
+            <ul class="plan__features">
+              <li><span class="plan__check plan__check--accent">✓</span><span>6 builds por dia</span></li>
+              <li><span class="plan__check plan__check--accent">✓</span><span>Painel completo</span></li>
+              <li><span class="plan__check plan__check--accent">✓</span><span>Tela PlayStore</span></li>
+            </ul>
+            <button type="button" class="plan__cta plan__cta--accent" data-plan-code="30d" {% if not plans.get("30d") %}disabled{% endif %}>Liberar 30 dias</button>
+          </div>
+        </article>
+      </div>
+
+      <p id="payment-feedback" class="payment-feedback" role="status" aria-live="polite">{% if settings_error %}{{ settings_error }}{% endif %}</p>
+
+      <p class="connections-note">Preços em reais. Pagamento único por período, sem renovação automática.</p>
+    </div>
+  </section>
+</main>
+<script src="{{ url_for('static', filename='js/payment.js') }}"></script>
 </body>
 </html>

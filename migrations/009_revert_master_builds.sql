@@ -1,4 +1,15 @@
-DELETE FROM builds WHERE master_id IS NOT NULL;
+DO $$
+BEGIN
+    IF EXISTS (
+        SELECT 1
+        FROM information_schema.columns
+        WHERE table_schema = 'public'
+          AND table_name = 'builds'
+          AND column_name = 'master_id'
+    ) THEN
+        DELETE FROM builds WHERE master_id IS NOT NULL;
+    END IF;
+END $$;
 
 ALTER TABLE builds DROP CONSTRAINT IF EXISTS chk_builds_owner;
 

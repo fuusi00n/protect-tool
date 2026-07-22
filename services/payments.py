@@ -10,8 +10,21 @@ class PaymentSettingsError(ValueError):
     pass
 
 
-def get_payment_settings():
-    keys = ("payment_amount", "payment_currency")
+class InvalidPaymentPlan(ValueError):
+    pass
+
+
+PAYMENT_PLANS = {
+    "7d": {"duration_days": 7, "amount_key": "payment_amount_7d"},
+    "15d": {"duration_days": 15, "amount_key": "payment_amount_15d"},
+    "30d": {"duration_days": 30, "amount_key": "payment_amount_30d"},
+}
+
+
+def get_payment_plans():
+    keys = ("payment_currency",) + tuple(
+        plan["amount_key"] for plan in PAYMENT_PLANS.values()
+    )
     with get_connection() as conn:
         with conn.cursor(row_factory=dict_row) as cur:
             cur.execute(
@@ -23,33 +36,53 @@ def get_payment_settings():
     missing = [key for key in keys if not settings.get(key)]
     if missing:
         raise PaymentSettingsError(
-            "Configuração de pagamento ausente: " + ", ".join(missing)
+            "Configuracao de pagamento ausente: " + ", ".join(missing)
         )
-    try:
-        amount = Decimal(settings["payment_amount"])
-        if not amount.is_finite() or amount <= 0:
-            raise InvalidOperation
-        amount = amount.quantize(Decimal("0.01"))
-    except (InvalidOperation, ValueError) as exc:
-        raise PaymentSettingsError("payment_amount inválido") from exc
 
     currency = settings["payment_currency"].strip().upper()
     if len(currency) != 3 or not currency.isalpha():
-        raise PaymentSettingsError("payment_currency inválido")
-    return amount, currency
+        raise PaymentSettingsError("payment_currency invalido")
+
+    plans = {}
+    for plan_code, definition in PAYMENT_PLANS.items():
+        amount_key = definition["amount_key"]
+        try:
+            amount = Decimal(settings[amount_key])
+            if not amount.is_finite() or amount <= 0:
+                raise InvalidOperation
+            amount = amount.quantize(Decimal("0.01"))
+        except (InvalidOperation, ValueError) as exc:
+            raise PaymentSettingsError(f"{amount_key} invalido") from exc
+        plans[plan_code] = {
+            "code": plan_code,
+            "duration_days": definition["duration_days"],
+            "amount": amount,
+            "display_amount": f"{amount:.2f}".replace(".", ","),
+            "currency": currency,
+        }
+    return plans
 
 
-def create_payment(invoice_id, amount, currency, status, checkout_url):
+def get_payment_plan(plan_code):
+    if not isinstance(plan_code, str) or plan_code not in PAYMENT_PLANS:
+        raise InvalidPaymentPlan("Plano de pagamento invalido.")
+    return get_payment_plans()[plan_code]
+
+
+def create_payment(invoice_id, amount, currency, status, checkout_url,
+                   plan_code, duration_days):
     with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute(
                 """
                 INSERT INTO payments
-                    (invoice_id, amount, currency, status, checkout_url)
-                VALUES (%s, %s, %s, %s, %s)
+                    (invoice_id, amount, currency, status, checkout_url,
+                     plan_code, duration_days)
+                VALUES (%s, %s, %s, %s, %s, %s, %s)
                 ON CONFLICT (invoice_id) DO NOTHING
                 """,
-                (invoice_id, amount, currency, status, checkout_url),
+                (invoice_id, amount, currency, status, checkout_url,
+                 plan_code, duration_days),
             )
 
 
@@ -59,6 +92,7 @@ def get_payment(invoice_id):
             cur.execute(
                 """
                 SELECT invoice_id, amount, currency, status, checkout_url,
+                       plan_code, duration_days,
                        created_at, updated_at, settled_at
                 FROM payments WHERE invoice_id = %s
                 """,
