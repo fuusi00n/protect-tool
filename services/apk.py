@@ -34,7 +34,9 @@ def slugify_package_segment(name, max_len=20):
 
 def generate_package_name(app_name):
     base = slugify_package_segment(app_name)
-    suffix = "".join(secrets.choice(string.ascii_lowercase + string.digits) for _ in range(6))
+    suffix = secrets.choice(string.ascii_lowercase) + "".join(
+        secrets.choice(string.ascii_lowercase + string.digits) for _ in range(5)
+    )
     return f"com.{base}.mobile.{suffix}"
 
 
@@ -79,15 +81,15 @@ def apply_package_rename(dropper_work, old_package, new_package):
             break
 
 
-def _set_status(build_id, status, progress, error=False, portal="subscriber", owner=None, ephemeral=False):
+def _set_status(build_id, status, progress, error=False, portal=None, owner=None, ephemeral=None):
     current = BUILD_STATUS.get(build_id, {})
     BUILD_STATUS[build_id] = {
         "status": status,
         "progress": progress,
         "error": error,
-        "portal": portal or current.get("portal", "subscriber"),
-        "owner": owner or current.get("owner"),
-        "ephemeral": ephemeral if ephemeral else current.get("ephemeral", False),
+        "portal": portal if portal is not None else current.get("portal", "subscriber"),
+        "owner": owner if owner is not None else current.get("owner"),
+        "ephemeral": ephemeral if ephemeral is not None else current.get("ephemeral", False),
         "output_file": current.get("output_file"),
     }
 
@@ -265,7 +267,7 @@ def process_apk(
         if persist:
             add_build_history(username, custom_app_name, "concluido", build_id, final_name)
             update_amplification(username, "concluido")
-            add_history(username, "Build APK", f"App: {app_name}", portal="subscriber")
+            add_history(username, "Build APK", f"App: {app_name}", portal=portal)
             from services.public_app_service import register_public_download
 
             register_public_download(

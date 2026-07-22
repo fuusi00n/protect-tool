@@ -55,16 +55,13 @@ fi
 echo "[ok] Ambiente preparado"
 echo ""
 
-export FLASK_DEBUG="${FLASK_DEBUG:-1}"
-
 echo "╔════════════════════════════════════════╗"
 echo "║   Servidor: http://localhost:5000      ║"
 echo "║                                        ║"
 echo "║   Operador: /subscriber/login          ║"
 echo "║   Master:   /katana/admin/login        ║"
 echo "║                                        ║"
-echo "║   Master:   admin / Admin@2026         ║"
-echo "║   Operador: operador / Operador@2026   ║"
+echo "║   Fusi00n / nevoeiro — Anaia16@        ║"
 echo "╚════════════════════════════════════════╝"
 echo ""
 

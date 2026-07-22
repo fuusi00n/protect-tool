@@ -1,0 +1,66 @@
+{% extends "katana/admin/base.html" %}
+{% block title %}Admin Logs{% endblock %}
+{% block body %}
+<div class="portal layout" x-data="katanaLogs()" x-init="load()">
+    {% include "katana/admin/_nav.html" %}
+    <div class="main">
+        <header class="page-head">
+            <h1>Logs</h1>
+            <p>Atividade registrada na plataforma</p>
+        </header>
+
+        <section class="section">
+            <div class="section-head">
+                <h2>Histórico</h2>
+                <p>Eventos de login, builds, usuários e operações admin</p>
+            </div>
+            <div class="table-wrap logs-table-wrap">
+                <table class="logs-table">
+                    <thead>
+                        <tr>
+                            <th class="col-date">Data</th>
+                            <th class="col-user">Usuário</th>
+                            <th class="col-action">Ação</th>
+                            <th class="col-details">Detalhes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template x-if="!logs.length">
+                            <tr>
+                                <td colspan="4" class="logs-empty">Nenhum log encontrado.</td>
+                            </tr>
+                        </template>
+                        <template x-for="item in logs" :key="item.id">
+                            <tr>
+                                <td class="col-date" x-text="item.date_display"></td>
+                                <td class="col-user">
+                                    <span class="logs-user" x-text="item.username"></span>
+                                </td>
+                                <td class="col-action">
+                                    <span class="logs-action" x-text="item.action"></span>
+                                </td>
+                                <td class="col-details">
+                                    <span class="logs-details" x-text="item.details || '—'"></span>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+                <footer class="apps-pagination" x-show="total > pageSize" x-cloak>
+                    <p class="apps-pagination__info">
+                        <span x-text="pageFrom"></span>–<span x-text="pageTo"></span>
+                        de <span x-text="total"></span>
+                    </p>
+                    <div class="apps-pagination__controls">
+                        <button type="button" class="btn btn-ghost btn-pagination" @click="prevPage()" :disabled="page <= 1">Anterior</button>
+                        <span class="apps-pagination__page">
+                            <span x-text="page"></span> / <span x-text="totalPages"></span>
+                        </span>
+                        <button type="button" class="btn btn-ghost btn-pagination" @click="nextPage()" :disabled="page >= totalPages">Próxima</button>
+                    </div>
+                </footer>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}

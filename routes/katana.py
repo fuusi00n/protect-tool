@@ -12,7 +12,7 @@ from services.data import (
     create_operator_user,
     delete_user_account,
     get_admin_dashboard_metrics,
-    get_all_builds_detailed,
+    get_activity_logs,
     is_user_expired,
     list_users,
     renew_license,
@@ -76,10 +76,10 @@ def users_page():
     return render_template("katana/admin/users.html")
 
 
-@katana_bp.route("/apps", methods=["GET"])
+@katana_bp.route("/logs", methods=["GET"])
 @require_master
-def apps_page():
-    return render_template("katana/admin/apps.html")
+def logs_page():
+    return render_template("katana/admin/logs.html")
 
 
 @katana_bp.route("/api/session", methods=["GET"])
@@ -115,7 +115,7 @@ def api_build():
         persist=False,
         portal="katana",
     )
-    return jsonify({"build_id": build_id, "ephemeral": True})
+    return jsonify({"build_id": build_id})
 
 
 @katana_bp.route("/api/build/<build_id>/status", methods=["GET"])
@@ -206,7 +206,8 @@ def api_delete_user(username):
     return jsonify({"success": True, "message": "Usuario removido"})
 
 
-@katana_bp.route("/api/apps", methods=["GET"])
+@katana_bp.route("/api/logs", methods=["GET"])
 @require_master
-def api_apps():
-    return jsonify(get_all_builds_detailed())
+def api_logs():
+    page = request.args.get("page", 1, type=int)
+    return jsonify(get_activity_logs(page=page, page_size=10))

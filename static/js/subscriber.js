@@ -287,6 +287,10 @@ function subscriberApps() {
         apps: [],
         copiedId: "",
         busyId: "",
+        deleteBusyId: "",
+        deleteModalOpen: false,
+        deleteTarget: null,
+        deleteError: "",
         page: 1,
         pageSize: 10,
         get totalPages() {
@@ -342,6 +346,37 @@ function subscriberApps() {
             item.public_url = data.public_url;
             this.copiedId = item.build_id;
             await this.copyLink(item);
+        },
+        openDeleteModal(item) {
+            if (this.deleteBusyId) return;
+            this.deleteTarget = item;
+            this.deleteError = "";
+            this.deleteModalOpen = true;
+        },
+        closeDeleteModal() {
+            if (this.deleteBusyId) return;
+            this.deleteModalOpen = false;
+            this.deleteTarget = null;
+            this.deleteError = "";
+        },
+        async confirmDelete() {
+            const item = this.deleteTarget;
+            if (!item || this.deleteBusyId) return;
+            this.deleteBusyId = item.build_id;
+            this.deleteError = "";
+            const res = await api(`/subscriber/api/build/${item.build_id}`, { method: "DELETE" });
+            this.deleteBusyId = "";
+            if (!res) return;
+            const data = await res.json();
+            if (!res.ok || data.error) {
+                this.deleteError = data.error || "Nao foi possivel excluir.";
+                return;
+            }
+            this.apps = this.apps.filter((app) => app.build_id !== item.build_id);
+            if (this.page > this.totalPages) this.page = this.totalPages;
+            this.deleteModalOpen = false;
+            this.deleteTarget = null;
+            this.deleteError = "";
         },
         async logout() {
             await fetch("/subscriber/logout", { method: "POST" });

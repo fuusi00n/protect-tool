@@ -1,7 +1,3 @@
--- Migration 003: limite diario de builds por usuario (3/dia)
--- Coluna daily_builds entre license_expires_at e total_builds
--- Reset automatico as 00:00 via pg_cron + trigger de fallback
-
 ALTER TABLE builds DROP CONSTRAINT IF EXISTS builds_user_id_fkey;
 ALTER TABLE activity_logs DROP CONSTRAINT IF EXISTS activity_logs_user_id_fkey;
 
@@ -131,5 +127,3 @@ EXCEPTION
         RAISE NOTICE 'pg_cron indisponivel; reset as 00:00 via trigger de fallback: %', SQLERRM;
 END;
 $$;
-
-COMMENT ON COLUMN users.daily_builds IS 'Builds realizados no dia corrente. Limite: 3. Reseta as 00:00.';

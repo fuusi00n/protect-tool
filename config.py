@@ -16,7 +16,7 @@ class Config:
     SESSION_COOKIE_SAMESITE = "Lax"
     PERMANENT_SESSION_LIFETIME = timedelta(days=30)
 
-    TEMPLATES_AUTO_RELOAD = True
+    TEMPLATES_AUTO_RELOAD = False
 
     BTCPAY_URL = os.environ.get("BTCPAY_URL", "").rstrip("/")
     BTCPAY_STORE_ID = os.environ.get("BTCPAY_STORE_ID", "")
@@ -32,8 +32,6 @@ class Config:
     )
     PUBLIC_APP_BASE_URL = os.environ.get("PUBLIC_APP_BASE_URL", "").rstrip("/")
     PUBLIC_ICONS_FOLDER = os.path.join(BASE_DIR, "outputs", "icons")
-    DATA_DIR = os.path.join(BASE_DIR, "apk_dropper")
-    DATA_FILE = os.path.join(DATA_DIR, "data.json")
 
     DROPPER_TEMPLATE = os.path.join(BASE_DIR, "dropper_rebuild")
     SIGNER_JAR = os.path.join(BASE_DIR, "signer.jar")
@@ -47,7 +45,6 @@ def ensure_directories(config):
     for directory in (
         config.UPLOAD_FOLDER,
         config.OUTPUT_FOLDER,
-        config.DATA_DIR,
         config.STORE_CATALOG_DIR,
         config.PUBLIC_ICONS_FOLDER,
     ):

@@ -1,5 +1,3 @@
--- Migration 005: limite diario por usuario
-
 ALTER TABLE users ALTER COLUMN id SET DEFAULT gen_random_uuid();
 
 ALTER TABLE users ADD COLUMN IF NOT EXISTS daily_build_limit INTEGER NOT NULL DEFAULT 3;

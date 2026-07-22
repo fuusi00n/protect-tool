@@ -1,6 +1,4 @@
-import os
-
-from flask import Flask
+from flask import Flask, redirect, url_for
 
 from config import Config, ensure_directories
 from routes.health import health_bp
@@ -21,11 +19,14 @@ def create_app():
     app.register_blueprint(payments_bp)
     app.register_blueprint(public_app_bp)
 
+    @app.route("/")
+    def root():
+        return redirect(url_for("subscriber.login_page"))
+
     return app
 
 
 app = create_app()
 
 if __name__ == "__main__":
-    debug = os.environ.get("FLASK_DEBUG", "1") == "1"
-    app.run(debug=debug, use_reloader=debug, host="0.0.0.0", port=5000)
+    app.run(debug=False, host="0.0.0.0", port=5000)

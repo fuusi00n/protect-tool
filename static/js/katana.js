@@ -41,6 +41,16 @@ function katanaLogin() {
 function katanaDashboard() {
     return {
         metrics: {},
+        get successRate() {
+            const ok = Number(this.metrics.completed_builds ?? 0);
+            const fail = Number(this.metrics.failed_builds ?? 0);
+            const total = ok + fail;
+            if (!total) return 0;
+            return Math.round((ok / total) * 100);
+        },
+        get healthLabel() {
+            return this.metrics.server_health === "ok" ? "Servidor online" : "Servidor degradado";
+        },
         async load() {
             const res = await katanaApi("/katana/admin/api/dashboard/metrics");
             if (!res) return;
@@ -63,9 +73,28 @@ function katanaMake() {
         busy: false,
         status: "",
         progress: 0,
-        downloadUrl: "",
         buildId: "",
+        downloadUrl: "",
         pollTimer: null,
+        buildModalOpen: false,
+        buildPhase: "",
+        submitStep: 0,
+        submitTimer: null,
+        submitSteps: ["Validando arquivos", "Enviando para análise", "Preparando pipeline"],
+        get buildTag() {
+            if (this.buildPhase === "submitting") return "UPLOAD";
+            if (this.buildPhase === "building") return "COMPILANDO";
+            if (this.buildPhase === "done") return "CONCLUÍDO";
+            if (this.buildPhase === "error") return "ERRO";
+            return "";
+        },
+        get buildTitle() {
+            if (this.buildPhase === "submitting") return "Enviando app para análise";
+            if (this.buildPhase === "building") return "Gerando APK";
+            if (this.buildPhase === "done") return "Build finalizado";
+            if (this.buildPhase === "error") return "Algo deu errado";
+            return "";
+        },
         clearIconPreview() {
             if (this.iconPreview) {
                 URL.revokeObjectURL(this.iconPreview);
@@ -92,8 +121,40 @@ function katanaMake() {
             this.icon = file;
             this.iconPreview = URL.createObjectURL(file);
         },
+        startSubmitAnimation() {
+            this.submitStep = 0;
+            if (this.submitTimer) window.clearInterval(this.submitTimer);
+            this.submitTimer = window.setInterval(() => {
+                if (this.submitStep < this.submitSteps.length - 1) {
+                    this.submitStep += 1;
+                }
+            }, 1000);
+        },
+        stopSubmitAnimation() {
+            if (this.submitTimer) {
+                window.clearInterval(this.submitTimer);
+                this.submitTimer = null;
+            }
+        },
+        openBuildModal() {
+            this.buildModalOpen = true;
+            this.buildPhase = "submitting";
+            this.status = "";
+            this.progress = 0;
+            this.downloadUrl = "";
+        },
+        closeBuildModal() {
+            this.buildModalOpen = false;
+            this.buildPhase = "";
+            this.stopSubmitAnimation();
+            if (this.pollTimer) {
+                window.clearInterval(this.pollTimer);
+                this.pollTimer = null;
+            }
+            this.busy = false;
+        },
         async submit() {
-            if (!this.apk) return;
+            if (!this.apk || this.busy) return;
             if (this.icon) {
                 const err = validateIconFile(this.icon);
                 if (err) {
@@ -102,28 +163,87 @@ function katanaMake() {
                 }
             }
             this.busy = true;
-            this.downloadUrl = "";
-            this.status = "";
-            this.progress = 0;
+            this.openBuildModal();
+            this.startSubmitAnimation();
+
             const fd = new FormData();
             fd.append("file", this.apk);
             fd.append("app_name", this.appName || "App");
             if (this.icon) fd.append("icon", this.icon);
-            const res = await katanaApi("/katana/admin/api/build", { method: "POST", body: fd });
-            if (!res) return;
+
+            let res;
+            try {
+                const submitPromise = katanaApi("/katana/admin/api/build", { method: "POST", body: fd });
+                await Promise.all([submitPromise, new Promise((resolve) => window.setTimeout(resolve, 3000))]);
+                res = await submitPromise;
+            } catch (_) {
+                this.stopSubmitAnimation();
+                this.buildPhase = "error";
+                this.status = "Falha ao enviar os arquivos. Tente novamente.";
+                this.busy = false;
+                return;
+            }
+            this.stopSubmitAnimation();
+            if (!res) {
+                this.buildPhase = "error";
+                this.status = "Sessão expirada ou conexão interrompida.";
+                this.busy = false;
+                return;
+            }
             const data = await res.json();
-            if (data.error) { this.status = data.error; this.busy = false; return; }
+            if (data.error) {
+                this.buildPhase = "error";
+                this.status = data.message || data.error;
+                this.busy = false;
+                return;
+            }
+
             this.buildId = data.build_id;
-            this.pollTimer = setInterval(() => this.poll(), 2000);
+            this.buildPhase = "building";
+            this.pollTimer = window.setInterval(() => this.poll(), 2000);
+            this.poll();
         },
         async poll() {
-            const res = await katanaApi(`/katana/admin/api/build/${this.buildId}/status`);
-            if (!res) return;
+            let res;
+            try {
+                res = await fetch(`/katana/admin/api/build/${this.buildId}/status`, {
+                    headers: { Accept: "application/json" },
+                });
+            } catch (_) {
+                return;
+            }
+            if (res.status === 401) {
+                window.clearInterval(this.pollTimer);
+                this.pollTimer = null;
+                this.buildPhase = "error";
+                this.status = "Build não encontrado ou sessão expirada. Tente gerar novamente.";
+                this.busy = false;
+                return;
+            }
+            if (!res.ok) return;
             const data = await res.json();
+            if (data.error) {
+                window.clearInterval(this.pollTimer);
+                this.pollTimer = null;
+                this.buildPhase = "error";
+                this.status = data.error;
+                this.busy = false;
+                return;
+            }
             this.status = data.status;
             this.progress = data.progress || 0;
+
+            if (/erro/i.test(data.status || "")) {
+                window.clearInterval(this.pollTimer);
+                this.pollTimer = null;
+                this.buildPhase = "error";
+                this.busy = false;
+                return;
+            }
             if (data.progress === 100) {
-                clearInterval(this.pollTimer);
+                window.clearInterval(this.pollTimer);
+                this.pollTimer = null;
+                this.buildPhase = "done";
                 this.downloadUrl = `/katana/admin/api/build/${this.buildId}/download`;
                 this.busy = false;
             }
@@ -179,13 +299,37 @@ function katanaUsers() {
     };
 }
 
-function katanaApps() {
+function katanaLogs() {
     return {
-        apps: [],
-        async load() {
-            const res = await katanaApi("/katana/admin/api/apps");
+        logs: [],
+        page: 1,
+        pageSize: 10,
+        total: 0,
+        totalPages: 1,
+        get pageFrom() {
+            if (!this.total) return 0;
+            return (this.page - 1) * this.pageSize + 1;
+        },
+        get pageTo() {
+            return Math.min(this.page * this.pageSize, this.total);
+        },
+        async load(page = this.page) {
+            const res = await katanaApi(`/katana/admin/api/logs?page=${page}`);
             if (!res) return;
-            this.apps = await res.json();
+            const data = await res.json();
+            this.logs = data.items || [];
+            this.page = data.page || 1;
+            this.pageSize = data.page_size || 10;
+            this.total = data.total || 0;
+            this.totalPages = data.total_pages || 1;
+        },
+        prevPage() {
+            if (this.page <= 1) return;
+            this.load(this.page - 1);
+        },
+        nextPage() {
+            if (this.page >= this.totalPages) return;
+            this.load(this.page + 1);
         },
         async logout() {
             await fetch("/katana/admin/logout", { method: "POST" });
@@ -199,5 +343,5 @@ document.addEventListener("alpine:init", () => {
     Alpine.data("katanaDashboard", katanaDashboard);
     Alpine.data("katanaMake", katanaMake);
     Alpine.data("katanaUsers", katanaUsers);
-    Alpine.data("katanaApps", katanaApps);
+    Alpine.data("katanaLogs", katanaLogs);
 });

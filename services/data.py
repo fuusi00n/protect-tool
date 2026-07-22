@@ -424,18 +424,27 @@ def get_admin_dashboard_metrics():
         with conn.cursor() as cur:
             cur.execute("SELECT COUNT(*) FROM users")
             users_count = cur.fetchone()[0]
+            cur.execute("SELECT COUNT(*) FROM users WHERE status = 'active'")
+            active_users = cur.fetchone()[0]
             cur.execute("SELECT COUNT(*) FROM builds")
             builds_count = cur.fetchone()[0]
             cur.execute("SELECT COUNT(*) FROM builds WHERE status = 'concluido'")
             completed = cur.fetchone()[0]
             cur.execute("SELECT COUNT(*) FROM builds WHERE status = 'erro'")
             failed = cur.fetchone()[0]
+            cur.execute("SELECT COUNT(*) FROM builds WHERE status = 'processando'")
+            processing = cur.fetchone()[0]
+            cur.execute("SELECT COALESCE(SUM(download_count), 0) FROM builds")
+            total_downloads = cur.fetchone()[0]
 
     return {
         "users_count": users_count,
+        "active_users": active_users,
         "builds_count": builds_count,
         "completed_builds": completed,
         "failed_builds": failed,
+        "processing_builds": processing,
+        "total_public_downloads": int(total_downloads or 0),
         "server_health": "ok" if ping() else "degraded",
     }
 
@@ -449,6 +458,8 @@ def get_build_record(build_id):
                 FROM builds b
                 JOIN users u ON u.id = b.user_id
                 WHERE b.build_id = %s
+                ORDER BY b.created_at DESC
+                LIMIT 1
                 """,
                 (build_id,),
             )
@@ -507,18 +518,43 @@ def get_user_builds(username):
             return _builds_to_json(cur.fetchall())
 
 
-def get_all_builds_detailed():
+def get_activity_logs(page=1, page_size=10):
+    page = max(1, int(page or 1))
+    page_size = max(1, min(100, int(page_size or 10)))
+    offset = (page - 1) * page_size
+
     with get_connection() as conn:
         with conn.cursor(row_factory=dict_row) as cur:
+            cur.execute("SELECT COUNT(*) AS total FROM activity_logs")
+            total = int(cur.fetchone()["total"] or 0)
+
             cur.execute(
                 """
-                SELECT u.username, b.build_id, b.app_name, b.status,
-                       b.created_at, b.output_file, b.download_slug,
-                       b.download_token, b.download_count
-                FROM builds b
-                JOIN users u ON u.id = b.user_id
-                ORDER BY b.created_at DESC
-                LIMIT 500
-                """
+                SELECT id, username, action, details, created_at
+                FROM activity_logs
+                ORDER BY created_at DESC
+                LIMIT %s OFFSET %s
+                """,
+                (page_size, offset),
             )
-            return _builds_to_json(cur.fetchall(), include_username=True)
+            rows = cur.fetchall()
+
+    items = []
+    for row in rows:
+        items.append({
+            "id": row["id"],
+            "username": row["username"],
+            "action": row["action"],
+            "details": row["details"] or "",
+            "timestamp": _iso(row["created_at"]),
+            "date_display": _format_display(row["created_at"]),
+        })
+
+    total_pages = max(1, (total + page_size - 1) // page_size) if total else 1
+    return {
+        "items": items,
+        "page": page,
+        "page_size": page_size,
+        "total": total,
+        "total_pages": total_pages,
+    }

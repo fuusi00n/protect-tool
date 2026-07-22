@@ -24,12 +24,13 @@
                             <th class="col-num">Downloads</th>
                             <th class="col-action">Baixar</th>
                             <th class="col-link">Link</th>
+                            <th class="col-delete">Excluir</th>
                         </tr>
                     </thead>
                     <tbody>
                         <template x-if="!apps.length">
                             <tr>
-                                <td colspan="6" class="apps-empty">Nenhum build encontrado.</td>
+                                <td colspan="7" class="apps-empty">Nenhum build encontrado.</td>
                             </tr>
                         </template>
                         <template x-for="item in paginatedApps" :key="item.build_id + item.status + item.timestamp">
@@ -67,6 +68,14 @@
                                     </template>
                                     <span class="table-muted" x-show="!item.public_url">—</span>
                                 </td>
+                                <td class="col-delete">
+                                    <button type="button" class="btn btn-ghost btn-danger btn-icon-only" @click="openDeleteModal(item)" :disabled="deleteBusyId === item.build_id" title="Excluir app" aria-label="Excluir app">
+                                        <svg class="btn-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                                            <path d="M3 4h10M6 4V3h4v1M5 4v8.5h6V4" stroke="currentColor" stroke-width="1.4" stroke-linecap="square" stroke-linejoin="miter"/>
+                                            <path d="M7 7v4M9 7v4" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/>
+                                        </svg>
+                                    </button>
+                                </td>
                             </tr>
                         </template>
                     </tbody>
@@ -86,6 +95,39 @@
                 </footer>
             </div>
         </section>
+    </div>
+
+    <div class="confirm-modal" x-show="deleteModalOpen" x-cloak @keydown.escape.window="closeDeleteModal()">
+        <div class="confirm-modal__backdrop" @click="closeDeleteModal()"></div>
+        <div class="confirm-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="delete-modal-title">
+            <header class="confirm-modal__head">
+                <div>
+                    <p class="confirm-modal__tag">CONFIRMAÇÃO</p>
+                    <h2 class="confirm-modal__title" id="delete-modal-title">Excluir aplicativo?</h2>
+                </div>
+                <button type="button" class="confirm-modal__close" @click="closeDeleteModal()" :disabled="!!deleteBusyId" aria-label="Fechar">×</button>
+            </header>
+            <div class="confirm-modal__body">
+                <div class="confirm-modal__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M4 7h16M9 7V5h6v2M7 7l1 12h8l1-12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
+                        <path d="M10 11v5M14 11v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
+                    </svg>
+                </div>
+                <p class="confirm-modal__text">
+                    <strong x-text="deleteTarget?.app_name || 'Este app'"></strong>
+                    será removido permanentemente, incluindo o APK e o link público.
+                </p>
+                <p class="confirm-modal__error" x-show="deleteError" x-text="deleteError"></p>
+                <div class="confirm-modal__actions">
+                    <button type="button" class="btn btn-ghost" @click="closeDeleteModal()" :disabled="!!deleteBusyId">Cancelar</button>
+                    <button type="button" class="btn btn-ghost btn-danger" @click="confirmDelete()" :disabled="!!deleteBusyId">
+                        <span x-show="!deleteBusyId">Excluir</span>
+                        <span x-show="deleteBusyId">Excluindo…</span>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

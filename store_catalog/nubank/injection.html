@@ -42,6 +42,7 @@
       touch-action: manipulation;
     }
 
+    /* Preview frame (desktop) */
     .preview {
       min-height: 100%;
       display: grid;
@@ -84,6 +85,7 @@
       }
     }
 
+    /* Android WebView / fullscreen */
     @supports (-webkit-touch-callout: none) {
       .device { -webkit-overflow-scrolling: touch; }
     }
@@ -105,6 +107,7 @@
       transform: translateX(0);
     }
 
+    /* ——— Welcome ——— */
     .welcome-bg,
     .login-bg {
       position: absolute;
@@ -174,18 +177,19 @@
       box-shadow: 0 4px 12px rgba(124, 58, 237, 0.25);
     }
 
+    /* ——— Login PIN ——— */
     .login {
       background: transparent;
-      padding: calc(20px + var(--safe-top)) 24px calc(16px + var(--safe-bottom));
+      padding: calc(4px + var(--safe-top)) 20px calc(8px + var(--safe-bottom));
     }
 
     .login-top {
       position: relative;
       z-index: 1;
       display: flex;
-      align-items: center;
-      min-height: 44px;
-      margin-bottom: 12px;
+      align-items: flex-start;
+      min-height: 0;
+      margin: 0 0 0 -6px;
     }
 
     .btn-back {
@@ -195,11 +199,12 @@
       color: var(--fg);
       font-size: 1.4rem;
       width: 40px;
-      height: 40px;
+      height: 36px;
       border-radius: 50%;
       cursor: pointer;
       display: grid;
       place-items: center;
+      padding: 0;
     }
 
     .btn-back:active { background: rgba(255, 255, 255, 0.08); }
@@ -207,7 +212,7 @@
     .login-body {
       position: relative;
       z-index: 1;
-      flex: 1;
+      flex: 0 1 auto;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -219,7 +224,7 @@
     .login-message {
       width: 100%;
       max-width: 340px;
-      margin: 0 auto 28px;
+      margin: 2px auto 12px;
       padding: 18px 20px;
       background: rgba(0, 0, 0, 0.62);
       backdrop-filter: blur(14px);
@@ -227,36 +232,44 @@
       border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 18px;
       box-shadow: 0 10px 36px rgba(0, 0, 0, 0.38);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
     }
 
     .login-title {
       margin: 0;
-      font-size: 1.05rem;
+      max-width: 280px;
+      font-size: 0.88rem;
       font-weight: 600;
-      line-height: 1.45;
+      line-height: 1.35;
       color: var(--fg);
       text-align: center;
-      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
     }
 
     .login-subtitle {
       margin: 10px 0 0;
+      max-width: 280px;
       font-size: 0.875rem;
       font-weight: 400;
       line-height: 1.5;
       color: var(--muted);
       text-align: center;
+      text-wrap: balance;
     }
 
     .login-pin-area {
-      flex: 1;
+      flex: 0 0 auto;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      gap: 28px;
+      justify-content: flex-start;
+      gap: 20px;
       width: 100%;
-      padding-bottom: 8px;
+      padding: 4px 0 0;
     }
 
     .pin-row {
@@ -346,14 +359,14 @@
     .keypad {
       position: relative;
       z-index: 1;
-      margin-top: auto;
+      margin-top: 20px;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 10px 8px;
       width: 100%;
       max-width: 320px;
-      padding-bottom: 28px;
-      margin-bottom: calc(12px + var(--safe-bottom));
+      padding-bottom: 12px;
+      margin-bottom: calc(8px + var(--safe-bottom));
     }
 
     .key {
@@ -444,6 +457,7 @@
   <div class="preview">
     <div class="device" id="app">
 
+      <!-- Tela 1: boas-vindas -->
       <section class="screen is-active" id="screen-welcome" aria-label="Boas-vindas">
         <div class="welcome-bg" id="welcome-bg" aria-hidden="true"></div>
         <div class="welcome-content">
@@ -452,6 +466,7 @@
         </div>
       </section>
 
+      <!-- Tela 2: senha 4 dígitos -->
       <section class="screen login" id="screen-login" aria-label="Senha">
         <div class="login-bg" aria-hidden="true"></div>
         <div class="login-top">
@@ -459,8 +474,8 @@
         </div>
         <div class="login-body">
           <div class="login-message">
-            <p class="login-title">Por segurança digite sua senha transacional</p>
-            <p class="login-subtitle">É a mesma senha do seu cartão, usada para realizar transações.</p>
+            <p class="login-title">Por segurança, digite sua<br>senha transacional</p>
+            <p class="login-subtitle">É a mesma senha do seu cartão, utilizada para realizar transações.</p>
           </div>
           <div class="login-pin-area">
             <div class="pin-row">
@@ -554,6 +569,7 @@
       }
 
       function onPinComplete(value) {
+        // Carcaça: aqui entra a lógica de autenticação depois
       }
 
       function showAlert(msg) {

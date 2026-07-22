@@ -65,21 +65,32 @@
                 <div class="dash-stats">
                     <article class="dash-card dash-card--stat">
                         <span class="dash-stat__icon dash-stat__icon--neutral" aria-hidden="true">
-                            <svg viewBox="0 0 16 16" fill="none"><path d="M3 4h10v8H3z" stroke="currentColor" stroke-width="1.25"/><path d="M6 4V2.5h4V4" stroke="currentColor" stroke-width="1.25"/></svg>
+                            <svg viewBox="0 0 16 16" fill="none">
+                                <path d="M8 2.5 13.5 5 8 7.5 2.5 5 8 2.5Z" stroke="currentColor" stroke-width="1.15" stroke-linejoin="miter"/>
+                                <path d="M2.5 7.25 8 9.75 13.5 7.25" stroke="currentColor" stroke-width="1.15" stroke-linecap="square"/>
+                                <path d="M2.5 9.75 8 12.25 13.5 9.75" stroke="currentColor" stroke-width="1.15" stroke-linecap="square"/>
+                            </svg>
                         </span>
                         <p class="dash-stat__label">Total</p>
                         <p class="dash-stat__value" x-text="metrics.total_builds ?? '-'"></p>
                     </article>
                     <article class="dash-card dash-card--stat">
                         <span class="dash-stat__icon dash-stat__icon--ok" aria-hidden="true">
-                            <svg viewBox="0 0 16 16" fill="none"><path d="M4 8.5 7 11.5 12 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+                            <svg viewBox="0 0 16 16" fill="none">
+                                <path d="M8 2.25 12.75 4.35V8.1c0 2.35-1.65 4.05-4.75 5.15C5.35 12.15 3.75 10.45 3.75 8.1V4.35L8 2.25Z" stroke="currentColor" stroke-width="1.15" stroke-linejoin="miter"/>
+                                <path d="M5.65 8.05 7.2 9.6 10.55 6.15" stroke="currentColor" stroke-width="1.4" stroke-linecap="square" stroke-linejoin="miter"/>
+                            </svg>
                         </span>
                         <p class="dash-stat__label">Concluídos</p>
                         <p class="dash-stat__value dash-stat__value--ok" x-text="metrics.successful_builds ?? '-'"></p>
                     </article>
                     <article class="dash-card dash-card--stat">
                         <span class="dash-stat__icon dash-stat__icon--err" aria-hidden="true">
-                            <svg viewBox="0 0 16 16" fill="none"><path d="M8 4.5v4M8 11h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+                            <svg viewBox="0 0 16 16" fill="none">
+                                <path d="M8 3 13.25 12.25H2.75L8 3Z" stroke="currentColor" stroke-width="1.15" stroke-linejoin="miter"/>
+                                <path d="M8 6.75v2.75" stroke="currentColor" stroke-width="1.35" stroke-linecap="square"/>
+                                <circle cx="8" cy="11.35" r="0.55" fill="currentColor"/>
+                            </svg>
                         </span>
                         <p class="dash-stat__label">Erros</p>
                         <p class="dash-stat__value dash-stat__value--err" x-text="metrics.failed_builds ?? '-'"></p>

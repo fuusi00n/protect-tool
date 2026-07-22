@@ -1,5 +1,3 @@
--- Migration 002: separar administrador (master) dos usuarios (users)
-
 CREATE TABLE IF NOT EXISTS master (
     id                  UUID            PRIMARY KEY DEFAULT gen_random_uuid(),
     username            VARCHAR(64)     NOT NULL UNIQUE,

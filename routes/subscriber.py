@@ -3,6 +3,7 @@ from flask import Blueprint, jsonify, make_response, redirect, render_template, 
 from services.build_service import (
     build_download_response,
     build_status_payload,
+    delete_user_build,
     start_build,
 )
 from services.upload_validation import validate_icon_upload
@@ -193,6 +194,19 @@ def api_build_status(build_id):
 @require_subscriber
 def api_build_download(build_id):
     return build_download_response(build_id, "subscriber", session["username"])
+
+
+@subscriber_bp.route("/api/build/<build_id>", methods=["DELETE"])
+@require_subscriber
+def api_delete_build(build_id):
+    deleted, reason = delete_user_build(session["username"], build_id)
+    if reason == "not_found":
+        return jsonify({"error": "App nao encontrado"}), 404
+    if reason == "in_progress":
+        return jsonify({"error": "Build em andamento"}), 409
+    if not deleted:
+        return jsonify({"error": "Nao foi possivel excluir"}), 500
+    return jsonify({"success": True})
 
 
 @subscriber_bp.route("/api/build/<build_id>/regenerate-token", methods=["POST"])

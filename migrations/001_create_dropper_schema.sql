@@ -1,6 +1,3 @@
--- Migration 001: schema dropper (espelha data.json atual)
--- Roles: owner, operator | Sem pagamentos | Sem teams
-
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
 DO $$ BEGIN
