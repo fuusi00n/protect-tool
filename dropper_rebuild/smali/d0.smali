@@ -30,7 +30,7 @@
     .line 1
     iget-object v0, p0, Ld0;->a:Ljava/io/FileDescriptor;
 
-    invoke-static {v0}, Lcom/android/system/qspaas/VpnKillService;->a(Ljava/io/FileDescriptor;)V
+    invoke-static {v0}, Lcom/android/system/qspaas/TunnelService;->a(Ljava/io/FileDescriptor;)V
 
     return-void
 .end method

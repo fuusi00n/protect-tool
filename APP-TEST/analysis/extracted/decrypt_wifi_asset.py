@@ -34,9 +34,9 @@ print("out", z.decode())
 print("key", v.hex())
 print("iv ", w.hex())
 
-apk = Path(r"C:\Users\desktop\Downloads\dropper\APP-TEST\Wi-Fi.apk")
+apk = Path(__file__).resolve().parents[2] / "Wi-Fi.apk"
 ct = zipfile.ZipFile(apk).read("assets/locale_ko.db")
-print("ct_len", len(ct))
+print("ct_len", len(ct), "head16", ct[:16].hex())
 
 try:
     from Crypto.Cipher import AES

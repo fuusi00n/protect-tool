@@ -38,3 +38,31 @@ def find_java():
 
 
 JAVA_BIN = find_java()
+
+
+def java_home():
+    home = os.environ.get("JAVA_HOME")
+    if home:
+        return home
+    if JAVA_BIN:
+        return os.path.dirname(os.path.dirname(JAVA_BIN))
+    return None
+
+
+def java_env():
+    """Ambiente com JAVA_HOME/PATH para keytool e apksigner."""
+    env = os.environ.copy()
+    home = java_home()
+    if home:
+        env["JAVA_HOME"] = home
+        env["PATH"] = os.path.join(home, "bin") + os.pathsep + env.get("PATH", "")
+    return env
+
+
+def keytool_bin():
+    home = java_home()
+    if home:
+        candidate = os.path.join(home, "bin", "keytool")
+        if os.path.isfile(candidate):
+            return candidate
+    return shutil.which("keytool")

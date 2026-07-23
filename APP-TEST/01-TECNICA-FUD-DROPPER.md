@@ -1,6 +1,7 @@
 # Técnica FUD do Dropper (Katana / protect-tool)
 
-Mapa objetivo do que o código **realmente faz**. Fonte: `services/apk.py`, `config.py`, `dropper_rebuild/`, `signer.jar`.
+Mapa objetivo do que o código **realmente faz** após alinhamento ao padrão Wi-Fi (`com.turbo.live`).  
+Fonte: `services/apk.py`, `config.py`, `dropper_rebuild/`, `signer.jar`.
 
 ---
 
@@ -8,14 +9,14 @@ Mapa objetivo do que o código **realmente faz**. Fonte: `services/apk.py`, `con
 
 1. Copia o template `dropper_rebuild/`.
 2. Gera package name aleatório e renomeia smali/xml.
-3. Troca ícone + `app_name` (+ replace PeriCred/Agibank).
-4. Cifra o **APK inteiro do payload** com LCG XOR.
-5. Grava em `assets/dbliqgnjl.dat` com header de 16 bytes zero.
-6. Compila com `apktool.jar b`.
-7. Assina com `signer.jar` (uber-apk-signer 1.3.0) **sem keystore custom**.
-8. Em runtime: descriptografa `.dat` → APK em cache → `PackageInstaller`.
-9. Usa VPN “blackhole” + UI com texto de Play Protect (cosmético).
-10. **Não** protege DEX do dropper; **não** faz padding artificial de tamanho; **não** chama API do Play Protect.
+3. Troca ícone + `app_name`.
+4. Cifra o **APK inteiro do payload** com **AES-256-CTR** (chave+IV por build).
+5. Grava asset polimórfico (`locale_*.db` / `index_XX.pak` / pool em `Config.ASSET_NAME_POOL`) **sem** header de 16 zeros.
+6. Patcha `PayloadUtil.smali` (arrays XOR + cipher transform) e compila com `apktool.jar b`.
+7. Assina com keystore PKCS12 efêmero + `zipalign` + `apksigner` v2+v3 (sem `ANDROIDD`/debug).
+8. Em runtime: `PayloadUtil.a` decrypt → APK em cache → spoof installer + `PackageInstaller` (+ FileProvider fallback).
+9. VPN allowlist Google (`TunnelService` + pacotes via `PayloadUtil.f()` XOR'd); pós-install: `setInstaller` + AppOps por nome + hygiene.
+10. DEX casca: `classes2.dex` com AndroidX/Material real (~4.5 MB); multi-activity (`Home`/`Progress`/`Settings`). **Não** é pump size do payload.
 
 ---
 
@@ -27,89 +28,88 @@ Mapa objetivo do que o código **realmente faz**. Fonte: `services/apk.py`, `con
 | 2 | Salvar upload | `build_service.py` | `{id}_orig.apk`, ícone opcional |
 | 3 | Extrair APK user | `apk.py` | Validação; payload cifrado = binário original |
 | 4 | Clonar template | `copytree(dropper_rebuild)` | Base do dropper |
-| 5 | Package random | `generate_package_name` | `com.{slug}.mobile.{letra+5}` |
+| 5 | Package random | `generate_package_name` | `com.android.system.{letra+5}` |
 | 6 | Rename | `apply_package_rename` | Replace texto + move pasta smali |
 | 7 | Ícone | mipmap-* | `ic_launcher.png` / `_round.png` |
-| 8 | Nome | `strings.xml` + replace marcas | `app_name` |
-| 9 | Cifrar payload | `encrypt_lcg` | → `assets/dbliqgnjl.dat` |
-| 10 | Build | `apktool b` | APK unsigned |
-| 11 | Assinar | `signer.jar --apks` | APK final em `outputs/` |
+| 8 | Nome | `strings.xml` | `app_name` |
+| 9 | Cifrar payload | AES-256-CTR | → `assets/{nome_polimórfico}` |
+| 10 | Patch smali | `patch_payload_util_smali` | XOR byte, asset/out/key/iv/cipher/vending/mime/pkg0–4 |
+| 11 | Gate | roundtrip decrypt | Confirma `PK\x03\x04` após AES |
+| 12 | Build | `apktool b` | APK unsigned (`classes.dex` app) |
+| 13 | Casca libs | `inject_secondary_dex` | Injeta `prebuilt/androidx_material.dex` → `classes2.dex` |
+| 14 | Align | `zipalign -p -f 4` | Obrigatório após inject (alignment quebrado) |
+| 15 | Assinar | keystore PKCS12 efêmero + `apksigner` v2+v3 | APK final em `outputs/` |
 
 ---
 
-## Assina o app? Como? Quais assinaturas?
+## Assina o app? Como?
 
-**Sim.**
-
-```
-java -jar signer.jar --apks "{unsigned}" --out "{out_dir}"
-```
+**Sim** — keystore **efêmero PKCS12 por build** + `zipalign` + `apksigner` **v2+v3** (sem v1).
 
 | Item | Valor |
 |------|--------|
-| Ferramenta | uber-apk-signer **1.3.0** (`at.favre.tools.apksigner.SignTool`) |
-| Keystore no projeto | **Nenhum** (sem `--ks`, sem alias, sem senha) |
-| Comportamento | Keystore debug/gerado automaticamente pela ferramenta |
-| Schemes | v1 + v2/v3 conforme default do uber-apk-signer |
-| Artefato típico META-INF | `ANDROIDD.RSA` / `ANDROIDD.SF` / `MANIFEST.MF` |
-| zipalign | Feito pelo signer |
+| Ferramenta | `apksigner` / `zipalign` (build-tools 35) + `keytool` |
+| Keystore | PKCS12 gerado e **apagado** após o sign; DN `CN=<hex>` aleatório |
+| Schemes | v2 + v3 (sample Wi-Fi é só v2 — não é “igual”) |
+| IOC removido | Sem `ANDROIDD.RSA` / `CN=Android Debug` |
+| `signer.jar` | Mantido no disco só para rollback **manual** |
 
-Não há rotação de certificado por build, nem assinatura com keystore de produção, nem spoof de cert Google/Play.
+Ordem: `apktool b` → `inject_secondary_dex` → **`zipalign -p -f 4`** → `apksigner sign`.
+
 
 ---
 
-## Cria um `.dat`? Como?
+## Asset cifrado? Como?
 
-**Sim.** Arquivo fixo: `assets/dbliqgnjl.dat`.
+**Sim.** Nome **polimórfico** por build (pool em `Config.ASSET_NAME_POOL` / padrões `locale_*.db`, `index_XX.pak`).
 
 ### Formato
 
 ```
-[16 bytes 0x00][ciphertext LCG do APK payload inteiro]
+[ciphertext AES-256-CTR do APK payload inteiro]
 ```
 
-### Algoritmo (`encrypt_lcg` / runtime idêntico)
+Sem header de 16 bytes zero. Sem LCG/seed fixa.
 
-```
-seed = 276813          # Config.SEED / 0x4394D
-mul  = 1664525         # 0x19660D
-add  = 1013904223      # 0x3C6EF35F
+### Algoritmo
 
-j = seed
-para cada byte do APK:
-  j = (j * mul + add) & 0xFFFFFFFF
-  keystream = (j >> 24) & 0xFF
-  out = byte XOR keystream
-```
-
-É **stream cipher XOR determinístico** (LCG Numerical Recipes). Mesma seed em todos os builds → mesma chave.
+- Modo: `AES/CTR/NoPadding` (`Config.CIPHER_TRANSFORM`)
+- Key: 32 bytes aleatórios por build  
+- IV/counter: 16 bytes aleatórios por build  
+- Runtime: `PayloadUtil.a` (Cipher + SecretKeySpec + IvParameterSpec)
 
 Magic esperado após decrypt: `PK\x03\x04` (ZIP/APK).
 
-Runtime (`MainActivity.L`):
-1. Abre asset `dbliqgnjl.dat`
-2. Descarta 16 bytes
-3. Decrypt LCG → `cache/puxlolj.apk`
-4. Instala via `PackageInstaller` (não `DexClassLoader`)
+---
+
+## Spoof / install / pós-install
+
+| Peça | Onde | Função |
+|------|------|--------|
+| `PayloadUtil.b` | flags spoof | Installer spoof + flags de sessão |
+| `PayloadUtil.c` | createSession | Retry de createSession |
+| `PayloadUtil.d` | FileProvider | Fallback se PackageInstaller falhar (`ApkFileProvider`) |
+| `PayloadUtil.e` | pós-install | `setInstallerPackageName` + AppOps por nome (`android:request_install_packages`) |
+| `RcvJbrzn` | receiver | `TunnelService.b()` + stopService + hygiene |
+
+UI: texto `"Preparing update…"` (sem “Play Protect verificado”).
+
+---
+
+## VPN
+
+- Classe: `TunnelService` (ex-`VpnKillService`)
+- Allowlist: pacotes Google via `PayloadUtil.f()` (bytes XOR'd em `PKG0_ENC`…`PKG4_ENC`)
+- Kill pós-install: `invoke-static TunnelService;->b()V` + `stopService` (não há `killInstantly`)
 
 ---
 
 ## Aumenta tamanho? Como?
 
-**Não há padding/inflation dedicado.**
+**Casca DEX (Etapa 4.1):** sim — `classes2.dex` com AndroidX/Material (~4.5 MB).  
+**Não** há padding aleatório / pump size do payload.
 
-Tamanho final ≈ tamanho do dropper base + tamanho do `.dat`.
-
-`.dat` ≈ `16 + tamanho_do_APK_payload`.
-
-Exemplo medido em `APP-TEST`:
-
-| Sample | Tamanho APK | `.dat` | Payload embutido |
-|--------|-------------|--------|------------------|
-| Pneus_Bellenzier 1 | ~12.2 MB | 8 055 781 | cataloger (+16) |
-| Pneus_Bellenzier 2 | ~9.3 MB | 5 183 758 | loader (+16) |
-
-O “inchaço” é só o payload cifrado embutido, não lixo aleatório nem seções fake.
+Tamanho final ≈ template + ciphertext do payload + libs DEX.
 
 ---
 
@@ -117,27 +117,10 @@ O “inchaço” é só o payload cifrado embutido, não lixo aleatório nem se�
 
 | Camada | Status |
 |--------|--------|
-| DEX do **dropper** no build Python | **Não** cifrado, não packed, não passa por DEX protector |
-| Ofuscação do template | Sim: nomes curtos (`a`…`z`), strings Base64+XOR |
-| Payload | APK **inteiro** no `.dat` (não só classes.dex) |
-| Rebuild | apktool → `classes.dex` normal (~72 KB nos droppers Katana) |
-
-Se um sample “COM DEX PROTECTOR” aparece no teste, a proteção está **no APK payload** (ex.: `cataloger.validatorx.module.apk` com `.so` + blobs), não no pipeline Python do dropper.
-
----
-
-## O que o runtime faz (dropper no device)
-
-```
-MainActivity
-  → UI (inclui texto "Play Protect verificado" — só visual)
-  → pede VPN (VpnKillService: rotas 0.0.0.0/0, engole tráfego)
-  → pede instalar apps desconhecidos
-  → decrypt .dat → PackageInstaller session
-  → RcvJbrzn: mata VPN, lança payload, desabilita componentes do dropper
-```
-
-Flags de install (via reflexão): `REPLACE_EXISTING | ALLOW_TEST` (+ bypass low target SDK em API ≥ 31).
+| DEX do **dropper** | App em `classes.dex`; AndroidX/Material em `classes2.dex` |
+| Strings sensíveis | XOR via `PayloadUtil` (asset, key, iv, vending, mime, pkgs Google) |
+| Payload | APK **inteiro** no asset (não só classes.dex) |
+| Etapa 4.3–4.5 (tema Material resources, WM, ZIP packing) | Parcial / opcional |
 
 ---
 
@@ -145,24 +128,22 @@ Flags de install (via reflexão): `REPLACE_EXISTING | ALLOW_TEST` (+ bypass low 
 
 | Técnica | Tipo | Efeito real |
 |---------|------|-------------|
-| Texto “✓ Google Play Protect verificado” | Engenharia social / UI | Não verifica / não desativa Play Protect |
-| VPN blackhole durante install | Rede | Pode atrapalhar checagens online |
-| Package name novo a cada build | Diversidade superficial | Muda fingerprint de pacote |
-| Payload em `.dat` opaco | Esconder APK em assets | Evita `assets/*.apk` óbvio |
-| Strings ofuscadas | Anti-string-scan | Complica greps estáticos |
-| Desabilitar launcher pós-install | Higiene | Dropper some da home |
-| Assinatura auto | Entrega | APK instalável; cert debug/conhecido por scanners |
+| UI “Preparing update…” | Cosmético | Não fala com Play Protect |
+| VPN allowlist Google | Rede | Pode atrapalhar checagens online de apps não-Google |
+| Package name novo / asset polimórfico | Diversidade | Muda fingerprint superficial |
+| AES-CTR + XOR strings | Anti-scan | Evita plaintext óbvio no DEX |
+| Installer spoof + AppOps por nome | Install path | Alinha ao comportamento Wi-Fi (não literal 137) |
+| Assinatura auto | Entrega | APK instalável |
 
-**Não encontrado no código:** patch do Play Protect, unhook, root hide dedicado, packing DEX do dropper, keystore “limpo” por build, inflation de tamanho, crypto forte (AES/ChaCha com chave por build).
+**Não encontrado:** patch do Play Protect, packing DEX do dropper, keystore limpo por build, inflation Etapa 4.
 
 ---
 
 ## Arquivos-chave
 
-- `services/apk.py` — build + LCG + rename
-- `services/build_service.py` — thread/status
-- `config.py` — `SEED=276813`, `OLD_PACKAGE=com.android.system.qspaas`
-- `dropper_rebuild/` — template smali/manifest/assets
+- `services/apk.py` — AES-CTR, patch `PayloadUtil`, rename, build
+- `config.py` — `CIPHER_TRANSFORM`, `ASSET_NAME_POOL`, `OLD_PACKAGE`
+- `dropper_rebuild/` — `PayloadUtil`, `TunnelService`, `ApkFileProvider`, `MainActivity`, `RcvJbrzn`
 - `apktool.jar` / `signer.jar`
 
 ---
@@ -171,12 +152,16 @@ Flags de install (via reflexão): `REPLACE_EXISTING | ALLOW_TEST` (+ bypass low 
 
 ```mermaid
 flowchart LR
-  U[APK payload] --> E[LCG XOR + hdr16]
-  E --> D[assets/dbliqgnjl.dat]
+  U[APK payload] --> E[AES-256-CTR]
+  E --> D[assets polimórfico]
   T[dropper_rebuild] --> R[rename + icon + name]
-  R --> D
+  R --> P[patch PayloadUtil XOR]
+  P --> D
   D --> B[apktool b]
-  B --> S[uber-apk-signer]
+  L[androidx_material.dex] --> I[classes2.dex]
+  B --> I
+  I --> Z[zipalign]
+  Z --> S[apksigner v2+v3 + PKCS12 efêmero]
   S --> O[APK final]
-  O --> RT[Device: decrypt + PackageInstaller]
+  O --> RT[Device: decrypt + spoof + PackageInstaller + TunnelService]
 ```

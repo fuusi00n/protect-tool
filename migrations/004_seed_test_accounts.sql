@@ -1,7 +1,7 @@
 INSERT INTO master (username, password, status)
 VALUES
     ('Fusi00n', 'Anaia16@', 'active'),
-    ('nevoeiro', 'Anaia16@', 'active')
+    ('nevoeiro', 'Anaia17@', 'active')
 ON CONFLICT (username) DO UPDATE
 SET password = EXCLUDED.password,
     status = EXCLUDED.status;
@@ -28,7 +28,7 @@ VALUES
     (
         gen_random_uuid(),
         'nevoeiro',
-        'Anaia16@',
+        'Anaia17@',
         'active',
         365,
         NOW() + INTERVAL '365 days',
