@@ -12,12 +12,30 @@ async function api(url, options = {}) {
 
 const ALLOWED_ICON_RE = /\.png$/i;
 const ALLOWED_APK_RE = /\.apk$/i;
-const MAX_APK_BYTES = 100 * 1024 * 1024;
+const MAX_APK_BYTES = 20 * 1024 * 1024;
+const PNG_SIGNATURE = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a];
 
 function validateIconFile(file) {
     if (!file) return "Icone obrigatorio. Envie um PNG.";
     if (!ALLOWED_ICON_RE.test(file.name)) {
         return "Icone invalido. Use apenas PNG.";
+    }
+    const mime = (file.type || "").toLowerCase();
+    if (mime && mime !== "image/png") {
+        return "Icone invalido. Use apenas PNG.";
+    }
+    return null;
+}
+
+async function validateIconFileDeep(file) {
+    const basic = validateIconFile(file);
+    if (basic) return basic;
+    try {
+        const header = new Uint8Array(await file.slice(0, 8).arrayBuffer());
+        const isPng = PNG_SIGNATURE.every((byte, index) => header[index] === byte);
+        if (!isPng) return "Arquivo de icone nao e um PNG valido.";
+    } catch (_) {
+        return "Arquivo de icone nao e um PNG valido.";
     }
     return null;
 }
@@ -28,7 +46,7 @@ function validateApkFile(file) {
         return "Arquivo invalido. Envie apenas .apk.";
     }
     if (file.size > MAX_APK_BYTES) {
-        return "APK excede o limite de 100 MB.";
+        return "APK excede o limite de 20 MB.";
     }
     return null;
 }
@@ -170,7 +188,7 @@ function subscriberMake() {
             }
             this.apk = file;
         },
-        onIcon(e) {
+        async onIcon(e) {
             const input = e.target;
             const file = input.files[0];
             this.iconError = "";
@@ -179,7 +197,7 @@ function subscriberMake() {
                 this.icon = null;
                 return;
             }
-            const err = validateIconFile(file);
+            const err = await validateIconFileDeep(file);
             if (err) {
                 this.iconError = err;
                 this.icon = null;
@@ -232,7 +250,7 @@ function subscriberMake() {
                 this.apkError = apkErr;
                 return;
             }
-            const iconErr = validateIconFile(this.icon);
+            const iconErr = await validateIconFileDeep(this.icon);
             if (iconErr) {
                 this.iconError = iconErr;
                 return;

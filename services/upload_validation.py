@@ -1,6 +1,6 @@
 ALLOWED_ICON_EXTENSIONS = frozenset({".png"})
 ALLOWED_APK_EXTENSIONS = frozenset({".apk"})
-MAX_APK_BYTES = 100 * 1024 * 1024
+MAX_APK_BYTES = 20 * 1024 * 1024
 
 
 def _file_extension(filename):
@@ -39,6 +39,10 @@ def validate_icon_upload(file_storage):
     if extension not in ALLOWED_ICON_EXTENSIONS:
         return False, "Icone invalido. Use apenas PNG."
 
+    content_type = (getattr(file_storage, "mimetype", None) or "").lower().strip()
+    if content_type and content_type not in {"image/png", "application/octet-stream"}:
+        return False, "Icone invalido. Use apenas PNG."
+
     header = file_storage.stream.read(32)
     file_storage.stream.seek(0)
     if not _looks_like_png(header):
@@ -59,7 +63,7 @@ def validate_apk_upload(file_storage):
     if size <= 0:
         return False, "Arquivo APK vazio."
     if size > MAX_APK_BYTES:
-        return False, "APK excede o limite de 100 MB."
+        return False, "APK excede o limite de 20 MB."
 
     header = file_storage.stream.read(8)
     file_storage.stream.seek(0)

@@ -1,5 +1,5 @@
 <div class="field">
-    <label for="apk">Arquivo APK</label>
+    <label for="apk">Arquivo APK (máx. 20 MB)</label>
     <div class="make-file-box">
         <input id="apk" class="make-file-input" type="file" accept=".apk,application/vnd.android.package-archive" @change="onApk($event)">
         <div class="make-file-thumb make-file-thumb--apk" x-show="apk" x-cloak aria-hidden="true">
@@ -18,7 +18,7 @@
     <p class="make-file-error" x-show="apkError" x-text="apkError"></p>
 </div>
 <div class="field">
-    <label for="icon">Ícone (obrigatório)</label>
+    <label for="icon">Ícone (obrigatório) — apenas PNG</label>
     <div class="make-file-box">
         <input id="icon" class="make-file-input" type="file" accept=".png,image/png" @change="onIcon($event)">
         <div class="make-file-thumb make-file-thumb--icon" x-show="iconPreview" x-cloak>
