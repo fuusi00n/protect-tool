@@ -108,6 +108,7 @@ function katanaMake() {
         buildId: "",
         downloadUrl: "",
         pollTimer: null,
+        tipModalOpen: true,
         buildModalOpen: false,
         buildPhase: "",
         submitStep: 0,
@@ -126,6 +127,9 @@ function katanaMake() {
             if (this.buildPhase === "done") return "Build finalizado";
             if (this.buildPhase === "error") return "Algo deu errado";
             return "";
+        },
+        closeTipModal() {
+            this.tipModalOpen = false;
         },
         clearIconPreview() {
             if (this.iconPreview) {

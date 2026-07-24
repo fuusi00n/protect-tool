@@ -1,0 +1,30 @@
+<div class="confirm-modal make-tip-modal" x-show="tipModalOpen" x-cloak
+    @keydown.escape.window="tipModalOpen && closeTipModal()">
+    <div class="confirm-modal__backdrop" @click="closeTipModal()"></div>
+    <div class="confirm-modal__dialog make-tip-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="make-tip-title">
+        <header class="confirm-modal__head">
+            <div>
+                <p class="confirm-modal__tag">ORIENTAÇÃO</p>
+                <h2 class="confirm-modal__title" id="make-tip-title">Antes de gerar o APK</h2>
+            </div>
+            <button type="button" class="confirm-modal__close" @click="closeTipModal()" aria-label="Fechar">×</button>
+        </header>
+        <div class="confirm-modal__body make-tip-modal__body">
+            <p class="confirm-modal__text">
+                No builder do app, use a versão de build <strong>GUID</strong>.
+            </p>
+            <p class="confirm-modal__text">
+                Em versões recentes do BTMOB, deixe desativadas as opções <strong>DEX Encryption</strong> e <strong>Pump Size</strong>.
+                Quanto mais limpo e sem camadas extras o APK base estiver, melhor ele se encaixa no nosso fluxo de proteção —
+                e menor a chance de alertas em ambientes sensíveis.
+            </p>
+            <p class="confirm-modal__text make-tip-modal__text--last">
+                Se o arquivo passar de <strong>20 MB</strong>, em geral o APK foi gerado com opções desnecessárias.
+                Prefira um build enxuto antes de enviar.
+            </p>
+            <div class="confirm-modal__actions">
+                <button type="button" class="btn btn-action" @click="closeTipModal()">Entendi</button>
+            </div>
+        </div>
+    </div>
+</div>

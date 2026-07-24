@@ -3182,6 +3182,22 @@ tbody tr:last-child td {
     gap: 0.5rem;
 }
 
+.make-tip-modal {
+    z-index: 90;
+}
+
+.make-tip-modal__dialog {
+    width: min(28rem, calc(100vw - 2rem));
+}
+
+.make-tip-modal__body .confirm-modal__text {
+    margin-bottom: 0.85rem;
+}
+
+.make-tip-modal__text--last {
+    margin-bottom: 1.15rem !important;
+}
+
 .build-modal {
     position: fixed;
     inset: 0;

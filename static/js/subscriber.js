@@ -145,6 +145,7 @@ function subscriberMake() {
         progress: 0,
         buildId: "",
         pollTimer: null,
+        tipModalOpen: true,
         buildModalOpen: false,
         buildPhase: "",
         limitError: null,
@@ -164,6 +165,9 @@ function subscriberMake() {
             if (this.buildPhase === "done") return "Build finalizado";
             if (this.buildPhase === "error") return "Algo deu errado";
             return "";
+        },
+        closeTipModal() {
+            this.tipModalOpen = false;
         },
         clearIconPreview() {
             if (this.iconPreview) {

@@ -33,6 +33,8 @@
         </section>
     </div>
 
+    {% include "partials/make_tip_modal.html" %}
+
     <div class="build-modal" x-show="buildModalOpen" x-cloak
         @keydown.escape.window="(buildPhase === 'done' || buildPhase === 'error') && closeBuildModal()">
         <div class="build-modal__backdrop"
