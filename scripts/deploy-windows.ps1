@@ -90,71 +90,115 @@ try {
     $escapedArchive = $remoteArchiveName.Replace("'", "''")
     $remoteScript = @"
 `$ErrorActionPreference = 'Stop'
+`$ProgressPreference = 'SilentlyContinue'
 `$target = '$escapedPath'
 `$archive = Join-Path `$env:USERPROFILE '$escapedArchive'
-New-Item -ItemType Directory -Force -Path `$target | Out-Null
-Expand-Archive -LiteralPath `$archive -DestinationPath `$target -Force
-Remove-Item -LiteralPath `$archive -Force
 
-`$envFile = Join-Path `$target '.env'
-if (-not (Test-Path -LiteralPath `$envFile -PathType Leaf)) {
-    throw "Arquivo .env nao encontrado em `$target. Crie-o antes do deploy."
+function Invoke-Step([string]`$Name, [scriptblock]`$Action) {
+    Write-Output ("[deploy] " + `$Name + "...")
+    `$global:LASTEXITCODE = 0
+    & `$Action
+    `$code = if (`$null -eq `$LASTEXITCODE) { 0 } else { [int]`$LASTEXITCODE }
+    if (`$code -ne 0) {
+        Write-Output ("[deploy] FALHA em '" + `$Name + "' (exit=" + `$code + ")")
+        throw ("Falha em '" + `$Name + "' (exit=" + `$code + ")")
+    }
+    Write-Output ("[deploy] OK: " + `$Name)
 }
 
-`$venvPython = Join-Path `$target '.venv\Scripts\python.exe'
-if (-not (Test-Path -LiteralPath `$venvPython -PathType Leaf)) {
-    `$systemPython = (Get-Command python -ErrorAction Stop).Source
-    & `$systemPython -m venv (Join-Path `$target '.venv')
-    if (`$LASTEXITCODE -ne 0) { throw 'Falha ao criar o ambiente virtual.' }
-}
-
-Push-Location `$target
 try {
-    & `$venvPython -m pip install --disable-pip-version-check -r requirements.txt
-    if (`$LASTEXITCODE -ne 0) { throw 'Falha ao instalar requirements.txt.' }
+    New-Item -ItemType Directory -Force -Path `$target | Out-Null
+    Expand-Archive -LiteralPath `$archive -DestinationPath `$target -Force
+    Remove-Item -LiteralPath `$archive -Force
 
-    & `$venvPython -m pip install --disable-pip-version-check waitress
-    if (`$LASTEXITCODE -ne 0) { throw 'Falha ao instalar Waitress.' }
+    `$envFile = Join-Path `$target '.env'
+    if (-not (Test-Path -LiteralPath `$envFile -PathType Leaf)) {
+        throw "Arquivo .env nao encontrado em `$target. Crie-o antes do deploy."
+    }
+    Write-Output '[deploy] .env remoto preservado.'
 
-    & `$venvPython -m compileall -q app.py routes services migrations
-    if (`$LASTEXITCODE -ne 0) { throw 'Falha ao compilar o projeto.' }
-
-    & `$venvPython migrations\run_migrations.py
-    if (`$LASTEXITCODE -ne 0) { throw 'Falha ao executar as migrations.' }
-
-    `$taskName = 'KatanaProtectTool'
-    if (Get-ScheduledTask -TaskName `$taskName -ErrorAction SilentlyContinue) {
-        Stop-ScheduledTask -TaskName `$taskName -ErrorAction SilentlyContinue
-        Start-Sleep -Seconds 2
+    `$venvPython = Join-Path `$target '.venv\Scripts\python.exe'
+    if (-not (Test-Path -LiteralPath `$venvPython -PathType Leaf)) {
+        `$systemPython = (Get-Command python -ErrorAction Stop).Source
+        Invoke-Step 'criar venv' {
+            & `$systemPython -m venv (Join-Path `$target '.venv')
+        }
     }
 
-    & powershell -NoProfile -ExecutionPolicy Bypass -File scripts\install-windows-task.ps1
-    if (`$LASTEXITCODE -ne 0) { throw 'Falha ao instalar a tarefa da aplicacao.' }
-    Start-ScheduledTask -TaskName `$taskName
+    Push-Location `$target
+    try {
+        Invoke-Step 'pip install requirements' {
+            & `$venvPython -m pip install --disable-pip-version-check -r requirements.txt
+        }
 
-    `$healthy = `$false
-    for (`$attempt = 1; `$attempt -le 30; `$attempt++) {
-        Start-Sleep -Seconds 1
-        try {
-            `$response = Invoke-WebRequest -Uri 'http://127.0.0.1:5000/bypass' -UseBasicParsing -TimeoutSec 5
-            if (`$response.StatusCode -eq 200) {
-                `$healthy = `$true
-                break
+        Invoke-Step 'pip install waitress' {
+            & `$venvPython -m pip install --disable-pip-version-check waitress
+        }
+
+        `$compileTargets = @('app.py', 'routes', 'services') | Where-Object {
+            Test-Path -LiteralPath `$PSItem
+        }
+        if (Test-Path -LiteralPath 'migrations') {
+            `$compileTargets += 'migrations'
+        }
+        Invoke-Step 'compileall' {
+            & `$venvPython -m compileall -q @compileTargets
+        }
+
+        if (Test-Path -LiteralPath 'migrations\run_migrations.py') {
+            Invoke-Step 'migrations' {
+                & `$venvPython migrations\run_migrations.py
+            }
+        } else {
+            Write-Output '[deploy] migrations ausentes; pulando.'
+        }
+
+        if (Test-Path -LiteralPath 'init_bitcoin_db.py') {
+            Invoke-Step 'init_bitcoin_db' {
+                & `$venvPython init_bitcoin_db.py
             }
         }
-        catch {
-            Write-Output "Aguardando aplicacao iniciar (`$attempt/30)..."
+
+        `$taskName = 'KatanaProtectTool'
+        if (Get-ScheduledTask -TaskName `$taskName -ErrorAction SilentlyContinue) {
+            Stop-ScheduledTask -TaskName `$taskName -ErrorAction SilentlyContinue
+            Start-Sleep -Seconds 2
+        }
+
+        Invoke-Step 'install-windows-task' {
+            & powershell -NoProfile -ExecutionPolicy Bypass -File scripts\install-windows-task.ps1
+        }
+        Start-ScheduledTask -TaskName `$taskName
+        Write-Output '[deploy] tarefa iniciada.'
+
+        `$healthy = `$false
+        for (`$attempt = 1; `$attempt -le 30; `$attempt++) {
+            Start-Sleep -Seconds 1
+            try {
+                `$response = Invoke-WebRequest -Uri 'http://127.0.0.1:5000/bypass' -UseBasicParsing -TimeoutSec 5
+                if (`$response.StatusCode -eq 200) {
+                    `$healthy = `$true
+                    break
+                }
+            }
+            catch {
+                Write-Output ("Aguardando aplicacao iniciar (" + `$attempt + "/30)...")
+            }
+        }
+        if (-not `$healthy) {
+            throw 'A aplicacao nao respondeu em http://127.0.0.1:5000/bypass apos o reinicio.'
         }
     }
-    if (-not `$healthy) {
-        throw 'A aplicacao nao respondeu em http://127.0.0.1:5000/bypass apos o reinicio.'
+    finally {
+        Pop-Location
     }
-}
-finally {
-    Pop-Location
-}
 
-Write-Output ('Deploy concluido e aplicacao validada em ' + `$target)
+    Write-Output ('Deploy concluido e aplicacao validada em ' + `$target)
+}
+catch {
+    Write-Output ('[deploy] ERRO: ' + `$_.Exception.Message)
+    throw
+}
 "@
 
     $encodedRemoteScript = [Convert]::ToBase64String(
@@ -162,7 +206,7 @@ Write-Output ('Deploy concluido e aplicacao validada em ' + `$target)
     )
     & ssh @sshOptions -- $remoteTarget "powershell -NoProfile -NonInteractive -EncodedCommand $encodedRemoteScript"
     if ($LASTEXITCODE -ne 0) {
-        throw 'O pacote foi enviado, mas a extracao remota falhou.'
+        throw 'O pacote foi enviado, mas a etapa remota falhou. Veja as linhas [deploy] acima.'
     }
 
     Write-Host 'Deploy concluido. O arquivo .env remoto foi preservado.' -ForegroundColor Green
