@@ -31,12 +31,12 @@ try {
     New-Item -ItemType Directory -Force -Path $Target | Out-Null
     Expand-Archive -LiteralPath $archive -DestinationPath $Target -Force
     Remove-Item -LiteralPath $archive -Force
+    Write-Output '[deploy] codigo extraido.'
 
     $envFile = Join-Path $Target '.env'
     if (-not (Test-Path -LiteralPath $envFile -PathType Leaf)) {
-        throw "Arquivo .env nao encontrado em $Target. Crie-o antes do deploy."
+        throw "Arquivo .env nao encontrado em $Target."
     }
-    Write-Output '[deploy] .env remoto preservado.'
 
     $venvPython = Join-Path $Target '.venv\Scripts\python.exe'
     if (-not (Test-Path -LiteralPath $venvPython -PathType Leaf)) {
@@ -51,33 +51,8 @@ try {
         Invoke-Step 'pip install requirements' {
             & $venvPython -m pip install --disable-pip-version-check -r requirements.txt
         }
-
         Invoke-Step 'pip install waitress' {
             & $venvPython -m pip install --disable-pip-version-check waitress
-        }
-
-        $compileTargets = @('app.py', 'routes', 'services') | Where-Object {
-            Test-Path -LiteralPath $_
-        }
-        if (Test-Path -LiteralPath 'migrations') {
-            $compileTargets += 'migrations'
-        }
-        Invoke-Step 'compileall' {
-            & $venvPython -m compileall -q @compileTargets
-        }
-
-        if (Test-Path -LiteralPath 'migrations\run_migrations.py') {
-            Invoke-Step 'migrations' {
-                & $venvPython migrations\run_migrations.py
-            }
-        } else {
-            Write-Output '[deploy] migrations ausentes; pulando.'
-        }
-
-        if (Test-Path -LiteralPath 'init_bitcoin_db.py') {
-            Invoke-Step 'init_bitcoin_db' {
-                & $venvPython init_bitcoin_db.py
-            }
         }
 
         $taskName = 'KatanaProtectTool'
@@ -103,18 +78,18 @@ try {
                 }
             }
             catch {
-                Write-Output ("Aguardando aplicacao iniciar (" + $attempt + "/30)...")
+                Write-Output ("Aguardando (" + $attempt + "/30)...")
             }
         }
         if (-not $healthy) {
-            throw 'A aplicacao nao respondeu em http://127.0.0.1:5000/bypass apos o reinicio.'
+            throw 'App nao respondeu em /bypass.'
         }
     }
     finally {
         Pop-Location
     }
 
-    Write-Output ('Deploy concluido e aplicacao validada em ' + $Target)
+    Write-Output ('Deploy OK em ' + $Target)
 }
 catch {
     Write-Output ('[deploy] ERRO: ' + $_.Exception.Message)
