@@ -1,6 +1,7 @@
 from flask import Flask, redirect, url_for
 
 from config import Config, ensure_directories
+from monitor_bitcoin import start_background_monitor
 from routes.health import health_bp
 from routes.katana import katana_bp
 from routes.payments import payments_bp
@@ -22,6 +23,9 @@ def create_app():
     @app.route("/")
     def root():
         return redirect(url_for("subscriber.login_page"))
+
+    if Config.BITCOIN_MONITOR_ENABLED:
+        start_background_monitor()
 
     return app
 

@@ -3,3 +3,5 @@ werkzeug==2.3.7
 python-dotenv==1.0.1
 psycopg[binary]==3.2.10
 pycryptodome==3.21.0
+embit==0.8.0
+qrcode[pil]==8.2

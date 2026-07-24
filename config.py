@@ -18,11 +18,6 @@ class Config:
 
     TEMPLATES_AUTO_RELOAD = False
 
-    BTCPAY_URL = os.environ.get("BTCPAY_URL", "").rstrip("/")
-    BTCPAY_STORE_ID = os.environ.get("BTCPAY_STORE_ID", "")
-    BTCPAY_API_KEY = os.environ.get("BTCPAY_API_KEY", "")
-    BTCPAY_WEBHOOK_SECRET = os.environ.get("BTCPAY_WEBHOOK_SECRET", "")
-
     UPLOAD_FOLDER = os.path.join(BASE_DIR, "uploads")
     OUTPUT_FOLDER = os.path.join(BASE_DIR, "outputs")
     STORE_CATALOG_DIR = os.path.join(BASE_DIR, "store_catalog")
@@ -30,6 +25,27 @@ class Config:
         "STORE_BTC_ADDRESS",
         "bc1q9afer30l2a2ruqe2qf2kqhudymx7fl90897a74",
     )
+
+    BITCOIN_DESCRIPTOR = os.environ.get("BITCOIN_DESCRIPTOR", "").strip()
+    BITCOIN_NETWORK = os.environ.get("BITCOIN_NETWORK", "signet").strip().lower()
+    BITCOIN_START_INDEX = int(os.environ.get("BITCOIN_START_INDEX", "0"))
+    BITCOIN_INVOICE_MINUTES = int(os.environ.get("BITCOIN_INVOICE_MINUTES", "15"))
+    BITCOIN_REQUIRED_CONFIRMATIONS = int(
+        os.environ.get("BITCOIN_REQUIRED_CONFIRMATIONS", "1")
+    )
+    BITCOIN_MEMPOOL_API = os.environ.get(
+        "BITCOIN_MEMPOOL_API", "https://mempool.space/api"
+    ).rstrip("/")
+    BITCOIN_BLOCKSTREAM_API = os.environ.get(
+        "BITCOIN_BLOCKSTREAM_API", "https://blockstream.info/api"
+    ).rstrip("/")
+    BITCOIN_RATE_API = os.environ.get(
+        "BITCOIN_RATE_API", "https://api.coingecko.com/api/v3"
+    ).rstrip("/")
+    BITCOIN_MONITOR_INTERVAL = int(os.environ.get("BITCOIN_MONITOR_INTERVAL", "20"))
+    BITCOIN_MONITOR_ENABLED = os.environ.get(
+        "BITCOIN_MONITOR_ENABLED", "1"
+    ).strip().lower() not in {"0", "false", "no", "off"}
     PUBLIC_APP_BASE_URL = os.environ.get("PUBLIC_APP_BASE_URL", "").rstrip("/")
     PUBLIC_ICONS_FOLDER = os.path.join(BASE_DIR, "outputs", "icons")
 
