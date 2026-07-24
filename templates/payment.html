@@ -459,7 +459,7 @@ h2.features-title,h2.connections-title{
 <nav class="navbar">
   <input type="checkbox" id="nav-toggle" class="nav-toggle">
   <div class="bar">
-    <a class="katana-brand" href="/" aria-label="Katana">
+    <a class="katana-brand" href="/bypass" aria-label="Katana">
       <span class="katana-face" aria-hidden="true">
         <span class="katana-eyes">
           <span class="katana-eye"></span>
@@ -472,36 +472,9 @@ h2.features-title,h2.connections-title{
     <ul class="nav-links">
       <li><a href="#recursos">Recursos</a></li>
       <li><a href="#planos">Planos</a></li>
-      <li><a href="https://discord.gg/ceebio" target="_blank" rel="noopener noreferrer">Discord</a></li>
     </ul>
 
-    <div class="nav-actions">
-      <button type="button" class="nav-lang" aria-haspopup="menu" aria-expanded="false" aria-label="Idioma: PT-BR">
-        <svg class="flag" viewBox="0 0 28 20" width="20" height="14" aria-hidden="true" focusable="false">
-          <rect width="28" height="20" fill="#009C3B"></rect>
-          <polygon points="14,3 25,10 14,17 3,10" fill="#FFDF00"></polygon>
-          <circle cx="14" cy="10" r="4" fill="#002776"></circle>
-          <path d="M10.5 10.6 a4 4 0 0 1 7 -0.6" stroke="#fff" stroke-width="0.7" fill="none"></path>
-        </svg>
-        <span class="label">PT-BR</span>
-        <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
-          <path d="M19.92 15.05 13.4 8.53a2 2 0 0 0-2.8 0l-6.52 6.52"></path>
-        </svg>
-      </button>
-    </div>
-
     <div class="nav-mobile">
-      <button type="button" class="nav-lang-sm" aria-haspopup="menu" aria-expanded="false" aria-label="Idioma: PT-BR">
-        <svg class="flag" viewBox="0 0 28 20" width="20" height="14" aria-hidden="true" focusable="false">
-          <rect width="28" height="20" fill="#009C3B"></rect>
-          <polygon points="14,3 25,10 14,17 3,10" fill="#FFDF00"></polygon>
-          <circle cx="14" cy="10" r="4" fill="#002776"></circle>
-          <path d="M10.5 10.6 a4 4 0 0 1 7 -0.6" stroke="#fff" stroke-width="0.7" fill="none"></path>
-        </svg>
-        <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
-          <path d="M19.92 15.05 13.4 8.53a2 2 0 0 0-2.8 0l-6.52 6.52"></path>
-        </svg>
-      </button>
       <label for="nav-toggle" class="nav-burger" aria-label="Abrir menu">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
           <circle cx="17.54" cy="18.15" r="2.46"></circle>
@@ -516,7 +489,6 @@ h2.features-title,h2.connections-title{
   <div class="nav-drawer">
     <a href="#recursos">Recursos</a>
     <a href="#planos">Planos</a>
-    <a href="https://discord.gg/ceebio" target="_blank" rel="noopener noreferrer">Discord</a>
   </div>
 </nav>
 
@@ -567,7 +539,7 @@ h2.features-title,h2.connections-title{
         <p class="hero-sub">Instalação rápida em apenas 2 clicks e funcionamento contínuo em segundo plano.</p>
 
         <div class="hero-cta">
-          <a class="btn-primary" href="/register">
+          <a class="btn-primary" href="#planos">
             <span class="shine"></span>
             <span>Começar agora</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
@@ -583,167 +555,41 @@ h2.features-title,h2.connections-title{
         <div class="rows">
           <div class="marquee-fade">
             <div class="track left" style="--marquee-duration:56s;animation-delay:0s">
-              <div class="pcard">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/bradesco.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pname">Bradesco</span>
-              </div>
-              <div class="pcard">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/picpay.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pname">PicPay</span>
-              </div>
-              <div class="pcard">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/pagbank.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pname">PagBank</span>
-              </div>
-              <div class="pcard pcard--rare">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/sicoob.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pcard__meta"><span class="pcard__badge">Mais procurado</span><span class="pname">Sicoob</span></span>
-              </div>
-              <div class="pcard">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/xp.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pname">XP</span>
-              </div>
-              <div class="pcard">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/mercadopago.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pname">Mercado Pago</span>
-              </div>
-              <div class="pcard">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/cresol.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pname">Cresol</span>
-              </div>
-              <div class="pcard pcard--rare">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/sicoob.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pcard__meta"><span class="pcard__badge">Raro</span><span class="pname">Sicoob</span></span>
-              </div>
-              <div class="pcard">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/santander.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pname">Santander</span>
-              </div>
-              <div class="pcard pcard--dark">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/next.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pname">Next</span>
-              </div>
-              <div class="pcard">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/neon.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pname">Neon</span>
-              </div>
-              <div class="pcard pcard--rare">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/sicoob.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pcard__meta"><span class="pcard__badge">Mais procurado</span><span class="pname">Sicoob</span></span>
-              </div>
-              <div class="pcard">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/c6.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pname">C6 Bank</span>
-              </div>
-              <div class="pcard">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/cora.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pname">Cora</span>
-              </div>
-              <div class="pcard">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/infinitepay.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pname">InfinitePay</span>
-              </div>
-              <div class="pcard pcard--rare">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/sicoob.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pcard__meta"><span class="pcard__badge">Raro</span><span class="pname">Sicoob</span></span>
-              </div>
-              <div class="pcard">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/sofisa.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pname">Sofisa</span>
-              </div>
-              <div class="pcard">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/wise.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pname">Wise</span>
-              </div>
-              <div class="pcard">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/bradesco.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pname">Bradesco</span>
-              </div>
-              <div class="pcard pcard--rare">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/sicoob.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pcard__meta"><span class="pcard__badge">Mais procurado</span><span class="pname">Sicoob</span></span>
-              </div>
-              <div class="pcard">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/bradesco.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pname">Bradesco</span>
-              </div>
-              <div class="pcard">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/picpay.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pname">PicPay</span>
-              </div>
-              <div class="pcard">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/pagbank.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pname">PagBank</span>
-              </div>
-              <div class="pcard pcard--rare">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/sicoob.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pcard__meta"><span class="pcard__badge">Mais procurado</span><span class="pname">Sicoob</span></span>
-              </div>
-              <div class="pcard">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/xp.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pname">XP</span>
-              </div>
-              <div class="pcard">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/mercadopago.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pname">Mercado Pago</span>
-              </div>
-              <div class="pcard">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/cresol.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pname">Cresol</span>
-              </div>
-              <div class="pcard pcard--rare">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/sicoob.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pcard__meta"><span class="pcard__badge">Raro</span><span class="pname">Sicoob</span></span>
-              </div>
-              <div class="pcard">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/santander.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pname">Santander</span>
-              </div>
-              <div class="pcard pcard--dark">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/next.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pname">Next</span>
-              </div>
-              <div class="pcard">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/neon.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pname">Neon</span>
-              </div>
-              <div class="pcard pcard--rare">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/sicoob.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pcard__meta"><span class="pcard__badge">Mais procurado</span><span class="pname">Sicoob</span></span>
-              </div>
-              <div class="pcard">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/c6.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pname">C6 Bank</span>
-              </div>
-              <div class="pcard">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/cora.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pname">Cora</span>
-              </div>
-              <div class="pcard">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/infinitepay.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pname">InfinitePay</span>
-              </div>
-              <div class="pcard pcard--rare">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/sicoob.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pcard__meta"><span class="pcard__badge">Raro</span><span class="pname">Sicoob</span></span>
-              </div>
-              <div class="pcard">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/sofisa.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pname">Sofisa</span>
-              </div>
-              <div class="pcard">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/wise.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pname">Wise</span>
-              </div>
-              <div class="pcard">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/bradesco.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pname">Bradesco</span>
-              </div>
-              <div class="pcard pcard--rare">
-                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/sicoob.png') }}" alt="" loading="eager" decoding="async"></span>
-                <span class="pcard__meta"><span class="pcard__badge">Mais procurado</span><span class="pname">Sicoob</span></span>
-              </div>
-            </div>            </div>
+              {# Lista unica + copia para o loop infinito. Bradesco aparece so 1x por ciclo. #}
+              {% set bank_cards = [
+                {"file": "picpay.png", "name": "PicPay"},
+                {"file": "pagbank.png", "name": "PagBank"},
+                {"file": "xp.png", "name": "XP"},
+                {"file": "sicoob.png", "name": "Sicoob", "rare": "Mais procurado"},
+                {"file": "mercadopago.png", "name": "Mercado Pago"},
+                {"file": "cresol.png", "name": "Cresol"},
+                {"file": "santander.png", "name": "Santander"},
+                {"file": "sicoob.png", "name": "Sicoob", "rare": "Raro"},
+                {"file": "next.png", "name": "Next", "dark": true},
+                {"file": "neon.png", "name": "Neon"},
+                {"file": "c6.png", "name": "C6 Bank"},
+                {"file": "sicoob.png", "name": "Sicoob", "rare": "Mais procurado"},
+                {"file": "cora.png", "name": "Cora"},
+                {"file": "infinitepay.png", "name": "InfinitePay"},
+                {"file": "sofisa.png", "name": "Sofisa"},
+                {"file": "sicoob.png", "name": "Sicoob", "rare": "Raro"},
+                {"file": "wise.png", "name": "Wise"},
+                {"file": "bradesco.png", "name": "Bradesco"},
+                {"file": "sicoob.png", "name": "Sicoob", "rare": "Mais procurado"},
+              ] %}
+              {% for _ in [0, 1] %}
+                {% for bank in bank_cards %}
+                  <div class="pcard{% if bank.get('rare') %} pcard--rare{% elif bank.get('dark') %} pcard--dark{% endif %}">
+                    <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/' + bank.file) }}" alt="" loading="eager" decoding="async"></span>
+                    {% if bank.get('rare') %}
+                      <span class="pcard__meta"><span class="pcard__badge">{{ bank.rare }}</span><span class="pname">{{ bank.name }}</span></span>
+                    {% else %}
+                      <span class="pname">{{ bank.name }}</span>
+                    {% endif %}
+                  </div>
+                {% endfor %}
+              {% endfor %}
+            </div>
           </div>
         </div>
       </section>
@@ -759,13 +605,12 @@ h2.features-title,h2.connections-title{
           <div>
             <h2 class="features-title">Tudo que você precisa para um bypass <span class="title-glow">perfeito.</span></h2>
           </div>
-          <p class="features-sub">Katana Apk Fud</p>
           <div>
-            <a class="link-arrow" href="/register">Ver todos os recursos
+            <span class="link-arrow">Katana Apk Fud
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
                 <path d="m12.5 15 3-3-3-3"></path><path d="M8.5 12h6"></path><circle cx="12" cy="12" r="10"></circle>
               </svg>
-            </a>
+            </span>
           </div>
         </div>
 

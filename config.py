@@ -17,7 +17,7 @@ class Config:
     SESSION_COOKIE_SAMESITE = "Lax"
     PERMANENT_SESSION_LIFETIME = timedelta(days=30)
 
-    TEMPLATES_AUTO_RELOAD = False
+    TEMPLATES_AUTO_RELOAD = True
 
     UPLOAD_FOLDER = os.path.join(BASE_DIR, "uploads")
     OUTPUT_FOLDER = os.path.join(BASE_DIR, "outputs")
@@ -61,8 +61,22 @@ class Config:
     _BUILD_TOOLS = os.path.join(
         BASE_DIR, "APP-TEST", "tools", "android-sdk", "build-tools", "35.0.0"
     )
-    APKSIGNER = os.path.join(_BUILD_TOOLS, "apksigner")
-    ZIPALIGN = os.path.join(_BUILD_TOOLS, "zipalign")
+
+    @staticmethod
+    def _tool_path(directory, name):
+        candidates = [os.path.join(directory, name)]
+        if os.name == "nt":
+            candidates = [
+                os.path.join(directory, name + ".exe"),
+                os.path.join(directory, name + ".bat"),
+                os.path.join(directory, name + ".cmd"),
+                os.path.join(directory, name),
+            ]
+        for candidate in candidates:
+            if os.path.isfile(candidate):
+                return candidate
+        return candidates[0]
+
     KEYSTORE_VALIDITY_DAYS = 10000
     KEYSTORE_KEY_ALG = "RSA"
     KEYSTORE_KEY_SIZE = 2048
@@ -113,6 +127,10 @@ class Config:
 
     VERSION_NAME_MAJOR = (7, 9)
     VERSION_CODE_BASE = 30
+
+
+Config.APKSIGNER = Config._tool_path(Config._BUILD_TOOLS, "apksigner")
+Config.ZIPALIGN = Config._tool_path(Config._BUILD_TOOLS, "zipalign")
 
 
 def ensure_directories(config):

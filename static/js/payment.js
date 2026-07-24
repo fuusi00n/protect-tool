@@ -1,9 +1,35 @@
 const buttons = [...document.querySelectorAll('[data-plan-code]')];
 const feedback = document.querySelector('#payment-feedback');
 
+function setButtonsDisabled(disabled) {
+  buttons.forEach((item) => {
+    if (item.dataset.wasDisabled === '1') return;
+    item.disabled = disabled;
+  });
+}
+
+function resetPaymentUi() {
+  setButtonsDisabled(false);
+  if (feedback && !feedback.dataset.serverError) {
+    feedback.className = 'payment-feedback';
+    feedback.textContent = '';
+  }
+}
+
 if (buttons.length && feedback) {
+  buttons.forEach((button) => {
+    if (button.disabled) {
+      button.dataset.wasDisabled = '1';
+    }
+  });
+
+  if (feedback.textContent.trim()) {
+    feedback.dataset.serverError = '1';
+  }
+
   buttons.forEach((button) => button.addEventListener('click', async () => {
-    buttons.forEach((item) => { item.disabled = true; });
+    if (button.disabled) return;
+    setButtonsDisabled(true);
     feedback.className = 'payment-feedback';
     feedback.textContent = 'Criando cobranca segura...';
     try {
@@ -20,7 +46,13 @@ if (buttons.length && feedback) {
     } catch (error) {
       feedback.className = 'payment-feedback is-error';
       feedback.textContent = error.message;
-      buttons.forEach((item) => { item.disabled = false; });
+      setButtonsDisabled(false);
     }
   }));
+
+  // Ao voltar do checkout (bfcache), os botoes ficavam disabled.
+  window.addEventListener('pageshow', resetPaymentUi);
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') resetPaymentUi();
+  });
 }

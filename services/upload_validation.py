@@ -33,7 +33,7 @@ def _looks_like_zip(header):
 
 def validate_icon_upload(file_storage):
     if not file_storage or not file_storage.filename:
-        return True, None
+        return False, "Icone obrigatorio. Envie um PNG."
 
     extension = _file_extension(file_storage.filename)
     if extension not in ALLOWED_ICON_EXTENSIONS:

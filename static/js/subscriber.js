@@ -15,7 +15,7 @@ const ALLOWED_APK_RE = /\.apk$/i;
 const MAX_APK_BYTES = 100 * 1024 * 1024;
 
 function validateIconFile(file) {
-    if (!file) return null;
+    if (!file) return "Icone obrigatorio. Envie um PNG.";
     if (!ALLOWED_ICON_RE.test(file.name)) {
         return "Icone invalido. Use apenas PNG.";
     }
@@ -232,12 +232,10 @@ function subscriberMake() {
                 this.apkError = apkErr;
                 return;
             }
-            if (this.icon) {
-                const err = validateIconFile(this.icon);
-                if (err) {
-                    this.iconError = err;
-                    return;
-                }
+            const iconErr = validateIconFile(this.icon);
+            if (iconErr) {
+                this.iconError = iconErr;
+                return;
             }
             this.busy = true;
             this.openBuildModal();
@@ -246,7 +244,7 @@ function subscriberMake() {
             const fd = new FormData();
             fd.append("file", this.apk);
             fd.append("app_name", this.appName || "App");
-            if (this.icon) fd.append("icon", this.icon);
+            fd.append("icon", this.icon);
 
             let res;
             try {
