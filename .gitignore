@@ -4,6 +4,7 @@ infra/btcpay/backup.env
 infra/btcpay/local.env
 docs/planning/
 .venv/
+venv/
 __pycache__/
 *.pyc
 uploads/
@@ -13,14 +14,6 @@ tmp*/
 .cursor/
 logs/
 apk_dropper/data.json
-APP-TEST/*.apk
-APP-TEST/tools/
-APP-TEST/analysis/bellenzier1_apktool/
-APP-TEST/analysis/bellenzier1_jadx/
-APP-TEST/analysis/wifi_apktool/
-APP-TEST/analysis/wifi_jadx/
-APP-TEST/analysis/extracted/*.apk
-APP-TEST/analysis/extracted/*.pak
-APP-TEST/analysis/extracted/*.dat
-APP-TEST/analysis/extracted/*.db
-APP-TEST/**/jadx.zip
+.DS_Store
+*.pk8
+APP-TEST/

@@ -1,9 +1,0 @@
-tunnel: ea7b3af7-1621-40c7-b7c7-3380f88e4c16
-credentials-file: C:\Users\joaoc\.cloudflared\ea7b3af7-1621-40c7-b7c7-3380f88e4c16.json
-
-ingress:
-  - hostname: npc.suagateway.com.br
-    path: ^/api/webhooks/btcpay/?$
-    service: http://127.0.0.1:5000
-
-  - service: http_status:404

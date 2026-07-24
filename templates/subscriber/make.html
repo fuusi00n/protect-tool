@@ -19,7 +19,6 @@
                     <div class="field">
                         <label for="appName">Nome do app</label>
                         <input id="appName" type="text" x-model="appName" placeholder="Meu App">
-                        <p class="make-field-hint">*Use um nome genérico (ex.: REDE) e ícone de Wi-Fi para dificultar a identificação e remoção do app.</p>
                     </div>
                     {% include "partials/make_upload_fields.html" %}
                     <button type="submit" class="btn btn-build" :disabled="busy || !apk">

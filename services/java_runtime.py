@@ -50,7 +50,6 @@ def java_home():
 
 
 def java_env():
-    """Ambiente com JAVA_HOME/PATH para keytool e apksigner."""
     env = os.environ.copy()
     home = java_home()
     if home:

