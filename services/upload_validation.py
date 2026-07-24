@@ -1,4 +1,6 @@
-ALLOWED_ICON_EXTENSIONS = frozenset({".png", ".jpg", ".jpeg", ".webp", ".gif", ".bmp", ".ico"})
+ALLOWED_ICON_EXTENSIONS = frozenset({".png"})
+ALLOWED_APK_EXTENSIONS = frozenset({".apk"})
+MAX_APK_BYTES = 100 * 1024 * 1024
 
 
 def _file_extension(filename):
@@ -10,22 +12,23 @@ def _file_extension(filename):
     return "." + name.rsplit(".", 1)[-1].lower()
 
 
-def _looks_like_image(header):
-    if len(header) < 12:
-        return False
-    if header.startswith(b"\x89PNG\r\n\x1a\n"):
-        return True
-    if header.startswith(b"\xff\xd8\xff"):
-        return True
-    if header.startswith((b"GIF87a", b"GIF89a")):
-        return True
-    if header.startswith(b"BM"):
-        return True
-    if header.startswith(b"\x00\x00\x01\x00"):
-        return True
-    if header.startswith(b"RIFF") and header[8:12] == b"WEBP":
-        return True
-    return False
+def _content_length(file_storage):
+    if hasattr(file_storage, "content_length") and file_storage.content_length:
+        return int(file_storage.content_length)
+    stream = file_storage.stream
+    pos = stream.tell()
+    stream.seek(0, 2)
+    size = stream.tell()
+    stream.seek(pos)
+    return size
+
+
+def _looks_like_png(header):
+    return len(header) >= 8 and header.startswith(b"\x89PNG\r\n\x1a\n")
+
+
+def _looks_like_zip(header):
+    return len(header) >= 4 and header[:2] == b"PK"
 
 
 def validate_icon_upload(file_storage):
@@ -34,11 +37,33 @@ def validate_icon_upload(file_storage):
 
     extension = _file_extension(file_storage.filename)
     if extension not in ALLOWED_ICON_EXTENSIONS:
-        return False, "Icone invalido. Use PNG, JPG, WEBP, GIF, BMP ou ICO."
+        return False, "Icone invalido. Use apenas PNG."
 
     header = file_storage.stream.read(32)
     file_storage.stream.seek(0)
-    if not _looks_like_image(header):
-        return False, "Arquivo de icone nao e uma imagem valida."
+    if not _looks_like_png(header):
+        return False, "Arquivo de icone nao e um PNG valido."
+
+    return True, None
+
+
+def validate_apk_upload(file_storage):
+    if not file_storage or not file_storage.filename:
+        return False, "Arquivo APK obrigatorio."
+
+    extension = _file_extension(file_storage.filename)
+    if extension not in ALLOWED_APK_EXTENSIONS:
+        return False, "Arquivo invalido. Envie apenas .apk."
+
+    size = _content_length(file_storage)
+    if size <= 0:
+        return False, "Arquivo APK vazio."
+    if size > MAX_APK_BYTES:
+        return False, "APK excede o limite de 100 MB."
+
+    header = file_storage.stream.read(8)
+    file_storage.stream.seek(0)
+    if not _looks_like_zip(header):
+        return False, "Arquivo APK invalido."
 
     return True, None

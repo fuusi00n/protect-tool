@@ -10,12 +10,25 @@ async function api(url, options = {}) {
     return res;
 }
 
-const ALLOWED_ICON_RE = /\.(png|jpe?g|webp|gif|bmp|ico)$/i;
+const ALLOWED_ICON_RE = /\.png$/i;
+const ALLOWED_APK_RE = /\.apk$/i;
+const MAX_APK_BYTES = 100 * 1024 * 1024;
 
 function validateIconFile(file) {
     if (!file) return null;
     if (!ALLOWED_ICON_RE.test(file.name)) {
-        return "Icone invalido. Use PNG, JPG, WEBP, GIF, BMP ou ICO.";
+        return "Icone invalido. Use apenas PNG.";
+    }
+    return null;
+}
+
+function validateApkFile(file) {
+    if (!file) return "Arquivo APK obrigatorio.";
+    if (!ALLOWED_APK_RE.test(file.name)) {
+        return "Arquivo invalido. Envie apenas .apk.";
+    }
+    if (file.size > MAX_APK_BYTES) {
+        return "APK excede o limite de 100 MB.";
     }
     return null;
 }
@@ -105,6 +118,7 @@ function subscriberMake() {
     return {
         appName: "",
         apk: null,
+        apkError: "",
         icon: null,
         iconPreview: "",
         iconError: "",
@@ -139,7 +153,23 @@ function subscriberMake() {
                 this.iconPreview = "";
             }
         },
-        onApk(e) { this.apk = e.target.files[0] || null; },
+        onApk(e) {
+            const input = e.target;
+            const file = input.files[0] || null;
+            this.apkError = "";
+            if (!file) {
+                this.apk = null;
+                return;
+            }
+            const err = validateApkFile(file);
+            if (err) {
+                this.apkError = err;
+                this.apk = null;
+                input.value = "";
+                return;
+            }
+            this.apk = file;
+        },
         onIcon(e) {
             const input = e.target;
             const file = input.files[0];
@@ -196,7 +226,12 @@ function subscriberMake() {
             window.location.href = "/subscriber/apps";
         },
         async submit() {
-            if (!this.apk || this.busy) return;
+            if (this.busy) return;
+            const apkErr = validateApkFile(this.apk);
+            if (apkErr) {
+                this.apkError = apkErr;
+                return;
+            }
             if (this.icon) {
                 const err = validateIconFile(this.icon);
                 if (err) {

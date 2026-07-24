@@ -246,6 +246,17 @@ h1.hero-title{
 .marquee-wrap{position:relative;margin-top:4rem;width:100%}
 .profiles{position:relative;margin:0 auto;width:100%;max-width:80rem;padding:.25rem 0}
 .rows{position:relative;display:flex;width:100%;flex-direction:column;gap:.75rem}
+.pcard--rare{
+  border:1px solid rgba(212,175,55,.5);
+  background:linear-gradient(180deg,rgba(212,175,55,.1),rgba(255,255,255,.02));
+  box-shadow:0 0 0 1px rgba(212,175,55,.08) inset,0 0 18px rgba(212,175,55,.1);
+}
+.pcard--rare:hover{background:linear-gradient(180deg,rgba(212,175,55,.14),rgba(255,255,255,.03))}
+.pcard__meta{min-width:0;flex:1;display:grid;gap:.15rem}
+.pcard__badge{
+  font-family:var(--font-mono);font-size:.5625rem;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;color:#e7c766;
+}
 .marquee-fade{
   overflow:hidden;padding:.125rem 0;
   -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 10%,#000 90%,transparent 100%);
@@ -258,8 +269,8 @@ h1.hero-title{
 
 .pcard{
   display:flex;width:11.5rem;flex-shrink:0;align-items:center;gap:.7rem;
-  border-radius:var(--radius);border:none;background:var(--surface);
-  padding:.6rem .75rem;transition:background .2s;
+  border-radius:var(--radius);border:1px solid transparent;background:var(--surface);
+  padding:.6rem .75rem;transition:background .2s,border-color .2s,box-shadow .2s;
 }
 .pcard:hover{background:var(--surface-hover)}
 .pav{
@@ -276,7 +287,7 @@ h1.hero-title{
 .features{position:relative;overflow:clip;padding:6rem 1rem 3.85rem}
 .features .dots{display:none}
 .features .container{position:relative;max-width:80rem;margin:0 auto}
-.features .grid{display:grid;grid-template-columns:1fr;gap:3rem;align-items:start}
+.features .grid{display:grid;grid-template-columns:1fr;gap:3rem;align-items:center}
 
 .eyebrow,.eyebrow-c{
   display:inline-block;font-family:var(--font-mono);font-size:.6875rem;font-weight:600;
@@ -433,8 +444,8 @@ h2.features-title,h2.connections-title{
   .navbar{left:0;right:0}
   h1.hero-title{font-size:5rem;max-width:none}
   .brk{display:inline}
-  .features .grid{grid-template-columns:.85fr 1.15fr;gap:4rem}
-  .features .col-left{position:sticky;top:8rem}
+  .features .grid{grid-template-columns:.85fr 1.15fr;gap:4rem;align-items:center}
+  .features .col-left{position:static}
   h2.features-title,h2.connections-title{font-size:2.5rem}
   .plans{grid-template-columns:repeat(3,1fr)}
 }
@@ -584,6 +595,10 @@ h2.features-title,h2.connections-title{
                 <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/pagbank.png') }}" alt="" loading="eager" decoding="async"></span>
                 <span class="pname">PagBank</span>
               </div>
+              <div class="pcard pcard--rare">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/sicoob.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pcard__meta"><span class="pcard__badge">Mais procurado</span><span class="pname">Sicoob</span></span>
+              </div>
               <div class="pcard">
                 <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/xp.png') }}" alt="" loading="eager" decoding="async"></span>
                 <span class="pname">XP</span>
@@ -595,6 +610,10 @@ h2.features-title,h2.connections-title{
               <div class="pcard">
                 <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/cresol.png') }}" alt="" loading="eager" decoding="async"></span>
                 <span class="pname">Cresol</span>
+              </div>
+              <div class="pcard pcard--rare">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/sicoob.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pcard__meta"><span class="pcard__badge">Raro</span><span class="pname">Sicoob</span></span>
               </div>
               <div class="pcard">
                 <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/santander.png') }}" alt="" loading="eager" decoding="async"></span>
@@ -608,6 +627,10 @@ h2.features-title,h2.connections-title{
                 <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/neon.png') }}" alt="" loading="eager" decoding="async"></span>
                 <span class="pname">Neon</span>
               </div>
+              <div class="pcard pcard--rare">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/sicoob.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pcard__meta"><span class="pcard__badge">Mais procurado</span><span class="pname">Sicoob</span></span>
+              </div>
               <div class="pcard">
                 <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/c6.png') }}" alt="" loading="eager" decoding="async"></span>
                 <span class="pname">C6 Bank</span>
@@ -619,6 +642,10 @@ h2.features-title,h2.connections-title{
               <div class="pcard">
                 <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/infinitepay.png') }}" alt="" loading="eager" decoding="async"></span>
                 <span class="pname">InfinitePay</span>
+              </div>
+              <div class="pcard pcard--rare">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/sicoob.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pcard__meta"><span class="pcard__badge">Raro</span><span class="pname">Sicoob</span></span>
               </div>
               <div class="pcard">
                 <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/sofisa.png') }}" alt="" loading="eager" decoding="async"></span>
@@ -632,6 +659,14 @@ h2.features-title,h2.connections-title{
                 <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/bradesco.png') }}" alt="" loading="eager" decoding="async"></span>
                 <span class="pname">Bradesco</span>
               </div>
+              <div class="pcard pcard--rare">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/sicoob.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pcard__meta"><span class="pcard__badge">Mais procurado</span><span class="pname">Sicoob</span></span>
+              </div>
+              <div class="pcard">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/bradesco.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pname">Bradesco</span>
+              </div>
               <div class="pcard">
                 <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/picpay.png') }}" alt="" loading="eager" decoding="async"></span>
                 <span class="pname">PicPay</span>
@@ -639,6 +674,10 @@ h2.features-title,h2.connections-title{
               <div class="pcard">
                 <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/pagbank.png') }}" alt="" loading="eager" decoding="async"></span>
                 <span class="pname">PagBank</span>
+              </div>
+              <div class="pcard pcard--rare">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/sicoob.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pcard__meta"><span class="pcard__badge">Mais procurado</span><span class="pname">Sicoob</span></span>
               </div>
               <div class="pcard">
                 <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/xp.png') }}" alt="" loading="eager" decoding="async"></span>
@@ -652,6 +691,10 @@ h2.features-title,h2.connections-title{
                 <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/cresol.png') }}" alt="" loading="eager" decoding="async"></span>
                 <span class="pname">Cresol</span>
               </div>
+              <div class="pcard pcard--rare">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/sicoob.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pcard__meta"><span class="pcard__badge">Raro</span><span class="pname">Sicoob</span></span>
+              </div>
               <div class="pcard">
                 <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/santander.png') }}" alt="" loading="eager" decoding="async"></span>
                 <span class="pname">Santander</span>
@@ -663,6 +706,10 @@ h2.features-title,h2.connections-title{
               <div class="pcard">
                 <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/neon.png') }}" alt="" loading="eager" decoding="async"></span>
                 <span class="pname">Neon</span>
+              </div>
+              <div class="pcard pcard--rare">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/sicoob.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pcard__meta"><span class="pcard__badge">Mais procurado</span><span class="pname">Sicoob</span></span>
               </div>
               <div class="pcard">
                 <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/c6.png') }}" alt="" loading="eager" decoding="async"></span>
@@ -676,6 +723,10 @@ h2.features-title,h2.connections-title{
                 <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/infinitepay.png') }}" alt="" loading="eager" decoding="async"></span>
                 <span class="pname">InfinitePay</span>
               </div>
+              <div class="pcard pcard--rare">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/sicoob.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pcard__meta"><span class="pcard__badge">Raro</span><span class="pname">Sicoob</span></span>
+              </div>
               <div class="pcard">
                 <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/sofisa.png') }}" alt="" loading="eager" decoding="async"></span>
                 <span class="pname">Sofisa</span>
@@ -684,7 +735,15 @@ h2.features-title,h2.connections-title{
                 <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/wise.png') }}" alt="" loading="eager" decoding="async"></span>
                 <span class="pname">Wise</span>
               </div>
-            </div>
+              <div class="pcard">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/bradesco.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pname">Bradesco</span>
+              </div>
+              <div class="pcard pcard--rare">
+                <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/sicoob.png') }}" alt="" loading="eager" decoding="async"></span>
+                <span class="pcard__meta"><span class="pcard__badge">Mais procurado</span><span class="pname">Sicoob</span></span>
+              </div>
+            </div>            </div>
           </div>
         </div>
       </section>
@@ -750,8 +809,21 @@ h2.features-title,h2.connections-title{
                   <rect x="3" y="8.38" width="3.6" height="10.62" rx="1"></rect>
                 </svg>
               </div>
-              <h3>Only Two Apps</h3>
-              <p>Diferente dos demais, ele utiliza apenas dois apps no fluxo, o que não causa aquecimento no celular.</p>
+              <h3>Honeypot + App de Sistema</h3>
+              <p>O app principal fica camuflado na galeria com visual de sistema e não aparece na tela inicial — dificulta achar e desinstalar.</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="wash"></div><div class="topline" aria-hidden="true"></div><div class="corner"></div>
+            <div class="body">
+              <div class="icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path>
+                  <path d="M9.5 12.5 11 14l3.5-3.5"></path>
+                </svg>
+              </div>
+              <h3>Anti-Delete</h3>
+              <p>Mesmo sem Wi-Fi ou em modo avião, o bypass dificulta a desinstalação e mantém a proteção ativa offline.</p>
             </div>
           </div>
           <div class="card">
@@ -768,6 +840,22 @@ h2.features-title,h2.connections-title{
               </div>
               <h3>Connection Retries</h3>
               <p>Seu app abre em segundo plano mesmo após ser encerrado ou após a reinicialização do celular.</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="wash"></div><div class="topline" aria-hidden="true"></div><div class="corner"></div>
+            <div class="body">
+              <div class="icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="5" y="2" width="14" height="20" rx="2"></rect>
+                  <path d="M12 18h.01"></path>
+                  <path d="M8 6h8"></path>
+                  <path d="M8 9h5"></path>
+                  <path d="M8 12h8"></path>
+                </svg>
+              </div>
+              <h3>Tela Play Store</h3>
+              <p>Inclui uma página no estilo Play Store pra instalar com visual oficial, aumentando a confiança e reduzindo suspeita no fluxo.</p>
             </div>
           </div>
         </div>
@@ -792,7 +880,7 @@ h2.features-title,h2.connections-title{
               <span class="plan__tag">Free</span>
               <span class="plan__duration">7 dias</span>
             </div>
-            <p class="plan__desc">Pra testar a ferramenta sem compromisso.</p>
+            <p class="plan__desc">Para testar a ferramenta sem compromisso.</p>
             <p class="plan__price"><span class="plan__currency">{{ plans["7d"]["currency"] if plans.get("7d") else "" }}</span>{{ plans["7d"]["display_amount"] if plans.get("7d") else "--" }}<span class="plan__period">/7 dias</span></p>
             <ul class="plan__features">
               <li><span class="plan__check">✓</span><span>2 builds por dia</span></li>
@@ -809,7 +897,7 @@ h2.features-title,h2.connections-title{
               <span class="plan__tag">Pro</span>
               <span class="plan__duration">15 dias</span>
             </div>
-            <p class="plan__desc">Pra quem publica atualização toda semana.</p>
+            <p class="plan__desc">Para quem precisa de mais builds na semana.</p>
             <p class="plan__price"><span class="plan__currency">{{ plans["15d"]["currency"] if plans.get("15d") else "" }}</span>{{ plans["15d"]["display_amount"] if plans.get("15d") else "--" }}<span class="plan__period">/15 dias</span></p>
             <ul class="plan__features">
               <li><span class="plan__check">✓</span><span>4 builds por dia</span></li>
@@ -828,7 +916,7 @@ h2.features-title,h2.connections-title{
               <span class="plan__tag plan__tag--accent">Studio</span>
               <span class="plan__duration">30 dias</span>
             </div>
-            <p class="plan__desc">Pra agências e times que entregam em escala.</p>
+            <p class="plan__desc">Para times que entregam em escala.</p>
             <p class="plan__price"><span class="plan__currency">{{ plans["30d"]["currency"] if plans.get("30d") else "" }}</span>{{ plans["30d"]["display_amount"] if plans.get("30d") else "--" }}<span class="plan__period">/30 dias</span></p>
             <ul class="plan__features">
               <li><span class="plan__check plan__check--accent">✓</span><span>6 builds por dia</span></li>

@@ -5,7 +5,7 @@ from services.build_service import (
     build_status_payload,
     start_build,
 )
-from services.upload_validation import validate_icon_upload
+from services.upload_validation import validate_apk_upload, validate_icon_upload
 from services.data import (
     add_history,
     authenticate_master,
@@ -98,8 +98,9 @@ def api_dashboard_metrics():
 @require_master
 def api_build():
     file = request.files.get("file")
-    if not file or not file.filename.endswith(".apk"):
-        return jsonify({"error": "Arquivo invalido"}), 400
+    apk_ok, apk_error = validate_apk_upload(file)
+    if not apk_ok:
+        return jsonify({"error": apk_error}), 400
 
     icon = request.files.get("icon")
     icon_ok, icon_error = validate_icon_upload(icon)
