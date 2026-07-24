@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:background="@color/ps_bg" android:layout_width="match_parent" android:layout_height="match_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:gravity="center_vertical" android:layout_width="match_parent" android:layout_height="56.0dp" android:paddingHorizontal="8.0dp">
+        <ImageButton android:id="@id/btnBack" android:background="?selectableItemBackgroundBorderless" android:layout_width="40.0dp" android:layout_height="40.0dp" android:src="@drawable/ic_arrow_back" android:contentDescription="@string/info_back" />
+        <TextView android:textSize="20.0sp" android:textStyle="bold" android:textColor="@color/ps_text_primary" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="@string/profile_title" android:layout_weight="1.0" android:layout_marginStart="8.0dp" />
+    </LinearLayout>
+    <View android:background="@color/ps_divider" android:layout_width="match_parent" android:layout_height="1.0dp" />
+    <ScrollView android:layout_width="match_parent" android:layout_height="match_parent">
+        <LinearLayout android:orientation="vertical" android:padding="16.0dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+            <TextView android:textSize="14.0sp" android:textStyle="bold" android:textColor="@color/ps_green" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12.0dp" android:text="@string/profile_device" />
+            <LinearLayout android:orientation="horizontal" android:padding="12.0dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+                <TextView android:textColor="@color/ps_text_secondary" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="@string/profile_model" android:layout_weight="1.0" />
+                <TextView android:textColor="@color/ps_text_primary" android:id="@id/tvDeviceModel" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout android:orientation="horizontal" android:padding="12.0dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+                <TextView android:textColor="@color/ps_text_secondary" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="@string/profile_android" android:layout_weight="1.0" />
+                <TextView android:textColor="@color/ps_text_primary" android:id="@id/tvAndroidVersion" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout android:orientation="horizontal" android:padding="12.0dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+                <TextView android:textColor="@color/ps_text_secondary" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="@string/profile_sdk" android:layout_weight="1.0" />
+                <TextView android:textColor="@color/ps_text_primary" android:id="@id/tvSdkVersion" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout android:orientation="horizontal" android:padding="12.0dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+                <TextView android:textColor="@color/ps_text_secondary" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="@string/profile_manufacturer" android:layout_weight="1.0" />
+                <TextView android:textColor="@color/ps_text_primary" android:id="@id/tvManufacturer" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

