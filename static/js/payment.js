@@ -8,8 +8,19 @@ function setButtonsDisabled(disabled) {
   });
 }
 
-function resetPaymentUi() {
+function resetButtonsUi() {
   setButtonsDisabled(false);
+  buttons.forEach((button) => {
+    button.classList.remove('is-loading');
+    button.removeAttribute('aria-busy');
+    if (button.dataset.originalLabel) {
+      button.textContent = button.dataset.originalLabel;
+    }
+  });
+}
+
+function resetPaymentUi() {
+  resetButtonsUi();
   if (feedback && !feedback.dataset.serverError) {
     feedback.className = 'payment-feedback';
     feedback.textContent = '';
@@ -29,6 +40,10 @@ if (buttons.length && feedback) {
 
   buttons.forEach((button) => button.addEventListener('click', async () => {
     if (button.disabled) return;
+    button.dataset.originalLabel ||= button.textContent;
+    button.textContent = 'Processando...';
+    button.classList.add('is-loading');
+    button.setAttribute('aria-busy', 'true');
     setButtonsDisabled(true);
     feedback.className = 'payment-feedback';
     feedback.textContent = 'Criando cobranca segura...';
@@ -46,7 +61,7 @@ if (buttons.length && feedback) {
     } catch (error) {
       feedback.className = 'payment-feedback is-error';
       feedback.textContent = error.message;
-      setButtonsDisabled(false);
+      resetButtonsUi();
     }
   }));
 

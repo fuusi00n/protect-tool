@@ -15,9 +15,21 @@ class InvalidPaymentPlan(ValueError):
 
 
 PAYMENT_PLANS = {
-    "7d": {"duration_days": 7, "amount_key": "payment_amount_7d"},
-    "15d": {"duration_days": 15, "amount_key": "payment_amount_15d"},
-    "30d": {"duration_days": 30, "amount_key": "payment_amount_30d"},
+    "7d": {
+        "duration_days": 7,
+        "amount_key": "payment_amount_7d",
+        "daily_build_limit": 1,
+    },
+    "15d": {
+        "duration_days": 15,
+        "amount_key": "payment_amount_15d",
+        "daily_build_limit": 2,
+    },
+    "30d": {
+        "duration_days": 30,
+        "amount_key": "payment_amount_30d",
+        "daily_build_limit": 5,
+    },
 }
 
 
@@ -56,6 +68,7 @@ def get_payment_plans():
         plans[plan_code] = {
             "code": plan_code,
             "duration_days": definition["duration_days"],
+            "daily_build_limit": definition["daily_build_limit"],
             "amount": amount,
             "display_amount": f"{amount:.2f}".replace(".", ","),
             "currency": currency,

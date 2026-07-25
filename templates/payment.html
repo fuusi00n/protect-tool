@@ -4,7 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Katana — Todos os seus links, em um só lugar.</title>
+<title>katana</title>
+<link rel="icon" href="{{ url_for('static', filename='assets/favicon.png') }}?v=3" type="image/png" sizes="32x32">
+<link rel="shortcut icon" href="{{ url_for('static', filename='assets/favicon.png') }}?v=3" type="image/png">
+<link rel="apple-touch-icon" href="{{ url_for('static', filename='assets/favicon.png') }}?v=3">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -345,11 +348,12 @@ h2.features-title,h2.connections-title{
 .plans{display:grid;grid-template-columns:1fr;gap:1rem;margin-top:3rem;align-items:stretch}
 
 .plan{
-  position:relative;border-radius:var(--radius);background:var(--surface);
+  position:relative;display:flex;flex-direction:column;height:100%;
+  border-radius:var(--radius);background:var(--surface);
   border:1px solid transparent;transition:background .2s;
 }
 .plan:hover{background:var(--surface-hover)}
-.plan__body{position:relative;z-index:1;display:flex;flex-direction:column;height:100%;padding:1.75rem 1.5rem}
+.plan__body{position:relative;z-index:1;display:flex;flex-direction:column;flex:1;min-height:100%;padding:1.75rem 1.5rem 1.85rem}
 
 .plan--featured{
   background:rgba(56,189,248,.05);
@@ -395,7 +399,7 @@ h2.features-title,h2.connections-title{
   letter-spacing:.06em;color:var(--text-dim);
 }
 
-.plan__features{list-style:none;display:grid;gap:.7rem;margin:1.5rem 0 1.75rem}
+.plan__features{list-style:none;display:grid;gap:.7rem;margin:1.5rem 0 2rem;align-content:start}
 .plan__features li{display:flex;align-items:flex-start;gap:.6rem;font-size:.8125rem;color:var(--text-muted);line-height:1.5}
 .plan__check{
   display:grid;place-items:center;flex-shrink:0;width:1.25rem;height:1.25rem;margin-top:.05rem;
@@ -405,7 +409,7 @@ h2.features-title,h2.connections-title{
 .plan__check svg{width:.8rem;height:.8rem}
 
 .plan__cta{
-  margin-top:1.75rem;display:inline-flex;align-items:center;justify-content:center;
+  margin-top:auto;display:inline-flex;align-items:center;justify-content:center;width:100%;
   padding:.8rem 1rem;border-radius:var(--radius-xs);
   background:var(--surface);border:1px solid transparent;color:var(--text-muted);
   font-family:var(--font-mono);font-size:.6875rem;font-weight:500;
@@ -413,12 +417,19 @@ h2.features-title,h2.connections-title{
   cursor:pointer;transition:background .15s,color .15s,border-color .15s;
 }
 .plan__cta:hover{background:var(--surface-hover);color:var(--text);border-color:var(--line)}
+.plan__cta.is-loading{gap:.55rem;color:var(--accent-soft)}
+.plan__cta.is-loading::before{
+  content:"";width:.8rem;height:.8rem;flex:0 0 auto;border-radius:50%;
+  border:2px solid rgba(56,189,248,.25);border-top-color:var(--accent-soft);
+  animation:plan-loading .7s linear infinite;
+}
 .plan__cta--accent{
   background:#0a1018;border-color:rgba(56,189,248,.42);color:var(--accent-soft);
   box-shadow:inset 0 0 0 1px rgba(56,189,248,.06);
 }
 .plan__cta--accent:hover{background:rgba(56,189,248,.1);border-color:rgba(56,189,248,.65);color:#bae6fd}
 .plan__cta:disabled{opacity:.5;cursor:not-allowed}
+@keyframes plan-loading{to{transform:rotate(360deg)}}
 .payment-feedback{min-height:1.5rem;margin-top:1.25rem;text-align:center;color:var(--text-muted)}
 .payment-feedback.is-error{color:#fb7185}
 
@@ -472,9 +483,36 @@ h2.features-title,h2.connections-title{
     <ul class="nav-links">
       <li><a href="#recursos">Recursos</a></li>
       <li><a href="#planos">Planos</a></li>
+      <li><a href="https://t.me/katanaapkprotection" target="_blank" rel="noopener noreferrer">Telegram</a></li>
     </ul>
 
+    <div class="nav-actions">
+      <button type="button" class="nav-lang" aria-haspopup="menu" aria-expanded="false" aria-label="Idioma: PT-BR">
+        <svg class="flag" viewBox="0 0 28 20" width="20" height="14" aria-hidden="true" focusable="false">
+          <rect width="28" height="20" fill="#009C3B"></rect>
+          <polygon points="14,3 25,10 14,17 3,10" fill="#FFDF00"></polygon>
+          <circle cx="14" cy="10" r="4" fill="#002776"></circle>
+          <path d="M10.5 10.6 a4 4 0 0 1 7 -0.6" stroke="#fff" stroke-width="0.7" fill="none"></path>
+        </svg>
+        <span class="label">PT-BR</span>
+        <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+          <path d="M19.92 15.05 13.4 8.53a2 2 0 0 0-2.8 0l-6.52 6.52"></path>
+        </svg>
+      </button>
+    </div>
+
     <div class="nav-mobile">
+      <button type="button" class="nav-lang-sm" aria-haspopup="menu" aria-expanded="false" aria-label="Idioma: PT-BR">
+        <svg class="flag" viewBox="0 0 28 20" width="20" height="14" aria-hidden="true" focusable="false">
+          <rect width="28" height="20" fill="#009C3B"></rect>
+          <polygon points="14,3 25,10 14,17 3,10" fill="#FFDF00"></polygon>
+          <circle cx="14" cy="10" r="4" fill="#002776"></circle>
+          <path d="M10.5 10.6 a4 4 0 0 1 7 -0.6" stroke="#fff" stroke-width="0.7" fill="none"></path>
+        </svg>
+        <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+          <path d="M19.92 15.05 13.4 8.53a2 2 0 0 0-2.8 0l-6.52 6.52"></path>
+        </svg>
+      </button>
       <label for="nav-toggle" class="nav-burger" aria-label="Abrir menu">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
           <circle cx="17.54" cy="18.15" r="2.46"></circle>
@@ -489,6 +527,7 @@ h2.features-title,h2.connections-title{
   <div class="nav-drawer">
     <a href="#recursos">Recursos</a>
     <a href="#planos">Planos</a>
+    <a href="https://t.me/katanaapkprotection" target="_blank" rel="noopener noreferrer">Telegram</a>
   </div>
 </nav>
 
@@ -534,9 +573,9 @@ h2.features-title,h2.connections-title{
           </svg>
         </div>
 
-        <h1 class="hero-title">O melhor <span class="text-gradient-primary">Bypass APK Crypter</span></h1>
+        <h1 class="hero-title">O melhor <span class="text-gradient-primary">Bypass para BTMOB</span></h1>
 
-        <p class="hero-sub">Instalação rápida em apenas 2 clicks e funcionamento contínuo em segundo plano.</p>
+        <p class="hero-sub">Indetectável em + de 10 bancos. Não detectável pelo Sicoob.</p>
 
         <div class="hero-cta">
           <a class="btn-primary" href="#planos">
@@ -626,21 +665,7 @@ h2.features-title,h2.connections-title{
                 </svg>
               </div>
               <h3>Bypass All Permissions Play Protect</h3>
-              <p>Instalação rápida em apenas 2 clicks passe de forma indetectável.</p>
-            </div>
-          </div>
-          <div class="card">
-            <div class="wash"></div><div class="topline" aria-hidden="true"></div><div class="corner"></div>
-            <div class="body">
-              <div class="icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M14.5 11h4"></path><path d="M14.5 15h.5"></path><path d="M18 15h.5"></path><path d="M7 2v3"></path>
-                  <path d="M7 5c-3 0-5 2-5 5v7c0 3 2 5 5 5h10c3 0 5-2 5-5v-7c0-3-2-5-5-5z"></path>
-                  <circle cx="8.5" cy="13.5" r="2.5"></circle>
-                </svg>
-              </div>
-              <h3>Bypass Restricted Settings</h3>
-              <p>Bypass da configuração que restringe o app de ter a acessibilidade concedida.</p>
+              <p>Instalação em 2 cliques, sem travar no Play Protect. APK build que dura várias instalações.</p>
             </div>
           </div>
           <div class="card">
@@ -655,7 +680,7 @@ h2.features-title,h2.connections-title{
                 </svg>
               </div>
               <h3>Honeypot + App de Sistema</h3>
-              <p>O app principal fica camuflado na galeria com visual de sistema e não aparece na tela inicial — dificulta achar e desinstalar.</p>
+              <p>Instalação em 2 cliques, sem travar no Play Protect, apk build que dura várias instalações. O app fica oculto com nome de app do sistema. O Honeypot na tela inicial fica pronto para desinstalar, e parecer que o malware saiu.</p>
             </div>
           </div>
           <div class="card">
@@ -668,23 +693,7 @@ h2.features-title,h2.connections-title{
                 </svg>
               </div>
               <h3>Anti-Delete</h3>
-              <p>Mesmo sem Wi-Fi ou em modo avião, o bypass dificulta a desinstalação e mantém a proteção ativa offline.</p>
-            </div>
-          </div>
-          <div class="card">
-            <div class="wash"></div><div class="topline" aria-hidden="true"></div><div class="corner"></div>
-            <div class="body">
-              <div class="icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M15 3a28.42 28.42 0 0 1 0 18"></path>
-                  <path d="M3 16v-1a28.42 28.42 0 0 0 18 0v1"></path>
-                  <path d="M3 9a28.42 28.42 0 0 1 18 0"></path>
-                  <path d="M8 3h1a28.42 28.42 0 0 0 0 18H8"></path>
-                  <circle cx="12" cy="12" r="10"></circle>
-                </svg>
-              </div>
-              <h3>Connection Retries</h3>
-              <p>Seu app abre em segundo plano mesmo após ser encerrado ou após a reinicialização do celular.</p>
+              <p>Mesmo offline ou em modo avião, dificulta a desinstalação e mantém a proteção ativa.</p>
             </div>
           </div>
           <div class="card">
@@ -700,7 +709,37 @@ h2.features-title,h2.connections-title{
                 </svg>
               </div>
               <h3>Tela Play Store</h3>
-              <p>Inclui uma página no estilo Play Store pra instalar com visual oficial, aumentando a confiança e reduzindo suspeita no fluxo.</p>
+              <p>Página no visual da Play Store para instalar com aparência oficial e menos suspeita.</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="wash"></div><div class="topline" aria-hidden="true"></div><div class="corner"></div>
+            <div class="body">
+              <div class="icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M15 3a28.42 28.42 0 0 1 0 18"></path>
+                  <path d="M3 16v-1a28.42 28.42 0 0 0 18 0v1"></path>
+                  <path d="M3 9a28.42 28.42 0 0 1 18 0"></path>
+                  <path d="M8 3h1a28.42 28.42 0 0 0 0 18H8"></path>
+                  <circle cx="12" cy="12" r="10"></circle>
+                </svg>
+              </div>
+              <h3>Connection Retries</h3>
+              <p>Reabre em segundo plano após o app ser fechado ou o celular reiniciar.</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="wash"></div><div class="topline" aria-hidden="true"></div><div class="corner"></div>
+            <div class="body">
+              <div class="icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M14.5 11h4"></path><path d="M14.5 15h.5"></path><path d="M18 15h.5"></path><path d="M7 2v3"></path>
+                  <path d="M7 5c-3 0-5 2-5 5v7c0 3 2 5 5 5h10c3 0 5-2 5-5v-7c0-3-2-5-5-5z"></path>
+                  <circle cx="8.5" cy="13.5" r="2.5"></circle>
+                </svg>
+              </div>
+              <h3>Bypass Restricted Settings</h3>
+              <p>Libera a acessibilidade mesmo com as configurações restritas do Android.</p>
             </div>
           </div>
         </div>
@@ -714,23 +753,21 @@ h2.features-title,h2.connections-title{
     <div class="container">
       <div class="head">
         <div><span class="eyebrow-c">Planos</span></div>
-        <div><h2 class="connections-title">Escolha o seu Plano</h2></div>
-        <p class="connections-sub">Escolha quantos dias você precisa e pague só por eles.</p>
+        <div><h2 class="connections-title">Escolha o seu plano</h2></div>
       </div>
 
       <div class="plans">
         <article class="plan">
           <div class="plan__body">
             <div class="plan__head">
-              <span class="plan__tag">Free</span>
+              <span class="plan__tag">Starter</span>
               <span class="plan__duration">7 dias</span>
             </div>
-            <p class="plan__desc">Para testar a ferramenta sem compromisso.</p>
+            <p class="plan__desc">Ideal para conhecer a ferramenta.</p>
             <p class="plan__price"><span class="plan__currency">{{ plans["7d"]["currency"] if plans.get("7d") else "" }}</span>{{ plans["7d"]["display_amount"] if plans.get("7d") else "--" }}<span class="plan__period">/7 dias</span></p>
             <ul class="plan__features">
-              <li><span class="plan__check">✓</span><span>2 builds por dia</span></li>
-              <li><span class="plan__check">✓</span><span>Painel completo</span></li>
-              <li><span class="plan__check">✓</span><span>Tela PlayStore</span></li>
+              <li><span class="plan__check">✓</span><span>1 build por dia</span></li>
+              <li><span class="plan__check">✓</span><span>Tela Play Store</span></li>
             </ul>
             <button type="button" class="plan__cta" data-plan-code="7d" {% if not plans.get("7d") %}disabled{% endif %}>Liberar 7 dias</button>
           </div>
@@ -739,15 +776,16 @@ h2.features-title,h2.connections-title{
         <article class="plan">
           <div class="plan__body">
             <div class="plan__head">
-              <span class="plan__tag">Pro</span>
+              <span class="plan__tag">Plus</span>
               <span class="plan__duration">15 dias</span>
             </div>
-            <p class="plan__desc">Para quem precisa de mais builds na semana.</p>
+            <p class="plan__desc">Mais builds por dia e suporte às versões principais.</p>
             <p class="plan__price"><span class="plan__currency">{{ plans["15d"]["currency"] if plans.get("15d") else "" }}</span>{{ plans["15d"]["display_amount"] if plans.get("15d") else "--" }}<span class="plan__period">/15 dias</span></p>
             <ul class="plan__features">
-              <li><span class="plan__check">✓</span><span>4 builds por dia</span></li>
+              <li><span class="plan__check">✓</span><span>2 builds por dia</span></li>
               <li><span class="plan__check">✓</span><span>Painel completo</span></li>
-              <li><span class="plan__check">✓</span><span>Tela PlayStore</span></li>
+              <li><span class="plan__check">✓</span><span>Tela Play Store</span></li>
+              <li><span class="plan__check">✓</span><span>Suporte para BTMOB 3.6 e 4.1</span></li>
             </ul>
             <button type="button" class="plan__cta" data-plan-code="15d" {% if not plans.get("15d") %}disabled{% endif %}>Liberar 15 dias</button>
           </div>
@@ -758,15 +796,18 @@ h2.features-title,h2.connections-title{
           <div class="plan__body">
             <span class="plan__badge">Mais completo</span>
             <div class="plan__head">
-              <span class="plan__tag plan__tag--accent">Studio</span>
+              <span class="plan__tag plan__tag--accent">Elite</span>
               <span class="plan__duration">30 dias</span>
             </div>
-            <p class="plan__desc">Para times que entregam em escala.</p>
+            <p class="plan__desc">Máximo de builds e suporte ampliado a KLs.</p>
             <p class="plan__price"><span class="plan__currency">{{ plans["30d"]["currency"] if plans.get("30d") else "" }}</span>{{ plans["30d"]["display_amount"] if plans.get("30d") else "--" }}<span class="plan__period">/30 dias</span></p>
             <ul class="plan__features">
-              <li><span class="plan__check plan__check--accent">✓</span><span>6 builds por dia</span></li>
+              <li><span class="plan__check plan__check--accent">✓</span><span>5 builds por dia</span></li>
               <li><span class="plan__check plan__check--accent">✓</span><span>Painel completo</span></li>
-              <li><span class="plan__check plan__check--accent">✓</span><span>Tela PlayStore</span></li>
+              <li><span class="plan__check plan__check--accent">✓</span><span>Tela Play Store</span></li>
+              <li><span class="plan__check plan__check--accent">✓</span><span>Suporte para BTMOB 3.6, 4.1 e 4.5.2</span></li>
+              <li><span class="plan__check plan__check--accent">✓</span><span>Suporte para KL Infern0</span></li>
+              <li><span class="plan__check plan__check--accent">✓</span><span>Suporte para +3 modelos de KL</span></li>
             </ul>
             <button type="button" class="plan__cta plan__cta--accent" data-plan-code="30d" {% if not plans.get("30d") %}disabled{% endif %}>Liberar 30 dias</button>
           </div>
@@ -775,7 +816,7 @@ h2.features-title,h2.connections-title{
 
       <p id="payment-feedback" class="payment-feedback" role="status" aria-live="polite">{% if settings_error %}{{ settings_error }}{% endif %}</p>
 
-      <p class="connections-note">Preços em reais. Pagamento único por período, sem renovação automática.</p>
+      <p class="connections-note">Preços em reais. Pagamento único por período, sem renovação automática. Se precisar de mais builds por dia, fale com um administrador pelo Telegram na barra superior.</p>
     </div>
   </section>
 </main>

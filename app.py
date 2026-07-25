@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for
+from flask import Flask, redirect, send_from_directory, url_for
 
 from config import Config, ensure_directories
 from monitor_bitcoin import start_background_monitor
@@ -23,6 +23,14 @@ def create_app():
     @app.route("/")
     def root():
         return redirect(url_for("subscriber.login_page"))
+
+    @app.route("/favicon.ico")
+    def favicon():
+        return send_from_directory(
+            app.static_folder,
+            "assets/favicon.png",
+            mimetype="image/png",
+        )
 
     if Config.BITCOIN_MONITOR_ENABLED:
         start_background_monitor()
