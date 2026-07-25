@@ -315,20 +315,69 @@ function katanaUsers() {
         users: [],
         message: "",
         form: { username: "", password: "", license_days: 30, daily_build_limit: 3 },
+        createModalOpen: false,
+        createPhase: "",
+        createBusy: false,
+        createError: "",
+        createdUsername: "",
         async load() {
             const res = await katanaApi("/katana/admin/api/users");
             if (!res) return;
             this.users = await res.json();
         },
+        openCreateModal() {
+            this.createModalOpen = true;
+            this.createPhase = "loading";
+            this.createError = "";
+            this.createdUsername = "";
+        },
+        closeCreateModal() {
+            if (this.createBusy) return;
+            this.createModalOpen = false;
+            this.createPhase = "";
+            this.createError = "";
+            this.createdUsername = "";
+        },
         async createUser() {
-            const res = await katanaApi("/katana/admin/api/users", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(this.form),
-            });
-            const data = await res.json();
-            this.message = data.message;
-            if (data.success) this.load();
+            const username = (this.form.username || "").trim();
+            const password = this.form.password || "";
+            if (!username || !password) {
+                this.message = "Preencha usuário e senha.";
+                return;
+            }
+            this.message = "";
+            this.createBusy = true;
+            this.openCreateModal();
+            try {
+                const res = await katanaApi("/katana/admin/api/users", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        ...this.form,
+                        username,
+                    }),
+                });
+                if (!res) {
+                    this.createPhase = "error";
+                    this.createError = "Sessão expirada.";
+                    return;
+                }
+                const data = await res.json();
+                if (!res.ok || !data.success) {
+                    this.createPhase = "error";
+                    this.createError = data.message || "Não foi possível criar o operador.";
+                    return;
+                }
+                this.createdUsername = username;
+                this.createPhase = "done";
+                this.form = { username: "", password: "", license_days: 30, daily_build_limit: 3 };
+                await this.load();
+            } catch (_) {
+                this.createPhase = "error";
+                this.createError = "Erro de conexão ao criar o operador.";
+            } finally {
+                this.createBusy = false;
+            }
         },
         async saveLimit(user) {
             const res = await katanaApi(`/katana/admin/api/users/${user.username}`, {

@@ -65,7 +65,6 @@ def _should_autostart():
         "off",
     }:
         return False
-    # Com reloader do Flask/Werkzeug, sobe só no processo filho.
     if (
         "WERKZEUG_SERVER_FD" in os.environ
         and os.environ.get("WERKZEUG_RUN_MAIN") != "true"

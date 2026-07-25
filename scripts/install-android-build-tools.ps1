@@ -1,7 +1,7 @@
 $ErrorActionPreference = 'Stop'
 $ProgressPreference = 'SilentlyContinue'
 
-$dest = 'C:\apps\protect-tool\APP-TEST\tools\android-sdk\build-tools\35.0.0'
+$dest = 'C:\apps\protect-tool\app-tools\android-sdk\build-tools\35.0.0'
 $zip = Join-Path $env:TEMP 'build-tools-35.zip'
 $extract = Join-Path $env:TEMP 'bt35'
 $url = 'https://dl.google.com/android/repository/build-tools_r35_windows.zip'

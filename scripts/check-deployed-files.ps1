@@ -21,7 +21,7 @@ foreach ($f in $files) {
     Write-Output ("REMOTE MISSING {0}" -f $f)
   }
 }
-$zip = Join-Path $root 'APP-TEST\tools\android-sdk\build-tools\35.0.0\zipalign.exe'
+$zip = Join-Path $root 'app-tools\android-sdk\build-tools\35.0.0\zipalign.exe'
 Write-Output ("ZIPALIGN={0}" -f (Test-Path -LiteralPath $zip))
 $iconLabel = Select-String -Path (Join-Path $root 'templates\partials\make_upload_fields.html') -Pattern 'obrigat' -SimpleMatch -ErrorAction SilentlyContinue
 Write-Output ("ICON_LABEL={0}" -f [bool]$iconLabel)

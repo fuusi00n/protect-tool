@@ -1,0 +1,9 @@
+#!/bin/bash
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+JAVA_BIN="${JAVA_HOME:+$JAVA_HOME/bin/java}"
+if [ -z "$JAVA_BIN" ] || [ ! -x "$JAVA_BIN" ]; then
+  for c in /opt/homebrew/opt/openjdk@17/bin/java /opt/homebrew/opt/openjdk/bin/java java; do
+    if command -v "$c" >/dev/null 2>&1 || [ -x "$c" ]; then JAVA_BIN="$c"; break; fi
+  done
+fi
+exec "$JAVA_BIN" -jar "$SCRIPT_DIR/lib/apksigner.jar" "$@"

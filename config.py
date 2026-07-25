@@ -3,14 +3,12 @@ from datetime import timedelta
 
 from dotenv import load_dotenv
 
-load_dotenv()
-
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 
 class Config:
     SECRET_KEY = os.environ.get("SECRET_KEY", "katana_secret_2026")
-    # APK ate 20 MB + folga para multipart (icone/campos).
     MAX_CONTENT_LENGTH = 25 * 1024 * 1024
     SESSION_COOKIE_SECURE = False
     SESSION_COOKIE_HTTPONLY = True
@@ -58,8 +56,11 @@ class Config:
     )
     INJECT_SECONDARY_DEX = False
 
-    _BUILD_TOOLS = os.path.join(
-        BASE_DIR, "APP-TEST", "tools", "android-sdk", "build-tools", "35.0.0"
+    _BUILD_TOOLS = os.environ.get(
+        "ANDROID_BUILD_TOOLS",
+        os.path.join(
+            BASE_DIR, "app-tools", "android-sdk", "build-tools", "35.0.0"
+        ),
     )
 
     @staticmethod

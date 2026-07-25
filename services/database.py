@@ -4,7 +4,8 @@ from contextlib import contextmanager
 import psycopg
 from dotenv import load_dotenv
 
-load_dotenv()
+_BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+load_dotenv(os.path.join(_BASE_DIR, ".env"))
 
 
 def get_conninfo(dbname=None):

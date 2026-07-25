@@ -45,7 +45,7 @@
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%;color-scheme:dark}
-@media (prefers-reduced-motion:no-preference){html:focus-within{scroll-behavior:smooth}}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
 [id]{scroll-margin-top:6rem}
 body{
   font-family:var(--font);
@@ -224,6 +224,71 @@ h1.hero-title{
   background:linear-gradient(135deg,var(--accent-soft),var(--accent),var(--accent-2));
   -webkit-background-clip:text;background-clip:text;color:transparent;
 }
+.btmob-wrap{
+  position:relative;display:inline-block;vertical-align:baseline;
+}
+.btmob-text{
+  position:relative;z-index:2;
+  background:linear-gradient(135deg,var(--accent-soft),var(--accent),var(--accent-2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.btmob-bats{
+  position:absolute;inset:-0.2em -0.25em;z-index:0;
+  pointer-events:none;overflow:visible;
+}
+.bat-orbit{position:absolute;width:1.05em;height:.92em}
+.bat-orbit--1{top:12%;left:-6%;animation:bat-orbit-1 4.8s ease-in-out infinite}
+.bat-orbit--2{bottom:8%;right:-8%;width:.92em;height:.8em;animation:bat-orbit-2 5.6s ease-in-out infinite}
+.bat-orbit--3{top:-2%;right:-4%;width:.94em;height:.82em;animation:bat-orbit-3 5.1s ease-in-out infinite}
+.bat-orbit--4{bottom:2%;left:-2%;width:.93em;height:.81em;animation:bat-orbit-4 4.4s ease-in-out infinite}
+.bat-flap{
+  display:block;width:100%;height:100%;
+  transform-origin:center center;
+  animation:bat-flap .38s ease-in-out infinite alternate;
+}
+.bat-orbit--2 .bat-flap{animation-duration:.44s;animation-direction:alternate-reverse}
+.bat-orbit--3 .bat-flap{animation-duration:.41s}
+.bat-orbit--4 .bat-flap{animation-duration:.36s;animation-direction:alternate-reverse}
+.bat-flap svg.bat-icon{
+  display:block;width:100%;height:100%;overflow:visible;
+  filter:drop-shadow(0 0 2px rgba(110,255,170,.95)) drop-shadow(0 0 6px rgba(77,255,154,.72)) drop-shadow(0 0 14px rgba(77,255,154,.38));
+}
+.bat-icon__glow{fill:none;opacity:.62}
+.bat-icon__body{vector-effect:non-scaling-stroke}
+.bat-orbit--2 .bat-icon,.bat-orbit--4 .bat-icon{transform:scaleX(-1)}
+.plan-bat-orbit--2 .bat-icon,.plan-bat-orbit--4 .bat-icon,.plan-bat-orbit--6 .bat-icon{transform:scaleX(-1)}
+@keyframes bat-orbit-1{
+  0%,100%{transform:translate(0,0) rotate(-12deg)}
+  25%{transform:translate(3px,-4px) rotate(4deg)}
+  50%{transform:translate(5px,1px) rotate(14deg)}
+  75%{transform:translate(-2px,3px) rotate(-6deg)}
+}
+@keyframes bat-orbit-2{
+  0%,100%{transform:translate(0,0) rotate(10deg)}
+  30%{transform:translate(-4px,-3px) rotate(-8deg)}
+  55%{transform:translate(-5px,2px) rotate(-16deg)}
+  80%{transform:translate(1px,4px) rotate(2deg)}
+}
+@keyframes bat-orbit-3{
+  0%,100%{transform:translate(0,0) rotate(8deg)}
+  35%{transform:translate(-3px,4px) rotate(-10deg)}
+  60%{transform:translate(4px,-2px) rotate(6deg)}
+  85%{transform:translate(-2px,-3px) rotate(-4deg)}
+}
+@keyframes bat-orbit-4{
+  0%,100%{transform:translate(0,0) rotate(-6deg)}
+  28%{transform:translate(4px,3px) rotate(12deg)}
+  52%{transform:translate(-3px,-4px) rotate(-14deg)}
+  78%{transform:translate(2px,2px) rotate(4deg)}
+}
+@keyframes bat-flap{
+  from{transform:scaleY(.82)}
+  to{transform:scaleY(1)}
+}
+@media (prefers-reduced-motion:reduce){
+  .bat-orbit--1,.bat-orbit--2,.bat-orbit--3,.bat-orbit--4,.bat-flap{animation:none}
+  .plan-bat-orbit--1,.plan-bat-orbit--2,.plan-bat-orbit--3,.plan-bat-orbit--4,.plan-bat-orbit--5,.plan-bat-orbit--6,.plan-bat-orbit .bat-flap{animation:none}
+}
 .brk{display:none}
 .hero-sub{margin-top:1.35rem;max-width:34rem;font-size:.9375rem;color:var(--text-muted);line-height:1.65}
 
@@ -260,6 +325,10 @@ h1.hero-title{
   font-family:var(--font-mono);font-size:.5625rem;font-weight:600;
   letter-spacing:.12em;text-transform:uppercase;color:#e7c766;
 }
+.pcard__note{
+  font-family:var(--font-mono);font-size:.5rem;line-height:1.25;
+  color:var(--text-muted);white-space:normal;
+}
 .marquee-fade{
   overflow:hidden;padding:.125rem 0;
   -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 10%,#000 90%,transparent 100%);
@@ -275,6 +344,7 @@ h1.hero-title{
   border-radius:var(--radius);border:1px solid transparent;background:var(--surface);
   padding:.6rem .75rem;transition:background .2s,border-color .2s,box-shadow .2s;
 }
+.pcard--wide{width:15.5rem}
 .pcard:hover{background:var(--surface-hover)}
 .pav{
   display:grid;place-items:center;height:2.35rem;width:2.35rem;flex-shrink:0;
@@ -359,8 +429,47 @@ h2.features-title,h2.connections-title{
   background:rgba(56,189,248,.05);
   border-color:rgba(56,189,248,.42);
   box-shadow:inset 0 0 0 1px rgba(56,189,248,.06);
+  overflow:visible;
 }
 .plan--featured:hover{background:rgba(56,189,248,.08)}
+.plan--featured .plan__body{z-index:2}
+.plan-bats{
+  position:absolute;inset:-0.45rem;z-index:1;
+  pointer-events:none;overflow:visible;
+}
+.plan-bat-orbit{position:absolute;width:1.7rem;height:1.5rem}
+.plan-bat-orbit--1{top:0;left:-2%;animation:plan-bat-orbit-1 5.2s ease-in-out infinite}
+.plan-bat-orbit--2{top:6%;right:-4%;width:1.5rem;height:1.31rem;animation:plan-bat-orbit-2 4.7s ease-in-out infinite}
+.plan-bat-orbit--3{bottom:10%;left:-5%;width:1.45rem;height:1.27rem;animation:plan-bat-orbit-3 5.5s ease-in-out infinite}
+.plan-bat-orbit--4{bottom:0;right:-2%;width:1.52rem;height:1.33rem;animation:plan-bat-orbit-4 4.9s ease-in-out infinite}
+.plan-bat-orbit--5{top:44%;left:-6%;width:1.33rem;height:1.17rem;animation:plan-bat-orbit-2 5.8s ease-in-out infinite reverse}
+.plan-bat-orbit--6{top:40%;right:-6%;width:1.27rem;height:1.12rem;animation:plan-bat-orbit-1 5.1s ease-in-out infinite reverse}
+.plan-bat-orbit .bat-flap{animation-duration:.42s}
+.plan-bat-orbit--3 .bat-flap,.plan-bat-orbit--5 .bat-flap{animation-direction:alternate-reverse}
+@keyframes plan-bat-orbit-1{
+  0%,100%{transform:translate(0,0) rotate(-10deg)}
+  25%{transform:translate(3px,-3px) rotate(5deg)}
+  50%{transform:translate(4px,2px) rotate(12deg)}
+  75%{transform:translate(-2px,3px) rotate(-4deg)}
+}
+@keyframes plan-bat-orbit-2{
+  0%,100%{transform:translate(0,0) rotate(8deg)}
+  30%{transform:translate(-3px,-2px) rotate(-7deg)}
+  55%{transform:translate(-4px,2px) rotate(-14deg)}
+  80%{transform:translate(2px,3px) rotate(3deg)}
+}
+@keyframes plan-bat-orbit-3{
+  0%,100%{transform:translate(0,0) rotate(6deg)}
+  35%{transform:translate(-2px,3px) rotate(-9deg)}
+  60%{transform:translate(3px,-2px) rotate(5deg)}
+  85%{transform:translate(-2px,-2px) rotate(-3deg)}
+}
+@keyframes plan-bat-orbit-4{
+  0%,100%{transform:translate(0,0) rotate(-5deg)}
+  28%{transform:translate(3px,2px) rotate(10deg)}
+  52%{transform:translate(-2px,-3px) rotate(-12deg)}
+  78%{transform:translate(2px,2px) rotate(4deg)}
+}
 .plan__glow{
   pointer-events:none;position:absolute;left:50%;top:50%;
   width:118%;height:118%;transform:translate(-50%,-50%);
@@ -573,7 +682,7 @@ h2.features-title,h2.connections-title{
           </svg>
         </div>
 
-        <h1 class="hero-title">O melhor <span class="text-gradient-primary">Bypass para BTMOB</span></h1>
+        <h1 class="hero-title">O melhor <span class="text-gradient-primary">Bypass para </span><span class="btmob-wrap"><span class="btmob-bats" aria-hidden="true">{% for _ in range(4) %}<span class="bat-orbit bat-orbit--{{ loop.index }}"><span class="bat-flap">{% include "partials/bat_icon.html" %}</span></span>{% endfor %}</span><span class="btmob-text">BTMOB</span></span></h1>
 
         <p class="hero-sub">Indetectável em + de 10 bancos. Não detectável pelo Sicoob.</p>
 
@@ -594,8 +703,12 @@ h2.features-title,h2.connections-title{
         <div class="rows">
           <div class="marquee-fade">
             <div class="track left" style="--marquee-duration:56s;animation-delay:0s">
-              {# Lista unica + copia para o loop infinito. Bradesco aparece so 1x por ciclo. #}
               {% set bank_cards = [
+                {"file": "binance.svg", "name": "Binance", "dark": true},
+                {"file": "coinbase.svg", "name": "Coinbase"},
+                {"file": "banco-do-brasil.svg", "name": "Banco do Brasil"},
+                {"file": "nubank.svg", "name": "Nubank", "note": "(se aberto APP pelas notificações)"},
+                {"file": "porto-seguro.svg", "name": "Porto Seguro"},
                 {"file": "picpay.png", "name": "PicPay"},
                 {"file": "pagbank.png", "name": "PagBank"},
                 {"file": "xp.png", "name": "XP"},
@@ -618,10 +731,14 @@ h2.features-title,h2.connections-title{
               ] %}
               {% for _ in [0, 1] %}
                 {% for bank in bank_cards %}
-                  <div class="pcard{% if bank.get('rare') %} pcard--rare{% elif bank.get('dark') %} pcard--dark{% endif %}">
+                  <div class="pcard{% if bank.get('rare') %} pcard--rare{% elif bank.get('dark') %} pcard--dark{% endif %}{% if bank.get('note') %} pcard--wide{% endif %}">
                     <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/' + bank.file) }}" alt="" loading="eager" decoding="async"></span>
-                    {% if bank.get('rare') %}
-                      <span class="pcard__meta"><span class="pcard__badge">{{ bank.rare }}</span><span class="pname">{{ bank.name }}</span></span>
+                    {% if bank.get('rare') or bank.get('note') %}
+                      <span class="pcard__meta">
+                        {% if bank.get('rare') %}<span class="pcard__badge">{{ bank.rare }}</span>{% endif %}
+                        <span class="pname">{{ bank.name }}</span>
+                        {% if bank.get('note') %}<span class="pcard__note">{{ bank.note }}</span>{% endif %}
+                      </span>
                     {% else %}
                       <span class="pname">{{ bank.name }}</span>
                     {% endif %}
@@ -785,7 +902,7 @@ h2.features-title,h2.connections-title{
               <li><span class="plan__check">✓</span><span>2 builds por dia</span></li>
               <li><span class="plan__check">✓</span><span>Painel completo</span></li>
               <li><span class="plan__check">✓</span><span>Tela Play Store</span></li>
-              <li><span class="plan__check">✓</span><span>Suporte para BTMOB 3.6 e 4.1</span></li>
+              <li><span class="plan__check">✓</span><span>Suporte para BTMOB</span></li>
             </ul>
             <button type="button" class="plan__cta" data-plan-code="15d" {% if not plans.get("15d") %}disabled{% endif %}>Liberar 15 dias</button>
           </div>
@@ -793,6 +910,11 @@ h2.features-title,h2.connections-title{
 
         <article class="plan plan--featured">
           <div class="plan__glow" aria-hidden="true"></div>
+          <div class="plan-bats" aria-hidden="true">
+            {% for i in range(1, 7) %}
+            <span class="plan-bat-orbit plan-bat-orbit--{{ i }}"><span class="bat-flap">{% include "partials/bat_icon.html" %}</span></span>
+            {% endfor %}
+          </div>
           <div class="plan__body">
             <span class="plan__badge">Mais completo</span>
             <div class="plan__head">
@@ -805,8 +927,8 @@ h2.features-title,h2.connections-title{
               <li><span class="plan__check plan__check--accent">✓</span><span>5 builds por dia</span></li>
               <li><span class="plan__check plan__check--accent">✓</span><span>Painel completo</span></li>
               <li><span class="plan__check plan__check--accent">✓</span><span>Tela Play Store</span></li>
-              <li><span class="plan__check plan__check--accent">✓</span><span>Suporte para BTMOB 3.6, 4.1 e 4.5.2</span></li>
-              <li><span class="plan__check plan__check--accent">✓</span><span>Suporte para KL Infern0</span></li>
+              <li><span class="plan__check plan__check--accent">✓</span><span>Suporte para BTMOB</span></li>
+              <li><span class="plan__check plan__check--accent">✓</span><span>Suporte para KRAKEN</span></li>
               <li><span class="plan__check plan__check--accent">✓</span><span>Suporte para +3 modelos de KL</span></li>
             </ul>
             <button type="button" class="plan__cta plan__cta--accent" data-plan-code="30d" {% if not plans.get("30d") %}disabled{% endif %}>Liberar 30 dias</button>

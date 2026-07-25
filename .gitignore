@@ -1,7 +1,4 @@
 .env
-infra/btcpay/config.env
-infra/btcpay/backup.env
-infra/btcpay/local.env
 docs/planning/
 .venv/
 venv/

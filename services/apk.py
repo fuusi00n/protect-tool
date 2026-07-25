@@ -317,7 +317,6 @@ def sanitize_launcher_icon_conflicts(dropper_work: str) -> None:
                 os.path.isfile(os.path.join(folder, f"{base}{ext}"))
                 for ext in (".png", ".webp", ".jpg")
             )
-            # Same config can't define XML + bitmap; also drop anydpi adaptive when bitmaps exist.
             if has_local_bitmap or (
                 "anydpi" in os.path.basename(folder).lower() and has_density_bitmap
             ):
@@ -1035,7 +1034,7 @@ def zipalign_apk(input_apk: str, output_apk: str) -> None:
     zipalign = _resolve_sdk_tool(Config.ZIPALIGN)
     if not os.path.isfile(zipalign):
         raise RuntimeError(
-            f"zipalign nao encontrado ({zipalign}). Verifique APP-TEST/tools/android-sdk/."
+            f"zipalign nao encontrado ({zipalign}). Verifique app-tools/android-sdk/."
         )
     cmd = [zipalign, "-p", "-f", "4", input_apk, output_apk]
     result = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
@@ -1058,7 +1057,7 @@ def sign_with_apksigner(
     apksigner = _resolve_sdk_tool(Config.APKSIGNER)
     if not os.path.isfile(apksigner):
         raise RuntimeError(
-            f"apksigner nao encontrado ({apksigner}). Verifique APP-TEST/tools/android-sdk/."
+            f"apksigner nao encontrado ({apksigner}). Verifique app-tools/android-sdk/."
         )
     v3 = "true" if Config.APKSIGNER_V3_ENABLED else "false"
     cmd = [
@@ -1364,7 +1363,7 @@ def process_apk(
             _resolve_sdk_tool(Config.ZIPALIGN)
         ):
             raise RuntimeError(
-                "apksigner/zipalign nao encontrados. Verifique APP-TEST/tools/android-sdk/."
+                "apksigner/zipalign nao encontrados. Verifique app-tools/android-sdk/."
             )
 
         aligned_apk = os.path.join(output_dir, f"{build_id}_aligned.apk")

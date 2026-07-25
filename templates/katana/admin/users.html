@@ -32,7 +32,7 @@
                         <label for="dailyLimit">Limite diário</label>
                         <input id="dailyLimit" type="number" x-model="form.daily_build_limit" placeholder="3">
                     </div>
-                    <button type="button" class="btn btn-action" @click="createUser">
+                    <button type="button" class="btn btn-action" @click="createUser" :disabled="createBusy">
                         <svg class="btn-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                             <path d="M8 3.5v9M3.5 8h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
                         </svg>
@@ -42,6 +42,57 @@
                 <p class="portal-msg" x-show="message" x-text="message"></p>
             </div>
         </section>
+
+        <div class="build-modal" x-show="createModalOpen" x-cloak @keydown.escape.window="createPhase !== 'loading' && closeCreateModal()">
+            <div class="build-modal__backdrop" @click="createPhase !== 'loading' && closeCreateModal()"></div>
+            <div class="build-modal__dialog build-modal__dialog--enter" role="dialog" aria-modal="true" aria-label="Criar operador">
+                <header class="build-modal__head">
+                    <div>
+                        <p class="build-modal__tag" x-text="createPhase === 'loading' ? 'PROCESSANDO' : (createPhase === 'done' ? 'CONCLUÍDO' : 'ERRO')"></p>
+                        <h2 class="build-modal__title" x-text="createPhase === 'loading' ? 'Criando usuário' : (createPhase === 'done' ? 'Usuário criado' : 'Não foi possível criar')"></h2>
+                    </div>
+                    <button type="button" class="build-modal__close"
+                        x-show="createPhase !== 'loading'"
+                        @click="closeCreateModal()" aria-label="Fechar">×</button>
+                </header>
+
+                <div class="build-modal__body" x-show="createPhase === 'loading'">
+                    <div class="checkout-loading checkout-loading--modal build-modal__loading">
+                        <div class="checkout-loading__ring" aria-hidden="true">
+                            <span class="checkout-loading__spinner"></span>
+                            <span class="checkout-loading__pulse"></span>
+                        </div>
+                        <p class="checkout-loading__title">Criando usuário</p>
+                        <p class="checkout-loading__sub">Aguarde enquanto configuramos a conta do operador</p>
+                    </div>
+                </div>
+
+                <div class="build-modal__body" x-show="createPhase === 'done'">
+                    <div class="build-modal__success">
+                        <div class="build-modal__success-ring" aria-hidden="true">
+                            <svg class="build-modal__success-icon" viewBox="0 0 24 24" fill="none">
+                                <path d="M6 12.5 10 16.5 18 8.5" stroke="currentColor" stroke-width="2" stroke-linecap="square"/>
+                            </svg>
+                        </div>
+                        <p class="build-modal__success-title">USUÁRIO CRIADO</p>
+                        <p class="build-modal__success-sub">
+                            O operador <strong x-text="createdUsername"></strong> foi criado com sucesso.
+                        </p>
+                        <button type="button" class="btn btn-action build-modal__apps-btn" @click="closeCreateModal()">
+                            <span>Fechar</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="build-modal__body" x-show="createPhase === 'error'">
+                    <div class="build-modal__error">
+                        <p class="build-modal__error-title">Falha ao criar usuário</p>
+                        <p class="build-modal__error-text" x-text="createError || 'Não foi possível criar o operador.'"></p>
+                        <button type="button" class="btn btn-ghost" @click="closeCreateModal()">Fechar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <section class="section">
             <div class="section-head">

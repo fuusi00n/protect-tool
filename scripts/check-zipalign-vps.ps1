@@ -1,5 +1,5 @@
 $ErrorActionPreference = 'Stop'
-$tools = 'C:\apps\protect-tool\APP-TEST\tools\android-sdk\build-tools\35.0.0'
+$tools = 'C:\apps\protect-tool\app-tools\android-sdk\build-tools\35.0.0'
 Write-Output '=== tools dir ==='
 Test-Path -LiteralPath $tools
 Get-ChildItem -LiteralPath $tools -Filter 'zipalign*' | Select-Object Name, Length

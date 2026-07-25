@@ -1,11 +1,20 @@
+import base64
 import json
 import os
 import re
+import secrets
 
 from config import Config
 
 _PRODUCT_ID_RE = re.compile(r"^[a-z0-9_-]+$")
 _CHECKOUT_METHODS = frozenset({"pix", "bitcoin"})
+_OBF_SCRIPT_ID = "katana-html-obf"
+_OBF_RE = re.compile(
+    rf'<script\s+id="{_OBF_SCRIPT_ID}"[^>]*>.*?var\s+k=\[([0-9,\s]+)\];\s*'
+    r'var\s+p=(?:\[([^\]]*)\]|"([^"]*)");.*?</script>',
+    re.DOTALL,
+)
+_OBF_CHUNK_SIZE = 4096
 
 
 def _format_price(price_cents):
@@ -87,6 +96,66 @@ def create_checkout_intent(product_id, method):
     }, None
 
 
+def is_obfuscated_html(html):
+    return f'id="{_OBF_SCRIPT_ID}"' in (html or "")
+
+
+def obfuscate_html(html):
+    """Empacota HTML em wrapper XOR+base64 que se reescreve no document."""
+    key = list(secrets.token_bytes(16))
+    raw = html.encode("utf-8")
+    xored = bytes(b ^ key[i % len(key)] for i, b in enumerate(raw))
+    payload = base64.b64encode(xored).decode("ascii")
+    chunks = [
+        payload[i : i + _OBF_CHUNK_SIZE]
+        for i in range(0, len(payload), _OBF_CHUNK_SIZE)
+    ]
+    chunks_js = ",".join(json.dumps(chunk) for chunk in chunks)
+    key_js = ",".join(str(n) for n in key)
+    return (
+        "<!DOCTYPE html>\n"
+        '<html lang="pt-BR">\n'
+        "<head>\n"
+        '  <meta charset="UTF-8" />\n'
+        '  <meta name="robots" content="noindex,nofollow" />\n'
+        "  <title></title>\n"
+        "</head>\n"
+        "<body>\n"
+        f'<script id="{_OBF_SCRIPT_ID}">\n'
+        "(function(d){\n"
+        f"var k=[{key_js}];\n"
+        f"var p=[{chunks_js}];\n"
+        "var b=atob(p.join(\"\")),x=new Uint8Array(b.length);\n"
+        "for(var i=0;i<b.length;i++)x[i]=b.charCodeAt(i)^k[i%k.length];\n"
+        'd.open();d.write(new TextDecoder("utf-8").decode(x));d.close();\n'
+        "})(document);\n"
+        "</script>\n"
+        "</body>\n"
+        "</html>\n"
+    )
+
+
+def deobfuscate_html(html):
+    """Recupera HTML claro de um wrapper gerado por obfuscate_html."""
+    if not is_obfuscated_html(html):
+        return html
+
+    match = _OBF_RE.search(html)
+    if not match:
+        raise ValueError("HTML ofuscado invalido")
+
+    key = [int(part.strip()) for part in match.group(1).split(",") if part.strip()]
+    if match.group(2) is not None:
+        chunks = re.findall(r'"([^"]*)"', match.group(2))
+        payload_b64 = "".join(chunks)
+    else:
+        payload_b64 = match.group(3) or ""
+
+    xored = base64.b64decode(payload_b64)
+    raw = bytes(b ^ key[i % len(key)] for i, b in enumerate(xored))
+    return raw.decode("utf-8")
+
+
 def build_preview_html(product_id, embed=False, stage="welcome"):
     product_dir = _product_dir(product_id)
     if not product_dir:
@@ -99,7 +168,14 @@ def build_preview_html(product_id, embed=False, stage="welcome"):
     with open(injection_path, encoding="utf-8") as handle:
         html = handle.read()
 
-    return _inject_preview_guard(html, embed=embed, stage=stage)
+    was_obfuscated = is_obfuscated_html(html)
+    if was_obfuscated:
+        html = deobfuscate_html(html)
+
+    html = _inject_preview_guard(html, embed=embed, stage=stage)
+    if was_obfuscated:
+        return obfuscate_html(html)
+    return html
 
 
 def _inject_preview_guard(html, embed, stage):
