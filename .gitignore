@@ -1,4 +1,5 @@
 .env
+.deploy-commit
 docs/planning/
 .venv/
 venv/
