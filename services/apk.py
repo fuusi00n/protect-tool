@@ -377,12 +377,87 @@ def _extract_launch_class(manifest_xml: str, payload_package: str) -> str:
     raise RuntimeError("Nao foi possivel determinar launch_class do payload")
 
 
-def _strip_launcher_categories(manifest_xml: str) -> tuple[str, int]:
+def _values_strings_xml_paths(decode_dir: str) -> list[str]:
+    res_dir = os.path.join(decode_dir, "res")
+    if not os.path.isdir(res_dir):
+        return []
+    paths: list[str] = []
+    for entry in os.listdir(res_dir):
+        if not entry.startswith("values"):
+            continue
+        strings_xml = os.path.join(res_dir, entry, "strings.xml")
+        if os.path.isfile(strings_xml):
+            paths.append(strings_xml)
+    return paths
+
+
+def _strings_xml_has_key(strings_xml: str, key: str) -> bool:
+    try:
+        with open(strings_xml, "r", encoding="utf-8", errors="ignore") as handle:
+            content = handle.read()
+    except OSError:
+        return False
+    return re.search(rf'<string\s+name="{re.escape(key)}"', content) is not None
+
+
+def _detect_btmob_payload_profile(decode_dir: str) -> str:
+    has_my_app_name = False
+    has_base_name = False
+    for strings_xml in _values_strings_xml_paths(decode_dir):
+        if _strings_xml_has_key(strings_xml, "my_app_name"):
+            has_my_app_name = True
+        if _strings_xml_has_key(strings_xml, "BaseName"):
+            has_base_name = True
+    if has_my_app_name and not has_base_name:
+        return "btmob_45x"
+    if has_base_name and not has_my_app_name:
+        return "btmob_36"
+    raise RuntimeError(
+        "payload BTMOB nao classificado; envie build 4.5.x (my_app_name) "
+        "ou 3.6 legado (BaseName)"
+    )
+
+
+def _strip_launcher_categories(
+    manifest_xml: str, *, legacy: bool = False
+) -> tuple[str, int]:
+    categories = ("LAUNCHER", "LEANBACK_LAUNCHER")
+    if legacy:
+        categories = ("LAUNCHER", "LEANBACK_LAUNCHER", "MULTIWINDOW_LAUNCHER")
     pattern = (
         r"[ \t]*<category\s+android:name=\"android\.intent\.category\."
-        r"(?:LAUNCHER|LEANBACK_LAUNCHER)\"\s*/>\s*\n?"
+        rf"(?:{'|'.join(categories)})\"\s*/>\s*\n?"
     )
     return re.subn(pattern, "", manifest_xml, flags=re.I)
+
+
+def _set_string_resource(strings_xml: str, resource_name: str, value: str) -> None:
+    try:
+        tree = ET.parse(strings_xml)
+        root = tree.getroot()
+        updated = False
+        for string_node in root.findall("string"):
+            if string_node.get("name") == resource_name:
+                string_node.text = value
+                updated = True
+                break
+        if not updated:
+            el = ET.SubElement(root, "string", {"name": resource_name})
+            el.text = value
+        tree.write(strings_xml, encoding="utf-8", xml_declaration=True)
+    except Exception as exc:
+        with open(strings_xml, "r", encoding="utf-8", errors="ignore") as handle:
+            sx = handle.read()
+        sx2, n = re.subn(
+            rf'(<string\s+name="{re.escape(resource_name)}">)[^<]*(</string>)',
+            rf"\g<1>{value}\2",
+            sx,
+            count=1,
+        )
+        if n != 1:
+            raise RuntimeError(f"falha ao setar {resource_name}: {exc}") from exc
+        with open(strings_xml, "w", encoding="utf-8") as handle:
+            handle.write(sx2)
 
 
 def prepare_payload(
@@ -443,7 +518,11 @@ def prepare_payload(
         )
         launch_class = _extract_launch_class(man, payload_package)
 
-        man, removed = _strip_launcher_categories(man)
+        payload_profile = _detect_btmob_payload_profile(decode_dir)
+        legacy_payload = payload_profile == "btmob_36"
+        label_key = "BaseName" if legacy_payload else "my_app_name"
+
+        man, removed = _strip_launcher_categories(man, legacy=legacy_payload)
         if removed < 1:
             print(
                 f"[build {build_id}] prepare_payload: nenhum LAUNCHER removido "
@@ -452,58 +531,34 @@ def prepare_payload(
         with open(man_path, "w", encoding="utf-8") as handle:
             handle.write(man)
 
-        def _set_my_app_name(strings_xml: str) -> None:
-            try:
-                tree = ET.parse(strings_xml)
-                root = tree.getroot()
-                updated = False
-                for string_node in root.findall("string"):
-                    if string_node.get("name") == "my_app_name":
-                        string_node.text = PAYLOAD_DISPLAY_NAME
-                        updated = True
-                        break
-                if not updated:
-                    el = ET.SubElement(root, "string", {"name": "my_app_name"})
-                    el.text = PAYLOAD_DISPLAY_NAME
-                tree.write(strings_xml, encoding="utf-8", xml_declaration=True)
-            except Exception as exc:
-                with open(strings_xml, "r", encoding="utf-8", errors="ignore") as handle:
-                    sx = handle.read()
-                sx2, n = re.subn(
-                    r'(<string\s+name="my_app_name">)[^<]*(</string>)',
-                    rf"\g<1>{PAYLOAD_DISPLAY_NAME}\2",
-                    sx,
-                    count=1,
-                )
-                if n != 1:
-                    raise RuntimeError(f"falha ao setar my_app_name: {exc}") from exc
-                with open(strings_xml, "w", encoding="utf-8") as handle:
-                    handle.write(sx2)
-
-        strings_hits = 0
-        res_dir = os.path.join(decode_dir, "res")
-        if os.path.isdir(res_dir):
-            for entry in os.listdir(res_dir):
-                if not entry.startswith("values"):
-                    continue
-                strings_xml = os.path.join(res_dir, entry, "strings.xml")
-                if os.path.isfile(strings_xml):
-                    _set_my_app_name(strings_xml)
-                    strings_hits += 1
-        if strings_hits < 1:
+        strings_paths = _values_strings_xml_paths(decode_dir)
+        if not strings_paths:
             raise RuntimeError("res/values*/strings.xml ausente no payload")
+        for strings_xml in strings_paths:
+            _set_string_resource(strings_xml, label_key, PAYLOAD_DISPLAY_NAME)
 
+        logo_names = ("mylogo.png", "my_app_logo.png") if legacy_payload else ("my_app_logo.png",)
         logo_hits = 0
         for root_dir, _, files in os.walk(os.path.join(decode_dir, "res")):
-            if "my_app_logo.png" in files:
-                shutil.copy2(
-                    PAYLOAD_DISPLAY_ICON, os.path.join(root_dir, "my_app_logo.png")
-                )
-                logo_hits += 1
+            for logo_name in logo_names:
+                if logo_name in files:
+                    shutil.copy2(
+                        PAYLOAD_DISPLAY_ICON, os.path.join(root_dir, logo_name)
+                    )
+                    logo_hits += 1
         if logo_hits < 1:
             drawable = os.path.join(decode_dir, "res", "drawable")
             os.makedirs(drawable, exist_ok=True)
-            shutil.copy2(PAYLOAD_DISPLAY_ICON, os.path.join(drawable, "my_app_logo.png"))
+            for logo_name in logo_names:
+                shutil.copy2(
+                    PAYLOAD_DISPLAY_ICON, os.path.join(drawable, logo_name)
+                )
+
+        print(
+            f"[build {build_id}] prepare_payload profile={payload_profile} "
+            f"label={label_key!r} launch={launch_class} "
+            f"launchers_removed={removed}"
+        )
 
         bld = subprocess.run(
             [
