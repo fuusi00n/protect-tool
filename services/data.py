@@ -283,7 +283,18 @@ def update_amplification(username, build_status):
             )
 
 
+def _coerce_int(value, default=None):
+    if value is None or value == "":
+        return default
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        raise ValueError(f"Valor numerico invalido: {value!r}") from None
+
+
 def create_operator_user(username, password, license_days, daily_build_limit=3):
+    license_days = _coerce_int(license_days, default=None)
+    daily_build_limit = _coerce_int(daily_build_limit, default=3)
     license_expires_at = datetime.now() + timedelta(days=license_days) if license_days else None
     with get_connection() as conn:
         with conn.cursor() as cur:

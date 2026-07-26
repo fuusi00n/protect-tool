@@ -155,8 +155,19 @@ def api_create_user():
     if user_exists(username):
         return jsonify({"success": False, "message": "Usuario ja existe"}), 400
 
-    create_operator_user(username, password, license_days, daily_build_limit)
-    add_history(session["username"], "Criar Usuario", f"Operador: {username}", portal="katana")
+    try:
+        license_days = int(license_days)
+        daily_build_limit = int(daily_build_limit)
+    except (TypeError, ValueError):
+        return jsonify({"success": False, "message": "Licenca ou limite diario invalido"}), 400
+
+    try:
+        create_operator_user(username, password, license_days, daily_build_limit)
+        add_history(session["username"], "Criar Usuario", f"Operador: {username}", portal="katana")
+    except ValueError as exc:
+        return jsonify({"success": False, "message": str(exc)}), 400
+    except Exception:
+        return jsonify({"success": False, "message": "Erro ao criar operador"}), 500
     return jsonify({"success": True, "message": "Operador criado"})
 
 
