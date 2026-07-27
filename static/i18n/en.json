@@ -1,0 +1,140 @@
+{
+  "meta": {
+    "pageTitle": "katana",
+    "lang": "en"
+  },
+  "nav": {
+    "resources": "Features",
+    "plans": "Plans",
+    "telegram": "Telegram",
+    "openMenu": "Open menu",
+    "langAria": "Language: English",
+    "langPt": "Português",
+    "langEn": "English",
+    "langRu": "Русский"
+  },
+  "hero": {
+    "pill": "Join us",
+    "titleBest": "The best ",
+    "titleBypass": "Bypass for ",
+    "subtitle": "Undetectable on 10+ banks.",
+    "cta": "Get started"
+  },
+  "profiles": {
+    "ariaLabel": "Supported banks and wallets"
+  },
+  "bank": {
+    "rareMostWanted": "Most wanted",
+    "rareRare": "Rare",
+    "nubankNote": "(if app opened from notifications)"
+  },
+  "features": {
+    "eyebrow": "Features",
+    "title": "Everything you need for a ",
+    "titleGlow": "perfect bypass.",
+    "link": "Katana Apk Fud"
+  },
+  "feature1": {
+    "title": "Bypass All Permissions Play Protect",
+    "desc": "Two-click install without Play Protect blocking. APK builds that last through multiple installs."
+  },
+  "feature2": {
+    "title": "Honeypot + System App",
+    "desc": "The app stays hidden under a system app name. The home-screen honeypot is ready to uninstall and make it look like the malware is gone."
+  },
+  "feature3": {
+    "title": "Anti-Delete",
+    "desc": "Even offline or in airplane mode, it makes uninstalling harder and keeps protection active."
+  },
+  "feature4": {
+    "title": "Play Store Screen",
+    "desc": "A Play Store-style page to install with an official look and less suspicion."
+  },
+  "feature5": {
+    "title": "Connection Retries",
+    "desc": "Reopens in the background after the app is closed or the phone restarts."
+  },
+  "feature6": {
+    "title": "Bypass Restricted Settings",
+    "desc": "Enables accessibility even with Android restricted settings."
+  },
+  "pricing": {
+    "eyebrow": "Plans",
+    "title": "Choose your plan",
+    "note": "Prices in BRL. One-time payment per period, no auto-renewal. If you need more builds per day, contact an admin on Telegram in the top bar."
+  },
+  "plan": {
+    "starter": {
+      "tag": "Starter",
+      "duration": "7 days",
+      "desc": "Ideal to try the tool.",
+      "period": "/7 days",
+      "feature1": "1 build per day",
+      "feature2": "Play Store screen",
+      "feature3": "BTMOB support",
+      "cta": "Unlock 7 days"
+    },
+    "plus": {
+      "tag": "Plus",
+      "duration": "15 days",
+      "desc": "More daily builds and support for main versions.",
+      "period": "/15 days",
+      "feature1": "2 builds per day",
+      "feature2": "Full dashboard",
+      "feature3": "Play Store screen",
+      "feature4": "BTMOB support",
+      "cta": "Unlock 15 days"
+    },
+    "elite": {
+      "badge": "Most complete",
+      "tag": "Elite",
+      "duration": "30 days",
+      "desc": "Maximum builds and extended KL support.",
+      "period": "/30 days",
+      "feature1": "5 builds per day",
+      "feature2": "Full dashboard",
+      "feature3": "Play Store screen",
+      "feature4": "BTMOB support",
+      "feature5": "KRAKEN support",
+      "feature6": "Support for +3 KL models",
+      "cta": "Unlock 30 days"
+    }
+  },
+  "payment": {
+    "processing": "Processing...",
+    "creating": "Creating secure invoice...",
+    "errorDefault": "Could not generate payment."
+  },
+  "checkout": {
+    "backToPlans": "Back to plans",
+    "errorTag": "Error · Checkout",
+    "notFoundTitle": "Invoice not found",
+    "notFoundDesc": "Check the link you received and try again.",
+    "paymentTag": "Payment · Bitcoin",
+    "intro": "Send the amount via the Bitcoin network. Confirmation will be detected automatically.",
+    "chargeLabel": "Invoice amount",
+    "statusNewTitle": "Waiting for payment",
+    "statusNewDetail": "No transaction found yet.",
+    "statusProcessingTitle": "Payment detected",
+    "statusProcessingDetail": "Waiting for blockchain confirmation.",
+    "statusProcessingSats": "{received} sats received; {confirmed} confirmed.",
+    "statusSettledTitle": "Payment confirmed",
+    "statusSettledDetail": "Invoice completed successfully.",
+    "statusExpiredTitle": "Invoice expired",
+    "statusExpiredDetail": "Do not send payment with this quote.",
+    "statusDefaultTitle": "Checking payment",
+    "statusDefaultDetail": "Wait for the next update.",
+    "expiryLabel": "Payment validity",
+    "calculating": "Calculating...",
+    "quoteExpired": "Quote expired",
+    "qrNote": "Scan with your Bitcoin wallet",
+    "qrAlt": "QR code to pay this Bitcoin invoice",
+    "copyLabel": "Or copy the address",
+    "copyBtn": "Copy",
+    "copiedBtn": "Copied",
+    "selectBtn": "Select",
+    "copyAria": "Copy Bitcoin address",
+    "successTitle": "Payment confirmed",
+    "successSub": "Invoice completed successfully."
+  }
+}

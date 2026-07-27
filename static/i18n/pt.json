@@ -1,0 +1,140 @@
+{
+  "meta": {
+    "pageTitle": "katana",
+    "lang": "pt-BR"
+  },
+  "nav": {
+    "resources": "Recursos",
+    "plans": "Planos",
+    "telegram": "Telegram",
+    "openMenu": "Abrir menu",
+    "langAria": "Idioma: Português",
+    "langPt": "Português",
+    "langEn": "English",
+    "langRu": "Русский"
+  },
+  "hero": {
+    "pill": "Junte-se a nós",
+    "titleBest": "O melhor ",
+    "titleBypass": "Bypass para ",
+    "subtitle": "Indetectável em + de 10 bancos. Não detectável pelo Sicoob.",
+    "cta": "Começar agora"
+  },
+  "profiles": {
+    "ariaLabel": "Bancos e carteiras suportados"
+  },
+  "bank": {
+    "rareMostWanted": "Mais procurado",
+    "rareRare": "Raro",
+    "nubankNote": "(se aberto APP pelas notificações)"
+  },
+  "features": {
+    "eyebrow": "Recursos",
+    "title": "Tudo que você precisa para um bypass ",
+    "titleGlow": "perfeito.",
+    "link": "Katana Apk Fud"
+  },
+  "feature1": {
+    "title": "Bypass All Permissions Play Protect",
+    "desc": "Instalação em 2 cliques, sem travar no Play Protect. APK build que dura várias instalações."
+  },
+  "feature2": {
+    "title": "Honeypot + App de Sistema",
+    "desc": "O app fica oculto com nome de app do sistema. O Honeypot na tela inicial fica pronto para desinstalar, e parecer que o malware saiu."
+  },
+  "feature3": {
+    "title": "Anti-Delete",
+    "desc": "Mesmo offline ou em modo avião, dificulta a desinstalação e mantém a proteção ativa."
+  },
+  "feature4": {
+    "title": "Tela Play Store",
+    "desc": "Página no visual da Play Store para instalar com aparência oficial e menos suspeita."
+  },
+  "feature5": {
+    "title": "Connection Retries",
+    "desc": "Reabre em segundo plano após o app ser fechado ou o celular reiniciar."
+  },
+  "feature6": {
+    "title": "Bypass Restricted Settings",
+    "desc": "Libera a acessibilidade mesmo com as configurações restritas do Android."
+  },
+  "pricing": {
+    "eyebrow": "Planos",
+    "title": "Escolha o seu plano",
+    "note": "Preços em reais. Pagamento único por período, sem renovação automática. Se precisar de mais builds por dia, fale com um administrador pelo Telegram na barra superior."
+  },
+  "plan": {
+    "starter": {
+      "tag": "Starter",
+      "duration": "7 dias",
+      "desc": "Ideal para conhecer a ferramenta.",
+      "period": "/7 dias",
+      "feature1": "1 build por dia",
+      "feature2": "Tela Play Store",
+      "feature3": "Suporte para BTMOB",
+      "cta": "Liberar 7 dias"
+    },
+    "plus": {
+      "tag": "Plus",
+      "duration": "15 dias",
+      "desc": "Mais builds por dia e suporte às versões principais.",
+      "period": "/15 dias",
+      "feature1": "2 builds por dia",
+      "feature2": "Painel completo",
+      "feature3": "Tela Play Store",
+      "feature4": "Suporte para BTMOB",
+      "cta": "Liberar 15 dias"
+    },
+    "elite": {
+      "badge": "Mais completo",
+      "tag": "Elite",
+      "duration": "30 dias",
+      "desc": "Máximo de builds e suporte ampliado a KLs.",
+      "period": "/30 dias",
+      "feature1": "5 builds por dia",
+      "feature2": "Painel completo",
+      "feature3": "Tela Play Store",
+      "feature4": "Suporte para BTMOB",
+      "feature5": "Suporte para KRAKEN",
+      "feature6": "Suporte para +3 modelos de KL",
+      "cta": "Liberar 30 dias"
+    }
+  },
+  "payment": {
+    "processing": "Processando...",
+    "creating": "Criando cobranca segura...",
+    "errorDefault": "Nao foi possivel gerar o pagamento."
+  },
+  "checkout": {
+    "backToPlans": "Voltar aos planos",
+    "errorTag": "Erro · Checkout",
+    "notFoundTitle": "Cobrança não encontrada",
+    "notFoundDesc": "Verifique o endereço recebido e tente novamente.",
+    "paymentTag": "Pagamento · Bitcoin",
+    "intro": "Envie o valor pela rede Bitcoin. A confirmação será reconhecida automaticamente.",
+    "chargeLabel": "Valor da cobrança",
+    "statusNewTitle": "Aguardando pagamento",
+    "statusNewDetail": "Nenhuma transação encontrada até o momento.",
+    "statusProcessingTitle": "Pagamento detectado",
+    "statusProcessingDetail": "Aguardando confirmação na blockchain.",
+    "statusProcessingSats": "{received} sats recebidos; {confirmed} confirmados.",
+    "statusSettledTitle": "Pagamento confirmado",
+    "statusSettledDetail": "Cobrança concluída com sucesso.",
+    "statusExpiredTitle": "Cobrança expirada",
+    "statusExpiredDetail": "Não envie o pagamento com esta cotação.",
+    "statusDefaultTitle": "Verificando pagamento",
+    "statusDefaultDetail": "Aguarde a próxima atualização.",
+    "expiryLabel": "Validade do pagamento",
+    "calculating": "Calculando...",
+    "quoteExpired": "Cotação expirada",
+    "qrNote": "Escaneie com sua carteira Bitcoin",
+    "qrAlt": "QR Code para pagar esta cobrança em Bitcoin",
+    "copyLabel": "Ou copie o endereço",
+    "copyBtn": "Copiar",
+    "copiedBtn": "Copiado",
+    "selectBtn": "Selecione",
+    "copyAria": "Copiar endereço Bitcoin",
+    "successTitle": "Pagamento confirmado",
+    "successSub": "Cobrança concluída com sucesso."
+  }
+}

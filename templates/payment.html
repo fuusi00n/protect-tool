@@ -144,7 +144,24 @@ main{position:relative;overflow:clip}
 .nav-lang:hover{background:rgba(255,255,255,.045);color:var(--text)}
 .nav-lang .flag{flex-shrink:0;border-radius:2px;overflow:hidden}
 .nav-lang .label{font-weight:600;letter-spacing:.06em}
-.nav-lang .caret{width:.75rem;height:.75rem;opacity:.6;transform:rotate(180deg)}
+.nav-lang .caret{width:.75rem;height:.75rem;opacity:.6;transform:rotate(180deg);transition:transform .15s}
+.nav-lang-wrap{position:relative}
+.nav-lang-menu{
+  display:none;position:absolute;top:calc(100% + .35rem);right:0;z-index:120;
+  min-width:10.5rem;padding:.35rem;border-radius:var(--radius-xs);
+  border:1px solid var(--line);background:var(--panel);
+  box-shadow:0 0 0 1px rgba(255,255,255,.02) inset,0 10px 30px -12px rgba(0,0,0,.7);
+}
+.nav-lang-wrap.is-open .nav-lang-menu{display:grid;gap:.15rem}
+.nav-lang-wrap.is-open .nav-lang .caret,.nav-lang-wrap.is-open .nav-lang-sm .caret{transform:rotate(0)}
+.nav-lang-option{
+  display:flex;align-items:center;gap:.5rem;width:100%;padding:.55rem .65rem;
+  border:1px solid transparent;border-radius:var(--radius-xs);background:transparent;
+  color:var(--text-muted);cursor:pointer;text-align:left;
+  font-family:var(--font-mono);font-size:.6875rem;transition:background .15s,color .15s,border-color .15s;
+}
+.nav-lang-option:hover,.nav-lang-option.is-active{color:var(--text);background:rgba(255,255,255,.045);border-color:var(--line)}
+.nav-lang-option .flag{flex-shrink:0;border-radius:2px;overflow:hidden}
 
 .nav-mobile{display:flex;align-items:center;gap:.4rem;margin-left:auto}
 .nav-lang-sm{
@@ -233,14 +250,14 @@ h1.hero-title{
   -webkit-background-clip:text;background-clip:text;color:transparent;
 }
 .btmob-bats{
-  position:absolute;inset:-0.2em -0.25em;z-index:0;
+  position:absolute;inset:-0.35em -0.45em;z-index:0;
   pointer-events:none;overflow:visible;
 }
-.bat-orbit{position:absolute;width:1.05em;height:.92em}
-.bat-orbit--1{top:12%;left:-6%;animation:bat-orbit-1 4.8s ease-in-out infinite}
-.bat-orbit--2{bottom:8%;right:-8%;width:.92em;height:.8em;animation:bat-orbit-2 5.6s ease-in-out infinite}
-.bat-orbit--3{top:-2%;right:-4%;width:.94em;height:.82em;animation:bat-orbit-3 5.1s ease-in-out infinite}
-.bat-orbit--4{bottom:2%;left:-2%;width:.93em;height:.81em;animation:bat-orbit-4 4.4s ease-in-out infinite}
+.bat-orbit{position:absolute;width:1.24em;height:1.09em}
+.bat-orbit--1{top:10%;left:-8%;animation:bat-orbit-1 4.8s ease-in-out infinite}
+.bat-orbit--2{bottom:6%;right:-10%;width:1.11em;height:.97em;animation:bat-orbit-2 5.6s ease-in-out infinite}
+.bat-orbit--3{top:-4%;right:-6%;width:1.12em;height:.98em;animation:bat-orbit-3 5.1s ease-in-out infinite}
+.bat-orbit--4{bottom:0;left:-4%;width:1.11em;height:.97em;animation:bat-orbit-4 4.4s ease-in-out infinite}
 .bat-flap{
   display:block;width:100%;height:100%;
   transform-origin:center center;
@@ -249,12 +266,9 @@ h1.hero-title{
 .bat-orbit--2 .bat-flap{animation-duration:.44s;animation-direction:alternate-reverse}
 .bat-orbit--3 .bat-flap{animation-duration:.41s}
 .bat-orbit--4 .bat-flap{animation-duration:.36s;animation-direction:alternate-reverse}
-.bat-flap svg.bat-icon{
-  display:block;width:100%;height:100%;overflow:visible;
-  filter:drop-shadow(0 0 2px rgba(110,255,170,.95)) drop-shadow(0 0 6px rgba(77,255,154,.72)) drop-shadow(0 0 14px rgba(77,255,154,.38));
+.bat-flap .bat-icon{
+  display:block;width:100%;height:100%;object-fit:contain;overflow:visible;
 }
-.bat-icon__glow{fill:none;opacity:.62}
-.bat-icon__body{vector-effect:non-scaling-stroke}
 .bat-orbit--2 .bat-icon,.bat-orbit--4 .bat-icon{transform:scaleX(-1)}
 .plan-bat-orbit--2 .bat-icon,.plan-bat-orbit--4 .bat-icon,.plan-bat-orbit--6 .bat-icon{transform:scaleX(-1)}
 @keyframes bat-orbit-1{
@@ -315,16 +329,31 @@ h1.hero-title{
 .profiles{position:relative;margin:0 auto;width:100%;max-width:80rem;padding:.25rem 0}
 .rows{position:relative;display:flex;width:100%;flex-direction:column;gap:.75rem}
 .pcard--rare{
-  border:1px solid rgba(212,175,55,.5);
-  background:linear-gradient(180deg,rgba(212,175,55,.1),rgba(255,255,255,.02));
-  box-shadow:0 0 0 1px rgba(212,175,55,.08) inset,0 0 18px rgba(212,175,55,.1);
+  border:1px solid rgba(158,134,82,.28);
+  background:linear-gradient(180deg,rgba(158,134,82,.055),rgba(255,255,255,.018));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.035);
 }
-.pcard--rare:hover{background:linear-gradient(180deg,rgba(212,175,55,.14),rgba(255,255,255,.03))}
-.pcard__meta{min-width:0;flex:1;display:grid;gap:.15rem}
+.pcard--rare::before{
+  content:"";position:absolute;left:0;top:.55rem;bottom:.55rem;width:2px;border-radius:0 2px 2px 0;
+  background:linear-gradient(180deg,rgba(196,169,106,.15),rgba(158,134,82,.75),rgba(196,169,106,.15));
+}
+.pcard--rare:hover{
+  border-color:rgba(158,134,82,.38);
+  background:linear-gradient(180deg,rgba(158,134,82,.08),rgba(255,255,255,.025));
+}
+.pcard--rare-light{
+  border:1px solid rgba(255,255,255,.05);
+  background:var(--surface);
+  box-shadow:none;
+}
+.pcard--rare-light:hover{background:var(--surface-hover);border-color:var(--line)}
+.pcard__meta{min-width:0;flex:1;display:grid;gap:.2rem}
 .pcard__badge{
-  font-family:var(--font-mono);font-size:.5625rem;font-weight:600;
-  letter-spacing:.12em;text-transform:uppercase;color:#e7c766;
+  font-family:var(--font);font-size:.5625rem;font-weight:600;
+  letter-spacing:.02em;text-transform:none;color:#b8a06a;
 }
+.pcard--rare .pcard__badge{color:#c9b17a}
+.pcard--rare-light .pcard__badge{color:var(--text-dim);font-size:.5rem;font-weight:500}
 .pcard__note{
   font-family:var(--font-mono);font-size:.5rem;line-height:1.25;
   color:var(--text-muted);white-space:normal;
@@ -340,12 +369,17 @@ h1.hero-title{
 .marquee-fade:hover .track{animation-play-state:paused}
 
 .pcard{
-  display:flex;width:11.5rem;flex-shrink:0;align-items:center;gap:.7rem;
-  border-radius:var(--radius);border:1px solid transparent;background:var(--surface);
-  padding:.6rem .75rem;transition:background .2s,border-color .2s,box-shadow .2s;
+  position:relative;display:flex;width:11.5rem;flex-shrink:0;align-items:center;gap:.7rem;
+  border-radius:var(--radius);border:1px solid rgba(255,255,255,.04);background:var(--surface);
+  padding:.65rem .8rem;transition:background .2s,border-color .2s,box-shadow .2s;
 }
 .pcard--wide{width:15.5rem}
-.pcard:hover{background:var(--surface-hover)}
+.pcard:hover{background:var(--surface-hover);border-color:var(--line)}
+.pcard--rare .pname{color:#ece6d6}
+.pcard--rare .pav{
+  background:#fff;border:1px solid rgba(158,134,82,.16);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.5);
+}
 .pav{
   display:grid;place-items:center;height:2.35rem;width:2.35rem;flex-shrink:0;
   overflow:hidden;border-radius:var(--radius-sm);background:#fff;padding:.3rem;
@@ -437,13 +471,13 @@ h2.features-title,h2.connections-title{
   position:absolute;inset:-0.45rem;z-index:1;
   pointer-events:none;overflow:visible;
 }
-.plan-bat-orbit{position:absolute;width:1.7rem;height:1.5rem}
+.plan-bat-orbit{position:absolute;width:2.18rem;height:1.9rem}
 .plan-bat-orbit--1{top:0;left:-2%;animation:plan-bat-orbit-1 5.2s ease-in-out infinite}
-.plan-bat-orbit--2{top:6%;right:-4%;width:1.5rem;height:1.31rem;animation:plan-bat-orbit-2 4.7s ease-in-out infinite}
-.plan-bat-orbit--3{bottom:10%;left:-5%;width:1.45rem;height:1.27rem;animation:plan-bat-orbit-3 5.5s ease-in-out infinite}
-.plan-bat-orbit--4{bottom:0;right:-2%;width:1.52rem;height:1.33rem;animation:plan-bat-orbit-4 4.9s ease-in-out infinite}
-.plan-bat-orbit--5{top:44%;left:-6%;width:1.33rem;height:1.17rem;animation:plan-bat-orbit-2 5.8s ease-in-out infinite reverse}
-.plan-bat-orbit--6{top:40%;right:-6%;width:1.27rem;height:1.12rem;animation:plan-bat-orbit-1 5.1s ease-in-out infinite reverse}
+.plan-bat-orbit--2{top:6%;right:-4%;width:1.94rem;height:1.69rem;animation:plan-bat-orbit-2 4.7s ease-in-out infinite}
+.plan-bat-orbit--3{bottom:10%;left:-5%;width:1.86rem;height:1.62rem;animation:plan-bat-orbit-3 5.5s ease-in-out infinite}
+.plan-bat-orbit--4{bottom:0;right:-2%;width:1.96rem;height:1.71rem;animation:plan-bat-orbit-4 4.9s ease-in-out infinite}
+.plan-bat-orbit--5{top:44%;left:-6%;width:1.7rem;height:1.49rem;animation:plan-bat-orbit-2 5.8s ease-in-out infinite reverse}
+.plan-bat-orbit--6{top:40%;right:-6%;width:1.64rem;height:1.43rem;animation:plan-bat-orbit-1 5.1s ease-in-out infinite reverse}
 .plan-bat-orbit .bat-flap{animation-duration:.42s}
 .plan-bat-orbit--3 .bat-flap,.plan-bat-orbit--5 .bat-flap{animation-direction:alternate-reverse}
 @keyframes plan-bat-orbit-1{
@@ -590,39 +624,43 @@ h2.features-title,h2.connections-title{
     </a>
 
     <ul class="nav-links">
-      <li><a href="#recursos">Recursos</a></li>
-      <li><a href="#planos">Planos</a></li>
-      <li><a href="https://t.me/katanaapkprotection" target="_blank" rel="noopener noreferrer">Telegram</a></li>
+      <li><a href="#recursos" data-i18n="nav.resources">Recursos</a></li>
+      <li><a href="#planos" data-i18n="nav.plans">Planos</a></li>
+      <li><a href="https://t.me/katanaapkprotection" target="_blank" rel="noopener noreferrer" data-i18n="nav.telegram">Telegram</a></li>
     </ul>
 
     <div class="nav-actions">
-      <button type="button" class="nav-lang" aria-haspopup="menu" aria-expanded="false" aria-label="Idioma: PT-BR">
-        <svg class="flag" viewBox="0 0 28 20" width="20" height="14" aria-hidden="true" focusable="false">
-          <rect width="28" height="20" fill="#009C3B"></rect>
-          <polygon points="14,3 25,10 14,17 3,10" fill="#FFDF00"></polygon>
-          <circle cx="14" cy="10" r="4" fill="#002776"></circle>
-          <path d="M10.5 10.6 a4 4 0 0 1 7 -0.6" stroke="#fff" stroke-width="0.7" fill="none"></path>
-        </svg>
-        <span class="label">PT-BR</span>
-        <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
-          <path d="M19.92 15.05 13.4 8.53a2 2 0 0 0-2.8 0l-6.52 6.52"></path>
-        </svg>
-      </button>
+      <div class="nav-lang-wrap">
+        <button type="button" class="nav-lang" data-lang-trigger aria-haspopup="menu" aria-expanded="false" aria-label="Idioma: Português">
+          <svg class="flag" viewBox="0 0 28 20" width="20" height="14" aria-hidden="true" focusable="false">
+            <rect width="28" height="20" fill="#009C3B"></rect>
+            <polygon points="14,3 25,10 14,17 3,10" fill="#FFDF00"></polygon>
+            <circle cx="14" cy="10" r="4" fill="#002776"></circle>
+            <path d="M10.5 10.6 a4 4 0 0 1 7 -0.6" stroke="#fff" stroke-width="0.7" fill="none"></path>
+          </svg>
+          <span class="label">PT</span>
+          <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19.92 15.05 13.4 8.53a2 2 0 0 0-2.8 0l-6.52 6.52"></path>
+          </svg>
+        </button>
+      </div>
     </div>
 
     <div class="nav-mobile">
-      <button type="button" class="nav-lang-sm" aria-haspopup="menu" aria-expanded="false" aria-label="Idioma: PT-BR">
-        <svg class="flag" viewBox="0 0 28 20" width="20" height="14" aria-hidden="true" focusable="false">
-          <rect width="28" height="20" fill="#009C3B"></rect>
-          <polygon points="14,3 25,10 14,17 3,10" fill="#FFDF00"></polygon>
-          <circle cx="14" cy="10" r="4" fill="#002776"></circle>
-          <path d="M10.5 10.6 a4 4 0 0 1 7 -0.6" stroke="#fff" stroke-width="0.7" fill="none"></path>
-        </svg>
-        <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
-          <path d="M19.92 15.05 13.4 8.53a2 2 0 0 0-2.8 0l-6.52 6.52"></path>
-        </svg>
-      </button>
-      <label for="nav-toggle" class="nav-burger" aria-label="Abrir menu">
+      <div class="nav-lang-wrap">
+        <button type="button" class="nav-lang-sm" data-lang-trigger aria-haspopup="menu" aria-expanded="false" aria-label="Idioma: Português">
+          <svg class="flag" viewBox="0 0 28 20" width="20" height="14" aria-hidden="true" focusable="false">
+            <rect width="28" height="20" fill="#009C3B"></rect>
+            <polygon points="14,3 25,10 14,17 3,10" fill="#FFDF00"></polygon>
+            <circle cx="14" cy="10" r="4" fill="#002776"></circle>
+            <path d="M10.5 10.6 a4 4 0 0 1 7 -0.6" stroke="#fff" stroke-width="0.7" fill="none"></path>
+          </svg>
+          <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19.92 15.05 13.4 8.53a2 2 0 0 0-2.8 0l-6.52 6.52"></path>
+          </svg>
+        </button>
+      </div>
+      <label for="nav-toggle" class="nav-burger" data-i18n-aria="nav.openMenu" aria-label="Abrir menu">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
           <circle cx="17.54" cy="18.15" r="2.46"></circle>
           <circle cx="17.54" cy="5.85" r="2.46"></circle>
@@ -634,9 +672,9 @@ h2.features-title,h2.connections-title{
   </div>
 
   <div class="nav-drawer">
-    <a href="#recursos">Recursos</a>
-    <a href="#planos">Planos</a>
-    <a href="https://t.me/katanaapkprotection" target="_blank" rel="noopener noreferrer">Telegram</a>
+    <a href="#recursos" data-i18n="nav.resources">Recursos</a>
+    <a href="#planos" data-i18n="nav.plans">Planos</a>
+    <a href="https://t.me/katanaapkprotection" target="_blank" rel="noopener noreferrer" data-i18n="nav.telegram">Telegram</a>
   </div>
 </nav>
 
@@ -676,20 +714,20 @@ h2.features-title,h2.connections-title{
     <div class="hero-inner">
       <div class="hero-copy">
         <div class="pill">
-          <span>Junte-se a nós</span>
+          <span data-i18n="hero.pill">Junte-se a nós</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
             <path d="m12.5 15 3-3-3-3"></path><path d="M8.5 12h6"></path><circle cx="12" cy="12" r="10"></circle>
           </svg>
         </div>
 
-        <h1 class="hero-title">O melhor <span class="text-gradient-primary">Bypass para </span><span class="btmob-wrap"><span class="btmob-bats" aria-hidden="true">{% for _ in range(4) %}<span class="bat-orbit bat-orbit--{{ loop.index }}"><span class="bat-flap">{% include "partials/bat_icon.html" %}</span></span>{% endfor %}</span><span class="btmob-text">BTMOB</span></span></h1>
+        <h1 class="hero-title"><span data-i18n="hero.titleBest">O melhor </span><span class="text-gradient-primary" data-i18n="hero.titleBypass">Bypass para </span><span class="btmob-wrap"><span class="btmob-bats" aria-hidden="true">{% for _ in range(4) %}<span class="bat-orbit bat-orbit--{{ loop.index }}"><span class="bat-flap">{% include "partials/bat_icon.html" %}</span></span>{% endfor %}</span><span class="btmob-text">BTMOB</span></span></h1>
 
-        <p class="hero-sub">Indetectável em + de 10 bancos. Não detectável pelo Sicoob.</p>
+        <p class="hero-sub" data-i18n="hero.subtitle">Indetectável em + de 10 bancos. Não detectável pelo Sicoob.</p>
 
         <div class="hero-cta">
           <a class="btn-primary" href="#planos">
             <span class="shine"></span>
-            <span>Começar agora</span>
+            <span data-i18n="hero.cta">Começar agora</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
               <path d="m12.5 15 3-3-3-3"></path><path d="M8.5 12h6"></path><circle cx="12" cy="12" r="10"></circle>
             </svg>
@@ -699,7 +737,7 @@ h2.features-title,h2.connections-title{
 
     </div>
     <div class="marquee-wrap">
-      <section class="profiles" aria-label="Bancos e carteiras suportados">
+      <section class="profiles" data-i18n-aria="profiles.ariaLabel" aria-label="Bancos e carteiras suportados">
         <div class="rows">
           <div class="marquee-fade">
             <div class="track left" style="--marquee-duration:56s;animation-delay:0s">
@@ -731,13 +769,13 @@ h2.features-title,h2.connections-title{
               ] %}
               {% for _ in [0, 1] %}
                 {% for bank in bank_cards %}
-                  <div class="pcard{% if bank.get('rare') %} pcard--rare{% elif bank.get('dark') %} pcard--dark{% endif %}{% if bank.get('note') %} pcard--wide{% endif %}">
+                  <div class="pcard{% if bank.get('rare') == 'Mais procurado' %} pcard--rare{% elif bank.get('rare') %} pcard--rare-light{% elif bank.get('dark') %} pcard--dark{% endif %}{% if bank.get('note') %} pcard--wide{% endif %}">
                     <span class="pav"><img src="{{ url_for('static', filename='assets/bancos/' + bank.file) }}" alt="" loading="eager" decoding="async"></span>
                     {% if bank.get('rare') or bank.get('note') %}
                       <span class="pcard__meta">
-                        {% if bank.get('rare') %}<span class="pcard__badge">{{ bank.rare }}</span>{% endif %}
+                        {% if bank.get('rare') %}<span class="pcard__badge" data-i18n="{% if bank.rare == 'Mais procurado' %}bank.rareMostWanted{% else %}bank.rareRare{% endif %}">{{ bank.rare }}</span>{% endif %}
                         <span class="pname">{{ bank.name }}</span>
-                        {% if bank.get('note') %}<span class="pcard__note">{{ bank.note }}</span>{% endif %}
+                        {% if bank.get('note') %}<span class="pcard__note" data-i18n="bank.nubankNote">{{ bank.note }}</span>{% endif %}
                       </span>
                     {% else %}
                       <span class="pname">{{ bank.name }}</span>
@@ -757,12 +795,12 @@ h2.features-title,h2.connections-title{
     <div class="container">
       <div class="grid">
         <div class="col-left">
-          <div><span class="eyebrow">Recursos</span></div>
+          <div><span class="eyebrow" data-i18n="features.eyebrow">Recursos</span></div>
           <div>
-            <h2 class="features-title">Tudo que você precisa para um bypass <span class="title-glow">perfeito.</span></h2>
+            <h2 class="features-title"><span data-i18n="features.title">Tudo que você precisa para um bypass </span><span class="title-glow" data-i18n="features.titleGlow">perfeito.</span></h2>
           </div>
           <div>
-            <span class="link-arrow">Katana Apk Fud
+            <span class="link-arrow"><span data-i18n="features.link">Katana Apk Fud</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
                 <path d="m12.5 15 3-3-3-3"></path><path d="M8.5 12h6"></path><circle cx="12" cy="12" r="10"></circle>
               </svg>
@@ -781,8 +819,8 @@ h2.features-title,h2.connections-title{
                   <circle cx="6" cy="18" r="1"></circle>
                 </svg>
               </div>
-              <h3>Bypass All Permissions Play Protect</h3>
-              <p>Instalação em 2 cliques, sem travar no Play Protect. APK build que dura várias instalações.</p>
+              <h3 data-i18n="feature1.title">Bypass All Permissions Play Protect</h3>
+              <p data-i18n="feature1.desc">Instalação em 2 cliques, sem travar no Play Protect. APK build que dura várias instalações.</p>
             </div>
           </div>
           <div class="card">
@@ -796,8 +834,8 @@ h2.features-title,h2.connections-title{
                   <rect x="3" y="8.38" width="3.6" height="10.62" rx="1"></rect>
                 </svg>
               </div>
-              <h3>Honeypot + App de Sistema</h3>
-              <p>O app fica oculto com nome de app do sistema. O Honeypot na tela inicial fica pronto para desinstalar, e parecer que o malware saiu.</p>
+              <h3 data-i18n="feature2.title">Honeypot + App de Sistema</h3>
+              <p data-i18n="feature2.desc">O app fica oculto com nome de app do sistema. O Honeypot na tela inicial fica pronto para desinstalar, e parecer que o malware saiu.</p>
             </div>
           </div>
           <div class="card">
@@ -809,8 +847,8 @@ h2.features-title,h2.connections-title{
                   <path d="M9.5 12.5 11 14l3.5-3.5"></path>
                 </svg>
               </div>
-              <h3>Anti-Delete</h3>
-              <p>Mesmo offline ou em modo avião, dificulta a desinstalação e mantém a proteção ativa.</p>
+              <h3 data-i18n="feature3.title">Anti-Delete</h3>
+              <p data-i18n="feature3.desc">Mesmo offline ou em modo avião, dificulta a desinstalação e mantém a proteção ativa.</p>
             </div>
           </div>
           <div class="card">
@@ -825,8 +863,8 @@ h2.features-title,h2.connections-title{
                   <path d="M8 12h8"></path>
                 </svg>
               </div>
-              <h3>Tela Play Store</h3>
-              <p>Página no visual da Play Store para instalar com aparência oficial e menos suspeita.</p>
+              <h3 data-i18n="feature4.title">Tela Play Store</h3>
+              <p data-i18n="feature4.desc">Página no visual da Play Store para instalar com aparência oficial e menos suspeita.</p>
             </div>
           </div>
           <div class="card">
@@ -841,8 +879,8 @@ h2.features-title,h2.connections-title{
                   <circle cx="12" cy="12" r="10"></circle>
                 </svg>
               </div>
-              <h3>Connection Retries</h3>
-              <p>Reabre em segundo plano após o app ser fechado ou o celular reiniciar.</p>
+              <h3 data-i18n="feature5.title">Connection Retries</h3>
+              <p data-i18n="feature5.desc">Reabre em segundo plano após o app ser fechado ou o celular reiniciar.</p>
             </div>
           </div>
           <div class="card">
@@ -855,8 +893,8 @@ h2.features-title,h2.connections-title{
                   <circle cx="8.5" cy="13.5" r="2.5"></circle>
                 </svg>
               </div>
-              <h3>Bypass Restricted Settings</h3>
-              <p>Libera a acessibilidade mesmo com as configurações restritas do Android.</p>
+              <h3 data-i18n="feature6.title">Bypass Restricted Settings</h3>
+              <p data-i18n="feature6.desc">Libera a acessibilidade mesmo com as configurações restritas do Android.</p>
             </div>
           </div>
         </div>
@@ -869,42 +907,43 @@ h2.features-title,h2.connections-title{
     <div class="halo-2" aria-hidden="true"></div>
     <div class="container">
       <div class="head">
-        <div><span class="eyebrow-c">Planos</span></div>
-        <div><h2 class="connections-title">Escolha o seu plano</h2></div>
+        <div><span class="eyebrow-c" data-i18n="pricing.eyebrow">Planos</span></div>
+        <div><h2 class="connections-title" data-i18n="pricing.title">Escolha o seu plano</h2></div>
       </div>
 
       <div class="plans">
         <article class="plan">
           <div class="plan__body">
             <div class="plan__head">
-              <span class="plan__tag">Starter</span>
-              <span class="plan__duration">7 dias</span>
+              <span class="plan__tag" data-i18n="plan.starter.tag">Starter</span>
+              <span class="plan__duration" data-i18n="plan.starter.duration">7 dias</span>
             </div>
-            <p class="plan__desc">Ideal para conhecer a ferramenta.</p>
-            <p class="plan__price"><span class="plan__currency">{{ plans["7d"]["currency"] if plans.get("7d") else "" }}</span>{{ plans["7d"]["display_amount"] if plans.get("7d") else "--" }}<span class="plan__period">/7 dias</span></p>
+            <p class="plan__desc" data-i18n="plan.starter.desc">Ideal para conhecer a ferramenta.</p>
+            <p class="plan__price"><span class="plan__currency">{{ plans["7d"]["currency"] if plans.get("7d") else "" }}</span>{{ plans["7d"]["display_amount"] if plans.get("7d") else "--" }}<span class="plan__period" data-i18n="plan.starter.period">/7 dias</span></p>
             <ul class="plan__features">
-              <li><span class="plan__check">✓</span><span>1 build por dia</span></li>
-              <li><span class="plan__check">✓</span><span>Tela Play Store</span></li>
+              <li><span class="plan__check">✓</span><span data-i18n="plan.starter.feature1">1 build por dia</span></li>
+              <li><span class="plan__check">✓</span><span data-i18n="plan.starter.feature2">Tela Play Store</span></li>
+              <li><span class="plan__check">✓</span><span data-i18n="plan.starter.feature3">Suporte para BTMOB</span></li>
             </ul>
-            <button type="button" class="plan__cta" data-plan-code="7d" {% if not plans.get("7d") %}disabled{% endif %}>Liberar 7 dias</button>
+            <button type="button" class="plan__cta" data-plan-code="7d" data-i18n="plan.starter.cta" {% if not plans.get("7d") %}disabled{% endif %}>Liberar 7 dias</button>
           </div>
         </article>
 
         <article class="plan">
           <div class="plan__body">
             <div class="plan__head">
-              <span class="plan__tag">Plus</span>
-              <span class="plan__duration">15 dias</span>
+              <span class="plan__tag" data-i18n="plan.plus.tag">Plus</span>
+              <span class="plan__duration" data-i18n="plan.plus.duration">15 dias</span>
             </div>
-            <p class="plan__desc">Mais builds por dia e suporte às versões principais.</p>
-            <p class="plan__price"><span class="plan__currency">{{ plans["15d"]["currency"] if plans.get("15d") else "" }}</span>{{ plans["15d"]["display_amount"] if plans.get("15d") else "--" }}<span class="plan__period">/15 dias</span></p>
+            <p class="plan__desc" data-i18n="plan.plus.desc">Mais builds por dia e suporte às versões principais.</p>
+            <p class="plan__price"><span class="plan__currency">{{ plans["15d"]["currency"] if plans.get("15d") else "" }}</span>{{ plans["15d"]["display_amount"] if plans.get("15d") else "--" }}<span class="plan__period" data-i18n="plan.plus.period">/15 dias</span></p>
             <ul class="plan__features">
-              <li><span class="plan__check">✓</span><span>2 builds por dia</span></li>
-              <li><span class="plan__check">✓</span><span>Painel completo</span></li>
-              <li><span class="plan__check">✓</span><span>Tela Play Store</span></li>
-              <li><span class="plan__check">✓</span><span>Suporte para BTMOB</span></li>
+              <li><span class="plan__check">✓</span><span data-i18n="plan.plus.feature1">2 builds por dia</span></li>
+              <li><span class="plan__check">✓</span><span data-i18n="plan.plus.feature2">Painel completo</span></li>
+              <li><span class="plan__check">✓</span><span data-i18n="plan.plus.feature3">Tela Play Store</span></li>
+              <li><span class="plan__check">✓</span><span data-i18n="plan.plus.feature4">Suporte para BTMOB</span></li>
             </ul>
-            <button type="button" class="plan__cta" data-plan-code="15d" {% if not plans.get("15d") %}disabled{% endif %}>Liberar 15 dias</button>
+            <button type="button" class="plan__cta" data-plan-code="15d" data-i18n="plan.plus.cta" {% if not plans.get("15d") %}disabled{% endif %}>Liberar 15 dias</button>
           </div>
         </article>
 
@@ -916,32 +955,33 @@ h2.features-title,h2.connections-title{
             {% endfor %}
           </div>
           <div class="plan__body">
-            <span class="plan__badge">Mais completo</span>
+            <span class="plan__badge" data-i18n="plan.elite.badge">Mais completo</span>
             <div class="plan__head">
-              <span class="plan__tag plan__tag--accent">Elite</span>
-              <span class="plan__duration">30 dias</span>
+              <span class="plan__tag plan__tag--accent" data-i18n="plan.elite.tag">Elite</span>
+              <span class="plan__duration" data-i18n="plan.elite.duration">30 dias</span>
             </div>
-            <p class="plan__desc">Máximo de builds e suporte ampliado a KLs.</p>
-            <p class="plan__price"><span class="plan__currency">{{ plans["30d"]["currency"] if plans.get("30d") else "" }}</span>{{ plans["30d"]["display_amount"] if plans.get("30d") else "--" }}<span class="plan__period">/30 dias</span></p>
+            <p class="plan__desc" data-i18n="plan.elite.desc">Máximo de builds e suporte ampliado a KLs.</p>
+            <p class="plan__price"><span class="plan__currency">{{ plans["30d"]["currency"] if plans.get("30d") else "" }}</span>{{ plans["30d"]["display_amount"] if plans.get("30d") else "--" }}<span class="plan__period" data-i18n="plan.elite.period">/30 dias</span></p>
             <ul class="plan__features">
-              <li><span class="plan__check plan__check--accent">✓</span><span>5 builds por dia</span></li>
-              <li><span class="plan__check plan__check--accent">✓</span><span>Painel completo</span></li>
-              <li><span class="plan__check plan__check--accent">✓</span><span>Tela Play Store</span></li>
-              <li><span class="plan__check plan__check--accent">✓</span><span>Suporte para BTMOB</span></li>
-              <li><span class="plan__check plan__check--accent">✓</span><span>Suporte para KRAKEN</span></li>
-              <li><span class="plan__check plan__check--accent">✓</span><span>Suporte para +3 modelos de KL</span></li>
+              <li><span class="plan__check plan__check--accent">✓</span><span data-i18n="plan.elite.feature1">5 builds por dia</span></li>
+              <li><span class="plan__check plan__check--accent">✓</span><span data-i18n="plan.elite.feature2">Painel completo</span></li>
+              <li><span class="plan__check plan__check--accent">✓</span><span data-i18n="plan.elite.feature3">Tela Play Store</span></li>
+              <li><span class="plan__check plan__check--accent">✓</span><span data-i18n="plan.elite.feature4">Suporte para BTMOB</span></li>
+              <li><span class="plan__check plan__check--accent">✓</span><span data-i18n="plan.elite.feature5">Suporte para KRAKEN</span></li>
+              <li><span class="plan__check plan__check--accent">✓</span><span data-i18n="plan.elite.feature6">Suporte para +3 modelos de KL</span></li>
             </ul>
-            <button type="button" class="plan__cta plan__cta--accent" data-plan-code="30d" {% if not plans.get("30d") %}disabled{% endif %}>Liberar 30 dias</button>
+            <button type="button" class="plan__cta plan__cta--accent" data-plan-code="30d" data-i18n="plan.elite.cta" {% if not plans.get("30d") %}disabled{% endif %}>Liberar 30 dias</button>
           </div>
         </article>
       </div>
 
       <p id="payment-feedback" class="payment-feedback" role="status" aria-live="polite">{% if settings_error %}{{ settings_error }}{% endif %}</p>
 
-      <p class="connections-note">Preços em reais. Pagamento único por período, sem renovação automática. Se precisar de mais builds por dia, fale com um administrador pelo Telegram na barra superior.</p>
+      <p class="connections-note" data-i18n="pricing.note">Preços em reais. Pagamento único por período, sem renovação automática. Se precisar de mais builds por dia, fale com um administrador pelo Telegram na barra superior.</p>
     </div>
   </section>
 </main>
+<script src="{{ url_for('static', filename='js/i18n.js') }}" data-i18n-base="{{ url_for('static', filename='i18n') }}"></script>
 <script src="{{ url_for('static', filename='js/payment.js') }}"></script>
 </body>
 </html>

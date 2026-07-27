@@ -1,6 +1,15 @@
 const buttons = [...document.querySelectorAll('[data-plan-code]')];
 const feedback = document.querySelector('#payment-feedback');
 
+function t(key, fallback) {
+  return window.katanaI18n?.t(key, fallback) ?? fallback;
+}
+
+function buttonLabel(button) {
+  const key = button.getAttribute('data-i18n');
+  return key ? t(key, button.textContent) : button.textContent;
+}
+
 function setButtonsDisabled(disabled) {
   buttons.forEach((item) => {
     if (item.dataset.wasDisabled === '1') return;
@@ -13,9 +22,7 @@ function resetButtonsUi() {
   buttons.forEach((button) => {
     button.classList.remove('is-loading');
     button.removeAttribute('aria-busy');
-    if (button.dataset.originalLabel) {
-      button.textContent = button.dataset.originalLabel;
-    }
+    button.textContent = buttonLabel(button);
   });
 }
 
@@ -40,13 +47,12 @@ if (buttons.length && feedback) {
 
   buttons.forEach((button) => button.addEventListener('click', async () => {
     if (button.disabled) return;
-    button.dataset.originalLabel ||= button.textContent;
-    button.textContent = 'Processando...';
+    button.textContent = t('payment.processing', 'Processando...');
     button.classList.add('is-loading');
     button.setAttribute('aria-busy', 'true');
     setButtonsDisabled(true);
     feedback.className = 'payment-feedback';
-    feedback.textContent = 'Criando cobranca segura...';
+    feedback.textContent = t('payment.creating', 'Criando cobranca segura...');
     try {
       const response = await fetch('/api/payments', {
         method: 'POST',
@@ -55,15 +61,24 @@ if (buttons.length && feedback) {
       });
       const result = await response.json();
       if (!response.ok) {
-        throw new Error(result.error || 'Nao foi possivel gerar o pagamento.');
+        throw new Error(result.error || t('payment.errorDefault', 'Nao foi possivel gerar o pagamento.'));
       }
-      window.location.assign(result.checkout_url);
+      const checkoutUrl = new URL(result.checkout_url, window.location.origin);
+      const lang = window.katanaI18n?.getLanguage?.() || localStorage.getItem('katana_lang');
+      if (lang) checkoutUrl.searchParams.set('lang', lang);
+      window.location.assign(checkoutUrl.toString());
     } catch (error) {
       feedback.className = 'payment-feedback is-error';
       feedback.textContent = error.message;
       resetButtonsUi();
     }
   }));
+
+  document.addEventListener('katana:langchange', () => {
+    if (!buttons.some((button) => button.classList.contains('is-loading'))) {
+      resetButtonsUi();
+    }
+  });
 
   window.addEventListener('pageshow', resetPaymentUi);
   document.addEventListener('visibilitychange', () => {
