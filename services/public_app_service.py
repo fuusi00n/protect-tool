@@ -15,8 +15,8 @@ _NON_CHROME_RE = re.compile(r"(Edg/|OPR/|SamsungBrowser|UCBrowser|YaBrowser)", r
 
 PLAY_STORE_STATS = {
     "rating": "4,9",
-    "reviews": "6.802 Avaliações",
-    "downloads": "1 mil+",
+    "reviews": "1.802 Avaliações",
+    "downloads": "10 mil+",
     "downloads_label": "downloads",
     "age_rating": "Classificação Livre",
 }
@@ -210,15 +210,27 @@ def get_public_app_record(slug, token):
             return record
 
 
+def _force_https(url):
+    if not url:
+        return url
+    if url.startswith("//"):
+        return f"https:{url}"
+    lower = url.lower()
+    if lower.startswith("http://"):
+        return f"https://{url[7:]}"
+    return url
+
+
 def build_public_url(slug, token):
     base = (Config.PUBLIC_APP_BASE_URL or "").rstrip("/")
     path = f"/aplicativo/{slug}?t={token}"
     if base:
-        return f"{base}{path}"
-    if request:
-        root = request.url_root.rstrip("/")
-        return f"{root}{path}"
-    return path
+        url = f"{base}{path}"
+    elif request:
+        url = f"https://{request.host}{path}"
+    else:
+        return path
+    return _force_https(url)
 
 
 def increment_download_count(slug, token):

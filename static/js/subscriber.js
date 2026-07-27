@@ -1,3 +1,16 @@
+function normalizePublicLink(raw) {
+    if (!raw) return "";
+    let url = String(raw).trim();
+    if (url.startsWith("//")) {
+        return `https:${url}`;
+    }
+    if (!/^https?:\/\//i.test(url)) {
+        const path = url.startsWith("/") ? url : `/${url}`;
+        url = `https://${window.location.host}${path}`;
+    }
+    return url.replace(/^http:\/\//i, "https://");
+}
+
 async function api(url, options = {}) {
     const res = await fetch(url, {
         headers: { Accept: "application/json", ...(options.headers || {}) },
@@ -376,9 +389,7 @@ function subscriberApps() {
         },
         async copyLink(item) {
             if (!item.public_url) return;
-            const url = item.public_url.startsWith("http")
-                ? item.public_url
-                : `${window.location.origin}${item.public_url}`;
+            const url = normalizePublicLink(item.public_url);
             try {
                 await navigator.clipboard.writeText(url);
                 this.copiedId = item.build_id;

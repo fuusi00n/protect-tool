@@ -72,10 +72,19 @@
 
             <div class="build-modal__body" x-show="buildPhase === 'building'">
                 <div class="build-modal__progress">
-                    <p class="make-status build-modal__status">
-                        <span class="make-status__prompt">&gt;</span>
-                        <span x-text="status || 'Iniciando pipeline…'"></span>
-                    </p>
+                    <div class="build-modal__meta">
+                        <p class="make-status build-modal__status">
+                            <span class="make-status__prompt">&gt;</span>
+                            <span x-text="status || 'Iniciando pipeline…'"></span>
+                        </p>
+                        <p class="build-modal__timing" aria-live="polite">
+                            Tempo restante
+                            <span class="build-modal__timer-value"
+                                :class="Number(progress) >= 50 ? 'is-soon' : 'is-wait'"
+                                :style="{ color: Number(progress) >= 50 ? '#4ade80' : '#facc15' }"
+                                x-text="Number(progress) >= 50 ? '~1 min' : '~2 min'">~2 min</span>
+                        </p>
+                    </div>
                     <div class="make-progress build-modal__progress-bar" role="progressbar"
                         :aria-valuenow="progress" aria-valuemin="0" aria-valuemax="100">
                         <div class="make-progress__bar build-modal__progress-fill" :style="`width: ${progress}%`"></div>
