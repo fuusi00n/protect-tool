@@ -20,8 +20,8 @@
                 <article class="dash-card dash-card--hero">
                     <div class="dash-card__glow" aria-hidden="true"></div>
                     <header class="dash-card__head">
-                        <span class="dash-card__tag">Operações</span>
-                        <span class="dash-card__pill" x-text="`${metrics.processing_builds ?? 0} em fila`"></span>
+                        <span class="dash-card__tag">Builds</span>
+                        <span class="dash-card__pill" x-text="`${metrics.builds_count ?? 0} registros`"></span>
                     </header>
                     <div class="dash-quota">
                         <div class="dash-ring" :style="`--pct: ${successRate}`">
@@ -64,69 +64,102 @@
                     </svg>
                 </article>
 
-                <div class="dash-stats dash-stats--4">
+                <div class="dash-stats">
                     <article class="dash-card dash-card--stat">
                         <span class="dash-stat__icon dash-stat__icon--neutral" aria-hidden="true">
-                            <svg viewBox="0 0 16 16" fill="none"><path d="M3 4h10v8H3z" stroke="currentColor" stroke-width="1.25"/><path d="M6 4V2.5h4V4" stroke="currentColor" stroke-width="1.25"/></svg>
+                            <svg viewBox="0 0 16 16" fill="none">
+                                <path d="M8 2.5 13.5 5 8 7.5 2.5 5 8 2.5Z" stroke="currentColor" stroke-width="1.15" stroke-linejoin="miter"/>
+                                <path d="M2.5 7.25 8 9.75 13.5 7.25" stroke="currentColor" stroke-width="1.15" stroke-linecap="square"/>
+                                <path d="M2.5 9.75 8 12.25 13.5 9.75" stroke="currentColor" stroke-width="1.15" stroke-linecap="square"/>
+                            </svg>
                         </span>
-                        <p class="dash-stat__label">Registros</p>
+                        <p class="dash-stat__label">Total</p>
                         <p class="dash-stat__value" x-text="metrics.builds_count ?? '-'"></p>
                     </article>
                     <article class="dash-card dash-card--stat">
                         <span class="dash-stat__icon dash-stat__icon--ok" aria-hidden="true">
-                            <svg viewBox="0 0 16 16" fill="none"><path d="M4 8.5 7 11.5 12 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+                            <svg viewBox="0 0 16 16" fill="none">
+                                <path d="M8 2.25 12.75 4.35V8.1c0 2.35-1.65 4.05-4.75 5.15C5.35 12.15 3.75 10.45 3.75 8.1V4.35L8 2.25Z" stroke="currentColor" stroke-width="1.15" stroke-linejoin="miter"/>
+                                <path d="M5.65 8.05 7.2 9.6 10.55 6.15" stroke="currentColor" stroke-width="1.4" stroke-linecap="square" stroke-linejoin="miter"/>
+                            </svg>
                         </span>
                         <p class="dash-stat__label">Concluídos</p>
                         <p class="dash-stat__value dash-stat__value--ok" x-text="metrics.completed_builds ?? '-'"></p>
                     </article>
                     <article class="dash-card dash-card--stat">
                         <span class="dash-stat__icon dash-stat__icon--err" aria-hidden="true">
-                            <svg viewBox="0 0 16 16" fill="none"><path d="M8 4.5v4M8 11h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+                            <svg viewBox="0 0 16 16" fill="none">
+                                <path d="M8 3 13.25 12.25H2.75L8 3Z" stroke="currentColor" stroke-width="1.15" stroke-linejoin="miter"/>
+                                <path d="M8 6.75v2.75" stroke="currentColor" stroke-width="1.35" stroke-linecap="square"/>
+                                <circle cx="8" cy="11.35" r="0.55" fill="currentColor"/>
+                            </svg>
                         </span>
                         <p class="dash-stat__label">Erros</p>
                         <p class="dash-stat__value dash-stat__value--err" x-text="metrics.failed_builds ?? '-'"></p>
                     </article>
-                    <article class="dash-card dash-card--stat">
-                        <span class="dash-stat__icon dash-stat__icon--warn" aria-hidden="true">
-                            <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.25" stroke="currentColor" stroke-width="1.25"/><path d="M8 5v3.25M8 11h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
-                        </span>
-                        <p class="dash-stat__label">Em fila</p>
-                        <p class="dash-stat__value dash-stat__value--warn" x-text="metrics.processing_builds ?? '-'"></p>
-                    </article>
                 </div>
             </div>
 
-            <div class="dash-actions dash-actions--2">
+            <article class="dash-card dash-card--foot dash-card--payments">
+                <header class="dash-card__head">
+                    <span class="dash-card__tag">Pagamentos</span>
+                    <span class="dash-card__pill dash-card__pill--btc">Bitcoin</span>
+                </header>
+                <div class="dash-foot dash-foot--split">
+                    <div class="dash-foot__item">
+                        <p class="dash-foot__value" x-text="metrics.invoices_generated ?? '0'"></p>
+                        <p class="dash-foot__label">cobranças geradas</p>
+                    </div>
+                    <div class="dash-foot__item">
+                        <p class="dash-foot__value dash-foot__value--ok" x-text="metrics.payments_settled ?? '0'"></p>
+                        <p class="dash-foot__label">pagamentos liquidados</p>
+                    </div>
+                    <div class="dash-foot__item">
+                        <p class="dash-foot__value dash-foot__value--btc" x-text="`$ ${metrics.payments_settled_amount ?? '0.00'}`"></p>
+                        <p class="dash-foot__label">total liquidado</p>
+                    </div>
+                </div>
+            </article>
+
+            <div class="dash-actions dash-actions--3">
                 <a class="dash-action dash-action--primary" href="{{ url_for('katana.users_page') }}">
                     <span class="dash-action__icon" aria-hidden="true">
-                        <svg viewBox="0 0 16 16" fill="none"><circle cx="6" cy="5.5" r="2.25" stroke="currentColor" stroke-width="1.2"/><path d="M2.5 13c0-2 1.6-3.5 3.5-3.5S9.5 11 9.5 13" stroke="currentColor" stroke-width="1.2" stroke-linecap="square"/></svg>
+                        <svg viewBox="0 0 16 16" fill="none">
+                            <circle cx="6.5" cy="5.5" r="2.25" stroke="currentColor" stroke-width="1.2"/>
+                            <path d="M2.5 13c.35-2.1 1.95-3.25 4-3.25s3.65 1.15 4 3.25" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                            <path d="M11.75 5v3.5M10 6.75h3.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="square"/>
+                        </svg>
                     </span>
                     <span class="dash-action__copy">
                         <strong>Usuários</strong>
-                        <em>Gerenciar operadores</em>
+                        <em>Operadores e licenças</em>
                     </span>
                 </a>
-                <a class="dash-action dash-action--primary" href="{{ url_for('katana.make_page') }}">
+                <a class="dash-action" href="{{ url_for('katana.make_page') }}">
                     <span class="dash-action__icon" aria-hidden="true">
-                        <svg viewBox="0 0 16 16" fill="none"><path d="M8 1.5 13.5 4.75V11.25L8 14.5 2.5 11.25V4.75L8 1.5Z" stroke="currentColor" stroke-width="1.1"/><path d="M8 8v6.5M8 8 2.5 4.75M8 8l5.5-3.25" stroke="currentColor" stroke-width="1.1"/></svg>
+                        <svg viewBox="0 0 16 16" fill="none">
+                            <path d="M8 1.5 13.5 4.75V11.25L8 14.5 2.5 11.25V4.75L8 1.5Z" stroke="currentColor" stroke-width="1.1"/>
+                            <path d="M8 8v6.5M8 8 2.5 4.75M8 8l5.5-3.25" stroke="currentColor" stroke-width="1.1"/>
+                        </svg>
                     </span>
                     <span class="dash-action__copy">
                         <strong>Make</strong>
-                        <em>Gerar APK admin</em>
+                        <em>Gerar novo build</em>
+                    </span>
+                </a>
+                <a class="dash-action" href="{{ url_for('katana.payments_page') }}">
+                    <span class="dash-action__icon" aria-hidden="true">
+                        <svg viewBox="0 0 16 16" fill="none">
+                            <circle cx="8" cy="8" r="5.25" stroke="currentColor" stroke-width="1.2"/>
+                            <path d="M8 4.75v6.5M6.25 6.35c.45-.55 1.1-.85 1.85-.85 1.15 0 2 .7 2 1.7s-.85 1.7-2 1.7c-.75 0-1.4-.3-1.85-.85" stroke="currentColor" stroke-width="1.2" stroke-linecap="square"/>
+                        </svg>
+                    </span>
+                    <span class="dash-action__copy">
+                        <strong>Payments</strong>
+                        <em>Recebimentos Bitcoin</em>
                     </span>
                 </a>
             </div>
-
-            <article class="dash-card dash-card--foot">
-                <header class="dash-card__head">
-                    <span class="dash-card__tag">Downloads públicos</span>
-                    <span class="dash-card__pill">Play Store</span>
-                </header>
-                <div class="dash-foot">
-                    <p class="dash-foot__value" x-text="metrics.total_public_downloads ?? '0'"></p>
-                    <p class="dash-foot__label">downloads via link /aplicativo/</p>
-                </div>
-            </article>
         </section>
     </div>
 </div>

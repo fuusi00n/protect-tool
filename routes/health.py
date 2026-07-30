@@ -4,7 +4,6 @@ from services.database import ping
 
 health_bp = Blueprint("health", __name__)
 
-
 @health_bp.route("/health")
 def health():
     db_ok = ping()

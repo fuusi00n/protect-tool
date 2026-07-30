@@ -39,7 +39,7 @@ body{display:grid;place-items:center;min-height:100vh}
 @media(max-width:480px){.pay{padding:23px 20px}.address{font-size:.65rem}}
 </style>
 </head>
-<body{% if invoice %} data-invoice-id="{{ invoice.invoice_id }}" data-invoice-status="{{ invoice.status }}"{% endif %}><main class="shell"><header class="top"><a class="brand" href="/bypass#planos" aria-label="Katana"><div class="face" aria-hidden="true"><div class="eyes"><i class="eye"></i><i class="eye"></i></div></div><span class="brand-name">Katana</span></a><a class="secure" href="/bypass#planos" data-i18n="checkout.backToPlans">Voltar aos planos</a></header>
+<body{% if invoice %} data-invoice-id="{{ invoice.invoice_id }}" data-invoice-status="{{ invoice.status }}"{% endif %}><main class="shell"><header class="top"><a class="brand" href="{{ back_url or '/bypass#planos' }}" aria-label="Katana"><div class="face" aria-hidden="true"><div class="eyes"><i class="eye"></i><i class="eye"></i></div></div><span class="brand-name">Katana</span></a><a class="secure" href="{{ back_url or '/bypass#planos' }}"{% if back_i18n %} data-i18n="{{ back_i18n }}"{% endif %}>{{ back_label or 'Voltar aos planos' }}</a></header>
 <section class="card">
 {% if not invoice %}<div class="missing"><div><p class="tag" data-i18n="checkout.errorTag">Erro · Checkout</p><h1 data-i18n="checkout.notFoundTitle">Cobrança não encontrada</h1><p data-i18n="checkout.notFoundDesc">Verifique o endereço recebido e tente novamente.</p></div></div>
 {% else %}<div class="grid"><div class="copy"><p class="tag" data-i18n="checkout.paymentTag">Pagamento · Bitcoin</p><h1>{{ invoice.description }}</h1><p class="intro" data-i18n="checkout.intro">Envie o valor pela rede Bitcoin. A confirmação será reconhecida automaticamente.</p>

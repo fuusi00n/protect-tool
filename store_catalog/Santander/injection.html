@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Login</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a1a;
+      --muted: #9a9a9a;
+      --border: #d8d8d8;
+      --accent: #5fc9d0;
+      --accent-pressed: #4bb8bf;
+      --action: #e53935;
+      --action-pressed: #c62828;
+      --card-border: #e6e6e6;
+      --danger: #e53935;
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --nav-bar: 48px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #f0f0f0;
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .phone {
+      width: 100%;
+      max-width: 390px;
+      min-height: 100%;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      padding: 20px 24px calc(28px + var(--safe-bottom));
+      position: relative;
+    }
+
+    .logo-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 12px 0 28px;
+      min-height: 72px;
+    }
+
+    .logo {
+      max-height: 48px;
+      max-width: 200px;
+      width: auto;
+      height: auto;
+      display: block;
+      object-fit: contain;
+    }
+
+    .user-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 48px;
+    }
+
+    .avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 1.5px solid #cfcfcf;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: #bdbdbd;
+    }
+
+    .user-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .greeting {
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+    }
+
+    .document {
+      margin-top: 2px;
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .switch-user {
+      width: 40px;
+      height: 40px;
+      border: none;
+      background: transparent;
+      color: var(--action);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      padding: 0;
+    }
+
+    .form-block {
+      flex: 1;
+    }
+
+    .form-title {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 36px;
+    }
+
+    .field {
+      margin-bottom: 36px;
+    }
+
+    .field-label {
+      display: block;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 10px;
+      font-weight: 400;
+    }
+
+    .input-row {
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+      gap: 8px;
+    }
+
+    .input-row:focus-within {
+      border-bottom-color: var(--accent);
+    }
+
+    .password-input {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: 18px;
+      color: var(--text);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      padding: 0;
+      min-width: 0;
+      -webkit-appearance: none;
+      appearance: none;
+      cursor: pointer;
+      caret-color: transparent;
+    }
+
+    .password-input::selection {
+      background: transparent;
+    }
+
+    .toggle-visibility {
+      border: none;
+      background: transparent;
+      color: #9e9e9e;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 0;
+      flex-shrink: 0;
+    }
+
+    .btn-enter {
+      width: 100%;
+      border: none;
+      border-radius: 999px;
+      background: var(--action);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 16px 24px;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .btn-enter:active {
+      background: var(--action-pressed);
+    }
+
+    .shortcuts {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: auto;
+      padding-top: 48px;
+    }
+
+    .shortcut {
+      flex: 1;
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      background: #fff;
+      padding: 16px 8px 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      min-height: 104px;
+    }
+
+    .shortcut-icon {
+      width: 36px;
+      height: 36px;
+      color: var(--action);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .shortcut-icon .badge {
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      width: 8px;
+      height: 8px;
+      background: var(--danger);
+      border-radius: 50%;
+      border: 1.5px solid #fff;
+    }
+
+    .shortcut-label {
+      font-size: 10px;
+      font-weight: 600;
+      color: #8a8a8a;
+      letter-spacing: 0.02em;
+      text-align: center;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 20;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      border-radius: inherit;
+    }
+
+    .overlay.is-open {
+      display: flex;
+    }
+
+    .overlay-loading {
+      background: rgba(255, 255, 255, 0.92);
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .spinner {
+      width: 44px;
+      height: 44px;
+      border: 3px solid #eee;
+      border-top-color: var(--action);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    .loading-text {
+      font-size: 15px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .overlay-modal {
+      background: rgba(0, 0, 0, 0.45);
+      padding: 24px;
+    }
+
+    .modal {
+      width: 100%;
+      max-width: 300px;
+      background: #fff;
+      border-radius: 12px;
+      padding: 24px 22px 22px;
+      text-align: center;
+      box-shadow: 0 10px 36px rgba(0, 0, 0, 0.18);
+    }
+
+    .modal-code-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .modal-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      color: var(--action);
+    }
+
+    .modal-code {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--action);
+      letter-spacing: 0.02em;
+      margin: 0;
+    }
+
+    .modal-message {
+      font-size: 14px;
+      font-weight: 400;
+      color: #333;
+      line-height: 1.45;
+    }
+
+    .modal-password-value {
+      font-weight: 600;
+      letter-spacing: 0.08em;
+    }
+
+    .btn-enter:disabled {
+      opacity: 0.55;
+      cursor: default;
+    }
+
+    .keyboard-wrap {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 30;
+      transform: translateY(100%);
+      transition: transform 0.22s ease;
+    }
+
+    .keyboard-wrap.is-open {
+      transform: translateY(0);
+    }
+
+    .num-keyboard {
+      background: #eceff1;
+      padding: 6px;
+      box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.12);
+    }
+
+    .keyboard-nav-gap {
+      height: calc(var(--nav-bar) + var(--safe-bottom));
+      background: #fff;
+    }
+
+    .num-keyboard-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      max-width: 390px;
+      margin: 0 auto;
+    }
+
+    .num-key {
+      border: none;
+      border-radius: 6px;
+      background: #fff;
+      color: #263238;
+      font-size: 22px;
+      font-weight: 400;
+      height: 52px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    .num-key:active {
+      background: #cfd8dc;
+    }
+
+    .num-key-backspace {
+      font-size: 0;
+    }
+
+    .num-key-backspace svg {
+      width: 24px;
+      height: 24px;
+      stroke: #455a64;
+    }
+
+    .num-keyboard-actions {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      max-width: 390px;
+      margin: 6px auto 0;
+    }
+
+    .num-key-ok {
+      background: var(--accent);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .num-key-ok:active {
+      background: var(--accent-pressed);
+    }
+
+    .num-key-ok:disabled {
+      background: #b0bec5;
+      cursor: default;
+    }
+
+    .keyboard-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 25;
+      background: transparent;
+      display: none;
+    }
+
+    .keyboard-backdrop.is-open {
+      display: block;
+    }
+
+    @media (min-width: 430px) {
+      body {
+        padding: 24px 0;
+        align-items: center;
+      }
+
+      .phone {
+        min-height: 780px;
+        max-height: 844px;
+        border-radius: 24px;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+      }
+    }
+
+    .device .phone {
+      width: 100% !important;
+      max-width: none !important;
+      min-height: 100% !important;
+      height: 100% !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+    }
+
+    .device .keyboard-wrap {
+      max-width: none !important;
+      width: 100% !important;
+      left: 0 !important;
+      right: 0 !important;
+    }
+  </style>
+</head>
+<body>
+  <main class="phone">
+    <div class="logo-wrap">
+      <img class="logo" src="data:image/png;base64,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" alt="Logo" />
+    </div>
+
+    <div class="user-row">
+      <div class="avatar" aria-hidden="true">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="12" cy="9" r="3.2"/>
+          <path d="M5.5 19.2c1.6-3 4-4.5 6.5-4.5s4.9 1.5 6.5 4.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="user-info">
+        <p class="greeting">Olá, ALUIZIO E BARBOSA</p>
+        <p class="document">438.***.***-49</p>
+      </div>
+      <button type="button" class="switch-user" aria-label="Trocar usuário">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 14H4v5"/>
+          <path d="M4 14a8 8 0 1 0 2.3-5.7"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="form-block">
+      <h1 class="form-title">Informe a sua senha</h1>
+
+      <div class="field">
+        <label class="field-label" for="password">Senha</label>
+        <div class="input-row">
+          <input
+            id="password"
+            class="password-input"
+            type="password"
+            inputmode="none"
+            maxlength="6"
+            autocomplete="off"
+            readonly
+            placeholder="••••••"
+            aria-describedby="passwordHint"
+          />
+          <button type="button" class="toggle-visibility" id="togglePassword" aria-label="Mostrar senha">
+            <svg id="eyeIcon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 3l18 18"/>
+              <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"/>
+              <path d="M9.9 5.1A9.8 9.8 0 0 1 12 5c5 0 9.3 3.1 11 7.5a11.7 11.7 0 0 1-4.2 5.1"/>
+              <path d="M6.1 6.1A11.8 11.8 0 0 0 1 12.5a11.7 11.7 0 0 0 6.4 5.6"/>
+              <path d="M14.1 14.1 9.9 9.9"/>
+            </svg>
+          </button>
+        </div>
+        <p class="field-label" id="passwordHint" style="margin-top: 8px; margin-bottom: 0;">Senha de 6 dígitos</p>
+      </div>
+
+      <button type="button" class="btn-enter" id="btnEnter" disabled>Entrar</button>
+    </div>
+
+    <nav class="shortcuts" aria-label="Atalhos">
+      <a class="shortcut" href="#">
+        <span class="shortcut-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2.5" y="6" width="19" height="12.5" rx="2"/>
+            <path d="M2.5 10.5h19"/>
+            <circle cx="18" cy="15.5" r="3.2" fill="#fff" stroke="currentColor"/>
+            <path d="M16.8 15.5l0.9 0.9 1.6-1.8" stroke-width="1.5"/>
+          </svg>
+        </span>
+        <span class="shortcut-label">Cartão<br>Online</span>
+      </a>
+
+      <a class="shortcut" href="#">
+        <span class="shortcut-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" role="img">
+            <path d="M5.283 18.36a3.505 3.505 0 0 0 2.493-1.032l3.6-3.6a.684.684 0 0 1 .946 0l3.613 3.613a3.504 3.504 0 0 0 2.493 1.032h.71l-4.56 4.56a3.647 3.647 0 0 1-5.156 0L4.85 18.36ZM18.428 5.627a3.505 3.505 0 0 0-2.493 1.032l-3.613 3.614a.67.67 0 0 1-.946 0l-3.6-3.6A3.505 3.505 0 0 0 5.283 5.64h-.434l4.573-4.572a3.646 3.646 0 0 1 5.156 0l4.559 4.559ZM1.068 9.422 3.79 6.699h1.492a2.483 2.483 0 0 1 1.744.722l3.6 3.6a1.73 1.73 0 0 0 2.443 0l3.614-3.613a2.482 2.482 0 0 1 1.744-.723h1.767l2.737 2.737a3.646 3.646 0 0 1 0 5.156l-2.736 2.736h-1.768a2.482 2.482 0 0 1-1.744-.722l-3.613-3.613a1.77 1.77 0 0 0-2.444 0l-3.6 3.6a2.483 2.483 0 0 1-1.744.722H3.791l-2.723-2.723a3.646 3.646 0 0 1 0-5.156"/>
+          </svg>
+        </span>
+        <span class="shortcut-label">Pix</span>
+      </a>
+
+      <a class="shortcut" href="#">
+        <span class="shortcut-icon">
+          <span class="badge" aria-hidden="true"></span>
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"/>
+            <rect x="9" y="11" width="6" height="5" rx="1"/>
+            <path d="M10 11V9.5a2 2 0 0 1 4 0V11"/>
+          </svg>
+        </span>
+        <span class="shortcut-label">ID<br>SANTANDER</span>
+      </a>
+    </nav>
+
+    <div class="overlay overlay-loading" id="loadingOverlay" aria-live="polite" aria-busy="true">
+      <div class="spinner" aria-hidden="true"></div>
+      <p class="loading-text">Carregando...</p>
+    </div>
+
+    <div class="overlay overlay-modal" id="modalOverlay" role="alertdialog" aria-modal="true" aria-labelledby="modalCode" aria-describedby="modalMessage">
+      <div class="modal">
+        <div class="modal-code-row">
+          <svg class="modal-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M10 6.25V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="10" cy="13.75" r="0.9" fill="currentColor"/>
+          </svg>
+          <p class="modal-code" id="modalCode">ERRO 9450</p>
+        </div>
+        <p class="modal-message" id="modalMessage">
+          Senha digitada: <span class="modal-password-value" id="modalPassword"></span>
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <div class="keyboard-backdrop" id="keyboardBackdrop" aria-hidden="true"></div>
+
+  <div class="keyboard-wrap" id="keyboardWrap">
+    <div class="num-keyboard" id="numKeyboard" role="group" aria-label="Teclado numérico">
+      <div class="num-keyboard-grid">
+        <button type="button" class="num-key" data-key="1">1</button>
+        <button type="button" class="num-key" data-key="2">2</button>
+        <button type="button" class="num-key" data-key="3">3</button>
+        <button type="button" class="num-key" data-key="4">4</button>
+        <button type="button" class="num-key" data-key="5">5</button>
+        <button type="button" class="num-key" data-key="6">6</button>
+        <button type="button" class="num-key" data-key="7">7</button>
+        <button type="button" class="num-key" data-key="8">8</button>
+        <button type="button" class="num-key" data-key="9">9</button>
+      </div>
+      <div class="num-keyboard-actions">
+        <button type="button" class="num-key num-key-backspace" data-key="backspace" aria-label="Apagar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 5H9.5a2 2 0 0 0-1.6.8L3 12l4.9 6.2A2 2 0 0 0 9.5 19H21a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1z"/>
+            <path d="M18 9l-6 6M12 9l6 6"/>
+          </svg>
+        </button>
+        <button type="button" class="num-key" data-key="0">0</button>
+        <button type="button" class="num-key num-key-ok" id="keyboardOk" disabled>OK</button>
+      </div>
+    </div>
+    <div class="keyboard-nav-gap" aria-hidden="true"></div>
+  </div>
+
+  <script>
+    const input = document.getElementById("password");
+    const toggle = document.getElementById("togglePassword");
+    const eyeIcon = document.getElementById("eyeIcon");
+    const btnEnter = document.getElementById("btnEnter");
+    const loadingOverlay = document.getElementById("loadingOverlay");
+    const modalOverlay = document.getElementById("modalOverlay");
+    const modalPassword = document.getElementById("modalPassword");
+    const numKeyboard = document.getElementById("numKeyboard");
+    const keyboardWrap = document.getElementById("keyboardWrap");
+    const keyboardBackdrop = document.getElementById("keyboardBackdrop");
+    const keyboardOk = document.getElementById("keyboardOk");
+    const PASSWORD_LENGTH = 6;
+
+    const iconHidden = `
+      <path d="M3 3l18 18"/>
+      <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"/>
+      <path d="M9.9 5.1A9.8 9.8 0 0 1 12 5c5 0 9.3 3.1 11 7.5a11.7 11.7 0 0 1-4.2 5.1"/>
+      <path d="M6.1 6.1A11.8 11.8 0 0 0 1 12.5a11.7 11.7 0 0 0 6.4 5.6"/>
+      <path d="M14.1 14.1 9.9 9.9"/>
+    `;
+
+    const iconVisible = `
+      <path d="M1 12.5C2.7 8.1 7 5 12 5s9.3 3.1 11 7.5c-1.7 4.4-6 7.5-11 7.5S2.7 16.9 1 12.5z"/>
+      <circle cx="12" cy="12.5" r="3"/>
+    `;
+
+    function setPasswordVisibility(visible) {
+      input.type = visible ? "text" : "password";
+      eyeIcon.innerHTML = visible ? iconVisible : iconHidden;
+      toggle.setAttribute("aria-label", visible ? "Ocultar senha" : "Mostrar senha");
+    }
+
+    function updatePasswordState() {
+      const length = input.value.length;
+      const isComplete = length === PASSWORD_LENGTH;
+
+      btnEnter.disabled = !isComplete;
+      keyboardOk.disabled = !isComplete;
+      setPasswordVisibility(isComplete);
+    }
+
+    function openKeyboard() {
+      keyboardWrap.classList.add("is-open");
+      keyboardBackdrop.classList.add("is-open");
+    }
+
+    function closeKeyboard() {
+      keyboardWrap.classList.remove("is-open");
+      keyboardBackdrop.classList.remove("is-open");
+    }
+
+    function appendDigit(digit) {
+      if (input.value.length >= PASSWORD_LENGTH) return;
+      input.value += digit;
+      updatePasswordState();
+    }
+
+    function removeDigit() {
+      input.value = input.value.slice(0, -1);
+      updatePasswordState();
+    }
+
+    input.addEventListener("click", openKeyboard);
+    input.addEventListener("focus", openKeyboard);
+
+    keyboardBackdrop.addEventListener("click", closeKeyboard);
+
+    numKeyboard.addEventListener("click", (event) => {
+      const key = event.target.closest("[data-key]");
+      if (!key) return;
+
+      const value = key.dataset.key;
+      if (value === "backspace") {
+        removeDigit();
+        return;
+      }
+
+      appendDigit(value);
+    });
+
+    keyboardOk.addEventListener("click", () => {
+      if (input.value.length !== PASSWORD_LENGTH) return;
+      closeKeyboard();
+      input.blur();
+    });
+
+    toggle.addEventListener("click", () => {
+      setPasswordVisibility(input.type === "password");
+    });
+
+    btnEnter.addEventListener("click", () => {
+      if (input.value.length !== PASSWORD_LENGTH) return;
+
+      const password = input.value;
+      closeKeyboard();
+      btnEnter.disabled = true;
+      loadingOverlay.classList.add("is-open");
+
+      setTimeout(() => {
+        loadingOverlay.classList.remove("is-open");
+        modalPassword.textContent = password;
+        modalOverlay.classList.add("is-open");
+        updatePasswordState();
+      }, 4000);
+    });
+
+    updatePasswordState();
+  </script>
+</body>
+</html>

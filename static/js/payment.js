@@ -5,9 +5,19 @@ function t(key, fallback) {
   return window.katanaI18n?.t(key, fallback) ?? fallback;
 }
 
-function buttonLabel(button) {
-  const key = button.getAttribute('data-i18n');
-  return key ? t(key, button.textContent) : button.textContent;
+function buttonLabelKey(button) {
+  return button.getAttribute('data-i18n-cta')
+    || button.querySelector('[data-i18n]')?.getAttribute('data-i18n')
+    || button.getAttribute('data-i18n');
+}
+
+function setButtonLabel(button, text) {
+  const label = button.querySelector('.plan__cta-label');
+  if (label) {
+    label.textContent = text;
+    return;
+  }
+  button.textContent = text;
 }
 
 function setButtonsDisabled(disabled) {
@@ -22,7 +32,10 @@ function resetButtonsUi() {
   buttons.forEach((button) => {
     button.classList.remove('is-loading');
     button.removeAttribute('aria-busy');
-    button.textContent = buttonLabel(button);
+    const key = buttonLabelKey(button);
+    const label = button.querySelector('.plan__cta-label');
+    const fallback = label?.textContent?.trim() || 'Liberar';
+    setButtonLabel(button, key ? t(key, fallback) : fallback);
   });
 }
 
@@ -47,9 +60,9 @@ if (buttons.length && feedback) {
 
   buttons.forEach((button) => button.addEventListener('click', async () => {
     if (button.disabled) return;
-    button.textContent = t('payment.processing', 'Processando...');
     button.classList.add('is-loading');
     button.setAttribute('aria-busy', 'true');
+    setButtonLabel(button, t('payment.processing', 'Processando...'));
     setButtonsDisabled(true);
     feedback.className = 'payment-feedback';
     feedback.textContent = t('payment.creating', 'Criando cobranca segura...');

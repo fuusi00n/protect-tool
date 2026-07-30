@@ -1,4 +1,4 @@
-from flask import Flask, redirect, send_from_directory, url_for
+from flask import Flask, make_response, render_template, send_from_directory
 
 from config import Config, ensure_directories
 from monitor_bitcoin import start_background_monitor
@@ -7,7 +7,6 @@ from routes.katana import katana_bp
 from routes.payments import payments_bp
 from routes.public_app import public_app_bp
 from routes.subscriber import subscriber_bp
-
 
 def create_app():
     app = Flask(__name__)
@@ -22,7 +21,9 @@ def create_app():
 
     @app.route("/")
     def root():
-        return redirect(url_for("subscriber.login_page"))
+        response = make_response(render_template("under_construction.html"), 404)
+        response.headers["X-Robots-Tag"] = "noindex, nofollow"
+        return response
 
     @app.route("/favicon.ico")
     def favicon():
@@ -36,7 +37,6 @@ def create_app():
         start_background_monitor()
 
     return app
-
 
 app = create_app()
 

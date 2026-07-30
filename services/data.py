@@ -6,12 +6,10 @@ from psycopg.rows import dict_row
 from config import Config
 from services.database import get_connection, ping
 
-
 def _format_display(dt):
     if isinstance(dt, datetime):
         return dt.strftime("%d/%m/%Y %H:%M:%S")
     return dt
-
 
 def _iso(value):
     if value is None:
@@ -19,7 +17,6 @@ def _iso(value):
     if hasattr(value, "isoformat"):
         return value.isoformat()
     return value
-
 
 def _user_row_to_account(row):
     return {
@@ -35,9 +32,10 @@ def _user_row_to_account(row):
         "failed_builds": row["failed_builds"],
         "daily_builds": row["daily_builds"],
         "daily_build_limit": row.get("daily_build_limit", 3),
+        "store": bool(row.get("store", False)),
+        "playstore": bool(row.get("playstore", False)),
         "created_at": row["created_at"],
     }
-
 
 def _master_row_to_account(row):
     return {
@@ -56,7 +54,6 @@ def _master_row_to_account(row):
         "created_at": row["created_at"],
     }
 
-
 def get_subscriber_account(username):
     with get_connection() as conn:
         with conn.cursor(row_factory=dict_row) as cur:
@@ -65,7 +62,6 @@ def get_subscriber_account(username):
             if row:
                 return _user_row_to_account(row)
     return None
-
 
 def get_master_account(username):
     with get_connection() as conn:
@@ -76,13 +72,11 @@ def get_master_account(username):
                 return _master_row_to_account(row)
     return None
 
-
 def authenticate_subscriber(username, password):
     account = get_subscriber_account(username)
     if account and account["password"] == password:
         return account
     return None
-
 
 def authenticate_master(username, password):
     account = get_master_account(username)
@@ -90,10 +84,8 @@ def authenticate_master(username, password):
         return account
     return None
 
-
 def is_master(username):
     return get_master_account(username) is not None
-
 
 def is_user_expired(account):
     if not account:
@@ -110,7 +102,6 @@ def is_user_expired(account):
             return True
     return False
 
-
 def user_exists(username):
     with get_connection() as conn:
         with conn.cursor() as cur:
@@ -119,7 +110,6 @@ def user_exists(username):
                 (username, username),
             )
             return cur.fetchone() is not None
-
 
 def _format_reset_countdown(seconds):
     seconds = max(0, int(seconds or 0))
@@ -130,7 +120,6 @@ def _format_reset_countdown(seconds):
     if mins > 0:
         return f"{mins}m"
     return "menos de 1 minuto"
-
 
 def get_daily_build_quota(username):
     with get_connection() as conn:
@@ -167,7 +156,6 @@ def get_daily_build_quota(username):
         "reset_in_label": _format_reset_countdown(reset_in_seconds),
     }
 
-
 def build_limit_reached_payload(username):
     quota = get_daily_build_quota(username) or {}
     limit = quota.get("daily_build_limit", "-")
@@ -185,13 +173,11 @@ def build_limit_reached_payload(username):
         ),
     }
 
-
 def can_start_build(username):
     quota = get_daily_build_quota(username)
     if not quota:
         return False
     return quota["can_build"]
-
 
 def add_history(username, action, details, portal="subscriber"):
     with get_connection() as conn:
@@ -220,7 +206,6 @@ def add_history(username, action, details, portal="subscriber"):
                 )
                 """
             )
-
 
 def add_build_history(username, app_name, status, build_id, output_file=None):
     with get_connection() as conn:
@@ -266,7 +251,6 @@ def add_build_history(username, app_name, status, build_id, output_file=None):
                 (user["id"], user["id"]),
             )
 
-
 def update_amplification(username, build_status):
     with get_connection() as conn:
         with conn.cursor() as cur:
@@ -282,7 +266,6 @@ def update_amplification(username, build_status):
                 (build_status, build_status, username),
             )
 
-
 def _coerce_int(value, default=None):
     if value is None or value == "":
         return default
@@ -291,23 +274,50 @@ def _coerce_int(value, default=None):
     except (TypeError, ValueError):
         raise ValueError(f"Valor numerico invalido: {value!r}") from None
 
-
-def create_operator_user(username, password, license_days, daily_build_limit=3):
+def create_operator_user(
+    username,
+    password,
+    license_days,
+    daily_build_limit=3,
+    store=False,
+    playstore=False,
+):
     license_days = _coerce_int(license_days, default=None)
     daily_build_limit = _coerce_int(daily_build_limit, default=3)
+    store = bool(store)
+    playstore = bool(playstore)
     license_expires_at = datetime.now() + timedelta(days=license_days) if license_days else None
     with get_connection() as conn:
-        with conn.cursor() as cur:
+        with conn.cursor(row_factory=dict_row) as cur:
             cur.execute(
                 """
                 INSERT INTO users (
                     username, password, status, license_days,
-                    license_expires_at, daily_build_limit
-                ) VALUES (%s, %s, 'active', %s, %s, %s)
+                    license_expires_at, daily_build_limit, store, playstore
+                ) VALUES (%s, %s, 'active', %s, %s, %s, %s, %s)
+                RETURNING license_expires_at
                 """,
-                (username, password, license_days, license_expires_at, daily_build_limit),
+                (
+                    username,
+                    password,
+                    license_days,
+                    license_expires_at,
+                    daily_build_limit,
+                    store,
+                    playstore,
+                ),
             )
-
+            row = cur.fetchone()
+            if row and row.get("license_expires_at"):
+                license_expires_at = row["license_expires_at"]
+    return {
+        "username": username,
+        "license_days": license_days,
+        "license_expires_at": _iso(license_expires_at),
+        "daily_build_limit": daily_build_limit,
+        "store": store,
+        "playstore": playstore,
+    }
 
 def list_users():
     with get_connection() as conn:
@@ -331,6 +341,8 @@ def list_users():
                         "license_days": row["license_days"],
                         "daily_builds": row["daily_builds"],
                         "daily_build_limit": row["daily_build_limit"],
+                        "store": bool(row.get("store", False)),
+                        "playstore": bool(row.get("playstore", False)),
                         "builds_count": row["builds_count"],
                         "total_builds": row["total_builds"],
                         "successful_builds": row["successful_builds"],
@@ -339,7 +351,6 @@ def list_users():
                 )
             return result
 
-
 def update_user_fields(username, fields):
     allowed = {
         "password": "password = %s",
@@ -347,6 +358,8 @@ def update_user_fields(username, fields):
         "license_days": "license_days = %s",
         "license_expires_at": "license_expires_at = %s",
         "daily_build_limit": "daily_build_limit = %s",
+        "store": "store = %s",
+        "playstore": "playstore = %s",
     }
     updates = []
     values = []
@@ -369,7 +382,6 @@ def update_user_fields(username, fields):
             )
             return cur.rowcount > 0
 
-
 def renew_license(target_user, days):
     license_expires_at = datetime.now() + timedelta(days=days)
     return update_user_fields(
@@ -377,6 +389,54 @@ def renew_license(target_user, days):
         {"license_expires_at": license_expires_at, "license_days": days},
     )
 
+def extend_license(target_user, days):
+    days = _coerce_int(days, default=None)
+    if days is None or days == 0:
+        raise ValueError("Dias invalidos")
+
+    account = get_subscriber_account(target_user)
+    if not account:
+        return None
+
+    now = datetime.now()
+    current = account.get("license_expires_at")
+    if current and isinstance(current, datetime):
+        if current.tzinfo:
+            now = datetime.now(tz=current.tzinfo)
+        if days > 0:
+            base = current if current > now else now
+        else:
+            base = current
+    else:
+        base = now
+
+    new_expires = base + timedelta(days=days)
+    current_days = account.get("license_days") or 0
+    new_license_days = max(0, current_days + days)
+    if update_user_fields(
+        target_user,
+        {
+            "license_expires_at": new_expires,
+            "license_days": new_license_days,
+        },
+    ):
+        return new_expires
+    return None
+
+def adjust_daily_build_limit(target_user, delta):
+    delta = _coerce_int(delta, default=None)
+    if delta is None or delta == 0:
+        raise ValueError("Ajuste invalido")
+
+    account = get_subscriber_account(target_user)
+    if not account:
+        return None
+
+    current_limit = account.get("daily_build_limit") or 0
+    new_limit = max(0, current_limit + delta)
+    if update_user_fields(target_user, {"daily_build_limit": new_limit}):
+        return new_limit
+    return None
 
 def toggle_user_status(target_user):
     with get_connection() as conn:
@@ -392,13 +452,11 @@ def toggle_user_status(target_user):
             )
             return new_status
 
-
 def delete_user_account(target_user):
     with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute("DELETE FROM users WHERE username = %s", (target_user,))
             return cur.rowcount > 0
-
 
 def get_subscriber_metrics(username):
     account = get_subscriber_account(username)
@@ -409,7 +467,7 @@ def get_subscriber_metrics(username):
 
     download_stats = get_user_download_stats(username)
     quota = get_daily_build_quota(username) or {}
-    return {
+    metrics = {
         "username": account["username"],
         "status": account["status"],
         "license_expires_at": _iso(account["license_expires_at"]),
@@ -425,10 +483,11 @@ def get_subscriber_metrics(username):
         "reset_at": quota.get("reset_at"),
         "reset_in_label": quota.get("reset_in_label"),
         "reset_in_seconds": quota.get("reset_in_seconds"),
-        "total_public_downloads": download_stats["total_public_downloads"],
-        "public_apps_count": download_stats["public_apps_count"],
     }
-
+    if account.get("playstore"):
+        metrics["total_public_downloads"] = download_stats["total_public_downloads"]
+        metrics["public_apps_count"] = download_stats["public_apps_count"]
+    return metrics
 
 def get_admin_dashboard_metrics():
     with get_connection() as conn:
@@ -445,8 +504,23 @@ def get_admin_dashboard_metrics():
             failed = cur.fetchone()[0]
             cur.execute("SELECT COUNT(*) FROM builds WHERE status = 'processando'")
             processing = cur.fetchone()[0]
-            cur.execute("SELECT COALESCE(SUM(download_count), 0) FROM builds")
-            total_downloads = cur.fetchone()[0]
+            cur.execute("SELECT COUNT(*) FROM invoices")
+            invoices_generated = cur.fetchone()[0]
+            cur.execute("SELECT COUNT(*) FROM payments WHERE status = 'Settled'")
+            payments_settled = cur.fetchone()[0]
+            cur.execute(
+                """
+                SELECT COALESCE(SUM(amount), 0)
+                FROM payments
+                WHERE status = 'Settled'
+                """
+            )
+            payments_settled_amount = cur.fetchone()[0]
+
+    try:
+        settled_amount = f"{float(payments_settled_amount):.2f}"
+    except (TypeError, ValueError):
+        settled_amount = "0.00"
 
     return {
         "users_count": users_count,
@@ -455,10 +529,11 @@ def get_admin_dashboard_metrics():
         "completed_builds": completed,
         "failed_builds": failed,
         "processing_builds": processing,
-        "total_public_downloads": int(total_downloads or 0),
+        "invoices_generated": int(invoices_generated or 0),
+        "payments_settled": int(payments_settled or 0),
+        "payments_settled_amount": settled_amount,
         "server_health": "ok" if ping() else "degraded",
     }
-
 
 def get_build_record(build_id):
     with get_connection() as conn:
@@ -476,8 +551,7 @@ def get_build_record(build_id):
             )
             return cur.fetchone()
 
-
-def _builds_to_json(rows, include_username=False):
+def _builds_to_json(rows, include_username=False, include_public_links=True):
     from services.public_app_service import build_public_url
 
     builds = []
@@ -495,22 +569,25 @@ def _builds_to_json(rows, include_username=False):
             "timestamp": _iso(row["created_at"]),
             "date_display": _format_display(row["created_at"]),
             "can_download": can_download,
-            "download_count": int(row.get("download_count") or 0),
         }
+        if include_public_links:
+            item["download_count"] = int(row.get("download_count") or 0)
         if include_username and "username" in row:
             item["username"] = row["username"]
         if output_file:
             item["output_file"] = output_file
-        slug = row.get("download_slug")
-        token = row.get("download_token")
-        if slug and token and row["status"] == "concluido":
-            item["public_url"] = build_public_url(slug, token)
-            item["download_slug"] = slug
+        if include_public_links:
+            slug = row.get("download_slug")
+            token = row.get("download_token")
+            if slug and token and row["status"] == "concluido":
+                item["public_url"] = build_public_url(slug, token)
+                item["download_slug"] = slug
         builds.append(item)
     return builds
 
-
 def get_user_builds(username):
+    account = get_subscriber_account(username)
+    include_public_links = bool(account and account.get("playstore"))
     with get_connection() as conn:
         with conn.cursor(row_factory=dict_row) as cur:
             cur.execute(
@@ -526,27 +603,79 @@ def get_user_builds(username):
                 """,
                 (username,),
             )
-            return _builds_to_json(cur.fetchall())
+            return _builds_to_json(
+                cur.fetchall(),
+                include_public_links=include_public_links,
+            )
 
+def get_operator_builds_admin(username):
+    with get_connection() as conn:
+        with conn.cursor(row_factory=dict_row) as cur:
+            cur.execute("SELECT id FROM users WHERE username = %s", (username,))
+            if not cur.fetchone():
+                return None
+            cur.execute(
+                """
+                SELECT b.build_id, b.app_name, b.status, b.created_at, b.output_file,
+                       b.download_slug, b.download_token, b.download_count, b.error_message
+                FROM builds b
+                JOIN users u ON u.id = b.user_id
+                WHERE u.username = %s
+                ORDER BY b.created_at DESC
+                LIMIT 500
+                """,
+                (username,),
+            )
+            rows = cur.fetchall()
 
-def get_activity_logs(page=1, page_size=10):
+    builds = _builds_to_json(rows)
+    for build, row in zip(builds, rows):
+        if row.get("error_message"):
+            build["error_message"] = row["error_message"]
+    return builds
+
+def get_activity_log_actions():
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT DISTINCT action
+                FROM activity_logs
+                WHERE action IS NOT NULL AND action <> ''
+                ORDER BY action
+                """
+            )
+            return [row[0] for row in cur.fetchall()]
+
+def get_activity_logs(page=1, page_size=10, action=None):
     page = max(1, int(page or 1))
     page_size = max(1, min(100, int(page_size or 10)))
     offset = (page - 1) * page_size
+    action = (action or "").strip() or None
+
+    where_clause = ""
+    filter_params = []
+    if action:
+        where_clause = " WHERE action = %s"
+        filter_params = [action]
 
     with get_connection() as conn:
         with conn.cursor(row_factory=dict_row) as cur:
-            cur.execute("SELECT COUNT(*) AS total FROM activity_logs")
+            cur.execute(
+                f"SELECT COUNT(*) AS total FROM activity_logs{where_clause}",
+                filter_params,
+            )
             total = int(cur.fetchone()["total"] or 0)
 
             cur.execute(
-                """
+                f"""
                 SELECT id, username, action, details, created_at
                 FROM activity_logs
+                {where_clause}
                 ORDER BY created_at DESC
                 LIMIT %s OFFSET %s
                 """,
-                (page_size, offset),
+                (*filter_params, page_size, offset),
             )
             rows = cur.fetchall()
 

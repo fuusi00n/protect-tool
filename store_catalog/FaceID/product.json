@@ -1,0 +1,7 @@
+{
+  "id": "FaceID",
+  "name": "Biometria Facial",
+  "bank": "Biometria",
+  "description": "Injection HTML com fluxo de biometria facial: guia inicial, captura simulada e feedback visual estilo Face ID.",
+  "tags": ["faceid", "biometria", "webview"]
+}

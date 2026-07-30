@@ -2,7 +2,6 @@ ALLOWED_ICON_EXTENSIONS = frozenset({".png"})
 ALLOWED_APK_EXTENSIONS = frozenset({".apk"})
 MAX_APK_BYTES = 20 * 1024 * 1024
 
-
 def _file_extension(filename):
     if not filename:
         return ""
@@ -10,7 +9,6 @@ def _file_extension(filename):
     if "." not in name:
         return ""
     return "." + name.rsplit(".", 1)[-1].lower()
-
 
 def _content_length(file_storage):
     if hasattr(file_storage, "content_length") and file_storage.content_length:
@@ -22,14 +20,11 @@ def _content_length(file_storage):
     stream.seek(pos)
     return size
 
-
 def _looks_like_png(header):
     return len(header) >= 8 and header.startswith(b"\x89PNG\r\n\x1a\n")
 
-
 def _looks_like_zip(header):
     return len(header) >= 4 and header[:2] == b"PK"
-
 
 def validate_icon_upload(file_storage):
     if not file_storage or not file_storage.filename:
@@ -49,7 +44,6 @@ def validate_icon_upload(file_storage):
         return False, "Arquivo de icone nao e um PNG valido."
 
     return True, None
-
 
 def validate_apk_upload(file_storage):
     if not file_storage or not file_storage.filename:

@@ -8,18 +8,14 @@ from decimal import Decimal, InvalidOperation, ROUND_CEILING
 from embit import networks
 from embit.descriptor import Descriptor
 
-
 class BitcoinError(RuntimeError):
     pass
-
 
 class ConfigurationError(BitcoinError):
     pass
 
-
 class ProviderError(BitcoinError):
     pass
-
 
 NETWORK_ALIASES = {
     "main": "main",
@@ -29,13 +25,11 @@ NETWORK_ALIASES = {
     "signet": "signet",
 }
 
-
 def normalize_network(value):
     network = NETWORK_ALIASES.get((value or "").strip().lower())
     if network is None:
         raise ConfigurationError("A rede deve ser main, test ou signet.")
     return network
-
 
 def validate_configuration(descriptor, network):
     if not (descriptor or "").strip():
@@ -46,7 +40,6 @@ def validate_configuration(descriptor, network):
         parsed.derive(0)
     except Exception as exc:
         raise ConfigurationError("BITCOIN_DESCRIPTOR inválido.") from exc
-
 
 def derive_address(descriptor, index, network):
     validate_configuration(descriptor, network)
@@ -61,7 +54,6 @@ def derive_address(descriptor, index, network):
     if not address:
         raise ConfigurationError("O descriptor não produz um endereço.")
     return address
-
 
 def _request(url, *, json_response=True, timeout=12):
     request = urllib.request.Request(
@@ -86,7 +78,6 @@ def _request(url, *, json_response=True, timeout=12):
         return json.loads(body)
     except json.JSONDecodeError as exc:
         raise ProviderError(f"Resposta JSON inválida de {url}") from exc
-
 
 def get_btc_rate(currency, base_url):
     quote = (currency or "").strip().lower()
@@ -113,7 +104,6 @@ def get_btc_rate(currency, base_url):
         raise ProviderError("A API retornou uma cotação inválida.") from exc
     return rate, "coingecko"
 
-
 def fiat_to_sats(amount, rate):
     try:
         result = (
@@ -124,7 +114,6 @@ def fiat_to_sats(amount, rate):
     if result <= 0:
         raise ProviderError("O valor calculado em satoshis é inválido.")
     return int(result)
-
 
 def explorer_bases(network, mempool_base, blockstream_base):
     normalized = normalize_network(network)
@@ -137,7 +126,6 @@ def explorer_bases(network, mempool_base, blockstream_base):
         if blockstream == "https://blockstream.info/api":
             blockstream = f"https://blockstream.info/{suffix}/api"
     return (("mempool.space", mempool), ("blockstream", blockstream))
-
 
 def _address_outputs(base_url, address):
     encoded = urllib.parse.quote(address, safe="")
@@ -179,7 +167,6 @@ def _address_outputs(base_url, address):
                 }
             )
     return outputs
-
 
 def fetch_outputs(address, network, mempool_base, blockstream_base):
     failures = []

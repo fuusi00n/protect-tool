@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Banrisul">
+  <rect x="6" y="10" width="52" height="44" rx="6" fill="#007A33"/>
+  <path fill="#FFD100" d="M18 22h10v20H18zm18 0h10c6 0 10 4 10 10s-4 10-10 10H36V22z"/>
+</svg>

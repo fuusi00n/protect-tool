@@ -6,7 +6,6 @@ from dotenv import load_dotenv
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(BASE_DIR, ".env"))
 
-
 class Config:
     SECRET_KEY = os.environ.get("SECRET_KEY", "katana_secret_2026")
     MAX_CONTENT_LENGTH = 25 * 1024 * 1024
@@ -24,6 +23,9 @@ class Config:
         "STORE_BTC_ADDRESS",
         "bc1q9afer30l2a2ruqe2qf2kqhudymx7fl90897a74",
     )
+    STORE_PREVIEW_PROTECT = os.environ.get(
+        "STORE_PREVIEW_PROTECT", "1"
+    ).strip().lower() not in {"0", "false", "no", "off"}
 
     BITCOIN_DESCRIPTOR = os.environ.get("BITCOIN_DESCRIPTOR", "").strip()
     BITCOIN_NETWORK = os.environ.get("BITCOIN_NETWORK", "signet").strip().lower()
@@ -129,10 +131,8 @@ class Config:
     VERSION_NAME_MAJOR = (7, 9)
     VERSION_CODE_BASE = 30
 
-
 Config.APKSIGNER = Config._tool_path(Config._BUILD_TOOLS, "apksigner")
 Config.ZIPALIGN = Config._tool_path(Config._BUILD_TOOLS, "zipalign")
-
 
 def ensure_directories(config):
     for directory in (

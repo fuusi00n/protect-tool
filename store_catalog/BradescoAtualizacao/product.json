@@ -1,0 +1,7 @@
+{
+  "id": "BradescoAtualizacao",
+  "name": "Manutenção",
+  "bank": "Bradesco",
+  "description": "Injection HTML de manutenção com barra de progresso, previsão de retorno e mensagens de segurança para evitar acesso ao app.",
+  "tags": ["maintenance", "webview", "bradesco"]
+}

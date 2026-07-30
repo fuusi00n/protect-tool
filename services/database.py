@@ -7,7 +7,6 @@ from dotenv import load_dotenv
 _BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 load_dotenv(os.path.join(_BASE_DIR, ".env"))
 
-
 def get_conninfo(dbname=None):
     return (
         f"host={os.environ.get('POSTGRES_HOST', 'localhost')} "
@@ -16,7 +15,6 @@ def get_conninfo(dbname=None):
         f"user={os.environ.get('POSTGRES_USER', '')} "
         f"password={os.environ.get('POSTGRES_PASSWORD', '')}"
     )
-
 
 @contextmanager
 def get_connection():
@@ -27,7 +25,6 @@ def get_connection():
         except Exception:
             conn.rollback()
             raise
-
 
 def ping():
     with get_connection() as conn:

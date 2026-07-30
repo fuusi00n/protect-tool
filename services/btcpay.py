@@ -4,14 +4,11 @@ import json
 import urllib.error
 import urllib.request
 
-
 class BTCPayError(RuntimeError):
     pass
 
-
 class BTCPayConfigurationError(BTCPayError):
     pass
-
 
 class BTCPayClient:
     EVENT_STATUSES = {

@@ -68,7 +68,6 @@
       const response = await fetch(`/api/invoices/${encodeURIComponent(invoiceId)}`, { cache: 'no-store' });
       if (response.ok) render(await response.json());
     } catch (_err) {
-      /* ignore */
     } finally {
       setTimeout(refresh, 15000);
     }

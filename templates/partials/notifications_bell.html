@@ -1,6 +1,7 @@
+{% set notify_count = 1 if can_playstore else 0 %}
 <div class="notify"
-    x-data="{ open: false, ringing: true, hasUnread: true }"
-    x-init="setTimeout(() => ringing = false, 1400)">
+    x-data="{ open: false, ringing: {{ 'true' if notify_count else 'false' }}, hasUnread: {{ 'true' if notify_count else 'false' }} }"
+    x-init="if (ringing) setTimeout(() => ringing = false, 1400)">
     <button type="button"
         class="notify__bell"
         :class="{ 'is-ringing': ringing, 'has-unread': hasUnread }"
@@ -11,19 +12,22 @@
             <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-        <span class="notify__dot" x-show="hasUnread" aria-hidden="true"></span>
+        <span class="notify__count" x-show="hasUnread" x-cloak aria-hidden="true">1</span>
     </button>
 
     <div class="notify__panel" x-show="open" x-cloak @click.outside="open = false" @keydown.escape.window="open = false">
         <div class="notify__panel-head">
             <div class="notify__panel-headline">
                 <span class="notify__panel-tag">Notificações</span>
-                <span class="notify__panel-badge">2</span>
+                {% if notify_count %}
+                <span class="notify__panel-badge">{{ notify_count }}</span>
+                {% endif %}
             </div>
             <button type="button" class="notify__panel-close" @click="open = false" aria-label="Fechar">×</button>
         </div>
 
         <div class="notify__list">
+            {% if can_playstore %}
             <a class="notify-item notify-item--new"
                 href="{{ url_for('subscriber.apps_page') }}"
                 @click="open = false">
@@ -40,42 +44,8 @@
                     <span class="notify-item__btn">Apps</span>
                 </span>
             </a>
-
-            {% if store_highlight %}
-            <a class="notify-item"
-                href="{{ url_for('subscriber.store_page') }}"
-                @click="open = false">
-                <span class="notify-item__head">
-                    <span class="notify-item__type">Store</span>
-                    <span class="notify-item__title">{{ store_highlight.name }}</span>
-                    <span class="notify-item__price">{{ store_highlight.price_display }}</span>
-                </span>
-                <span class="notify-item__foot">
-                    <span class="notify-item__tags">
-                        {% for tag in store_highlight.get('tags', [])[:3] %}
-                        <span>{{ tag }}</span>
-                        {% endfor %}
-                    </span>
-                    <span class="notify-item__btn notify-item__btn--store">Store</span>
-                </span>
-            </a>
             {% else %}
-            <a class="notify-item"
-                href="{{ url_for('subscriber.store_page') }}"
-                @click="open = false">
-                <span class="notify-item__head">
-                    <span class="notify-item__type">Store</span>
-                    <span class="notify-item__title">Catálogo</span>
-                </span>
-                <span class="notify-item__text">Novas injections HTML com preview protegido.</span>
-                <span class="notify-item__foot">
-                    <span class="notify-item__tags">
-                        <span>Injection</span>
-                        <span>Webview</span>
-                    </span>
-                    <span class="notify-item__btn notify-item__btn--store">Store</span>
-                </span>
-            </a>
+            <p class="notify-item notify-item--empty">Nenhuma notificação no momento.</p>
             {% endif %}
         </div>
     </div>

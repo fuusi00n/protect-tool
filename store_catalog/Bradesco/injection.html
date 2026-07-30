@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Login</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+      height: 100%;
+    }
+
+    body {
+      height: 100%;
+      min-height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #fff;
+      overflow: hidden;
+      background: #cc092f;
+    }
+
+    .app-root {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 100%;
+      overflow: hidden;
+    }
+
+    .bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      background: #cc092f;
+    }
+
+    .bg svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .app {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      min-height: 100%;
+      overflow: hidden;
+    }
+
+    .screen {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      padding:
+        max(12px, env(safe-area-inset-top))
+        max(16px, env(safe-area-inset-right))
+        0
+        max(16px, env(safe-area-inset-left));
+    }
+
+    .header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: 8px 4px 0;
+      min-height: 44px;
+      flex-shrink: 0;
+    }
+
+    .header-left {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .header-top-row {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      min-width: 0;
+      width: 100%;
+    }
+
+    .app.in-password .notify-wrap {
+      display: none;
+    }
+
+    .icon-btn {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .icon-btn svg {
+      display: block;
+    }
+
+    .header-spacer {
+      display: none;
+    }
+
+    .notify-wrap {
+      position: relative;
+      align-self: flex-start;
+    }
+
+    .notify-badge {
+      position: absolute;
+      top: 4px;
+      right: 2px;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 4px;
+      border-radius: 9px;
+      background: #3d9a4a;
+      color: #fff;
+      font-size: 9px;
+      font-weight: 700;
+      line-height: 18px;
+      text-align: center;
+      letter-spacing: -0.02em;
+    }
+
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      padding: 0 8px;
+      padding-top: clamp(108px, 25vh, 162px);
+      min-height: 0;
+    }
+
+    .app.in-password .main {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    .app.in-password.keypad-open .main {
+      padding-bottom: clamp(210px, 32vh, 268px);
+    }
+
+    .action-area {
+      flex: 1;
+      display: grid;
+      align-content: center;
+      position: relative;
+      margin-top: auto;
+    }
+
+    .app.in-password .action-area {
+      flex: 1;
+      align-content: center;
+      margin-top: 0;
+      transition: padding 0.46s cubic-bezier(0.32, 0.72, 0, 1), flex 0.46s cubic-bezier(0.32, 0.72, 0, 1);
+    }
+
+    .app.in-password:not(.keypad-open) .action-area {
+      flex: 1;
+      align-content: start;
+      padding-top: clamp(28px, 7vh, 44px);
+      margin-top: 0;
+    }
+
+    .app.in-password.keypad-open .action-area {
+      flex: 0 0 auto;
+      align-content: start;
+      padding-top: clamp(18px, 4.5vh, 28px);
+      padding-bottom: 0;
+      margin-top: 0;
+    }
+
+    .app.in-password.keypad-open .password-step.show {
+      transform: translateY(0);
+    }
+
+    .app.in-password.keypad-open .password-title {
+      margin-bottom: clamp(16px, 4vh, 22px);
+    }
+
+    .app.in-password.keypad-open .pin-field {
+      margin-bottom: clamp(12px, 3vh, 16px);
+    }
+
+    .btn-access,
+    .password-step {
+      grid-area: 1 / 1;
+    }
+
+    .login-header {
+      margin-top: clamp(36px, 9vh, 64px);
+      margin-bottom: 28px;
+      max-height: 220px;
+      overflow: hidden;
+      transition:
+        opacity 0.3s ease,
+        transform 0.32s cubic-bezier(0.32, 0.72, 0, 1),
+        max-height 0.35s ease,
+        margin 0.32s ease,
+        visibility 0s linear 0.32s;
+    }
+
+    .app.in-password .login-header {
+      opacity: 0;
+      transform: translateY(-14px);
+      max-height: 0;
+      margin-top: 0;
+      margin-bottom: 0;
+      pointer-events: none;
+      visibility: hidden;
+      transition:
+        opacity 0.28s ease,
+        transform 0.32s cubic-bezier(0.32, 0.72, 0, 1),
+        max-height 0.32s ease,
+        margin 0.32s ease,
+        visibility 0s linear 0.28s;
+    }
+
+    .login-logo-wrap {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 2px 0 clamp(12px, 3vh, 18px) 4px;
+      transition:
+        opacity 0.28s ease,
+        max-height 0.32s ease,
+        padding 0.32s ease;
+    }
+
+    .app.in-password .login-logo-wrap {
+      opacity: 0;
+      max-height: 0;
+      padding: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .login-logo {
+      height: clamp(52px, 13vw, 72px);
+      width: auto;
+      max-width: min(78vw, 340px);
+      display: block;
+      object-fit: contain;
+      object-position: left center;
+      filter: brightness(0) invert(1);
+    }
+
+    .user-block {
+      margin: 0;
+    }
+
+    .user-name-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      margin-bottom: 6px;
+    }
+
+    .user-name {
+      font-size: clamp(0.9375rem, 4vw, 1.0625rem);
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      line-height: 1.35;
+      opacity: 0.98;
+    }
+
+    .user-chevron-btn {
+      width: 44px;
+      height: 44px;
+      margin: -10px -10px -10px 0;
+      padding: 0;
+      background: none;
+      border: none;
+      color: inherit;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .user-chevron {
+      flex-shrink: 0;
+      opacity: 0.95;
+      display: block;
+    }
+
+    .user-details {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px 28px;
+      font-size: clamp(0.8125rem, 3.4vw, 0.9375rem);
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      opacity: 0.98;
+    }
+
+    .btn-access {
+      width: 100%;
+      border: none;
+      border-radius: 999px;
+      background: #fff;
+      color: #cc092f;
+      font-size: clamp(1rem, 4.2vw, 1.125rem);
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      padding: 17px 24px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+      margin-top: auto;
+      margin-bottom: clamp(24px, 6vh, 44px);
+      transition: opacity 0.28s ease, transform 0.32s cubic-bezier(0.32, 0.72, 0, 1);
+    }
+
+    .btn-access.hide {
+      opacity: 0;
+      transform: translateY(-20px) scale(0.96);
+      pointer-events: none;
+      visibility: hidden;
+    }
+
+    .btn-access:active {
+      transform: scale(0.985);
+      opacity: 0.96;
+    }
+
+    /* ── Etapa senha (mesma tela, estilo app) ── */
+    .password-screen-heading {
+      display: none;
+      font-size: clamp(1.0625rem, 4.2vw, 1.1875rem);
+      font-weight: 600;
+      text-align: left;
+      letter-spacing: -0.01em;
+      padding: 0;
+      margin: 0;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .app.in-password .password-screen-heading {
+      display: block;
+    }
+
+    .password-step {
+      opacity: 0;
+      transform: translateY(24px);
+      pointer-events: none;
+      transition:
+        opacity 0.35s ease 0.1s,
+        transform 0.46s cubic-bezier(0.32, 0.72, 0, 1);
+      align-self: center;
+      width: 100%;
+      text-align: center;
+    }
+
+    .password-step:not(.show) {
+      position: absolute;
+      top: 0;
+      left: 0;
+      visibility: hidden;
+    }
+
+    .password-step.show {
+      position: relative;
+      visibility: visible;
+    }
+
+    .password-step.show {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .password-title {
+      font-size: clamp(0.9375rem, 3.8vw, 1.0625rem);
+      font-weight: 400;
+      margin-bottom: 28px;
+      opacity: 0.95;
+      line-height: 1.35;
+      text-align: center;
+    }
+
+    .pin-dots {
+      display: flex;
+      justify-content: center;
+      gap: clamp(20px, 6vw, 32px);
+    }
+
+    .pin-field {
+      display: block;
+      width: 100%;
+      border: none;
+      background: none;
+      padding: 12px;
+      margin-bottom: 20px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      border-radius: 12px;
+      transition: background 0.2s ease;
+    }
+
+    .pin-field:active,
+    .app.keypad-open .pin-field {
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .pin-dot {
+      width: clamp(14px, 4vw, 16px);
+      height: clamp(14px, 4vw, 16px);
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.92);
+      background: transparent;
+      transition: background 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
+    }
+
+    .pin-dot.filled {
+      background: #fff;
+      border-color: #fff;
+      transform: scale(1.08);
+    }
+
+    .link-forgot {
+      display: block;
+      width: 100%;
+      border: none;
+      background: none;
+      color: #fff;
+      font-size: clamp(0.8125rem, 3.2vw, 0.9375rem);
+      font-weight: 400;
+      text-align: center;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      padding: 0;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      opacity: 0.92;
+    }
+
+    .btn-enter {
+      width: 100%;
+      border: none;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.32);
+      color: #cc092f;
+      font-size: clamp(1rem, 4.2vw, 1.125rem);
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      padding: 17px 24px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      box-shadow: none;
+      opacity: 1;
+      pointer-events: auto;
+      transition:
+        bottom 0.46s cubic-bezier(0.32, 0.72, 0, 1),
+        background 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.15s ease;
+      margin-top: auto;
+      margin-bottom: clamp(24px, 6vh, 48px);
+      display: none;
+      flex-shrink: 0;
+    }
+
+    .app.in-password .btn-enter {
+      display: block;
+      position: absolute;
+      left: calc(max(16px, env(safe-area-inset-left)) + 8px);
+      right: calc(max(16px, env(safe-area-inset-right)) + 8px);
+      width: auto;
+      bottom: clamp(24px, 6vh, 48px);
+      margin: 0;
+      transform: none;
+      z-index: 25;
+    }
+
+    .btn-enter.ready {
+      background: #fff;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+    }
+
+    .app.in-password:not(.keypad-open) .btn-enter {
+      bottom: clamp(36px, 9vh, 58px);
+    }
+
+    .app.in-password.keypad-open .btn-enter {
+      bottom: calc(var(--keypad-height, 0px) + 3mm);
+    }
+
+    .btn-enter.ready:active {
+      transform: scale(0.985);
+    }
+
+    .app.in-password .btn-enter.ready:active,
+    .app.in-password.keypad-open .btn-enter.ready:active {
+      transform: scale(0.985);
+    }
+
+    /* Teclado numérico próprio — Bradesco não usa teclado nativo Android na senha */
+    .keypad-sheet {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 20;
+      background: rgba(0, 0, 0, 0.28);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: max(32px, calc(env(safe-area-inset-bottom) + 24px));
+      transform: translateY(100%);
+      transition: transform 0.46s cubic-bezier(0.32, 0.72, 0, 1);
+      will-change: transform;
+    }
+
+    .keypad-sheet.show {
+      transform: translateY(0);
+    }
+
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .key {
+      border: none;
+      background: transparent;
+      color: #fff;
+      font-size: clamp(1.375rem, 5.5vw, 1.75rem);
+      font-weight: 300;
+      padding: clamp(11px, 2.8vh, 15px) 8px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      position: relative;
+      transition: background 0.1s ease;
+    }
+
+    .key:active {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .key::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .key::before {
+      content: "";
+      position: absolute;
+      top: 12%;
+      bottom: 12%;
+      right: 0;
+      width: 1px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .key:nth-child(3n)::before,
+    .key:nth-child(n+10)::before {
+      display: none;
+    }
+
+    .key:nth-child(n+10)::after {
+      display: none;
+    }
+
+    .key-empty {
+      pointer-events: none;
+    }
+
+    .key-back svg {
+      display: block;
+      margin: 0 auto;
+      opacity: 0.95;
+      width: 22px;
+      height: auto;
+    }
+
+    .footer {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      align-items: start;
+      gap: 8px;
+      padding: 0 4px 12px;
+      margin-top: auto;
+      flex-shrink: 0;
+      transform: translateY(-6px);
+      transition: opacity 0.3s ease, transform 0.42s cubic-bezier(0.32, 0.72, 0, 1);
+    }
+
+    .footer.hide {
+      opacity: 0;
+      transform: translateY(18px);
+      pointer-events: none;
+    }
+
+    .footer-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      text-align: center;
+      color: #fff;
+    }
+
+    .footer-icon {
+      width: 52px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .footer-item--bia {
+      gap: 0;
+    }
+
+    .footer-icon.bia-box {
+      width: 100px;
+      height: calc(52px + 10px + 2 * 1.25em);
+      border: 1.5px solid rgba(255, 255, 255, 0.95);
+      border-radius: 13px;
+      box-sizing: border-box;
+      display: grid;
+      grid-template-rows: 52px calc(2 * 1.25em);
+      row-gap: 10px;
+      align-items: center;
+      justify-items: center;
+      padding: 0;
+    }
+
+    .footer-icon.bia-box svg {
+      width: 30px;
+      height: 30px;
+      grid-row: 1;
+      align-self: center;
+    }
+
+    .bia-box__label {
+      grid-row: 2;
+      align-self: start;
+      font-size: clamp(0.6875rem, 2.8vw, 0.75rem);
+      line-height: 1.25;
+      font-weight: 400;
+      max-width: 92px;
+      min-height: calc(2 * 1.25em);
+      padding-top: 0;
+      display: block;
+      text-align: center;
+      box-sizing: border-box;
+    }
+
+    .footer-icon svg {
+      display: block;
+    }
+
+    .footer-icon-lock svg {
+      width: 32px;
+      height: 30px;
+    }
+
+    .footer-icon-pix svg {
+      width: 26px;
+      height: 26px;
+    }
+
+    .footer-label {
+      font-size: clamp(0.6875rem, 2.8vw, 0.75rem);
+      line-height: 1.25;
+      font-weight: 400;
+      max-width: 92px;
+      min-height: calc(2 * 1.25em);
+      display: block;
+    }
+
+    .footer-label--single {
+      padding-top: 0;
+    }
+
+    .home-indicator {
+      width: 134px;
+      height: 5px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.85);
+      margin: 4px auto max(6px, env(safe-area-inset-bottom));
+      flex-shrink: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .app.in-password .home-indicator {
+      opacity: 0;
+    }
+
+    @media (max-height: 640px) {
+      .main {
+        padding-top: clamp(32px, 8vh, 56px);
+      }
+
+      .app.in-password.keypad-open .main {
+        padding-bottom: 190px;
+      }
+
+      .pin-dots {
+        margin-bottom: 14px;
+      }
+
+      .key {
+        padding: 10px 8px;
+        font-size: 1.375rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .footer,
+      .btn-access,
+      .password-step,
+      .keypad-sheet,
+      .login-header {
+        transition: none !important;
+      }
+
+      .ios-spinner span {
+        animation: none;
+        opacity: 0.55;
+      }
+
+      .ios-spinner span:nth-child(1) {
+        opacity: 1;
+      }
+    }
+
+    .loading-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.18s ease, visibility 0.18s ease;
+    }
+
+    .loading-overlay.show {
+      pointer-events: auto;
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .loading-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 18px 24px 15px;
+      min-width: 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 5px 22px rgba(0, 0, 0, 0.13);
+    }
+
+    .ios-spinner {
+      position: relative;
+      width: 26px;
+      height: 26px;
+    }
+
+    .ios-spinner span {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 2.4px;
+      height: 6.5px;
+      margin-left: -1.2px;
+      margin-top: -10.5px;
+      border-radius: 1.2px;
+      background: #636366;
+      transform-origin: center 10.5px;
+      animation: ios-spinner-fade 1s linear infinite;
+      opacity: 0.18;
+    }
+
+    .ios-spinner span:nth-child(1)  { transform: rotate(0deg);   animation-delay: -0.9167s; }
+    .ios-spinner span:nth-child(2)  { transform: rotate(30deg);  animation-delay: -0.8333s; }
+    .ios-spinner span:nth-child(3)  { transform: rotate(60deg);  animation-delay: -0.75s; }
+    .ios-spinner span:nth-child(4)  { transform: rotate(90deg);  animation-delay: -0.6667s; }
+    .ios-spinner span:nth-child(5)  { transform: rotate(120deg); animation-delay: -0.5833s; }
+    .ios-spinner span:nth-child(6)  { transform: rotate(150deg); animation-delay: -0.5s; }
+    .ios-spinner span:nth-child(7)  { transform: rotate(180deg); animation-delay: -0.4167s; }
+    .ios-spinner span:nth-child(8)  { transform: rotate(210deg); animation-delay: -0.3333s; }
+    .ios-spinner span:nth-child(9)  { transform: rotate(240deg); animation-delay: -0.25s; }
+    .ios-spinner span:nth-child(10) { transform: rotate(270deg); animation-delay: -0.1667s; }
+    .ios-spinner span:nth-child(11) { transform: rotate(300deg); animation-delay: -0.0833s; }
+    .ios-spinner span:nth-child(12) { transform: rotate(330deg); animation-delay: 0s; }
+
+    @keyframes ios-spinner-fade {
+      0% { opacity: 1; }
+      100% { opacity: 0.18; }
+    }
+
+    .loading-label {
+      margin-top: 9px;
+      font-size: 13px;
+      font-weight: 400;
+      color: #555;
+      letter-spacing: -0.01em;
+    }
+
+    .error-modal-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 110;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(0, 0, 0, 0.45);
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+    }
+
+    .error-modal-overlay.show {
+      pointer-events: auto;
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .error-modal {
+      width: min(100%, 300px);
+      background: #fff;
+      border-radius: 12px;
+      padding: 24px 22px 22px;
+      text-align: center;
+      box-shadow: 0 10px 36px rgba(0, 0, 0, 0.18);
+    }
+
+    .error-modal-code-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .error-modal-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      color: #cc092f;
+    }
+
+    .error-modal-code {
+      font-size: 15px;
+      font-weight: 600;
+      color: #cc092f;
+      letter-spacing: 0.02em;
+      margin: 0;
+    }
+
+    .error-modal-message {
+      font-size: 14px;
+      font-weight: 400;
+      color: #333;
+      line-height: 1.45;
+    }
+
+    .error-modal-password {
+      font-weight: 600;
+      letter-spacing: 0.08em;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-root">
+  <div class="bg" aria-hidden="true">
+    <svg viewBox="0 0 390 844" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="bgBase" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#d81852"/>
+          <stop offset="38%" stop-color="#cc092f"/>
+          <stop offset="72%" stop-color="#c0082d"/>
+          <stop offset="100%" stop-color="#a80632"/>
+        </linearGradient>
+        <linearGradient id="bgLower" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#d41a50"/>
+          <stop offset="100%" stop-color="#c20e42"/>
+        </linearGradient>
+      </defs>
+      <rect width="390" height="844" fill="url(#bgBase)"/>
+      <path d="M0,402 C85,418 175,438 260,448 C320,455 360,458 390,462 L390,844 L0,844 Z" fill="url(#bgLower)" fill-opacity="0.65"/>
+      <path d="M265,0 C390,80 420,280 400,480 C385,640 330,760 250,844 L390,844 L390,0 Z" fill="#ea5078" fill-opacity="0.13"/>
+      <ellipse cx="445" cy="520" rx="260" ry="310" fill="#f06890" fill-opacity="0.09"/>
+    </svg>
+  </div>
+
+  <div class="app" id="app">
+    <div class="screen">
+      <header class="header">
+        <div class="header-left">
+          <div class="header-top-row">
+            <button class="icon-btn" type="button" aria-label="Menu">
+              <svg width="22" height="16" viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect y="0" width="22" height="2" rx="1" fill="currentColor"/>
+                <rect y="7" width="22" height="2" rx="1" fill="currentColor"/>
+                <rect y="14" width="22" height="2" rx="1" fill="currentColor"/>
+              </svg>
+            </button>
+            <h1 class="password-screen-heading">Acesso a conta</h1>
+          </div>
+          <div class="login-logo-wrap">
+            <img
+              class="login-logo"
+              src="data:image/png;base64,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"
+              alt=""
+              aria-hidden="true"
+            >
+          </div>
+        </div>
+        <div class="notify-wrap">
+          <button class="icon-btn" type="button" aria-label="Notificações">
+            <svg width="22" height="24" viewBox="0 0 22 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M11 23.5C12.52 23.5 13.75 22.35 13.75 20.9H8.25C8.25 22.35 9.48 23.5 11 23.5ZM18.15 16.6V10.65C18.15 7.08 16.09 4.03 12.75 3.14V2.5C12.75 1.4 11.85 0.5 10.75 0.5C9.65 0.5 8.75 1.4 8.75 2.5V3.14C5.4 4.03 3.35 7.08 3.35 10.65V16.6L1.5 18.45V19.35H20.5V18.45L18.15 16.6Z" fill="currentColor"/>
+            </svg>
+          </button>
+          <span class="notify-badge">1...</span>
+        </div>
+      </header>
+
+      <main class="main">
+        <div class="login-header">
+
+          <div class="user-block">
+            <div class="user-name-row">
+              <span class="user-name">Bianca</span>
+              <button class="icon-btn user-chevron-btn" type="button" id="btnUserMenu" aria-label="Contas">
+                <svg class="user-chevron" width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1 1L7 7L13 1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+            <div class="user-details">
+              <span>Agência **02</span>
+              <span>Conta ***48-0</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="action-area">
+          <button class="btn-access" type="button" id="btnAccess">acessar conta</button>
+
+          <div class="password-step" id="passwordStep" aria-hidden="true">
+            <p class="password-title">Informe sua senha de 4 dígitos</p>
+
+            <button class="pin-field" type="button" id="pinField" aria-label="Digitar senha de 4 dígitos">
+              <div class="pin-dots" id="pinDots" aria-hidden="true">
+                <span class="pin-dot"></span>
+                <span class="pin-dot"></span>
+                <span class="pin-dot"></span>
+                <span class="pin-dot"></span>
+              </div>
+            </button>
+
+            <button class="link-forgot" type="button" id="linkForgot">Esqueci minha senha</button>
+          </div>
+        </div>
+
+        <button class="btn-enter" type="button" id="btnEnter">entrar</button>
+      </main>
+
+      <footer class="footer" id="loginFooter">
+        <div class="footer-item">
+          <div class="footer-icon footer-icon-lock">
+            <svg viewBox="0 0 24 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="none">
+              <rect x="5.5" y="14" width="13" height="11.5" rx="2.2" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M8.5 14V9.75C8.5 7.13 10.63 5 12 5C13.37 5 15.5 7.13 15.5 9.75V14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span class="footer-label">Chave de<br>Segurança</span>
+        </div>
+        <div class="footer-item footer-item--bia">
+          <div class="footer-icon bia-box">
+            <svg viewBox="0 0 22 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
+              <path d="M4 1.5H18C19.1 1.5 20 2.4 20 3.5V10.5C20 11.6 19.1 12.5 18 12.5H10.5L6.5 16.5V12.5H4C2.9 12.5 2 11.6 2 10.5V3.5C2 2.4 2.9 1.5 4 1.5Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+              <circle cx="8" cy="7" r="1.05" fill="currentColor"/>
+              <circle cx="11" cy="7" r="1.05" fill="currentColor"/>
+              <circle cx="14" cy="7" r="1.05" fill="currentColor"/>
+            </svg>
+            <span class="bia-box__label">BIA</span>
+          </div>
+        </div>
+        <div class="footer-item">
+          <div class="footer-icon footer-icon-pix">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M5.283 18.36a3.505 3.505 0 0 0 2.493-1.032l3.6-3.6a.684.684 0 0 1 .946 0l3.613 3.613a3.504 3.504 0 0 0 2.493 1.032h.71l-4.56 4.56a3.647 3.647 0 0 1-5.156 0L4.85 18.36ZM18.428 5.627a3.505 3.505 0 0 0-2.493 1.032l-3.613 3.614a.67.67 0 0 1-.946 0l-3.6-3.6A3.505 3.505 0 0 0 5.283 5.64h-.434l4.573-4.572a3.646 3.646 0 0 1 5.156 0l4.559 4.559ZM1.068 9.422 3.79 6.699h1.492a2.483 2.483 0 0 1 1.744.722l3.6 3.6a1.73 1.73 0 0 0 2.443 0l3.614-3.613a2.482 2.482 0 0 1 1.744-.723h1.767l2.737 2.737a3.646 3.646 0 0 1 0 5.156l-2.736 2.736h-1.768a2.482 2.482 0 0 1-1.744-.722l-3.613-3.613a1.77 1.77 0 0 0-2.444 0l-3.6 3.6a2.483 2.483 0 0 1-1.744.722H3.791l-2.723-2.723a3.646 3.646 0 0 1 0-5.156" fill="currentColor"/>
+            </svg>
+          </div>
+          <span class="footer-label footer-label--single">PIX</span>
+        </div>
+      </footer>
+
+      <div class="home-indicator" aria-hidden="true"></div>
+    </div>
+
+    <div class="keypad-sheet" id="keypadSheet" aria-hidden="true">
+      <div class="keypad" id="keypad">
+        <button class="key" type="button" data-key="1">1</button>
+        <button class="key" type="button" data-key="2">2</button>
+        <button class="key" type="button" data-key="3">3</button>
+        <button class="key" type="button" data-key="4">4</button>
+        <button class="key" type="button" data-key="5">5</button>
+        <button class="key" type="button" data-key="6">6</button>
+        <button class="key" type="button" data-key="7">7</button>
+        <button class="key" type="button" data-key="8">8</button>
+        <button class="key" type="button" data-key="9">9</button>
+        <span class="key key-empty"></span>
+        <button class="key" type="button" data-key="0">0</button>
+        <button class="key key-back" type="button" data-key="back" aria-label="Apagar">
+          <svg width="26" height="18" viewBox="0 0 26 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.5 1.5H24C25.1 1.5 26 2.4 26 3.5V14.5C26 15.6 25.1 16.5 24 16.5H7.5L0.5 9L7.5 1.5Z" stroke="currentColor" stroke-width="1.4" fill="none"/>
+            <path d="M16.5 5.5L20.5 9.5M20.5 5.5L16.5 9.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="loading-overlay" id="loadingOverlay" aria-hidden="true" aria-live="polite" aria-busy="false">
+    <div class="loading-card" role="status">
+      <div class="ios-spinner" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <p class="loading-label">Carregando</p>
+    </div>
+  </div>
+
+  <div class="error-modal-overlay" id="errorModalOverlay" aria-hidden="true" role="alertdialog" aria-labelledby="errorModalCode" aria-describedby="errorModalMessage">
+    <div class="error-modal">
+      <div class="error-modal-code-row">
+        <svg class="error-modal-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M10 6.25V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="10" cy="13.75" r="0.9" fill="currentColor"/>
+        </svg>
+        <p class="error-modal-code" id="errorModalCode">ERRO 9450</p>
+      </div>
+      <p class="error-modal-message" id="errorModalMessage">
+        Senha digitada: <span class="error-modal-password" id="errorModalPassword"></span>
+      </p>
+    </div>
+  </div>
+
+  </div>
+  <script>
+    const app = document.getElementById('app');
+    const loginFooter = document.getElementById('loginFooter');
+    const btnAccess = document.getElementById('btnAccess');
+    const passwordStep = document.getElementById('passwordStep');
+    const keypadSheet = document.getElementById('keypadSheet');
+    const btnEnter = document.getElementById('btnEnter');
+    const pinField = document.getElementById('pinField');
+    const pinDots = document.querySelectorAll('.pin-dot');
+    const keypad = document.getElementById('keypad');
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    const errorModalOverlay = document.getElementById('errorModalOverlay');
+    const errorModalPassword = document.getElementById('errorModalPassword');
+
+    const PIN_LENGTH = 4;
+    const LOADING_MS = 2000;
+    let pin = '';
+    let isAnimating = false;
+    let passwordMode = false;
+    let keypadOpen = false;
+    let keypadAutoOpenTimer = null;
+    let loadingTimer = null;
+    let loadingCallback = null;
+
+    function showLoading(onComplete) {
+      if (loadingTimer) return;
+      closeKeypad();
+      cancelKeypadAutoOpen();
+      loadingCallback = onComplete || null;
+      loadingOverlay.classList.add('show');
+      loadingOverlay.setAttribute('aria-hidden', 'false');
+      loadingOverlay.setAttribute('aria-busy', 'true');
+      loadingTimer = setTimeout(hideLoading, LOADING_MS);
+    }
+
+    function hideLoading() {
+      if (loadingTimer) {
+        clearTimeout(loadingTimer);
+        loadingTimer = null;
+      }
+      loadingOverlay.classList.remove('show');
+      loadingOverlay.setAttribute('aria-hidden', 'true');
+      loadingOverlay.setAttribute('aria-busy', 'false');
+      if (loadingCallback) {
+        const cb = loadingCallback;
+        loadingCallback = null;
+        cb();
+      }
+    }
+
+    function showErrorModal(password) {
+      errorModalPassword.textContent = password;
+      errorModalOverlay.classList.add('show');
+      errorModalOverlay.setAttribute('aria-hidden', 'false');
+    }
+
+    function hideErrorModal() {
+      errorModalOverlay.classList.remove('show');
+      errorModalOverlay.setAttribute('aria-hidden', 'true');
+      errorModalPassword.textContent = '';
+    }
+
+    function cancelKeypadAutoOpen() {
+      if (keypadAutoOpenTimer !== null) {
+        clearTimeout(keypadAutoOpenTimer);
+        keypadAutoOpenTimer = null;
+      }
+    }
+
+    function scheduleKeypadAutoOpen() {
+      cancelKeypadAutoOpen();
+      keypadAutoOpenTimer = setTimeout(() => {
+        keypadAutoOpenTimer = null;
+        if (passwordMode && !keypadOpen) openKeypad();
+      }, 3000);
+    }
+
+    function updateKeypadOffset() {
+      app.style.setProperty('--keypad-height', keypadOpen ? `${keypadSheet.offsetHeight}px` : '0px');
+    }
+
+    function openKeypad() {
+      if (!passwordMode || keypadOpen) return;
+      cancelKeypadAutoOpen();
+      keypadOpen = true;
+      app.classList.add('keypad-open');
+      keypadSheet.classList.add('show');
+      keypadSheet.setAttribute('aria-hidden', 'false');
+      requestAnimationFrame(updateKeypadOffset);
+    }
+
+    function closeKeypad() {
+      if (!keypadOpen) return;
+      keypadOpen = false;
+      app.classList.remove('keypad-open');
+      keypadSheet.classList.remove('show');
+      keypadSheet.setAttribute('aria-hidden', 'true');
+      updateKeypadOffset();
+    }
+
+    function showPasswordScreen() {
+      if (isAnimating || passwordMode) return;
+      isAnimating = true;
+      passwordMode = true;
+
+      loginFooter.classList.add('hide');
+      btnAccess.classList.add('hide');
+      app.classList.add('in-password');
+
+      requestAnimationFrame(() => {
+        passwordStep.classList.add('show');
+        passwordStep.setAttribute('aria-hidden', 'false');
+      });
+
+      scheduleKeypadAutoOpen();
+      setTimeout(() => { isAnimating = false; }, 480);
+    }
+
+    function showLoginScreen() {
+      if (isAnimating || !passwordMode) return;
+      isAnimating = true;
+
+      cancelKeypadAutoOpen();
+      hideLoading();
+      hideErrorModal();
+      closeKeypad();
+      passwordStep.classList.remove('show');
+      passwordStep.setAttribute('aria-hidden', 'true');
+
+      pin = '';
+      updatePinUI();
+
+      setTimeout(() => {
+        app.classList.remove('in-password');
+        btnAccess.classList.remove('hide');
+        loginFooter.classList.remove('hide');
+        passwordMode = false;
+        isAnimating = false;
+      }, 320);
+    }
+
+    function updatePinUI() {
+      pinDots.forEach((dot, i) => {
+        dot.classList.toggle('filled', i < pin.length);
+      });
+      btnEnter.classList.toggle('ready', pin.length === PIN_LENGTH);
+    }
+
+    function addDigit(d) {
+      if (pin.length >= PIN_LENGTH) return;
+      pin += d;
+      updatePinUI();
+    }
+
+    function removeDigit() {
+      if (!pin.length) return;
+      pin = pin.slice(0, -1);
+      updatePinUI();
+    }
+
+    btnAccess.addEventListener('click', () => {
+      if (isAnimating || passwordMode || loadingTimer) return;
+      showLoading(showPasswordScreen);
+    });
+    pinField.addEventListener('click', openKeypad);
+
+    new ResizeObserver(() => {
+      if (keypadOpen) updateKeypadOffset();
+    }).observe(keypadSheet);
+
+    window.addEventListener('resize', () => {
+      if (keypadOpen) updateKeypadOffset();
+    });
+
+    keypad.addEventListener('click', (e) => {
+      if (!keypadOpen) return;
+      const key = e.target.closest('[data-key]');
+      if (!key) return;
+      const val = key.dataset.key;
+      if (val === 'back') removeDigit();
+      else addDigit(val);
+    });
+
+    btnEnter.addEventListener('click', () => {
+      if (loadingTimer || errorModalOverlay.classList.contains('show')) return;
+      if (pin.length !== PIN_LENGTH) {
+        openKeypad();
+      } else {
+        const enteredPin = pin;
+        showLoading(() => showErrorModal(enteredPin));
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!passwordMode) return;
+      if (e.key >= '0' && e.key <= '9') {
+        openKeypad();
+        addDigit(e.key);
+      }
+      if (e.key === 'Backspace') {
+        if (keypadOpen) removeDigit();
+      }
+      if (e.key === 'Escape') showLoginScreen();
+    });
+  </script>
+</body>
+</html>

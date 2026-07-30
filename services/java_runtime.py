@@ -2,7 +2,6 @@ import os
 import shutil
 import subprocess
 
-
 def find_java():
     candidates = []
     java_home = os.environ.get("JAVA_HOME")
@@ -36,9 +35,7 @@ def find_java():
             continue
     return None
 
-
 JAVA_BIN = find_java()
-
 
 def java_home():
     home = os.environ.get("JAVA_HOME")
@@ -48,7 +45,6 @@ def java_home():
         return os.path.dirname(os.path.dirname(JAVA_BIN))
     return None
 
-
 def java_env():
     env = os.environ.copy()
     home = java_home()
@@ -56,7 +52,6 @@ def java_env():
         env["JAVA_HOME"] = home
         env["PATH"] = os.path.join(home, "bin") + os.pathsep + env.get("PATH", "")
     return env
-
 
 def keytool_bin():
     home = java_home()

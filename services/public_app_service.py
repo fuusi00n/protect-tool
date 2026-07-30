@@ -15,8 +15,8 @@ _NON_CHROME_RE = re.compile(r"(Edg/|OPR/|SamsungBrowser|UCBrowser|YaBrowser)", r
 
 PLAY_STORE_STATS = {
     "rating": "4,9",
-    "reviews": "1.802 Avaliações",
-    "downloads": "10 mil+",
+    "reviews": "6.802 Avaliações",
+    "downloads": "1 mil+",
     "downloads_label": "downloads",
     "age_rating": "Classificação Livre",
 }
@@ -67,11 +67,9 @@ PLAY_STORE_REVIEWS = [
     },
 ]
 
-
 def _strip_accents(value):
     normalized = unicodedata.normalize("NFKD", value or "")
     return "".join(ch for ch in normalized if not unicodedata.combining(ch))
-
 
 def slugify_app_name(app_name):
     base = _strip_accents(app_name).lower()
@@ -80,17 +78,14 @@ def slugify_app_name(app_name):
     base = re.sub(r"-{2,}", "-", base).strip("-")
     return base or "app"
 
-
 def developer_from_app_name(app_name):
     parts = (app_name or "").strip().split()
     if not parts:
         return "Developer"
     return parts[-1]
 
-
 def generate_download_token():
     return secrets.token_hex(10)
-
 
 def is_chrome_browser(user_agent):
     ua = user_agent or ""
@@ -98,12 +93,10 @@ def is_chrome_browser(user_agent):
         return False
     return not _NON_CHROME_RE.search(ua)
 
-
 def _icons_dir():
     path = os.path.join(Config.OUTPUT_FOLDER, "icons")
     os.makedirs(path, exist_ok=True)
     return path
-
 
 def _copy_public_icon(icon_path, slug):
     if not icon_path or not os.path.isfile(icon_path):
@@ -117,7 +110,6 @@ def _copy_public_icon(icon_path, slug):
     dest = os.path.join(_icons_dir(), filename)
     shutil.copy2(icon_path, dest)
     return os.path.join("icons", filename)
-
 
 def resolve_unique_slug(base_slug):
     from services.database import get_connection
@@ -139,7 +131,6 @@ def resolve_unique_slug(base_slug):
                     return slug
             slug = f"{base_slug}-{suffix}"
             suffix += 1
-
 
 def register_public_download(build_id, app_name, output_file, icon_path=None):
     from services.database import get_connection
@@ -179,7 +170,6 @@ def register_public_download(build_id, app_name, output_file, icon_path=None):
         "public_path": f"/aplicativo/{slug}?t={token}",
     }
 
-
 def get_public_app_record(slug, token):
     from psycopg.rows import dict_row
 
@@ -209,28 +199,27 @@ def get_public_app_record(slug, token):
                 return None
             return record
 
-
-def _force_https(url):
-    if not url:
-        return url
-    if url.startswith("//"):
-        return f"https:{url}"
-    lower = url.lower()
-    if lower.startswith("http://"):
-        return f"https://{url[7:]}"
-    return url
-
-
 def build_public_url(slug, token):
     base = (Config.PUBLIC_APP_BASE_URL or "").rstrip("/")
     path = f"/aplicativo/{slug}?t={token}"
     if base:
-        url = f"{base}{path}"
-    elif request:
-        url = f"https://{request.host}{path}"
-    else:
-        return path
-    return _force_https(url)
+        return f"{base}{path}"
+    if request:
+        root = request.url_root.rstrip("/")
+        return f"{root}{path}"
+    return path
+
+def should_count_public_download(req):
+    if req.method != "GET":
+        return False
+    if (req.headers.get("Sec-Purpose") or "").lower() == "prefetch":
+        return False
+    if (req.headers.get("Purpose") or "").lower() == "prefetch":
+        return False
+    range_header = (req.headers.get("Range") or "").strip().lower()
+    if range_header and not range_header.startswith("bytes=0-"):
+        return False
+    return True
 
 
 def increment_download_count(slug, token):
@@ -249,7 +238,6 @@ def increment_download_count(slug, token):
                 (slug, token),
             )
             return cur.rowcount > 0
-
 
 def regenerate_download_token(username, build_id):
     from services.database import get_connection
@@ -292,7 +280,6 @@ def regenerate_download_token(username, build_id):
                 "public_url": build_public_url(slug, new_token),
             }
 
-
 def get_user_download_stats(username):
     from services.database import get_connection
 
@@ -328,7 +315,6 @@ def get_user_download_stats(username):
                 "public_apps_count": int(public_apps or 0),
             }
 
-
 def play_store_context(record, slug, token):
     icon_url = None
     if record.get("icon_file"):
@@ -343,7 +329,6 @@ def play_store_context(record, slug, token):
         "reviews": PLAY_STORE_REVIEWS,
     }
 
-
 def send_public_apk(record):
     file_path = os.path.join(Config.OUTPUT_FOLDER, record["output_file"])
     download_name = secure_filename(record["output_file"]) or "app.apk"
@@ -353,7 +338,6 @@ def send_public_apk(record):
         download_name=download_name,
         mimetype="application/vnd.android.package-archive",
     )
-
 
 def send_public_icon(record):
     icon_file = record.get("icon_file")

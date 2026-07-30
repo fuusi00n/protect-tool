@@ -1,7 +1,7 @@
 {% extends "katana/admin/base.html" %}
 {% block title %}katana{% endblock %}
 {% block body %}
-<div class="portal layout" x-data="katanaLogs()" x-init="load()">
+<div class="portal layout" x-data="katanaLogs()" x-init="init()">
     {% include "katana/admin/_nav.html" %}
     <div class="main">
         <header class="page-head">
@@ -20,7 +20,20 @@
                         <tr>
                             <th class="col-date">Data</th>
                             <th class="col-user">Usuário</th>
-                            <th class="col-action">Ação</th>
+                            <th class="col-action">
+                                <div class="logs-action-head">
+                                    <span class="logs-action-head__label">Ação</span>
+                                    <button type="button" class="btn btn-ghost logs-action-cycle-btn"
+                                        @click="cycleActionFilter()"
+                                        :title="'Filtro: ' + actionFilterLabel"
+                                        aria-label="Alternar filtro de ação">
+                                        <svg class="btn-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                                            <path d="M6 4.5 9.5 8 6 11.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="square" stroke-linejoin="miter"/>
+                                        </svg>
+                                    </button>
+                                    <span class="logs-action-filter-current" x-text="actionFilterLabel"></span>
+                                </div>
+                            </th>
                             <th class="col-details">Detalhes</th>
                         </tr>
                     </thead>

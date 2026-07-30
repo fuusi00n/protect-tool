@@ -158,13 +158,28 @@ function subscriberMake() {
         progress: 0,
         buildId: "",
         pollTimer: null,
-        tipModalOpen: true,
+        tipModalOpen: false,
+        tipTimer: null,
         buildModalOpen: false,
         buildPhase: "",
         limitError: null,
         submitStep: 0,
         submitTimer: null,
         submitSteps: ["Validando arquivos", "Enviando para análise", "Preparando pipeline"],
+        init() {
+            try {
+                if (window.sessionStorage.getItem("katana_make_tip_seen") === "1") return;
+            } catch (_) {
+                
+            }
+            this.tipTimer = window.setTimeout(() => {
+                this.tipModalOpen = true;
+                this.tipTimer = null;
+                try {
+                    window.sessionStorage.setItem("katana_make_tip_seen", "1");
+                } catch (_) {  }
+            }, 1000);
+        },
         get buildTag() {
             if (this.buildPhase === "submitting") return "UPLOAD";
             if (this.buildPhase === "building") return "COMPILANDO";
@@ -180,7 +195,14 @@ function subscriberMake() {
             return "";
         },
         closeTipModal() {
+            if (this.tipTimer) {
+                window.clearTimeout(this.tipTimer);
+                this.tipTimer = null;
+            }
             this.tipModalOpen = false;
+            try {
+                window.sessionStorage.setItem("katana_make_tip_seen", "1");
+            } catch (_) {  }
         },
         clearIconPreview() {
             if (this.iconPreview) {
@@ -247,6 +269,7 @@ function subscriberMake() {
             this.limitError = null;
         },
         closeBuildModal() {
+            const shouldReload = this.buildPhase === "done" || this.buildPhase === "error";
             this.buildModalOpen = false;
             this.buildPhase = "";
             this.limitError = null;
@@ -256,6 +279,9 @@ function subscriberMake() {
                 this.pollTimer = null;
             }
             this.busy = false;
+            if (shouldReload) {
+                window.location.reload();
+            }
         },
         goToApps() {
             window.location.href = "/subscriber/apps";
@@ -278,7 +304,7 @@ function subscriberMake() {
 
             const fd = new FormData();
             fd.append("file", this.apk);
-            fd.append("app_name", this.appName || "App");
+            fd.append("app_name", (this.appName || "App").trim().slice(0, 20) || "App");
             fd.append("icon", this.icon);
 
             let res;
@@ -353,6 +379,7 @@ function subscriberMake() {
 function subscriberApps() {
     return {
         apps: [],
+        loading: true,
         copiedId: "",
         busyId: "",
         deleteBusyId: "",
@@ -376,10 +403,15 @@ function subscriberApps() {
             return Math.min(this.page * this.pageSize, this.apps.length);
         },
         async load() {
-            const res = await api("/subscriber/api/apps");
-            if (!res) return;
-            this.apps = await res.json();
-            if (this.page > this.totalPages) this.page = this.totalPages;
+            this.loading = true;
+            try {
+                const res = await api("/subscriber/api/apps");
+                if (!res) return;
+                this.apps = await res.json();
+                if (this.page > this.totalPages) this.page = this.totalPages;
+            } finally {
+                this.loading = false;
+            }
         },
         prevPage() {
             if (this.page > 1) this.page -= 1;
@@ -454,124 +486,64 @@ function subscriberApps() {
 function subscriberStore() {
     return {
         products: [],
+        loading: true,
+        previewsReady: 0,
+        _bootTimer: null,
         previewOpen: false,
         previewProduct: null,
-        toast: "",
         previewUrl(id, embed) {
             const qs = embed ? "?embed=1&stage=welcome" : "?stage=full";
             return `/subscriber/api/store/preview/${id}${qs}`;
         },
+        finishBoot() {
+            if (this._bootTimer) {
+                window.clearTimeout(this._bootTimer);
+                this._bootTimer = null;
+            }
+            this.loading = false;
+        },
+        onCardPreviewLoad() {
+            if (!this.loading) return;
+            this.previewsReady += 1;
+            if (this.previewsReady >= this.products.length) {
+                this.finishBoot();
+            }
+        },
         async load() {
-            const res = await api("/subscriber/api/store/products");
-            if (!res) return;
-            this.products = await res.json();
+            this.loading = true;
+            this.previewsReady = 0;
+            if (this._bootTimer) {
+                window.clearTimeout(this._bootTimer);
+                this._bootTimer = null;
+            }
+            try {
+                const res = await api("/subscriber/api/store/products");
+                if (!res) {
+                    this.finishBoot();
+                    return;
+                }
+                const data = await res.json();
+                this.products = Array.isArray(data) ? data : [];
+                this.finishBoot();
+            } catch (_) {
+                this.finishBoot();
+            }
         },
         openPreview(product) {
+            if (!product) return;
             this.previewProduct = product;
             this.previewOpen = true;
+            this.$nextTick(() => {
+                const frame = this.$refs.previewFrame;
+                if (!frame) return;
+                frame.src = this.previewUrl(product.id);
+            });
         },
         closePreview() {
             this.previewOpen = false;
             this.previewProduct = null;
-        },
-        buy(product) {
-            window.location.href = `/subscriber/store/checkout/${product.id}`;
-        },
-        async logout() {
-            await fetch("/subscriber/logout", { method: "POST" });
-            window.location.href = "/subscriber/login";
-        },
-    };
-}
-
-function subscriberCheckout() {
-    return {
-        productId: "",
-        method: "bitcoin",
-        payModalOpen: false,
-        payPhase: "loading",
-        result: null,
-        busy: false,
-        copied: false,
-        qrReady: false,
-        loadingIndex: 0,
-        loadingMessage: "Aguarde um instante…",
-        loadingSteps: ["Validando pedido", "Reservando instruções", "Finalizando"],
-        loadingTimer: null,
-        boot(productId) {
-            this.productId = productId || "";
-        },
-        startLoadingAnimation() {
-            this.loadingIndex = 0;
-            this.loadingMessage = this.loadingSteps[0];
-            if (this.loadingTimer) window.clearInterval(this.loadingTimer);
-            this.loadingTimer = window.setInterval(() => {
-                if (this.payPhase !== "loading") return;
-                this.loadingIndex = Math.min(this.loadingIndex + 1, this.loadingSteps.length - 1);
-                this.loadingMessage = this.loadingSteps[this.loadingIndex];
-            }, 520);
-        },
-        stopLoadingAnimation() {
-            if (this.loadingTimer) {
-                window.clearInterval(this.loadingTimer);
-                this.loadingTimer = null;
-            }
-        },
-        closePayModal() {
-            if (this.busy) return;
-            this.stopLoadingAnimation();
-            this.payModalOpen = false;
-            this.payPhase = "loading";
-            this.result = null;
-            this.copied = false;
-            this.qrReady = false;
-        },
-        async pay() {
-            if (this.busy || !this.productId) return;
-            this.busy = true;
-            this.copied = false;
-            this.qrReady = false;
-            this.result = null;
-            this.payPhase = "loading";
-            this.payModalOpen = true;
-            this.loadingSteps = this.method === "bitcoin"
-                ? ["Validando pedido", "Gerando endereço on-chain", "Montando QR Code"]
-                : ["Validando pedido", "Consultando Pix", "Finalizando"];
-            this.startLoadingAnimation();
-            const delay = this.method === "bitcoin" ? 1800 : 900;
-            const [res] = await Promise.all([
-                api(`/subscriber/api/store/checkout/${this.productId}/intent`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ method: this.method }),
-                }),
-                new Promise((resolve) => window.setTimeout(resolve, delay)),
-            ]);
-            this.stopLoadingAnimation();
-            this.busy = false;
-            if (!res) {
-                this.payModalOpen = false;
-                return;
-            }
-            const data = await res.json();
-            if (data.error) {
-                this.payModalOpen = false;
-                return;
-            }
-            this.result = data;
-            if (data.status === "ready") {
-                this.payPhase = "bitcoin";
-            } else {
-                this.payPhase = "unavailable";
-            }
-        },
-        async copyAddress() {
-            if (!this.result || !this.result.address) return;
-            try {
-                await navigator.clipboard.writeText(this.result.address);
-                this.copied = true;
-                window.setTimeout(() => { this.copied = false; }, 2000);
-            } catch (_) {}
+            const frame = this.$refs.previewFrame;
+            if (frame) frame.src = "about:blank";
         },
         async logout() {
             await fetch("/subscriber/logout", { method: "POST" });
@@ -586,6 +558,5 @@ document.addEventListener("alpine:init", () => {
     Alpine.data("subscriberMake", subscriberMake);
     Alpine.data("subscriberApps", subscriberApps);
     Alpine.data("subscriberStore", subscriberStore);
-    Alpine.data("subscriberCheckout", subscriberCheckout);
     Alpine.data("subscriberProfile", subscriberProfile);
 });

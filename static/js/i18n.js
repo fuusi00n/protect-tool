@@ -62,7 +62,6 @@
     try {
       localStorage.setItem(STORAGE_KEY, lang);
     } catch (_err) {
-      /* ignore */
     }
   }
 

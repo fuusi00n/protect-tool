@@ -61,18 +61,17 @@
   "pricing": {
     "eyebrow": "Plans",
     "title": "Choose your plan",
-    "note": "Prices in BRL. One-time payment per period, no auto-renewal. If you need more builds per day, contact an admin on Telegram in the top bar."
+    "note": "If you need more builds per day, contact an admin on Telegram in the top bar."
   },
   "plan": {
     "starter": {
       "tag": "Starter",
-      "duration": "7 days",
+      "duration": "1 day",
       "desc": "Ideal to try the tool.",
-      "period": "/7 days",
-      "feature1": "1 build per day",
-      "feature2": "Play Store screen",
-      "feature3": "BTMOB support",
-      "cta": "Unlock 7 days"
+      "period": "/1 day",
+      "feature1": "1 single build",
+      "feature2": "RAT BTMOB support",
+      "cta": "Unlock 1 day"
     },
     "plus": {
       "tag": "Plus",
@@ -80,9 +79,9 @@
       "desc": "More daily builds and support for main versions.",
       "period": "/15 days",
       "feature1": "2 builds per day",
-      "feature2": "Full dashboard",
+      "feature2": "Injection Store",
       "feature3": "Play Store screen",
-      "feature4": "BTMOB support",
+      "feature4": "RAT BTMOB support",
       "cta": "Unlock 15 days"
     },
     "elite": {
@@ -92,11 +91,10 @@
       "desc": "Maximum builds and extended KL support.",
       "period": "/30 days",
       "feature1": "5 builds per day",
-      "feature2": "Full dashboard",
+      "feature2": "Injection Store",
       "feature3": "Play Store screen",
-      "feature4": "BTMOB support",
-      "feature5": "KRAKEN support",
-      "feature6": "Support for +3 KL models",
+      "feature4": "RAT BTMOB support",
+      "feature5": "RAT INFERNO support",
       "cta": "Unlock 30 days"
     }
   },
@@ -107,6 +105,7 @@
   },
   "checkout": {
     "backToPlans": "Back to plans",
+    "backToStore": "Back to Store",
     "errorTag": "Error · Checkout",
     "notFoundTitle": "Invoice not found",
     "notFoundDesc": "Check the link you received and try again.",

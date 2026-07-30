@@ -17,7 +17,7 @@
     "pill": "Junte-se a nós",
     "titleBest": "O melhor ",
     "titleBypass": "Bypass para ",
-    "subtitle": "Indetectável em + de 10 bancos. Não detectável pelo Sicoob.",
+    "subtitle": "Indetectável em + de 10 bancos.",
     "cta": "Começar agora"
   },
   "profiles": {
@@ -61,18 +61,17 @@
   "pricing": {
     "eyebrow": "Planos",
     "title": "Escolha o seu plano",
-    "note": "Preços em reais. Pagamento único por período, sem renovação automática. Se precisar de mais builds por dia, fale com um administrador pelo Telegram na barra superior."
+    "note": "Se precisar de mais builds por dia, fale com um administrador pelo Telegram na barra superior."
   },
   "plan": {
     "starter": {
       "tag": "Starter",
-      "duration": "7 dias",
+      "duration": "1 dia",
       "desc": "Ideal para conhecer a ferramenta.",
-      "period": "/7 dias",
-      "feature1": "1 build por dia",
-      "feature2": "Tela Play Store",
-      "feature3": "Suporte para BTMOB",
-      "cta": "Liberar 7 dias"
+      "period": "/1 dia",
+      "feature1": "1 build único",
+      "feature2": "Suporte para RAT BTMOB",
+      "cta": "Liberar 1 dia"
     },
     "plus": {
       "tag": "Plus",
@@ -80,9 +79,9 @@
       "desc": "Mais builds por dia e suporte às versões principais.",
       "period": "/15 dias",
       "feature1": "2 builds por dia",
-      "feature2": "Painel completo",
+      "feature2": "Store de Injections",
       "feature3": "Tela Play Store",
-      "feature4": "Suporte para BTMOB",
+      "feature4": "Suporte para RAT BTMOB",
       "cta": "Liberar 15 dias"
     },
     "elite": {
@@ -92,11 +91,10 @@
       "desc": "Máximo de builds e suporte ampliado a KLs.",
       "period": "/30 dias",
       "feature1": "5 builds por dia",
-      "feature2": "Painel completo",
+      "feature2": "Store de Injections",
       "feature3": "Tela Play Store",
-      "feature4": "Suporte para BTMOB",
-      "feature5": "Suporte para KRAKEN",
-      "feature6": "Suporte para +3 modelos de KL",
+      "feature4": "Suporte para RAT BTMOB",
+      "feature5": "Suporte para RAT INFERNO",
       "cta": "Liberar 30 dias"
     }
   },
@@ -107,6 +105,7 @@
   },
   "checkout": {
     "backToPlans": "Voltar aos planos",
+    "backToStore": "Voltar à Store",
     "errorTag": "Erro · Checkout",
     "notFoundTitle": "Cobrança não encontrada",
     "notFoundDesc": "Verifique o endereço recebido e tente novamente.",

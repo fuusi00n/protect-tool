@@ -1,0 +1,81 @@
+{% extends "katana/admin/base.html" %}
+{% block title %}katana{% endblock %}
+{% block body %}
+<div class="portal layout" x-data="katanaInvoices()" x-init="load()">
+    {% include "katana/admin/_nav.html" %}
+    <div class="main">
+        <header class="page-head">
+            <h1>Invoices</h1>
+            <p>Cobranças Bitcoin geradas na plataforma</p>
+        </header>
+
+        <section class="section">
+            <div class="section-head">
+                <h2>Geradas</h2>
+                <p>Todas as invoices criadas</p>
+            </div>
+            <div class="table-wrap pay-table-wrap">
+                <table class="pay-table">
+                    <thead>
+                        <tr>
+                            <th class="col-date">Data</th>
+                            <th class="col-user">Usuário</th>
+                            <th class="col-item">Item</th>
+                            <th class="col-amount">Valor</th>
+                            <th class="col-sats">Sats</th>
+                            <th class="col-source">Origem</th>
+                            <th class="col-status">Status</th>
+                            <th class="col-id">Invoice</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template x-if="!items.length">
+                            <tr>
+                                <td colspan="8" class="pay-empty">Nenhuma invoice gerada.</td>
+                            </tr>
+                        </template>
+                        <template x-for="item in items" :key="item.id">
+                            <tr>
+                                <td class="col-date" x-text="item.date_display"></td>
+                                <td class="col-user" x-text="item.username"></td>
+                                <td class="col-item" x-text="item.description"></td>
+                                <td class="col-amount" x-text="item.amount_display"></td>
+                                <td class="col-sats" x-text="item.sats_display"></td>
+                                <td class="col-source">
+                                    <span class="badge badge-neutral" x-text="item.source"></span>
+                                </td>
+                                <td class="col-status">
+                                    <span class="badge"
+                                        :class="{
+                                            'badge-ok': item.status === 'Settled',
+                                            'badge-pending': item.status === 'New' || item.status === 'Processing',
+                                            'badge-error': item.status === 'Expired',
+                                            'badge-neutral': !['Settled','New','Processing','Expired'].includes(item.status)
+                                        }"
+                                        x-text="item.status"></span>
+                                </td>
+                                <td class="col-id">
+                                    <a class="pay-id-link" :href="item.checkout_url" :title="item.invoice_id" x-text="item.invoice_short"></a>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+                <footer class="apps-pagination" x-show="total > pageSize" x-cloak>
+                    <p class="apps-pagination__info">
+                        <span x-text="pageFrom"></span>–<span x-text="pageTo"></span>
+                        de <span x-text="total"></span>
+                    </p>
+                    <div class="apps-pagination__controls">
+                        <button type="button" class="btn btn-ghost btn-pagination" @click="prevPage()" :disabled="page <= 1">Anterior</button>
+                        <span class="apps-pagination__page">
+                            <span x-text="page"></span> / <span x-text="totalPages"></span>
+                        </span>
+                        <button type="button" class="btn btn-ghost btn-pagination" @click="nextPage()" :disabled="page >= totalPages">Próxima</button>
+                    </div>
+                </footer>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}

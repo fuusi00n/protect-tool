@@ -1,4 +1,4 @@
-{% from "partials/sidebar_icons.html" import dashboard, make, logs, users, logout %}
+{% from "partials/sidebar_icons.html" import dashboard, make, logs, users, invoices, payments, logout %}
 <aside class="sidebar">
     {% include "partials/katana_brand.html" %}
     <nav class="nav">
@@ -6,21 +6,44 @@
             {{ dashboard() }}
             <span>Dashboard</span>
         </a>
-        <a href="{{ url_for('katana.make_page') }}" class="{% if request.endpoint == 'katana.make_page' %}is-active{% endif %}">
-            {{ make() }}
-            <span>Make</span>
-        </a>
         <a href="{{ url_for('katana.users_page') }}" class="{% if request.endpoint == 'katana.users_page' %}is-active{% endif %}">
             {{ users() }}
             <span>Users</span>
+        </a>
+        <a href="{{ url_for('katana.make_page') }}" class="{% if request.endpoint == 'katana.make_page' %}is-active{% endif %}">
+            {{ make() }}
+            <span>Make</span>
         </a>
         <a href="{{ url_for('katana.logs_page') }}" class="{% if request.endpoint == 'katana.logs_page' %}is-active{% endif %}">
             {{ logs() }}
             <span>Logs</span>
         </a>
-        <button type="button" class="nav-logout" @click="logout">
-            {{ logout() }}
-            <span>Sair</span>
-        </button>
+        <a href="{{ url_for('katana.payments_page') }}" class="{% if request.endpoint == 'katana.payments_page' %}is-active{% endif %}">
+            {{ payments() }}
+            <span>Payments</span>
+        </a>
+        <a href="{{ url_for('katana.invoices_page') }}" class="{% if request.endpoint == 'katana.invoices_page' %}is-active{% endif %}">
+            {{ invoices() }}
+            <span>Invoices</span>
+        </a>
     </nav>
+    <button type="button" class="nav-logout" @click="logout">
+        {{ logout() }}
+        <span>Sair</span>
+    </button>
+    <div class="sidebar-user" x-data="katanaProfile()" x-init="init()">
+        <div class="sidebar-user__grid">
+            <span class="sidebar-user__avatar" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="8" r="3.5" stroke="currentColor" stroke-width="1.5"/>
+                    <path d="M5 19.5c0-3.5 3-5.5 7-5.5s7 2 7 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
+                </svg>
+            </span>
+            <span class="sidebar-user__name" x-text="username || '—'"></span>
+            <p class="sidebar-user__plan">
+                <span class="sidebar-user__plan-label">Acesso:</span>
+                <span class="sidebar-user__plan-time" x-text="roleLabel"></span>
+            </p>
+        </div>
+    </div>
 </aside>

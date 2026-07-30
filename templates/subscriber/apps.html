@@ -14,23 +14,30 @@
                 <h2>Histórico</h2>
                 <p>Builds processados na sua conta</p>
             </div>
-            <div class="table-wrap apps-table-wrap">
+            <div class="apps-loading" x-show="loading" x-cloak aria-busy="true" aria-live="polite">
+                <span class="apps-loading__spinner" aria-hidden="true"></span>
+            </div>
+            <div class="table-wrap apps-table-wrap" x-show="!loading" x-cloak>
                 <table class="apps-table">
                     <thead>
                         <tr>
                             <th class="col-app">App</th>
                             <th class="col-status">Status</th>
                             <th class="col-date">Data</th>
+                            {% if can_playstore %}
                             <th class="col-num">Downloads</th>
+                            {% endif %}
                             <th class="col-action">Baixar</th>
-                            <th class="col-link">Link</th>
+                            {% if can_playstore %}
+                            <th class="col-link">Link Play Store</th>
+                            {% endif %}
                             <th class="col-delete">Excluir</th>
                         </tr>
                     </thead>
                     <tbody>
                         <template x-if="!apps.length">
                             <tr>
-                                <td colspan="7" class="apps-empty">Nenhum build encontrado.</td>
+                                <td colspan="{{ 7 if can_playstore else 5 }}" class="apps-empty">Nenhum build encontrado.</td>
                             </tr>
                         </template>
                         <template x-for="item in paginatedApps" :key="item.build_id + item.status + item.timestamp">
@@ -40,13 +47,16 @@
                                 </td>
                                 <td class="col-status">{% include "partials/alpine_status_badge.html" %}</td>
                                 <td class="col-date" x-text="item.date_display"></td>
+                                {% if can_playstore %}
                                 <td class="col-num">
                                     <span x-show="item.public_url" x-text="item.download_count ?? 0"></span>
                                     <span class="table-muted" x-show="!item.public_url">—</span>
                                 </td>
+                                {% endif %}
                                 <td class="col-action">
                                     <div class="apps-action-cell">{% set download_base = "/subscriber/api/build/" %}{% include "partials/build_download_cell.html" %}</div>
                                 </td>
+                                {% if can_playstore %}
                                 <td class="col-link public-link-cell">
                                     <template x-if="item.public_url">
                                         <div class="public-link-actions">
@@ -68,6 +78,7 @@
                                     </template>
                                     <span class="table-muted" x-show="!item.public_url">—</span>
                                 </td>
+                                {% endif %}
                                 <td class="col-delete">
                                     <button type="button" class="btn btn-ghost btn-danger btn-icon-only" @click="openDeleteModal(item)" :disabled="deleteBusyId === item.build_id" title="Excluir app" aria-label="Excluir app">
                                         <svg class="btn-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">

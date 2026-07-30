@@ -7,13 +7,10 @@ from flask import jsonify, send_file
 from config import Config
 from services.apk import process_apk
 from services.build_state import BUILD_STATUS
-from services.data import get_build_record
-
 
 def can_access_build(build_id, portal, username):
     info = BUILD_STATUS.get(build_id, {})
     return info.get("portal") == portal and info.get("owner") == username
-
 
 def start_build(username, app_name, apk_file, icon_file, persist, portal):
     build_id = f"build_{int(time.time())}"
@@ -24,14 +21,6 @@ def start_build(username, app_name, apk_file, icon_file, persist, portal):
     if icon_file and icon_file.filename:
         icon_path = os.path.join(Config.UPLOAD_FOLDER, f"{build_id}_icon.png")
         icon_file.save(icon_path)
-
-    BUILD_STATUS[build_id] = {
-        "status": "Iniciando...",
-        "progress": 0,
-        "portal": portal,
-        "owner": username,
-        "ephemeral": not persist,
-    }
 
     thread = threading.Thread(
         target=process_apk,
@@ -49,7 +38,6 @@ def start_build(username, app_name, apk_file, icon_file, persist, portal):
     thread.start()
     return build_id
 
-
 def build_status_payload(build_id):
     info = BUILD_STATUS.get(build_id, {"status": "Desconhecido", "progress": 0})
     payload = {
@@ -61,28 +49,17 @@ def build_status_payload(build_id):
         payload["output_file"] = info.get("output_file")
     return payload
 
-
 def build_download_response(build_id, portal, username):
-    output_file = None
+    if not can_access_build(build_id, portal, username):
+        return jsonify({"error": "Nao autorizado"}), 401
 
-    mem = BUILD_STATUS.get(build_id, {})
-    if mem.get("portal") == portal and mem.get("owner") == username:
-        if mem.get("progress") == 100 and mem.get("output_file"):
-            output_file = mem["output_file"]
-
-    if not output_file:
-        record = get_build_record(build_id)
-        if not record or record["status"] != "concluido" or not record.get("output_file"):
-            return jsonify({"error": "Arquivo nao disponivel"}), 404
-        if record["username"] != username:
-            return jsonify({"error": "Nao autorizado"}), 401
-        output_file = record["output_file"]
-
-    file_path = os.path.join(Config.OUTPUT_FOLDER, output_file)
-    if not os.path.exists(file_path):
-        return jsonify({"error": "Arquivo nao disponivel"}), 404
-
-    return send_file(file_path, as_attachment=True, download_name=output_file)
+    status_info = BUILD_STATUS.get(build_id, {})
+    if status_info.get("progress") == 100 and status_info.get("output_file"):
+        output_file = status_info["output_file"]
+        file_path = os.path.join(Config.OUTPUT_FOLDER, output_file)
+        if os.path.exists(file_path):
+            return send_file(file_path, as_attachment=True, download_name=output_file)
+    return jsonify({"error": "Arquivo nao disponivel"}), 404
 
 
 def _safe_unlink(path):

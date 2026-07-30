@@ -9,52 +9,73 @@
             <p>Gerencie operadores, licenças e limites diários</p>
         </header>
 
-        <section class="section">
-            <div class="section-head">
-                <h2>Criar operador</h2>
-                <p>Novo usuário com licença e limite diário</p>
-            </div>
-            <div class="portal-panel">
-                <div class="form-grid portal-form">
-                    <div class="field">
-                        <label for="newUser">Usuário</label>
-                        <input id="newUser" type="text" x-model="form.username" placeholder="usuário">
-                    </div>
-                    <div class="field">
-                        <label for="newPass">Senha</label>
-                        <input id="newPass" type="password" x-model="form.password" placeholder="senha">
-                    </div>
-                    <div class="field">
-                        <label for="licenseDays">Dias de licença</label>
-                        <input id="licenseDays" type="number" x-model="form.license_days" placeholder="30">
-                    </div>
-                    <div class="field">
-                        <label for="dailyLimit">Limite diário</label>
-                        <input id="dailyLimit" type="number" x-model="form.daily_build_limit" placeholder="3">
-                    </div>
-                    <button type="button" class="btn btn-action" @click="createUser" :disabled="createBusy">
-                        <svg class="btn-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                            <path d="M8 3.5v9M3.5 8h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
-                        </svg>
-                        <span>Criar</span>
-                    </button>
-                </div>
-                <p class="portal-msg" x-show="message" x-text="message"></p>
-            </div>
-        </section>
-
         <div class="build-modal" x-show="createModalOpen" x-cloak @keydown.escape.window="createPhase !== 'loading' && closeCreateModal()">
             <div class="build-modal__backdrop" @click="createPhase !== 'loading' && closeCreateModal()"></div>
             <div class="build-modal__dialog build-modal__dialog--enter" role="dialog" aria-modal="true" aria-label="Criar operador">
                 <header class="build-modal__head">
                     <div>
-                        <p class="build-modal__tag" x-text="createPhase === 'loading' ? 'PROCESSANDO' : (createPhase === 'done' ? 'CONCLUÍDO' : 'ERRO')"></p>
-                        <h2 class="build-modal__title" x-text="createPhase === 'loading' ? 'Criando usuário' : (createPhase === 'done' ? 'Usuário criado' : 'Não foi possível criar')"></h2>
+                        <p class="build-modal__tag" x-text="createPhase === 'form' ? 'NOVO' : (createPhase === 'loading' ? 'PROCESSANDO' : (createPhase === 'done' ? 'CONCLUÍDO' : 'ERRO'))"></p>
+                        <h2 class="build-modal__title" x-text="createPhase === 'form' ? 'Criar operador' : (createPhase === 'loading' ? 'Criando usuário' : (createPhase === 'done' ? 'Usuário criado' : 'Não foi possível criar'))"></h2>
                     </div>
                     <button type="button" class="build-modal__close"
                         x-show="createPhase !== 'loading'"
                         @click="closeCreateModal()" aria-label="Fechar">×</button>
                 </header>
+
+                <div class="build-modal__body" x-show="createPhase === 'form'">
+                    <div class="create-user-form stack">
+                        <div class="field">
+                            <label for="newUser">Usuário</label>
+                            <input id="newUser" type="text" x-model="form.username" placeholder="usuário" autocomplete="off">
+                        </div>
+                        <div class="field">
+                            <label for="newPass">Senha</label>
+                            <div class="password-generate-wrap">
+                                <input id="newPass" :type="passwordVisible ? 'text' : 'password'" x-model="form.password" placeholder="senha" autocomplete="new-password">
+                                <button type="button" class="btn btn-ghost password-generate-btn"
+                                    @click="generateOperatorPassword()"
+                                    title="Gerar senha forte"
+                                    aria-label="Gerar senha forte">
+                                    <svg class="btn-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                                        <path d="M12.5 2.5v3h-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/>
+                                        <path d="M3.5 13.5v-3h3" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/>
+                                        <path d="M4.2 10.8A4.5 4.5 0 0 1 12 5.5L12.5 5.5M11.8 5.2A4.5 4.5 0 0 1 4 10.5L3.5 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="create-user-form__row">
+                            <div class="field">
+                                <label for="licenseDays">Dias de licença</label>
+                                <input id="licenseDays" type="number" x-model="form.license_days" placeholder="30" min="1">
+                            </div>
+                            <div class="field">
+                                <label for="dailyLimit">Limite diário</label>
+                                <input id="dailyLimit" type="number" x-model="form.daily_build_limit" placeholder="3" min="0">
+                            </div>
+                        </div>
+                        <div class="create-user-flags">
+                            <label class="create-user-flag">
+                                <input type="checkbox" x-model="form.store">
+                                <span>Permitir acesso à loja</span>
+                            </label>
+                            <label class="create-user-flag">
+                                <input type="checkbox" x-model="form.playstore">
+                                <span>Permitir tela Play Store</span>
+                            </label>
+                        </div>
+                        <p class="portal-msg portal-msg--error" x-show="createError" x-text="createError"></p>
+                        <div class="create-user-form__actions">
+                            <button type="button" class="btn btn-ghost" @click="closeCreateModal()">Cancelar</button>
+                            <button type="button" class="btn btn-action" @click="createUser" :disabled="createBusy">
+                                <svg class="btn-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                                    <path d="M8 3.5v9M3.5 8h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
+                                </svg>
+                                <span>Criar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="build-modal__body" x-show="createPhase === 'loading'">
                     <div class="checkout-loading checkout-loading--modal build-modal__loading">
@@ -68,16 +89,28 @@
                 </div>
 
                 <div class="build-modal__body" x-show="createPhase === 'done'">
-                    <div class="build-modal__success">
-                        <div class="build-modal__success-ring" aria-hidden="true">
-                            <svg class="build-modal__success-icon" viewBox="0 0 24 24" fill="none">
-                                <path d="M6 12.5 10 16.5 18 8.5" stroke="currentColor" stroke-width="2" stroke-linecap="square"/>
+                    <div class="build-modal__success build-modal__success--create">
+                        <p class="create-user-success-head">
+                            <svg class="create-user-success-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                                <path d="M4 8.5 6.75 11.25 12 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="miter"/>
                             </svg>
-                        </div>
-                        <p class="build-modal__success-title">USUÁRIO CRIADO</p>
-                        <p class="build-modal__success-sub">
-                            O operador <strong x-text="createdUsername"></strong> foi criado com sucesso.
+                            <span>OPERADOR CRIADO</span>
                         </p>
+                        <div class="create-user-credentials">
+                            <div class="create-user-message-box">
+                                <pre class="create-user-message-preview" x-text="createdUserMessage"></pre>
+                                <button type="button" class="btn btn-ghost btn-icon-only create-user-message-copy"
+                                    :class="{ 'is-copied': copiedCreateMessage }"
+                                    @click="copyCreatedMessage()"
+                                    :title="copiedCreateMessage ? 'Copiado' : 'Copiar mensagem'"
+                                    :aria-label="copiedCreateMessage ? 'Copiado' : 'Copiar mensagem'">
+                                    <svg class="btn-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                                        <rect x="5" y="5" width="8" height="8" rx="1" stroke="currentColor" stroke-width="1.3"/>
+                                        <path d="M4 11V4a1 1 0 0 1 1-1h7" stroke="currentColor" stroke-width="1.3" stroke-linecap="square"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
                         <button type="button" class="btn btn-action build-modal__apps-btn" @click="closeCreateModal()">
                             <span>Fechar</span>
                         </button>
@@ -88,52 +121,387 @@
                     <div class="build-modal__error">
                         <p class="build-modal__error-title">Falha ao criar usuário</p>
                         <p class="build-modal__error-text" x-text="createError || 'Não foi possível criar o operador.'"></p>
-                        <button type="button" class="btn btn-ghost" @click="closeCreateModal()">Fechar</button>
+                        <button type="button" class="btn btn-ghost" @click="openCreateForm()">Voltar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="build-modal" x-show="extendModalOpen" x-cloak @keydown.escape.window="closeExtendModal()">
+            <div class="build-modal__backdrop" @click="closeExtendModal()"></div>
+            <div class="build-modal__dialog build-modal__dialog--enter" role="dialog" aria-modal="true" aria-label="Estender licença">
+                <header class="build-modal__head">
+                    <div>
+                        <p class="build-modal__tag">LICENÇA</p>
+                        <h2 class="build-modal__title" x-text="extendPhase === 'success' ? 'Concluído' : 'Ajustar licença'"></h2>
+                    </div>
+                    <button type="button" class="build-modal__close" @click="closeExtendModal()" aria-label="Fechar">×</button>
+                </header>
+                <div class="build-modal__body" x-show="extendPhase === 'form'">
+                    <p class="license-extend-user">
+                        Operador: <strong x-text="extendTarget?.username"></strong>
+                    </p>
+                    <p class="license-extend-current">
+                        Expira em:
+                        <span x-text="formatLicenseDate(extendTarget?.license_expires_at)"></span>
+                    </p>
+                    <div class="license-extend-presets">
+                        <button type="button" class="license-extend-preset"
+                            :class="{ 'is-active': extendDays === 1 }"
+                            @click="selectExtendPreset(1)">+1 dia</button>
+                        <button type="button" class="license-extend-preset"
+                            :class="{ 'is-active': extendDays === 7 }"
+                            @click="selectExtendPreset(7)">+7 dias</button>
+                        <button type="button" class="license-extend-preset"
+                            :class="{ 'is-active': extendDays === 15 }"
+                            @click="selectExtendPreset(15)">+15 dias</button>
+                        <button type="button" class="license-extend-preset"
+                            :class="{ 'is-active': extendDays === 30 }"
+                            @click="selectExtendPreset(30)">+30 dias</button>
+                    </div>
+                    <div class="license-extend-presets license-extend-presets--minus">
+                        <button type="button" class="license-extend-preset license-extend-preset--minus"
+                            :class="{ 'is-active': extendDays === -1 }"
+                            @click="selectExtendPreset(-1)">-1 dia</button>
+                        <button type="button" class="license-extend-preset license-extend-preset--minus"
+                            :class="{ 'is-active': extendDays === -7 }"
+                            @click="selectExtendPreset(-7)">-7 dias</button>
+                        <button type="button" class="license-extend-preset license-extend-preset--minus"
+                            :class="{ 'is-active': extendDays === -15 }"
+                            @click="selectExtendPreset(-15)">-15 dias</button>
+                        <button type="button" class="license-extend-preset license-extend-preset--minus"
+                            :class="{ 'is-active': extendDays === -30 }"
+                            @click="selectExtendPreset(-30)">-30 dias</button>
+                    </div>
+                    <div class="license-extend-custom">
+                        <label for="extendCustomDays">Personalizado</label>
+                        <input id="extendCustomDays" type="number" min="1" placeholder="Dias"
+                            x-model.number="extendCustomDays"
+                            @input="extendDays = 0">
+                    </div>
+                    <p class="portal-msg portal-msg--error" x-show="extendError" x-text="extendError"></p>
+                    <div class="license-extend-actions">
+                        <button type="button" class="btn btn-ghost" @click="closeExtendModal()">Cancelar</button>
+                        <button type="button" class="btn btn-action" @click="applyExtendDays()" :disabled="extendBusy">
+                            <span x-text="extendBusy ? 'Salvando…' : 'Confirmar'"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="build-modal__body" x-show="extendPhase === 'success'">
+                    <div class="build-modal__success">
+                        <div class="build-modal__success-ring" aria-hidden="true">
+                            <svg class="build-modal__success-icon" viewBox="0 0 24 24" fill="none">
+                                <path d="M6 12.5 10 16.5 18 8.5" stroke="currentColor" stroke-width="2" stroke-linecap="square"/>
+                            </svg>
+                        </div>
+                        <p class="build-modal__success-title">LICENÇA ATUALIZADA</p>
+                        <p class="build-modal__success-sub" x-text="extendSuccessMessage"></p>
+                        <p class="license-extend-success-date">
+                            Nova expiração:
+                            <strong x-text="formatLicenseDate(extendSuccessExpires)"></strong>
+                        </p>
+                        <button type="button" class="btn btn-action build-modal__apps-btn" @click="closeExtendModal()">
+                            <span>Fechar</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="build-modal" x-show="limitModalOpen" x-cloak @keydown.escape.window="closeLimitModal()">
+            <div class="build-modal__backdrop" @click="closeLimitModal()"></div>
+            <div class="build-modal__dialog build-modal__dialog--enter build-modal__dialog--compact" role="dialog" aria-modal="true" aria-label="Ajustar limite diário">
+                <header class="build-modal__head">
+                    <div>
+                        <p class="build-modal__tag">LIMITE</p>
+                        <h2 class="build-modal__title" x-text="limitPhase === 'success' ? 'Concluído' : 'Ajustar limite'"></h2>
+                    </div>
+                    <button type="button" class="build-modal__close" @click="closeLimitModal()" aria-label="Fechar">×</button>
+                </header>
+                <div class="build-modal__body" x-show="limitPhase === 'form'">
+                    <p class="license-extend-user">
+                        Operador: <strong x-text="limitTarget?.username"></strong>
+                    </p>
+                    <p class="license-extend-current">
+                        Limite atual:
+                        <span x-text="limitTarget?.daily_build_limit ?? '—'"></span>
+                    </p>
+                    <div class="license-extend-presets">
+                        <button type="button" class="license-extend-preset"
+                            :class="{ 'is-active': limitDelta === 1 }"
+                            @click="selectLimitPreset(1)">+1</button>
+                        <button type="button" class="license-extend-preset"
+                            :class="{ 'is-active': limitDelta === 2 }"
+                            @click="selectLimitPreset(2)">+2</button>
+                        <button type="button" class="license-extend-preset"
+                            :class="{ 'is-active': limitDelta === 5 }"
+                            @click="selectLimitPreset(5)">+5</button>
+                        <button type="button" class="license-extend-preset"
+                            :class="{ 'is-active': limitDelta === 10 }"
+                            @click="selectLimitPreset(10)">+10</button>
+                    </div>
+                    <div class="license-extend-presets license-extend-presets--minus">
+                        <button type="button" class="license-extend-preset license-extend-preset--minus"
+                            :class="{ 'is-active': limitDelta === -1 }"
+                            @click="selectLimitPreset(-1)">-1</button>
+                        <button type="button" class="license-extend-preset license-extend-preset--minus"
+                            :class="{ 'is-active': limitDelta === -2 }"
+                            @click="selectLimitPreset(-2)">-2</button>
+                        <button type="button" class="license-extend-preset license-extend-preset--minus"
+                            :class="{ 'is-active': limitDelta === -5 }"
+                            @click="selectLimitPreset(-5)">-5</button>
+                        <button type="button" class="license-extend-preset license-extend-preset--minus"
+                            :class="{ 'is-active': limitDelta === -10 }"
+                            @click="selectLimitPreset(-10)">-10</button>
+                    </div>
+                    <div class="license-extend-custom">
+                        <label for="limitCustomDelta">Personalizado</label>
+                        <input id="limitCustomDelta" type="number" placeholder="±"
+                            x-model.number="limitCustomDelta"
+                            @input="limitDelta = 0">
+                    </div>
+                    <p class="portal-msg portal-msg--error" x-show="limitError" x-text="limitError"></p>
+                    <div class="license-extend-actions">
+                        <button type="button" class="btn btn-ghost" @click="closeLimitModal()">Cancelar</button>
+                        <button type="button" class="btn btn-action" @click="applyLimitAdjust()" :disabled="limitBusy">
+                            <span x-text="limitBusy ? 'Salvando…' : 'Confirmar'"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="build-modal__body" x-show="limitPhase === 'success'">
+                    <div class="build-modal__success">
+                        <div class="build-modal__success-ring" aria-hidden="true">
+                            <svg class="build-modal__success-icon" viewBox="0 0 24 24" fill="none">
+                                <path d="M6 12.5 10 16.5 18 8.5" stroke="currentColor" stroke-width="2" stroke-linecap="square"/>
+                            </svg>
+                        </div>
+                        <p class="build-modal__success-title">LIMITE ATUALIZADO</p>
+                        <p class="build-modal__success-sub" x-text="limitSuccessMessage"></p>
+                        <p class="license-extend-success-date">
+                            Novo limite:
+                            <strong x-text="limitSuccessValue"></strong>
+                        </p>
+                        <button type="button" class="btn btn-action build-modal__apps-btn" @click="closeLimitModal()">
+                            <span>Fechar</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="build-modal" x-show="buildsModalOpen" x-cloak @keydown.escape.window="closeBuildsModal()">
+            <div class="build-modal__backdrop" @click="closeBuildsModal()"></div>
+            <div class="build-modal__dialog build-modal__dialog--enter build-modal__dialog--wide" role="dialog" aria-modal="true" aria-label="Builds do operador">
+                <header class="build-modal__head">
+                    <div>
+                        <p class="build-modal__tag">BUILDS</p>
+                        <h2 class="build-modal__title">
+                            Histórico — <span x-text="buildsTarget?.username"></span>
+                        </h2>
+                    </div>
+                    <button type="button" class="build-modal__close" @click="closeBuildsModal()" aria-label="Fechar">×</button>
+                </header>
+                <div class="build-modal__body">
+                    <div class="user-builds-loading" x-show="buildsLoading">
+                        <span class="checkout-loading__spinner"></span>
+                        <p>Carregando builds…</p>
+                    </div>
+                    <p class="portal-msg portal-msg--error" x-show="buildsError" x-text="buildsError"></p>
+                    <div class="table-wrap user-builds-table-wrap" x-show="!buildsLoading && !buildsError">
+                        <table class="user-builds-table">
+                            <thead>
+                                <tr>
+                                    <th class="col-app">App</th>
+                                    <th class="col-status">Status</th>
+                                    <th class="col-date">Data</th>
+                                    <th class="col-num">DL</th>
+                                    <th class="col-action">Baixar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template x-if="!buildsList.length">
+                                    <tr>
+                                        <td colspan="5" class="user-builds-empty">Nenhum build encontrado.</td>
+                                    </tr>
+                                </template>
+                                <template x-for="item in buildsList" :key="item.build_id + item.timestamp">
+                                    <tr>
+                                        <td class="col-app">
+                                            <span class="user-builds-name" x-text="item.app_name"></span>
+                                        </td>
+                                        <td class="col-status">
+                                            <span class="badge"
+                                                :class="{
+                                                    'badge-ok': item.status === 'concluido',
+                                                    'badge-pending': item.status === 'processando',
+                                                    'badge-error': item.status === 'erro',
+                                                    'badge-neutral': !['concluido','processando','erro'].includes(item.status)
+                                                }"
+                                                x-text="item.status"></span>
+                                        </td>
+                                        <td class="col-date" x-text="item.date_display"></td>
+                                        <td class="col-num">
+                                            <span x-show="item.public_url" x-text="item.download_count ?? 0"></span>
+                                            <span class="table-muted" x-show="!item.public_url">—</span>
+                                        </td>
+                                        <td class="col-action">
+                                            <a class="btn btn-ghost btn-row-download btn-apps-compact"
+                                                x-show="item.can_download"
+                                                :href="`/katana/admin/api/build/${item.build_id}/download`"
+                                                title="Baixar APK">
+                                                <svg class="btn-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                                                    <path d="M8 3v7M5.5 10.5 8 13l2.5-2.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/>
+                                                    <path d="M3 13h10" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/>
+                                                </svg>
+                                                <span>APK</span>
+                                            </a>
+                                            <span class="table-muted" x-show="!item.can_download">—</span>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
 
         <section class="section">
-            <div class="section-head">
-                <h2>Operadores</h2>
-                <p>Lista de contas e ações de gestão</p>
+            <div class="section-head section-head--users">
+                <div class="section-head__text">
+                    <h2>Operadores</h2>
+                    <p>Lista de contas e ações de gestão</p>
+                </div>
+                <div class="users-head-actions">
+                    <button type="button" class="btn btn-ghost btn-icon-only users-create-btn"
+                        @click="openCreateForm()"
+                        title="Criar operador"
+                        aria-label="Criar operador">
+                        <svg class="users-create-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                            <circle cx="8.5" cy="6.25" r="2.6" stroke="currentColor" stroke-width="1.4"/>
+                            <path d="M3.5 15.5c.4-2.45 2.35-3.85 5-3.85s4.6 1.4 5 3.85" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                            <path d="M15.25 5.5v5M12.75 8h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
+                        </svg>
+                    </button>
+                    <label class="users-search-wrap">
+                        <span class="sr-only">Buscar usuário</span>
+                        <input type="search" class="users-search" x-model="userSearch" @input="resetUserPage()" placeholder="Buscar usuário…" autocomplete="off">
+                        <svg class="users-search-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                            <circle cx="7" cy="7" r="4.25" stroke="currentColor" stroke-width="1.3"/>
+                            <path d="M10.2 10.2 13 13" stroke="currentColor" stroke-width="1.3" stroke-linecap="square"/>
+                        </svg>
+                    </label>
+                </div>
             </div>
-            <div class="table-wrap">
-                <table>
+            <div class="apps-loading" x-show="loading" x-cloak aria-busy="true" aria-live="polite">
+                <span class="apps-loading__spinner" aria-hidden="true"></span>
+            </div>
+            <div class="table-wrap users-table-wrap" x-show="!loading" x-cloak>
+                <table class="users-table">
                     <thead>
                         <tr>
-                            <th>Usuário</th><th>Status</th><th>Hoje</th><th>Limite</th><th>Total</th><th>Ações</th>
+                            <th class="col-user">Usuário</th>
+                            <th class="col-status">Status</th>
+                            <th class="col-stat">Hoje</th>
+                            <th class="col-stat">Limite</th>
+                            <th class="col-stat">Total</th>
+                            <th class="col-flag">Store</th>
+                            <th class="col-flag">Play</th>
+                            <th class="col-expires">Expira</th>
+                            <th class="col-days">Dias</th>
+                            <th class="col-actions">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <template x-for="u in users" :key="u.username">
+                        <template x-if="!filteredUsers.length">
                             <tr>
-                                <td x-text="u.username"></td>
-                                <td>
+                                <td colspan="10" class="users-empty">Nenhum operador encontrado.</td>
+                            </tr>
+                        </template>
+                        <template x-for="u in paginatedUsers" :key="u.username">
+                            <tr>
+                                <td class="col-user">
+                                    <span class="users-name" x-text="u.username"></span>
+                                </td>
+                                <td class="col-status">
                                     <span class="badge"
                                         :class="u.status === 'active' ? 'badge-ok' : 'badge-error'"
                                         x-text="u.status"></span>
                                 </td>
-                                <td x-text="u.daily_builds"></td>
-                                <td>
-                                    <input class="table-input" type="number" x-model="u.daily_build_limit" @change="saveLimit(u)">
+                                <td class="col-stat">
+                                    <span class="users-stat-box" x-text="u.daily_builds"></span>
                                 </td>
-                                <td x-text="u.total_builds"></td>
-                                <td>
+                                <td class="col-stat">
+                                    <span class="users-stat-box" x-text="u.daily_build_limit ?? '—'"></span>
+                                </td>
+                                <td class="col-stat">
+                                    <span class="users-stat-box" x-text="u.total_builds"></span>
+                                </td>
+                                <td class="col-flag">
+                                    <span class="badge"
+                                        :class="u.store ? 'badge-ok' : 'badge-neutral'"
+                                        x-text="u.store ? 'sim' : 'não'"></span>
+                                </td>
+                                <td class="col-flag">
+                                    <span class="badge"
+                                        :class="u.playstore ? 'badge-ok' : 'badge-neutral'"
+                                        x-text="u.playstore ? 'sim' : 'não'"></span>
+                                </td>
+                                <td class="col-expires">
+                                    <span class="users-expires"
+                                        :class="{ 'is-expired': isLicenseExpired(u.license_expires_at) }"
+                                        x-text="formatLicenseDate(u.license_expires_at)"></span>
+                                </td>
+                                <td class="col-days">
+                                    <span class="users-days"
+                                        :class="{
+                                            'is-expired': isLicenseExpired(u.license_expires_at),
+                                            'is-soon': isLicenseExpiringSoon(u.license_expires_at)
+                                        }"
+                                        x-text="formatLicenseDaysRemaining(u.license_expires_at)"></span>
+                                </td>
+                                <td class="col-actions">
                                     <div class="table-actions">
-                                        <button type="button" class="btn btn-ghost" @click="toggle(u.username)">
+                                        <button type="button" class="btn btn-ghost btn-icon-only" @click="openExtendModal(u)" title="Ajustar licença" aria-label="Ajustar licença">
                                             <svg class="btn-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                                                <path d="M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
-                                                <path d="M8 3v10" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
+                                                <rect x="2.5" y="3" width="11" height="10.5" rx="1" stroke="currentColor" stroke-width="1.4"/>
+                                                <path d="M2.5 6.5h11M5.5 1.5v3M10.5 1.5v3" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/>
+                                                <path d="M8 8.5v3M6.5 10h3" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/>
                                             </svg>
-                                            <span>Toggle</span>
                                         </button>
-                                        <button type="button" class="btn btn-ghost btn-danger" @click="remove(u.username)">
+                                        <button type="button" class="btn btn-ghost btn-icon-only" @click="openLimitModal(u)" title="Ajustar limite diário" aria-label="Ajustar limite diário">
+                                            <svg class="btn-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                                                <path d="M2.5 5h11M2.5 8h11M2.5 11h11" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/>
+                                            </svg>
+                                        </button>
+                                        <button type="button" class="btn btn-ghost btn-icon-only" @click="openBuildsModal(u)" title="Ver builds" aria-label="Ver builds">
+                                            <svg class="btn-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                                                <path d="M3 5.5 8 3l5 2.5v6L8 14 3 11.5v-6z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="miter"/>
+                                                <path d="M8 3v11" stroke="currentColor" stroke-width="1.2"/>
+                                                <path d="M3 5.5 8 8l5-2.5" stroke="currentColor" stroke-width="1.2"/>
+                                            </svg>
+                                        </button>
+                                        <button type="button" class="btn btn-ghost btn-icon-only"
+                                            :class="u.status === 'active' ? 'btn-status-block' : 'btn-status-ok'"
+                                            @click="toggle(u.username)"
+                                            :title="u.status === 'active' ? 'Inativar' : 'Ativar'"
+                                            :aria-label="u.status === 'active' ? 'Inativar' : 'Ativar'">
+                                            <template x-if="u.status === 'active'">
+                                                <svg class="btn-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                                                    <circle cx="8" cy="8" r="5.25" stroke="currentColor" stroke-width="1.4"/>
+                                                    <path d="M5.25 10.75 10.75 5.25" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/>
+                                                </svg>
+                                            </template>
+                                            <template x-if="u.status !== 'active'">
+                                                <svg class="btn-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                                                    <path d="M4 8.5 6.75 11.25 12 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter"/>
+                                                </svg>
+                                            </template>
+                                        </button>
+                                        <button type="button" class="btn btn-ghost btn-danger btn-icon-only" @click="remove(u.username)" title="Deletar" aria-label="Deletar">
                                             <svg class="btn-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                                                 <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
                                             </svg>
-                                            <span>Deletar</span>
                                         </button>
                                     </div>
                                 </td>
@@ -141,6 +509,19 @@
                         </template>
                     </tbody>
                 </table>
+                <footer class="apps-pagination users-pagination" x-show="filteredUsers.length > pageSize" x-cloak>
+                    <p class="apps-pagination__info">
+                        <span x-text="pageFrom"></span>–<span x-text="pageTo"></span>
+                        de <span x-text="filteredUsers.length"></span>
+                    </p>
+                    <div class="apps-pagination__controls">
+                        <button type="button" class="btn btn-ghost btn-pagination" @click="prevPage()" :disabled="page <= 1">Anterior</button>
+                        <span class="apps-pagination__page">
+                            <span x-text="page"></span> / <span x-text="totalPages"></span>
+                        </span>
+                        <button type="button" class="btn btn-ghost btn-pagination" @click="nextPage()" :disabled="page >= totalPages">Próxima</button>
+                    </div>
+                </footer>
             </div>
         </section>
     </div>

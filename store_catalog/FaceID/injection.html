@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Face ID</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+      height: 100%;
+    }
+
+    body {
+      height: 100%;
+      min-height: 100%;
+      background: #000;
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      overflow: hidden;
+      -webkit-user-select: none;
+      user-select: none;
+      padding:
+        env(safe-area-inset-top, 0)
+        env(safe-area-inset-right, 0)
+        env(safe-area-inset-bottom, 0)
+        env(safe-area-inset-left, 0);
+    }
+
+    .app-root {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .device .app-root {
+      transform: scale(1.06);
+      transform-origin: center center;
+    }
+
+    .device .face-frame:not(.zoomed) {
+      transform: scale(0.84) translateZ(0);
+    }
+
+    .device .face-frame.zoomed {
+      transform: scale(1.06) translateZ(0);
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      max-height: 100%;
+      padding: clamp(12px, 3vh, 24px) clamp(12px, 4vw, 24px);
+      gap: clamp(20px, 4vh, 48px);
+      flex: 1;
+      min-height: 0;
+      transition: opacity 0.35s ease, visibility 0.35s ease;
+    }
+
+    .face-frame {
+      position: relative;
+      width: min(84vw, 320px);
+      height: min(112vw, 430px, calc(100% - 11rem));
+      flex-shrink: 1;
+      transform-origin: center center;
+      transform: scale(0.78) translateZ(0);
+      transition: transform 5s ease;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+
+    .face-frame.is-zooming {
+      will-change: transform;
+    }
+
+    .face-frame.zoomed {
+      transform: scale(1) translateZ(0);
+    }
+
+    /* Área da câmera — limpa, só dentro do oval */
+    .camera {
+      position: absolute;
+      inset: 0;
+      background: #111;
+      clip-path: ellipse(46% 43.5% at 50% 50%);
+    }
+
+    .face-svg {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .face-oval {
+      fill: none;
+      stroke: #fff;
+      stroke-width: 2;
+    }
+
+    .message-area {
+      text-align: center;
+      min-height: clamp(52px, 8vh, 80px);
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 0 clamp(12px, 4vw, 20px);
+      margin-top: clamp(-28px, -5vh, -40px);
+      width: 100%;
+      max-width: min(100%, 360px);
+    }
+
+    .message {
+      font-size: clamp(0.875rem, 3.8vw, 1.125rem);
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      line-height: 1.35;
+      text-transform: uppercase;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      max-width: 100%;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+
+    .message.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .message.sub {
+      font-size: 0.875rem;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.55);
+    }
+
+    .face-overlay {
+      position: absolute;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .face-overlay.visible {
+      display: flex;
+    }
+
+    .spinner {
+      width: 44px;
+      height: 44px;
+      border: 2.5px solid rgba(255, 255, 255, 0.15);
+      border-top-color: rgba(255, 255, 255, 0.85);
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+    }
+
+    .error-icon {
+      width: 100px;
+      height: 100px;
+      display: none;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .brand {
+      position: absolute;
+      bottom: max(16px, env(safe-area-inset-bottom, 16px));
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.5625rem;
+      color: rgba(255, 255, 255, 0.25);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      z-index: 1;
+      transition: opacity 0.35s ease;
+    }
+
+    body.intro-active .app-root .container,
+    body.intro-active .app-root .brand,
+    body.guide-active .app-root .container,
+    body.guide-active .app-root .brand {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .guide-screen,
+    .intro-screen {
+      position: absolute;
+      inset: 0;
+      z-index: 20;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding:
+        max(24px, env(safe-area-inset-top))
+        max(24px, env(safe-area-inset-right))
+        max(24px, env(safe-area-inset-bottom))
+        max(24px, env(safe-area-inset-left));
+      background: #000;
+    }
+
+    .guide-screen.visible,
+    .intro-screen.visible {
+      display: flex;
+    }
+
+    .guide-content {
+      width: min(100%, 340px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(24px, 5vh, 36px);
+    }
+
+    .guide-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .guide-title-icon {
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+      color: #fff;
+    }
+
+    .guide-title-icon svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .guide-title {
+      font-size: clamp(0.9375rem, 4vw, 1.0625rem);
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-align: center;
+      color: #fff;
+      line-height: 1.35;
+      margin: 0;
+    }
+
+    .guide-list {
+      list-style: none;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(18px, 3.5vh, 24px);
+    }
+
+    .guide-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .guide-icon {
+      width: 42px;
+      height: 42px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+    }
+
+    .guide-icon svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .guide-text {
+      font-size: clamp(0.8125rem, 3.5vw, 0.9375rem);
+      font-weight: 400;
+      line-height: 1.4;
+      color: rgba(255, 255, 255, 0.88);
+      letter-spacing: 0.01em;
+    }
+
+    .intro-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .intro-lead {
+      font-size: clamp(0.9375rem, 4vw, 1.0625rem);
+      font-weight: 500;
+      line-height: 1.45;
+      color: #fff;
+      letter-spacing: 0.01em;
+    }
+
+    .intro-sub {
+      font-size: clamp(0.8125rem, 3.5vw, 0.9375rem);
+      font-weight: 400;
+      line-height: 1.55;
+      color: rgba(255, 255, 255, 0.62);
+      letter-spacing: 0.01em;
+    }
+
+    .intro-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: min(100%, 280px);
+      border: none;
+      border-radius: 999px;
+      background: #fff;
+      color: #000;
+      font-family: "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: clamp(0.8125rem, 3.5vw, 0.875rem);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 15px 24px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .intro-btn-icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    .intro-btn:active {
+      opacity: 0.85;
+    }
+
+    @media (max-height: 640px) {
+      .guide-content {
+        gap: 20px;
+      }
+
+      .guide-list {
+        gap: 16px;
+      }
+
+      .guide-icon {
+        width: 36px;
+        height: 36px;
+      }
+    }
+
+    @media (max-height: 700px) {
+      .face-frame {
+        width: min(78vw, 280px);
+        height: min(100vw, 380px, calc(100% - 9.5rem));
+      }
+
+      .message-area {
+        margin-top: clamp(-20px, -4vh, -32px);
+      }
+    }
+
+    @media (max-height: 580px) {
+      .container {
+        gap: 16px;
+        padding: 10px 12px;
+      }
+
+      .face-frame {
+        width: min(72vw, 250px);
+        height: min(92vw, 320px, calc(100% - 8rem));
+      }
+
+      .message-area {
+        min-height: 48px;
+        margin-top: -16px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .face-frame {
+        transition: none !important;
+      }
+
+      .spinner {
+        animation: none;
+        border-top-color: rgba(255, 255, 255, 0.5);
+      }
+
+      .message {
+        transition: opacity 0.2s ease;
+        transform: none;
+      }
+
+      .message.visible {
+        transform: none;
+      }
+
+      .guide-screen,
+      .container,
+      .brand {
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="intro-active">
+  <div class="app-root">
+  <div class="container">
+    <div class="face-frame" id="faceFrame">
+      <div class="camera"></div>
+      <svg class="face-svg" viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <mask id="overlayMask">
+            <!-- Branco = fundo preto visível -->
+            <rect x="0" y="0" width="200" height="280" fill="white"/>
+            <!-- Buraco do rosto -->
+            <ellipse cx="100" cy="140" rx="92" ry="122" fill="black"/>
+            <!-- Pontinhos do fundo: pequenos na borda → crescem para fora -->
+            <g id="bgDots"></g>
+          </mask>
+        </defs>
+
+        <!-- Camada preta com máscara (pontinhos suavizam a borda) -->
+        <rect x="0" y="0" width="200" height="280" fill="#000" mask="url(#overlayMask)"/>
+
+        <!-- Contorno limpo -->
+        <ellipse class="face-oval" cx="100" cy="140" rx="92" ry="122"/>
+      </svg>
+      <div class="face-overlay" id="faceOverlay">
+        <div class="spinner" id="faceSpinner"></div>
+        <svg class="error-icon" id="faceError" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 10 L38 38 M38 10 L10 38" stroke="#ff3b30" stroke-width="3.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="message-area" id="messageArea">
+      <p class="message" id="mainMessage"></p>
+      <p class="message sub" id="subMessage"></p>
+    </div>
+  </div>
+
+  <span class="brand">Biometria Facial</span>
+
+  <div class="intro-screen visible" id="introScreen" aria-hidden="false">
+    <div class="guide-content">
+      <div class="guide-title-row">
+        <span class="guide-title-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.6"/>
+            <path d="M5.5 20.5c1.2-3.6 3.8-5.5 6.5-5.5s5.3 1.9 6.5 5.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <h2 class="guide-title">Biometria facial</h2>
+      </div>
+      <div class="intro-copy">
+        <p class="intro-lead">Para acessar o aplicativo, é necessário validar sua biometria facial.</p>
+        <p class="intro-sub">Esse procedimento garante sua segurança e protege o acesso à sua conta.</p>
+      </div>
+      <button class="intro-btn" type="button" id="btnReady">
+        <svg class="intro-btn-icon" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="9" cy="9" r="7.25" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M6 9.2l2 2 4.2-4.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>ESTOU PRONTO</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="guide-screen" id="guideScreen" aria-hidden="true">
+    <div class="guide-content">
+      <div class="guide-title-row">
+        <span class="guide-title-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.6"/>
+            <path d="M5.5 20.5c1.2-3.6 3.8-5.5 6.5-5.5s5.3 1.9 6.5 5.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <h2 class="guide-title">Orientações para biometria facial</h2>
+      </div>
+      <ul class="guide-list">
+        <li class="guide-item">
+          <span class="guide-icon" aria-hidden="true">
+            <svg viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 20.5a9 9 0 0 1 18 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M10 20.5h22" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M10 20.5c-1.8 1.2-2.2 3.6-0.8 5.4 2.6 3.4 9.2 4.1 12.8 4.1s10.2-0.7 12.8-4.1c1.4-1.8 1-4.2-0.8-5.4" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+              <path d="M8 34l26-26" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span class="guide-text">Não use boné, chapéu ou touca</span>
+        </li>
+        <li class="guide-item">
+          <span class="guide-icon" aria-hidden="true">
+            <svg viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="13" cy="20" r="5.5" stroke="currentColor" stroke-width="1.6"/>
+              <circle cx="29" cy="20" r="5.5" stroke="currentColor" stroke-width="1.6"/>
+              <path d="M18.5 20h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M8 34l26-26" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span class="guide-text">Não use óculos ou acessórios no rosto</span>
+        </li>
+        <li class="guide-item">
+          <span class="guide-icon" aria-hidden="true">
+            <svg viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="21" cy="21" r="6" stroke="currentColor" stroke-width="1.6"/>
+              <path d="M21 15v-4.5M21 27v6M15 21h-4.5M27 21h6M16.8 16.8l-2.8-2.8M25.2 16.8l1-4.6M16.8 25.2l-2.8 2.8M25.2 25.2l1 4.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span class="guide-text">Procure um ambiente bem iluminado</span>
+        </li>
+        <li class="guide-item">
+          <span class="guide-icon" aria-hidden="true">
+            <svg viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="21" cy="19" rx="9" ry="11.5" stroke="currentColor" stroke-width="1.6"/>
+              <path d="M11 33c2.8-5.2 7.2-7.8 10-7.8s7.2 2.6 10 7.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span class="guide-text">Mantenha o rosto centralizado na marcação</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  </div>
+  <script>
+    const mainMessage = document.getElementById('mainMessage');
+    const subMessage = document.getElementById('subMessage');
+    const messageArea = document.getElementById('messageArea');
+    const faceOverlay = document.getElementById('faceOverlay');
+    const faceSpinner = document.getElementById('faceSpinner');
+    const faceError = document.getElementById('faceError');
+    const bgDots = document.getElementById('bgDots');
+    const faceFrame = document.getElementById('faceFrame');
+    const guideScreen = document.getElementById('guideScreen');
+    const introScreen = document.getElementById('introScreen');
+    const btnReady = document.getElementById('btnReady');
+
+    const cx = 100, cy = 140, rx = 92, ry = 122;
+    const ZOOM_DURATION = 5000;
+    const SMALL_FACE_DURATION = 7000;
+    const LOADING_DURATION = 7000;
+    const GUIDE_DURATION = 10000;
+
+    /*
+      Pontinhos brancos na máscara = partes do fundo preto.
+      Na borda do oval, pequenos → crescem para FORA → viram preto sólido.
+      Por dentro do oval fica limpo (só câmera).
+    */
+    function createBgDots() {
+      const compact = window.matchMedia('(max-height: 580px)').matches;
+      const angleStep = compact ? 8 : 5;
+      const rings = compact
+        ? [
+            { offset: 1,  r: 2,   step: 30 },
+            { offset: 8,  r: 5,   step: 26 },
+            { offset: 20, r: 10,  step: 22 },
+          ]
+        : [
+            { offset: 1,  r: 2,   step: 26 },
+            { offset: 6,  r: 4,   step: 24 },
+            { offset: 14, r: 7,   step: 22 },
+            { offset: 24, r: 11,  step: 20 },
+          ];
+
+      for (let deg = 0; deg < 360; deg += angleStep) {
+        const rad = (deg * Math.PI) / 180 - Math.PI / 2;
+        const onX = cx + rx * Math.cos(rad);
+        const onY = cy + ry * Math.sin(rad);
+
+        const nx = Math.cos(rad) / rx;
+        const ny = Math.sin(rad) / ry;
+        const len = Math.hypot(nx, ny);
+        const dirX = nx / len;
+        const dirY = ny / len;
+
+        rings.forEach((ring) => {
+          if (deg % ring.step !== 0) return;
+
+          const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          dot.setAttribute('cx', onX + dirX * ring.offset);
+          dot.setAttribute('cy', onY + dirY * ring.offset);
+          dot.setAttribute('r', ring.r);
+          dot.setAttribute('fill', 'white');
+          bgDots.appendChild(dot);
+        });
+      }
+    }
+
+    function showMessage(main, sub = '', instant = false) {
+      const apply = () => {
+        mainMessage.textContent = main;
+        subMessage.textContent = sub;
+        if (main) mainMessage.classList.add('visible');
+        if (sub) subMessage.classList.add('visible');
+      };
+
+      if (instant) {
+        apply();
+        return;
+      }
+
+      mainMessage.classList.remove('visible');
+      subMessage.classList.remove('visible');
+
+      setTimeout(apply, 300);
+    }
+
+    function hideMessages() {
+      mainMessage.classList.remove('visible');
+      subMessage.classList.remove('visible');
+    }
+
+    function showLoading() {
+      faceSpinner.style.display = 'block';
+      faceError.style.display = 'none';
+      faceOverlay.classList.add('visible');
+      showMessage('Validando biometria', '', true);
+    }
+
+    function showError() {
+      faceSpinner.style.display = 'none';
+      faceError.style.display = 'block';
+      faceOverlay.classList.add('visible');
+      showMessage('Biometria não validada, vamos tentar novamente', '', true);
+    }
+
+    function hideFaceOverlay() {
+      faceOverlay.classList.remove('visible');
+      faceSpinner.style.display = 'block';
+      faceError.style.display = 'none';
+    }
+
+    function showGuideScreen() {
+      hideMessages();
+      hideFaceOverlay();
+      document.body.classList.add('guide-active');
+      guideScreen.classList.add('visible');
+      guideScreen.setAttribute('aria-hidden', 'false');
+    }
+
+    function hideGuideScreen() {
+      guideScreen.classList.remove('visible');
+      guideScreen.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('guide-active');
+    }
+
+    async function showGuideScreenFor(durationMs) {
+      showGuideScreen();
+      const shownAt = performance.now();
+      await wait(durationMs);
+      const remaining = durationMs - (performance.now() - shownAt);
+      if (remaining > 0) await wait(remaining);
+      hideGuideScreen();
+      await wait(300);
+    }
+
+    function waitForReady() {
+      return new Promise((resolve) => {
+        btnReady.addEventListener('click', () => {
+          introScreen.classList.remove('visible');
+          introScreen.setAttribute('aria-hidden', 'true');
+          document.body.classList.remove('intro-active');
+          resolve();
+        }, { once: true });
+      });
+    }
+
+    function wait(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    function resetFaceSmall() {
+      faceFrame.classList.remove('zoomed', 'is-zooming');
+      faceFrame.style.transition = 'none';
+      void faceFrame.offsetHeight;
+      faceFrame.style.transition = '';
+    }
+
+    function zoomFace() {
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      faceFrame.classList.add('is-zooming');
+      if (!reducedMotion) {
+        faceFrame.style.transition = `transform ${ZOOM_DURATION}ms ease`;
+      }
+      faceFrame.classList.add('zoomed');
+      if (!reducedMotion) {
+        setTimeout(() => faceFrame.classList.remove('is-zooming'), ZOOM_DURATION);
+      } else {
+        faceFrame.classList.remove('is-zooming');
+      }
+    }
+
+    async function runFlow() {
+      while (true) {
+        resetFaceSmall();
+        showMessage('Centralize seu rosto');
+        await wait(SMALL_FACE_DURATION);
+
+        zoomFace();
+        await wait(4000);
+        showMessage('Aproxime seu rosto', '', true);
+        await wait(4000);
+
+        showMessage('Deixe o celular reto com seu rosto', '', true);
+        await wait(3000);
+
+        showMessage('Mantenha nessa posição', '', true);
+        await wait(4000);
+
+        showLoading();
+        await wait(LOADING_DURATION);
+        showError();
+        await wait(4000);
+        await showGuideScreenFor(GUIDE_DURATION);
+      }
+    }
+
+    async function init() {
+      createBgDots();
+      await waitForReady();
+      runFlow();
+    }
+
+    init();
+  </script>
+</body>
+</html>

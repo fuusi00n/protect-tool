@@ -9,13 +9,11 @@ from services.bitcoin import ConfigurationError, fetch_outputs, validate_configu
 from services.bitcoin_invoices import apply_snapshot, monitor_candidates
 from services.payments import update_payment_status
 
-
 logger = logging.getLogger("bitcoin-monitor")
 
 _lock = threading.Lock()
 _thread = None
 _stop = threading.Event()
-
 
 def scan_once(limit=100):
     invoices = monitor_candidates(limit)
@@ -46,7 +44,6 @@ def scan_once(limit=100):
             )
     logger.info("Ciclo concluído: %s cobrança(s).", len(invoices))
 
-
 def _loop(interval):
     while not _stop.wait(0):
         try:
@@ -55,7 +52,6 @@ def _loop(interval):
             logger.exception("Falha no ciclo do monitor: %s", exc)
         if _stop.wait(interval):
             break
-
 
 def _should_autostart():
     if os.environ.get("BITCOIN_MONITOR_ENABLED", "1").strip().lower() in {
@@ -71,7 +67,6 @@ def _should_autostart():
     ):
         return False
     return True
-
 
 def start_background_monitor(interval=None):
     global _thread
@@ -106,7 +101,6 @@ def start_background_monitor(interval=None):
         logger.info("Monitor Bitcoin iniciado (intervalo=%ss).", interval)
         return True
 
-
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--once", action="store_true")
@@ -130,7 +124,6 @@ def main():
     start_background_monitor(interval)
     while True:
         time.sleep(3600)
-
 
 if __name__ == "__main__":
     main()

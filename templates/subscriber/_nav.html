@@ -14,10 +14,12 @@
             {{ apps() }}
             <span>Apps</span>
         </a>
+        {% if can_store %}
         <a href="{{ url_for('subscriber.store_page') }}" class="{% if request.endpoint == 'subscriber.store_page' %}is-active{% endif %}">
             {{ store() }}
             <span>Store</span>
         </a>
+        {% endif %}
     </nav>
     <button type="button" class="nav-logout" @click="logout">
         {{ logout() }}

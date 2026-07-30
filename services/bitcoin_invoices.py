@@ -7,7 +7,6 @@ from config import Config
 from services.bitcoin import derive_address
 from services.database import get_connection
 
-
 def create_invoice(description, fiat_amount, currency, rate, rate_source, sats):
     invoice_id = uuid4()
     expires_at = datetime.now(timezone.utc) + timedelta(
@@ -70,7 +69,6 @@ def create_invoice(description, fiat_amount, currency, rate, rate_source, sats):
             )
     return get_invoice(str(invoice_id))
 
-
 def get_invoice(invoice_id):
     with get_connection() as connection:
         with connection.cursor(row_factory=dict_row) as cursor:
@@ -79,7 +77,6 @@ def get_invoice(invoice_id):
                 (invoice_id,),
             )
             return cursor.fetchone()
-
 
 def monitor_candidates(limit=100):
     with get_connection() as connection:
@@ -105,7 +102,6 @@ def monitor_candidates(limit=100):
                 (limit,),
             )
             return cursor.fetchall()
-
 
 def apply_snapshot(invoice, outputs):
     now = datetime.now(timezone.utc)
@@ -184,7 +180,6 @@ def apply_snapshot(invoice, outputs):
                 ),
             )
     return status
-
 
 def serialize_invoice(invoice):
     result = dict(invoice)
