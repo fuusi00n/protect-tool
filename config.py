@@ -8,7 +8,7 @@ load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 class Config:
     SECRET_KEY = os.environ.get("SECRET_KEY", "katana_secret_2026")
-    MAX_CONTENT_LENGTH = 25 * 1024 * 1024
+    MAX_CONTENT_LENGTH = 35 * 1024 * 1024
     SESSION_COOKIE_SECURE = False
     SESSION_COOKIE_HTTPONLY = True
     SESSION_COOKIE_SAMESITE = "Lax"

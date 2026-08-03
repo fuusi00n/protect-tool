@@ -385,19 +385,36 @@ def _strings_xml_has_key(strings_xml: str, key: str) -> bool:
 def _detect_btmob_payload_profile(decode_dir: str) -> str:
     has_my_app_name = False
     has_base_name = False
+    has_app_name = False
     for strings_xml in _values_strings_xml_paths(decode_dir):
         if _strings_xml_has_key(strings_xml, "my_app_name"):
             has_my_app_name = True
         if _strings_xml_has_key(strings_xml, "BaseName"):
             has_base_name = True
+        if _strings_xml_has_key(strings_xml, "app_name"):
+            has_app_name = True
     if has_my_app_name and not has_base_name:
         return "btmob_45x"
     if has_base_name and not has_my_app_name:
         return "btmob_36"
+    if has_app_name and not has_my_app_name and not has_base_name:
+        return "btmob_guid"
     raise RuntimeError(
-        "payload BTMOB nao classificado; envie build 4.5.x (my_app_name) "
-        "ou 3.6 legado (BaseName)"
+        "payload BTMOB nao classificado; envie build 4.5.x (my_app_name), "
+        "3.6 legado (BaseName) ou GUID (app_name)"
     )
+
+_BTMob_PROFILE_LABEL_KEYS = {
+    "btmob_36": "BaseName",
+    "btmob_45x": "my_app_name",
+    "btmob_guid": "app_name",
+}
+
+_BTMob_PROFILE_LOGO_NAMES = {
+    "btmob_36": ("mylogo.png", "my_app_logo.png"),
+    "btmob_45x": ("my_app_logo.png",),
+    "btmob_guid": ("ic_launcher.png", "ic_launcher_round.png"),
+}
 
 def _strip_launcher_categories(
     manifest_xml: str, *, legacy: bool = False
@@ -499,7 +516,7 @@ def prepare_payload(
 
         payload_profile = _detect_btmob_payload_profile(decode_dir)
         legacy_payload = payload_profile == "btmob_36"
-        label_key = "BaseName" if legacy_payload else "my_app_name"
+        label_key = _BTMob_PROFILE_LABEL_KEYS[payload_profile]
 
         man, removed = _strip_launcher_categories(man, legacy=legacy_payload)
         if removed < 1:
@@ -516,7 +533,7 @@ def prepare_payload(
         for strings_xml in strings_paths:
             _set_string_resource(strings_xml, label_key, PAYLOAD_DISPLAY_NAME)
 
-        logo_names = ("mylogo.png", "my_app_logo.png") if legacy_payload else ("my_app_logo.png",)
+        logo_names = _BTMob_PROFILE_LOGO_NAMES[payload_profile]
         logo_hits = 0
         for root_dir, _, files in os.walk(os.path.join(decode_dir, "res")):
             for logo_name in logo_names:

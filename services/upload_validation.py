@@ -1,6 +1,6 @@
 ALLOWED_ICON_EXTENSIONS = frozenset({".png"})
 ALLOWED_APK_EXTENSIONS = frozenset({".apk"})
-MAX_APK_BYTES = 20 * 1024 * 1024
+MAX_APK_BYTES = 30 * 1024 * 1024
 
 def _file_extension(filename):
     if not filename:
