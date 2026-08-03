@@ -213,15 +213,14 @@ def extract_apk_package_name(apk_path: str) -> str:
         "com.google.firebase",
         "com.google.gms",
     )
-    # com.android.* de framework (ex.: com.android.systemui) fica de fora;
-    # payloads 4.1.1 usam com.android.<rand>.<rand> (4+ segmentos) e devem passar.
+    # 4.1.1 normalizado: so com.android.<palavra> (exatamente 3 segmentos).
     cands = []
     for s in strings:
         if not pkg_re.match(s):
             continue
         if any(s.startswith(p) for p in skip_prefixes):
             continue
-        if s.startswith("com.android.") and s.count(".") < 3:
+        if s.startswith("com.android.") and s.count(".") != 2:
             continue
         if "permission" in s.lower() or "intent" in s.lower():
             continue

