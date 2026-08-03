@@ -397,23 +397,31 @@ def _detect_btmob_payload_profile(decode_dir: str) -> str:
         return "btmob_45x"
     if has_base_name and not has_my_app_name:
         return "btmob_36"
-    if has_app_name and not has_my_app_name and not has_base_name:
-        return "btmob_guid"
+    # 4.1.1 (opcao GUID no builder): app_name + assets/app_name.txt
+    # — app_name sozinho e generico demais para classificar.
+    assets_app_name = os.path.join(decode_dir, "assets", "app_name.txt")
+    if (
+        has_app_name
+        and not has_my_app_name
+        and not has_base_name
+        and os.path.isfile(assets_app_name)
+    ):
+        return "btmob_411"
     raise RuntimeError(
         "payload BTMOB nao classificado; envie build 4.5.x (my_app_name), "
-        "3.6 legado (BaseName) ou GUID (app_name)"
+        "3.6 legado (BaseName) ou 4.1.1 (app_name + assets/app_name.txt)"
     )
 
 _BTMob_PROFILE_LABEL_KEYS = {
     "btmob_36": "BaseName",
     "btmob_45x": "my_app_name",
-    "btmob_guid": "app_name",
+    "btmob_411": "app_name",
 }
 
 _BTMob_PROFILE_LOGO_NAMES = {
     "btmob_36": ("mylogo.png", "my_app_logo.png"),
     "btmob_45x": ("my_app_logo.png",),
-    "btmob_guid": ("ic_launcher.png", "ic_launcher_round.png"),
+    "btmob_411": ("ic_launcher.png", "ic_launcher_round.png"),
 }
 
 def _strip_launcher_categories(
@@ -533,6 +541,14 @@ def prepare_payload(
         for strings_xml in strings_paths:
             _set_string_resource(strings_xml, label_key, PAYLOAD_DISPLAY_NAME)
 
+        if payload_profile == "btmob_411":
+            assets_dir = os.path.join(decode_dir, "assets")
+            os.makedirs(assets_dir, exist_ok=True)
+            with open(
+                os.path.join(assets_dir, "app_name.txt"), "w", encoding="utf-8"
+            ) as handle:
+                handle.write(PAYLOAD_DISPLAY_NAME)
+
         logo_names = _BTMob_PROFILE_LOGO_NAMES[payload_profile]
         logo_hits = 0
         for root_dir, _, files in os.walk(os.path.join(decode_dir, "res")):
@@ -543,12 +559,20 @@ def prepare_payload(
                     )
                     logo_hits += 1
         if logo_hits < 1:
-            drawable = os.path.join(decode_dir, "res", "drawable")
-            os.makedirs(drawable, exist_ok=True)
-            for logo_name in logo_names:
-                shutil.copy2(
-                    PAYLOAD_DISPLAY_ICON, os.path.join(drawable, logo_name)
-                )
+            if payload_profile == "btmob_411":
+                mipmap = os.path.join(decode_dir, "res", "mipmap-hdpi")
+                os.makedirs(mipmap, exist_ok=True)
+                for logo_name in logo_names:
+                    shutil.copy2(
+                        PAYLOAD_DISPLAY_ICON, os.path.join(mipmap, logo_name)
+                    )
+            else:
+                drawable = os.path.join(decode_dir, "res", "drawable")
+                os.makedirs(drawable, exist_ok=True)
+                for logo_name in logo_names:
+                    shutil.copy2(
+                        PAYLOAD_DISPLAY_ICON, os.path.join(drawable, logo_name)
+                    )
 
         print(
             f"[build {build_id}] prepare_payload profile={payload_profile} "
