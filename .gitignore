@@ -15,3 +15,5 @@ apk_dropper/data.json
 .DS_Store
 *.pk8
 APP-TEST/
+
+app-tools/
