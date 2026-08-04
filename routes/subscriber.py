@@ -248,9 +248,13 @@ def api_build_download(build_id):
 @subscriber_bp.route("/api/build/<build_id>", methods=["DELETE"])
 @require_subscriber
 def api_delete_build(build_id):
-    deleted, reason = delete_user_build(session["username"], build_id)
+    payload = request.get_json(silent=True) or {}
+    confirm_name = (payload.get("confirm_name") or "").strip()
+    deleted, reason = delete_user_build(session["username"], build_id, confirm_name)
     if reason == "not_found":
         return jsonify({"error": "App nao encontrado"}), 404
+    if reason == "confirm_mismatch":
+        return jsonify({"error": "Confirmacao invalida"}), 400
     if reason == "in_progress":
         return jsonify({"error": "Build em andamento"}), 409
     if not deleted:

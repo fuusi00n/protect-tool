@@ -3718,6 +3718,21 @@ tbody tr:last-child td {
     font-weight: 600;
 }
 
+.confirm-modal__field {
+    margin: 0 0 1rem;
+}
+
+.confirm-modal__field label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.8125rem;
+    color: #94a3b8;
+}
+
+.confirm-modal__field input {
+    width: 100%;
+}
+
 .confirm-modal__error {
     margin: -0.5rem 0 0.875rem;
     font-size: 0.8125rem;

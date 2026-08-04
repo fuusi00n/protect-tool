@@ -119,20 +119,27 @@
                 <button type="button" class="confirm-modal__close" @click="closeDeleteModal()" :disabled="!!deleteBusyId" aria-label="Fechar">×</button>
             </header>
             <div class="confirm-modal__body">
-                <div class="confirm-modal__icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none">
-                        <path d="M4 7h16M9 7V5h6v2M7 7l1 12h8l1-12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
-                        <path d="M10 11v5M14 11v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
-                    </svg>
-                </div>
                 <p class="confirm-modal__text">
                     <strong x-text="deleteTarget?.app_name || 'Este app'"></strong>
                     será removido permanentemente, incluindo o APK e o link público.
                 </p>
+                <div class="field confirm-modal__field">
+                    <label :for="'deleteConfirm-' + (deleteTarget?.build_id || 'app')">
+                        Digite o nome do app para confirmar
+                    </label>
+                    <input
+                        :id="'deleteConfirm-' + (deleteTarget?.build_id || 'app')"
+                        type="text"
+                        x-model="deleteConfirmName"
+                        autocomplete="off"
+                        spellcheck="false"
+                        :placeholder="deleteTarget?.app_name || ''"
+                        @keydown.enter.prevent="deleteNameConfirmed && confirmDelete()">
+                </div>
                 <p class="confirm-modal__error" x-show="deleteError" x-text="deleteError"></p>
                 <div class="confirm-modal__actions">
                     <button type="button" class="btn btn-ghost" @click="closeDeleteModal()" :disabled="!!deleteBusyId">Cancelar</button>
-                    <button type="button" class="btn btn-ghost btn-danger" @click="confirmDelete()" :disabled="!!deleteBusyId">
+                    <button type="button" class="btn btn-ghost btn-danger" @click="confirmDelete()" :disabled="!!deleteBusyId || !deleteNameConfirmed">
                         <span x-show="!deleteBusyId">Excluir</span>
                         <span x-show="deleteBusyId">Excluindo…</span>
                     </button>

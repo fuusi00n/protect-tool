@@ -57,7 +57,7 @@ def validate_apk_upload(file_storage):
     if size <= 0:
         return False, "Arquivo APK vazio."
     if size > MAX_APK_BYTES:
-        return False, "APK excede o limite de 20 MB."
+        return False, "APK excede o limite de 27 MB."
 
     header = file_storage.stream.read(8)
     file_storage.stream.seek(0)

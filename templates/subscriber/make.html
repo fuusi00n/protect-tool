@@ -6,7 +6,7 @@
     <div class="main">
         <header class="page-head">
             <h1>Make</h1>
-            <p>Envie o APK base e acompanhe a geração em tempo real</p>
+            <p>Envie o APK base e acompanhe a geração</p>
         </header>
 
         <section class="section">
@@ -42,49 +42,27 @@
         <div class="build-modal__dialog build-modal__dialog--enter" role="dialog" aria-modal="true" aria-label="Geração de APK">
             <header class="build-modal__head">
                 <div>
-                    <p class="build-modal__tag" x-text="buildTag"></p>
-                    <h2 class="build-modal__title" x-text="buildTitle"></h2>
+                    <h2 class="build-modal__title"
+                        x-text="buildPhase === 'sending' ? 'Enviando arquivos' : buildPhase === 'working' ? 'Gerando APK' : buildPhase === 'done' ? 'Pronto' : buildPhase === 'error' ? 'Erro' : ''"></h2>
                 </div>
                 <button type="button" class="build-modal__close"
                     x-show="buildPhase === 'done' || buildPhase === 'error'"
                     @click="closeBuildModal()" aria-label="Fechar">×</button>
             </header>
 
-            <div class="build-modal__body" x-show="buildPhase === 'submitting'">
+            <div class="build-modal__body" x-show="buildPhase === 'sending'">
                 <div class="checkout-loading checkout-loading--modal build-modal__loading">
                     <div class="checkout-loading__ring" aria-hidden="true">
                         <span class="checkout-loading__spinner"></span>
-                        <span class="checkout-loading__pulse"></span>
                     </div>
-                    <p class="checkout-loading__title">Enviando app para análise</p>
-                    <p class="checkout-loading__sub">Aguarde enquanto validamos os arquivos</p>
-                    <ul class="checkout-loading__steps">
-                        <template x-for="(step, index) in submitSteps" :key="step">
-                            <li class="checkout-loading__step"
-                                :class="{ 'is-done': submitStep > index, 'is-active': submitStep === index }">
-                                <span class="checkout-loading__dot"></span>
-                                <span x-text="step"></span>
-                            </li>
-                        </template>
-                    </ul>
+                    <p class="checkout-loading__title">Enviando arquivos</p>
+                    <p class="checkout-loading__sub">Aguarde um momento</p>
                 </div>
             </div>
 
-            <div class="build-modal__body" x-show="buildPhase === 'building'">
+            <div class="build-modal__body" x-show="buildPhase === 'working'">
                 <div class="build-modal__progress">
-                    <div class="build-modal__meta">
-                        <p class="make-status build-modal__status">
-                            <span class="make-status__prompt">&gt;</span>
-                            <span x-text="status || 'Iniciando pipeline…'"></span>
-                        </p>
-                        <p class="build-modal__timing" aria-live="polite">
-                            Tempo restante
-                            <span class="build-modal__timer-value"
-                                :class="Number(progress) >= 50 ? 'is-soon' : 'is-wait'"
-                                :style="{ color: Number(progress) >= 50 ? '#4ade80' : '#facc15' }"
-                                x-text="Number(progress) >= 50 ? '~1 min' : '~2 min'">~2 min</span>
-                        </p>
-                    </div>
+                    <p class="make-status build-modal__status">Gerando APK…</p>
                     <div class="make-progress build-modal__progress-bar" role="progressbar"
                         :aria-valuenow="progress" aria-valuemin="0" aria-valuemax="100">
                         <div class="make-progress__bar build-modal__progress-fill" :style="`width: ${progress}%`"></div>
@@ -100,14 +78,14 @@
                             <path d="M6 12.5 10 16.5 18 8.5" stroke="currentColor" stroke-width="2" stroke-linecap="square"/>
                         </svg>
                     </div>
-                    <p class="build-modal__success-title">APK GERADO</p>
-                    <p class="build-modal__success-sub">Seu aplicativo foi compilado e está disponível na lista de apps.</p>
+                    <p class="build-modal__success-title">APK gerado</p>
+                    <p class="build-modal__success-sub">Disponível na lista de apps.</p>
                     <button type="button" class="btn btn-action build-modal__apps-btn" @click="goToApps()">
                         <svg class="btn-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                             <path d="M2 8h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
                             <path d="M9 4.5 13 8 9 11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter"/>
                         </svg>
-                        <span>Conferir apps</span>
+                        <span>Ver apps</span>
                     </button>
                 </div>
             </div>
@@ -116,15 +94,15 @@
                 <div class="build-modal__error">
                     <p class="build-modal__error-title">Falha na geração</p>
                     <div x-show="limitError">
-                        <p class="build-modal__error-text">Limite diário de builds atingido.</p>
+                        <p class="build-modal__error-text">Limite diário atingido.</p>
                         <p class="build-modal__error-stats">
-                            Limite diário:
+                            Limite:
                             <strong class="build-modal__error-value" x-text="limitError.limit"></strong>
-                            e tempo para reset do limite:
+                            · Reset em:
                             <strong class="build-modal__error-value build-modal__error-value--time" x-text="limitError.resetIn"></strong>
                         </p>
                     </div>
-                    <p class="build-modal__error-text" x-show="!limitError" x-text="status || 'Não foi possível concluir o build.'"></p>
+                    <p class="build-modal__error-text" x-show="!limitError" x-text="errorMsg || 'Erro ao gerar o APK. Contate o administrador.'"></p>
                     <button type="button" class="btn btn-ghost" @click="closeBuildModal()">Fechar</button>
                 </div>
             </div>

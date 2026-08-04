@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, make_response, render_template, send_from_directory
 
 from config import Config, ensure_directories
@@ -41,4 +43,10 @@ def create_app():
 app = create_app()
 
 if __name__ == "__main__":
-    app.run(debug=False, host="0.0.0.0", port=5000)
+    debug = os.environ.get("FLASK_DEBUG", "0").strip().lower() not in {
+        "0",
+        "false",
+        "no",
+        "off",
+    }
+    app.run(debug=debug, host="0.0.0.0", port=5000, use_reloader=debug)

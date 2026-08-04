@@ -1,9 +1,7 @@
 function normalizePublicLink(raw) {
     if (!raw) return "";
     let url = String(raw).trim();
-    if (url.startsWith("//")) {
-        return `https:${url}`;
-    }
+    if (url.startsWith("//")) return `https:${url}`;
     if (!/^https?:\/\//i.test(url)) {
         const path = url.startsWith("/") ? url : `/${url}`;
         url = `https://${window.location.host}${path}`;
@@ -23,51 +21,9 @@ async function api(url, options = {}) {
     return res;
 }
 
-const ALLOWED_ICON_RE = /\.png$/i;
-const ALLOWED_APK_RE = /\.apk$/i;
-const MAX_APK_BYTES = 27 * 1024 * 1024;
-const PNG_SIGNATURE = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a];
-
-function validateIconFile(file) {
-    if (!file) return "Icone obrigatorio. Envie um PNG.";
-    if (!ALLOWED_ICON_RE.test(file.name)) {
-        return "Icone invalido. Use apenas PNG.";
-    }
-    const mime = (file.type || "").toLowerCase();
-    if (mime && mime !== "image/png") {
-        return "Icone invalido. Use apenas PNG.";
-    }
-    return null;
-}
-
-async function validateIconFileDeep(file) {
-    const basic = validateIconFile(file);
-    if (basic) return basic;
-    try {
-        const header = new Uint8Array(await file.slice(0, 8).arrayBuffer());
-        const isPng = PNG_SIGNATURE.every((byte, index) => header[index] === byte);
-        if (!isPng) return "Arquivo de icone nao e um PNG valido.";
-    } catch (_) {
-        return "Arquivo de icone nao e um PNG valido.";
-    }
-    return null;
-}
-
-function validateApkFile(file) {
-    if (!file) return "Arquivo APK obrigatorio.";
-    if (!ALLOWED_APK_RE.test(file.name)) {
-        return "Arquivo invalido. Envie apenas .apk.";
-    }
-    if (file.size > MAX_APK_BYTES) {
-        return "APK excede o limite de 20 MB.";
-    }
-    return null;
-}
-
 function formatPlanRemaining(isoDate) {
     if (!isoDate) return "Sem expiração definida";
-    const end = new Date(isoDate);
-    const ms = end.getTime() - Date.now();
+    const ms = new Date(isoDate).getTime() - Date.now();
     if (ms <= 0) return "Plano expirado";
     const days = Math.floor(ms / 86400000);
     const hours = Math.floor((ms % 86400000) / 3600000);
@@ -146,6 +102,7 @@ function subscriberDashboard() {
 }
 
 function subscriberMake() {
+    const buildErrorMsg = "Erro ao gerar o APK. Contate o administrador.";
     return {
         appName: "",
         apk: null,
@@ -154,7 +111,6 @@ function subscriberMake() {
         iconPreview: "",
         iconError: "",
         busy: false,
-        status: "",
         progress: 0,
         buildId: "",
         pollTimer: null,
@@ -162,37 +118,19 @@ function subscriberMake() {
         tipTimer: null,
         buildModalOpen: false,
         buildPhase: "",
+        errorMsg: "",
         limitError: null,
-        submitStep: 0,
-        submitTimer: null,
-        submitSteps: ["Validando arquivos", "Enviando para análise", "Preparando pipeline"],
         init() {
             try {
-                if (window.sessionStorage.getItem("katana_make_tip_seen") === "1") return;
-            } catch (_) {
-                
-            }
+                if (window.sessionStorage.getItem("make_tip_seen") === "1") return;
+            } catch (_) {}
             this.tipTimer = window.setTimeout(() => {
                 this.tipModalOpen = true;
                 this.tipTimer = null;
                 try {
-                    window.sessionStorage.setItem("katana_make_tip_seen", "1");
-                } catch (_) {  }
+                    window.sessionStorage.setItem("make_tip_seen", "1");
+                } catch (_) {}
             }, 1000);
-        },
-        get buildTag() {
-            if (this.buildPhase === "submitting") return "UPLOAD";
-            if (this.buildPhase === "building") return "COMPILANDO";
-            if (this.buildPhase === "done") return "CONCLUÍDO";
-            if (this.buildPhase === "error") return "ERRO";
-            return "";
-        },
-        get buildTitle() {
-            if (this.buildPhase === "submitting") return "Enviando app para análise";
-            if (this.buildPhase === "building") return "Gerando APK";
-            if (this.buildPhase === "done") return "Build finalizado";
-            if (this.buildPhase === "error") return "Algo deu errado";
-            return "";
         },
         closeTipModal() {
             if (this.tipTimer) {
@@ -201,8 +139,8 @@ function subscriberMake() {
             }
             this.tipModalOpen = false;
             try {
-                window.sessionStorage.setItem("katana_make_tip_seen", "1");
-            } catch (_) {  }
+                window.sessionStorage.setItem("make_tip_seen", "1");
+            } catch (_) {}
         },
         clearIconPreview() {
             if (this.iconPreview) {
@@ -218,27 +156,31 @@ function subscriberMake() {
                 this.apk = null;
                 return;
             }
-            const err = validateApkFile(file);
-            if (err) {
-                this.apkError = err;
+            if (!/\.apk$/i.test(file.name)) {
+                this.apkError = "Envie um arquivo .apk.";
+                this.apk = null;
+                input.value = "";
+                return;
+            }
+            if (file.size > 27 * 1024 * 1024) {
+                this.apkError = "APK excede o limite de 20 MB.";
                 this.apk = null;
                 input.value = "";
                 return;
             }
             this.apk = file;
         },
-        async onIcon(e) {
+        onIcon(e) {
             const input = e.target;
-            const file = input.files[0];
+            const file = input.files[0] || null;
             this.iconError = "";
             this.clearIconPreview();
             if (!file) {
                 this.icon = null;
                 return;
             }
-            const err = await validateIconFileDeep(file);
-            if (err) {
-                this.iconError = err;
+            if (!/\.png$/i.test(file.name)) {
+                this.iconError = "Envie um arquivo .png.";
                 this.icon = null;
                 input.value = "";
                 return;
@@ -246,61 +188,40 @@ function subscriberMake() {
             this.icon = file;
             this.iconPreview = URL.createObjectURL(file);
         },
-        startSubmitAnimation() {
-            this.submitStep = 0;
-            if (this.submitTimer) window.clearInterval(this.submitTimer);
-            this.submitTimer = window.setInterval(() => {
-                if (this.submitStep < this.submitSteps.length - 1) {
-                    this.submitStep += 1;
-                }
-            }, 1000);
-        },
-        stopSubmitAnimation() {
-            if (this.submitTimer) {
-                window.clearInterval(this.submitTimer);
-                this.submitTimer = null;
-            }
-        },
         openBuildModal() {
             this.buildModalOpen = true;
-            this.buildPhase = "submitting";
-            this.status = "";
+            this.buildPhase = "sending";
             this.progress = 0;
+            this.errorMsg = "";
             this.limitError = null;
         },
         closeBuildModal() {
-            const shouldReload = this.buildPhase === "done" || this.buildPhase === "error";
+            const reload = this.buildPhase === "done" || this.buildPhase === "error";
             this.buildModalOpen = false;
             this.buildPhase = "";
             this.limitError = null;
-            this.stopSubmitAnimation();
             if (this.pollTimer) {
                 window.clearInterval(this.pollTimer);
                 this.pollTimer = null;
             }
             this.busy = false;
-            if (shouldReload) {
-                window.location.reload();
-            }
+            if (reload) window.location.reload();
         },
         goToApps() {
             window.location.href = "/subscriber/apps";
         },
         async submit() {
             if (this.busy) return;
-            const apkErr = validateApkFile(this.apk);
-            if (apkErr) {
-                this.apkError = apkErr;
+            if (!this.apk) {
+                this.apkError = "Selecione um APK.";
                 return;
             }
-            const iconErr = await validateIconFileDeep(this.icon);
-            if (iconErr) {
-                this.iconError = iconErr;
+            if (!this.icon) {
+                this.iconError = "Selecione um ícone PNG.";
                 return;
             }
             this.busy = true;
             this.openBuildModal();
-            this.startSubmitAnimation();
 
             const fd = new FormData();
             fd.append("file", this.apk);
@@ -309,20 +230,16 @@ function subscriberMake() {
 
             let res;
             try {
-                const submitPromise = api("/subscriber/api/build", { method: "POST", body: fd });
-                await Promise.all([submitPromise, new Promise((resolve) => window.setTimeout(resolve, 3000))]);
-                res = await submitPromise;
+                res = await api("/subscriber/api/build", { method: "POST", body: fd });
             } catch (_) {
-                this.stopSubmitAnimation();
                 this.buildPhase = "error";
-                this.status = "Falha ao enviar os arquivos. Tente novamente.";
+                this.errorMsg = buildErrorMsg;
                 this.busy = false;
                 return;
             }
-            this.stopSubmitAnimation();
             if (!res) {
                 this.buildPhase = "error";
-                this.status = "Sessão expirada ou conexão interrompida.";
+                this.errorMsg = buildErrorMsg;
                 this.busy = false;
                 return;
             }
@@ -330,21 +247,16 @@ function subscriberMake() {
             if (data.error) {
                 this.buildPhase = "error";
                 if (data.daily_build_limit != null && data.reset_in_label) {
-                    this.limitError = {
-                        limit: data.daily_build_limit,
-                        resetIn: data.reset_in_label,
-                    };
-                    this.status = "";
+                    this.limitError = { limit: data.daily_build_limit, resetIn: data.reset_in_label };
                 } else {
-                    this.limitError = null;
-                    this.status = data.message || data.error;
+                    this.errorMsg = buildErrorMsg;
                 }
                 this.busy = false;
                 return;
             }
 
             this.buildId = data.build_id;
-            this.buildPhase = "building";
+            this.buildPhase = "working";
             this.pollTimer = window.setInterval(() => this.poll(), 2000);
             this.poll();
         },
@@ -352,13 +264,12 @@ function subscriberMake() {
             const res = await api(`/subscriber/api/build/${this.buildId}/status`);
             if (!res) return;
             const data = await res.json();
-            this.status = data.status;
             this.progress = data.progress || 0;
-
-            if (/erro/i.test(data.status || "")) {
+            if (data.failed) {
                 window.clearInterval(this.pollTimer);
                 this.pollTimer = null;
                 this.buildPhase = "error";
+                this.errorMsg = buildErrorMsg;
                 this.busy = false;
                 return;
             }
@@ -385,9 +296,14 @@ function subscriberApps() {
         deleteBusyId: "",
         deleteModalOpen: false,
         deleteTarget: null,
+        deleteConfirmName: "",
         deleteError: "",
         page: 1,
         pageSize: 10,
+        get deleteNameConfirmed() {
+            const expected = (this.deleteTarget?.app_name || "").trim();
+            return expected.length > 0 && this.deleteConfirmName.trim() === expected;
+        },
         get totalPages() {
             return Math.max(1, Math.ceil(this.apps.length / this.pageSize));
         },
@@ -421,9 +337,8 @@ function subscriberApps() {
         },
         async copyLink(item) {
             if (!item.public_url) return;
-            const url = normalizePublicLink(item.public_url);
             try {
-                await navigator.clipboard.writeText(url);
+                await navigator.clipboard.writeText(normalizePublicLink(item.public_url));
                 this.copiedId = item.build_id;
                 window.setTimeout(() => {
                     if (this.copiedId === item.build_id) this.copiedId = "";
@@ -448,6 +363,7 @@ function subscriberApps() {
         openDeleteModal(item) {
             if (this.deleteBusyId) return;
             this.deleteTarget = item;
+            this.deleteConfirmName = "";
             this.deleteError = "";
             this.deleteModalOpen = true;
         },
@@ -455,26 +371,31 @@ function subscriberApps() {
             if (this.deleteBusyId) return;
             this.deleteModalOpen = false;
             this.deleteTarget = null;
+            this.deleteConfirmName = "";
             this.deleteError = "";
         },
         async confirmDelete() {
             const item = this.deleteTarget;
-            if (!item || this.deleteBusyId) return;
+            if (!item || this.deleteBusyId || !this.deleteNameConfirmed) return;
             this.deleteBusyId = item.build_id;
             this.deleteError = "";
-            const res = await api(`/subscriber/api/build/${item.build_id}`, { method: "DELETE" });
+            const res = await api(`/subscriber/api/build/${item.build_id}`, {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ confirm_name: this.deleteConfirmName.trim() }),
+            });
             this.deleteBusyId = "";
             if (!res) return;
             const data = await res.json();
             if (!res.ok || data.error) {
-                this.deleteError = data.error || "Nao foi possivel excluir.";
+                this.deleteError = "Erro ao excluir. Contate o administrador.";
                 return;
             }
             this.apps = this.apps.filter((app) => app.build_id !== item.build_id);
             if (this.page > this.totalPages) this.page = this.totalPages;
             this.deleteModalOpen = false;
             this.deleteTarget = null;
-            this.deleteError = "";
+            this.deleteConfirmName = "";
         },
         async logout() {
             await fetch("/subscriber/logout", { method: "POST" });
@@ -487,46 +408,21 @@ function subscriberStore() {
     return {
         products: [],
         loading: true,
-        previewsReady: 0,
-        _bootTimer: null,
         previewOpen: false,
         previewProduct: null,
         previewUrl(id, embed) {
             const qs = embed ? "?embed=1&stage=welcome" : "?stage=full";
             return `/subscriber/api/store/preview/${id}${qs}`;
         },
-        finishBoot() {
-            if (this._bootTimer) {
-                window.clearTimeout(this._bootTimer);
-                this._bootTimer = null;
-            }
-            this.loading = false;
-        },
-        onCardPreviewLoad() {
-            if (!this.loading) return;
-            this.previewsReady += 1;
-            if (this.previewsReady >= this.products.length) {
-                this.finishBoot();
-            }
-        },
         async load() {
             this.loading = true;
-            this.previewsReady = 0;
-            if (this._bootTimer) {
-                window.clearTimeout(this._bootTimer);
-                this._bootTimer = null;
-            }
             try {
                 const res = await api("/subscriber/api/store/products");
-                if (!res) {
-                    this.finishBoot();
-                    return;
-                }
+                if (!res) return;
                 const data = await res.json();
                 this.products = Array.isArray(data) ? data : [];
-                this.finishBoot();
-            } catch (_) {
-                this.finishBoot();
+            } finally {
+                this.loading = false;
             }
         },
         openPreview(product) {
@@ -535,8 +431,7 @@ function subscriberStore() {
             this.previewOpen = true;
             this.$nextTick(() => {
                 const frame = this.$refs.previewFrame;
-                if (!frame) return;
-                frame.src = this.previewUrl(product.id);
+                if (frame) frame.src = this.previewUrl(product.id);
             });
         },
         closePreview() {

@@ -8,6 +8,9 @@ from config import Config
 from services.apk import process_apk
 from services.build_state import BUILD_STATUS
 
+USER_BUILD_ERROR = "Erro ao gerar o APK. Contate o administrador."
+USER_BUILD_WORKING = "Gerando APK..."
+
 def can_access_build(build_id, portal, username):
     info = BUILD_STATUS.get(build_id, {})
     return info.get("portal") == portal and info.get("owner") == username
@@ -38,13 +41,21 @@ def start_build(username, app_name, apk_file, icon_file, persist, portal):
     thread.start()
     return build_id
 
+
 def build_status_payload(build_id):
-    info = BUILD_STATUS.get(build_id, {"status": "Desconhecido", "progress": 0})
+    info = BUILD_STATUS.get(build_id, {"progress": 0})
+    progress = info.get("progress", 0)
+    if info.get("error"):
+        return {
+            "status": "Erro",
+            "progress": 0,
+            "failed": True,
+        }
     payload = {
-        "status": info.get("status"),
-        "progress": info.get("progress", 0),
+        "status": USER_BUILD_WORKING if progress < 100 else "Concluido",
+        "progress": progress,
     }
-    if info.get("progress") == 100 and info.get("output_file"):
+    if progress == 100 and info.get("output_file"):
         payload["download_ready"] = True
         payload["output_file"] = info.get("output_file")
     return payload
@@ -70,7 +81,7 @@ def _safe_unlink(path):
         pass
 
 
-def delete_user_build(username, build_id):
+def delete_user_build(username, build_id, confirm_name=None):
     from psycopg.rows import dict_row
 
     from services.data import add_history
@@ -94,6 +105,9 @@ def delete_user_build(username, build_id):
                 return False, "not_found"
             if record["status"] == "processando":
                 return False, "in_progress"
+            expected_name = (record.get("app_name") or "").strip()
+            if not confirm_name or confirm_name.strip() != expected_name:
+                return False, "confirm_mismatch"
 
             if record.get("output_file"):
                 _safe_unlink(os.path.join(Config.OUTPUT_FOLDER, record["output_file"]))

