@@ -20,12 +20,12 @@ PLAN_DEFINITIONS = {
     "15d": {
         "duration_days": 15,
         "amount_key": "payment_amount_15d",
-        "daily_build_limit": 2,
+        "daily_build_limit": 3,
     },
     "30d": {
         "duration_days": 30,
         "amount_key": "payment_amount_30d",
-        "daily_build_limit": 5,
+        "daily_build_limit": 7,
     },
 }
 
