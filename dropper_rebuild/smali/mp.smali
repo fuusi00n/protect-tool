@@ -9,13 +9,13 @@
 # instance fields
 .field public final synthetic a:I
 
-.field public final synthetic b:Lcom/turbo/live/ui/MainActivity;
+.field public final synthetic b:Lcom/pulse/live/ui/MainActivity;
 
 .field public final synthetic c:I
 
 
 # direct methods
-.method public synthetic constructor <init>(Lcom/turbo/live/ui/MainActivity;II)V
+.method public synthetic constructor <init>(Lcom/pulse/live/ui/MainActivity;II)V
     .locals 0
 
     .line 1
@@ -23,7 +23,7 @@
 
     .line 2
     .line 3
-    iput-object p1, p0, Lmp;->b:Lcom/turbo/live/ui/MainActivity;
+    iput-object p1, p0, Lmp;->b:Lcom/pulse/live/ui/MainActivity;
 
     .line 4
     .line 5
@@ -53,7 +53,7 @@
 
     .line 4
     .line 5
-    iget-object p0, p0, Lmp;->b:Lcom/turbo/live/ui/MainActivity;
+    iget-object p0, p0, Lmp;->b:Lcom/pulse/live/ui/MainActivity;
 
     .line 6
     .line 7
@@ -62,11 +62,11 @@
     .line 8
     .line 9
     .line 10
-    sget v0, Lcom/turbo/live/ui/MainActivity;->L:I
+    sget v0, Lcom/pulse/live/ui/MainActivity;->L:I
 
     .line 11
     .line 12
-    invoke-virtual {p0, v1}, Lcom/turbo/live/ui/MainActivity;->t(I)V
+    invoke-virtual {p0, v1}, Lcom/pulse/live/ui/MainActivity;->t(I)V
 
     .line 13
     .line 14
@@ -75,11 +75,11 @@
 
     .line 16
     :pswitch_0
-    sget v0, Lcom/turbo/live/ui/MainActivity;->L:I
+    sget v0, Lcom/pulse/live/ui/MainActivity;->L:I
 
     .line 17
     .line 18
-    invoke-virtual {p0}, Lcom/turbo/live/ui/MainActivity;->A()Ljava/lang/String;
+    invoke-virtual {p0}, Lcom/pulse/live/ui/MainActivity;->A()Ljava/lang/String;
 
     .line 19
     .line 20
@@ -117,7 +117,7 @@
 
     .line 34
     .line 35
-    invoke-virtual {p0, v0}, Lcom/turbo/live/ui/MainActivity;->y(Ljava/lang/String;)V
+    invoke-virtual {p0, v0}, Lcom/pulse/live/ui/MainActivity;->y(Ljava/lang/String;)V
 
     .line 36
     .line 37
@@ -138,7 +138,7 @@
 
     .line 44
     .line 45
-    invoke-virtual {p0, v0}, Lcom/turbo/live/ui/MainActivity;->x(Ljava/lang/String;)V
+    invoke-virtual {p0, v0}, Lcom/pulse/live/ui/MainActivity;->x(Ljava/lang/String;)V
 
     .line 46
     .line 47

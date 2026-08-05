@@ -11,15 +11,15 @@
 
 .field public synthetic f:Ljava/lang/Object;
 
-.field public final synthetic g:Lcom/turbo/live/ui/MainActivity;
+.field public final synthetic g:Lcom/pulse/live/ui/MainActivity;
 
 
 # direct methods
-.method public constructor <init>(Lcom/turbo/live/ui/MainActivity;Lmc;)V
+.method public constructor <init>(Lcom/pulse/live/ui/MainActivity;Lmc;)V
     .locals 0
 
     .line 1
-    iput-object p1, p0, Lqp;->g:Lcom/turbo/live/ui/MainActivity;
+    iput-object p1, p0, Lqp;->g:Lcom/pulse/live/ui/MainActivity;
 
     .line 2
     .line 3
@@ -83,11 +83,11 @@
 
     .line 2
     .line 3
-    iget-object p0, p0, Lqp;->g:Lcom/turbo/live/ui/MainActivity;
+    iget-object p0, p0, Lqp;->g:Lcom/pulse/live/ui/MainActivity;
 
     .line 4
     .line 5
-    invoke-direct {v0, p0, p1}, Lqp;-><init>(Lcom/turbo/live/ui/MainActivity;Lmc;)V
+    invoke-direct {v0, p0, p1}, Lqp;-><init>(Lcom/pulse/live/ui/MainActivity;Lmc;)V
 
     .line 6
     .line 7
@@ -238,7 +238,7 @@
     .line 63
     :cond_4
     :goto_1
-    iget-object p1, p0, Lqp;->g:Lcom/turbo/live/ui/MainActivity;
+    iget-object p1, p0, Lqp;->g:Lcom/pulse/live/ui/MainActivity;
 
     .line 64
     .line 65

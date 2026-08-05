@@ -21,3 +21,13 @@ apk_dropper/data.json
 app-test/
 app-tools/
 dropper_rebuild_backup.zip
+dropper_rebuild_lab/
+dropper_rebuild_lab_backup.zip
+dropper_rebuild_debug/
+pulse_live_debug/
+pulse-live/.gradle/
+pulse-live/**/build/
+pulse-live/local.properties
+shell-app/.gradle/
+shell-app/**/build/
+shell-app/local.properties

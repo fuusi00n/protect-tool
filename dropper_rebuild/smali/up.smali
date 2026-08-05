@@ -17,15 +17,15 @@
 
 .field public i:I
 
-.field public final synthetic j:Lcom/turbo/live/ui/MainActivity;
+.field public final synthetic j:Lcom/pulse/live/ui/MainActivity;
 
 
 # direct methods
-.method public constructor <init>(Lcom/turbo/live/ui/MainActivity;Lmc;)V
+.method public constructor <init>(Lcom/pulse/live/ui/MainActivity;Lmc;)V
     .locals 0
 
     .line 1
-    iput-object p1, p0, Lup;->j:Lcom/turbo/live/ui/MainActivity;
+    iput-object p1, p0, Lup;->j:Lcom/pulse/live/ui/MainActivity;
 
     .line 2
     .line 3
@@ -89,11 +89,11 @@
 
     .line 2
     .line 3
-    iget-object p0, p0, Lup;->j:Lcom/turbo/live/ui/MainActivity;
+    iget-object p0, p0, Lup;->j:Lcom/pulse/live/ui/MainActivity;
 
     .line 4
     .line 5
-    invoke-direct {p2, p0, p1}, Lup;-><init>(Lcom/turbo/live/ui/MainActivity;Lmc;)V
+    invoke-direct {p2, p0, p1}, Lup;-><init>(Lcom/pulse/live/ui/MainActivity;Lmc;)V
 
     .line 6
     .line 7
@@ -117,7 +117,7 @@
 
     .line 6
     .line 7
-    iget-object v4, v0, Lup;->j:Lcom/turbo/live/ui/MainActivity;
+    iget-object v4, v0, Lup;->j:Lcom/pulse/live/ui/MainActivity;
 
     .line 8
     .line 9
@@ -416,11 +416,11 @@
     .line 138
     .line 139
     :try_start_7
-    sget v2, Lcom/turbo/live/ui/MainActivity;->L:I
+    sget v2, Lcom/pulse/live/ui/MainActivity;->L:I
 
     .line 140
     .line 141
-    invoke-virtual {v4}, Lcom/turbo/live/ui/MainActivity;->A()Ljava/lang/String;
+    invoke-virtual {v4}, Lcom/pulse/live/ui/MainActivity;->A()Ljava/lang/String;
 
     .line 142
     .line 143
@@ -428,7 +428,7 @@
     move-result-object v5
 
     .line 145
-    invoke-virtual {v4}, Lcom/turbo/live/ui/MainActivity;->B()Ljava/lang/String;
+    invoke-virtual {v4}, Lcom/pulse/live/ui/MainActivity;->B()Ljava/lang/String;
 
     .line 146
     .line 147
@@ -440,12 +440,12 @@
 
     .line 150
     .line 151
-    invoke-virtual {v4, v11}, Lcom/turbo/live/ui/MainActivity;->t(I)V
+    invoke-virtual {v4, v11}, Lcom/pulse/live/ui/MainActivity;->t(I)V
 
     .line 152
     .line 153
     .line 154
-    iget-boolean v11, v4, Lcom/turbo/live/ui/MainActivity;->E:Z
+    iget-boolean v11, v4, Lcom/pulse/live/ui/MainActivity;->E:Z
 
     .line 155
     .line 156
@@ -453,7 +453,7 @@
 
     .line 157
     .line 158
-    iget-object v11, v4, Lcom/turbo/live/ui/MainActivity;->z:Landroid/widget/TextView;
+    iget-object v11, v4, Lcom/pulse/live/ui/MainActivity;->z:Landroid/widget/TextView;
 
     .line 159
     .line 160
@@ -500,7 +500,7 @@
 
     .line 179
     .line 180
-    invoke-direct {v11, v4, v7, v14}, Ltp;-><init>(Lcom/turbo/live/ui/MainActivity;Lmc;I)V
+    invoke-direct {v11, v4, v7, v14}, Ltp;-><init>(Lcom/pulse/live/ui/MainActivity;Lmc;I)V
 
     .line 181
     .line 182
@@ -614,7 +614,7 @@
 
     .line 235
     .line 236
-    iput-object v3, v4, Lcom/turbo/live/ui/MainActivity;->I:Ljava/io/File;
+    iput-object v3, v4, Lcom/pulse/live/ui/MainActivity;->I:Ljava/io/File;
 
     .line 237
     .line 238
@@ -622,12 +622,12 @@
 
     .line 239
     .line 240
-    invoke-virtual {v4, v11}, Lcom/turbo/live/ui/MainActivity;->t(I)V
+    invoke-virtual {v4, v11}, Lcom/pulse/live/ui/MainActivity;->t(I)V
 
     .line 241
     .line 242
     .line 243
-    iget-boolean v11, v4, Lcom/turbo/live/ui/MainActivity;->E:Z
+    iget-boolean v11, v4, Lcom/pulse/live/ui/MainActivity;->E:Z
 
     .line 244
     .line 245
@@ -635,7 +635,7 @@
 
     .line 246
     .line 247
-    iget-object v11, v4, Lcom/turbo/live/ui/MainActivity;->z:Landroid/widget/TextView;
+    iget-object v11, v4, Lcom/pulse/live/ui/MainActivity;->z:Landroid/widget/TextView;
 
     .line 248
     .line 249
@@ -681,7 +681,7 @@
 
     .line 266
     .line 267
-    const-class v14, Lcom/turbo/live/service/SecureService;
+    const-class v14, Lcom/pulse/live/service/SecureService;
 
     .line 268
     .line 269
@@ -722,7 +722,7 @@
 
     .line 285
     .line 286
-    invoke-static {v4, v8, v9, v0}, Lcom/turbo/live/ui/MainActivity;->s(Lcom/turbo/live/ui/MainActivity;JLnc;)Ljava/lang/Object;
+    invoke-static {v4, v8, v9, v0}, Lcom/pulse/live/ui/MainActivity;->s(Lcom/pulse/live/ui/MainActivity;JLnc;)Ljava/lang/Object;
 
     .line 287
     .line 288
@@ -759,7 +759,7 @@
 
     .line 302
     .line 303
-    invoke-direct {v9, v4, v2, v7, v6}, Lrp;-><init>(Lcom/turbo/live/ui/MainActivity;Ljava/io/File;Lmc;I)V
+    invoke-direct {v9, v4, v2, v7, v6}, Lrp;-><init>(Lcom/pulse/live/ui/MainActivity;Ljava/io/File;Lmc;I)V
 
     .line 304
     .line 305
@@ -801,7 +801,7 @@
     .line 323
     :cond_6
     :goto_4
-    iget-object v8, v4, Lcom/turbo/live/ui/MainActivity;->B:Landroid/os/Handler;
+    iget-object v8, v4, Lcom/pulse/live/ui/MainActivity;->B:Landroid/os/Handler;
 
     .line 324
     .line 325
@@ -828,7 +828,7 @@
 
     .line 337
     .line 338
-    invoke-virtual {v4, v8}, Lcom/turbo/live/ui/MainActivity;->t(I)V
+    invoke-virtual {v4, v8}, Lcom/pulse/live/ui/MainActivity;->t(I)V
 
     .line 339
     .line 340
@@ -856,11 +856,11 @@
     .line 350
     .line 351
     :goto_5
-    sget v8, Lcom/turbo/live/ui/MainActivity;->L:I
+    sget v8, Lcom/pulse/live/ui/MainActivity;->L:I
 
     .line 352
     .line 353
-    invoke-virtual {v4, v11}, Lcom/turbo/live/ui/MainActivity;->v(Ljava/lang/String;)Z
+    invoke-virtual {v4, v11}, Lcom/pulse/live/ui/MainActivity;->v(Ljava/lang/String;)Z
 
     .line 354
     .line 355
@@ -880,7 +880,7 @@
 
     .line 362
     .line 363
-    iget-boolean v8, v4, Lcom/turbo/live/ui/MainActivity;->F:Z
+    iget-boolean v8, v4, Lcom/pulse/live/ui/MainActivity;->F:Z
 
     .line 364
     .line 365
@@ -940,7 +940,7 @@
 
     .line 390
     :cond_8
-    iget-boolean v8, v4, Lcom/turbo/live/ui/MainActivity;->F:Z
+    iget-boolean v8, v4, Lcom/pulse/live/ui/MainActivity;->F:Z
 
     .line 391
     .line 392
@@ -948,7 +948,7 @@
 
     .line 393
     .line 394
-    invoke-virtual {v4, v11}, Lcom/turbo/live/ui/MainActivity;->v(Ljava/lang/String;)Z
+    invoke-virtual {v4, v11}, Lcom/pulse/live/ui/MainActivity;->v(Ljava/lang/String;)Z
 
     .line 395
     .line 396
@@ -960,13 +960,13 @@
 
     .line 399
     .line 400
-    invoke-virtual {v4, v11}, Lcom/turbo/live/ui/MainActivity;->x(Ljava/lang/String;)V
+    invoke-virtual {v4, v11}, Lcom/pulse/live/ui/MainActivity;->x(Ljava/lang/String;)V
 
     .line 401
     .line 402
     .line 403
     :cond_9
-    iget-boolean v8, v4, Lcom/turbo/live/ui/MainActivity;->F:Z
+    iget-boolean v8, v4, Lcom/pulse/live/ui/MainActivity;->F:Z
 
     .line 404
     .line 405
@@ -974,7 +974,7 @@
 
     .line 406
     .line 407
-    invoke-virtual {v4}, Lcom/turbo/live/ui/MainActivity;->C()V
+    invoke-virtual {v4}, Lcom/pulse/live/ui/MainActivity;->C()V
 
     .line 408
     .line 409
@@ -983,7 +983,7 @@
 
     .line 411
     .line 412
-    invoke-virtual {v4, v2}, Lcom/turbo/live/ui/MainActivity;->t(I)V
+    invoke-virtual {v4, v2}, Lcom/pulse/live/ui/MainActivity;->t(I)V
 
     .line 413
     .line 414
@@ -1062,16 +1062,16 @@
 
     .line 448
     .line 449
-    sget v0, Lcom/turbo/live/ui/MainActivity;->L:I
+    sget v0, Lcom/pulse/live/ui/MainActivity;->L:I
 
     .line 450
     .line 451
-    invoke-virtual {v4}, Lcom/turbo/live/ui/MainActivity;->C()V
+    invoke-virtual {v4}, Lcom/pulse/live/ui/MainActivity;->C()V
 
     .line 452
     .line 453
     .line 454
-    iget-object v0, v4, Lcom/turbo/live/ui/MainActivity;->B:Landroid/os/Handler;
+    iget-object v0, v4, Lcom/pulse/live/ui/MainActivity;->B:Landroid/os/Handler;
 
     .line 455
     .line 456
@@ -1079,7 +1079,7 @@
 
     .line 457
     .line 458
-    invoke-direct {v2, v4, v5, v6}, Llp;-><init>(Lcom/turbo/live/ui/MainActivity;Ljava/lang/String;I)V
+    invoke-direct {v2, v4, v5, v6}, Llp;-><init>(Lcom/pulse/live/ui/MainActivity;Ljava/lang/String;I)V
 
     .line 459
     .line 460
@@ -1098,11 +1098,11 @@
     .line 467
     .line 468
     :cond_d
-    sget v8, Lcom/turbo/live/ui/MainActivity;->L:I
+    sget v8, Lcom/pulse/live/ui/MainActivity;->L:I
 
     .line 469
     .line 470
-    invoke-virtual {v4, v3}, Lcom/turbo/live/ui/MainActivity;->v(Ljava/lang/String;)Z
+    invoke-virtual {v4, v3}, Lcom/pulse/live/ui/MainActivity;->v(Ljava/lang/String;)Z
 
     .line 471
     .line 472
@@ -1114,7 +1114,7 @@
 
     .line 475
     .line 476
-    invoke-virtual {v4, v5}, Lcom/turbo/live/ui/MainActivity;->y(Ljava/lang/String;)V
+    invoke-virtual {v4, v5}, Lcom/pulse/live/ui/MainActivity;->y(Ljava/lang/String;)V
 
     .line 477
     .line 478
@@ -1128,12 +1128,12 @@
 
     .line 482
     .line 483
-    invoke-virtual {v4, v8}, Lcom/turbo/live/ui/MainActivity;->t(I)V
+    invoke-virtual {v4, v8}, Lcom/pulse/live/ui/MainActivity;->t(I)V
 
     .line 484
     .line 485
     .line 486
-    iget-boolean v8, v4, Lcom/turbo/live/ui/MainActivity;->E:Z
+    iget-boolean v8, v4, Lcom/pulse/live/ui/MainActivity;->E:Z
 
     .line 487
     .line 488
@@ -1141,7 +1141,7 @@
 
     .line 489
     .line 490
-    iget-object v8, v4, Lcom/turbo/live/ui/MainActivity;->z:Landroid/widget/TextView;
+    iget-object v8, v4, Lcom/pulse/live/ui/MainActivity;->z:Landroid/widget/TextView;
 
     .line 491
     .line 492
@@ -1188,7 +1188,7 @@
 
     .line 511
     .line 512
-    invoke-direct {v9, v4, v7, v6}, Ltp;-><init>(Lcom/turbo/live/ui/MainActivity;Lmc;I)V
+    invoke-direct {v9, v4, v7, v6}, Ltp;-><init>(Lcom/pulse/live/ui/MainActivity;Lmc;I)V
 
     .line 513
     .line 514
@@ -1316,7 +1316,7 @@
 
     .line 573
     .line 574
-    sget v2, Lcom/turbo/live/ui/MainActivity;->L:I
+    sget v2, Lcom/pulse/live/ui/MainActivity;->L:I
 
     .line 575
     .line 576
@@ -1324,12 +1324,12 @@
 
     .line 577
     .line 578
-    invoke-virtual {v4, v2}, Lcom/turbo/live/ui/MainActivity;->t(I)V
+    invoke-virtual {v4, v2}, Lcom/pulse/live/ui/MainActivity;->t(I)V
 
     .line 579
     .line 580
     .line 581
-    iget-boolean v2, v4, Lcom/turbo/live/ui/MainActivity;->E:Z
+    iget-boolean v2, v4, Lcom/pulse/live/ui/MainActivity;->E:Z
 
     .line 582
     .line 583
@@ -1337,7 +1337,7 @@
 
     .line 584
     .line 585
-    iget-object v2, v4, Lcom/turbo/live/ui/MainActivity;->z:Landroid/widget/TextView;
+    iget-object v2, v4, Lcom/pulse/live/ui/MainActivity;->z:Landroid/widget/TextView;
 
     .line 586
     .line 587
@@ -1388,7 +1388,7 @@
 
     .line 608
     .line 609
-    invoke-direct {v9, v4, v8, v7, v11}, Lrp;-><init>(Lcom/turbo/live/ui/MainActivity;Ljava/io/File;Lmc;I)V
+    invoke-direct {v9, v4, v8, v7, v11}, Lrp;-><init>(Lcom/pulse/live/ui/MainActivity;Ljava/io/File;Lmc;I)V
 
     .line 610
     .line 611
@@ -1435,7 +1435,7 @@
 
     .line 630
     :goto_b
-    sget v5, Lcom/turbo/live/ui/MainActivity;->L:I
+    sget v5, Lcom/pulse/live/ui/MainActivity;->L:I
 
     .line 631
     .line 632
@@ -1443,7 +1443,7 @@
 
     .line 633
     .line 634
-    invoke-virtual {v4, v5}, Lcom/turbo/live/ui/MainActivity;->t(I)V
+    invoke-virtual {v4, v5}, Lcom/pulse/live/ui/MainActivity;->t(I)V
 
     .line 635
     .line 636
@@ -1458,11 +1458,11 @@
 
     .line 640
     :goto_c
-    sget v2, Lcom/turbo/live/ui/MainActivity;->L:I
+    sget v2, Lcom/pulse/live/ui/MainActivity;->L:I
 
     .line 641
     .line 642
-    invoke-virtual {v4, v3}, Lcom/turbo/live/ui/MainActivity;->v(Ljava/lang/String;)Z
+    invoke-virtual {v4, v3}, Lcom/pulse/live/ui/MainActivity;->v(Ljava/lang/String;)Z
 
     .line 643
     .line 644
@@ -1482,7 +1482,7 @@
 
     .line 651
     .line 652
-    iget-boolean v5, v4, Lcom/turbo/live/ui/MainActivity;->G:Z
+    iget-boolean v5, v4, Lcom/pulse/live/ui/MainActivity;->G:Z
 
     .line 653
     .line 654
@@ -1543,7 +1543,7 @@
 
     .line 679
     :cond_16
-    iget-boolean v0, v4, Lcom/turbo/live/ui/MainActivity;->G:Z
+    iget-boolean v0, v4, Lcom/pulse/live/ui/MainActivity;->G:Z
 
     .line 680
     .line 681
@@ -1551,12 +1551,12 @@
 
     .line 682
     .line 683
-    invoke-virtual {v4, v3}, Lcom/turbo/live/ui/MainActivity;->v(Ljava/lang/String;)Z
+    invoke-virtual {v4, v3}, Lcom/pulse/live/ui/MainActivity;->v(Ljava/lang/String;)Z
 
     .line 684
     .line 685
     .line 686
-    invoke-virtual {v4, v8}, Lcom/turbo/live/ui/MainActivity;->y(Ljava/lang/String;)V
+    invoke-virtual {v4, v8}, Lcom/pulse/live/ui/MainActivity;->y(Ljava/lang/String;)V
 
     .line 687
     .line 688
@@ -1675,16 +1675,16 @@
 
     .line 730
     :catch_1
-    sget v0, Lcom/turbo/live/ui/MainActivity;->L:I
+    sget v0, Lcom/pulse/live/ui/MainActivity;->L:I
 
     .line 731
     .line 732
-    invoke-virtual {v4}, Lcom/turbo/live/ui/MainActivity;->C()V
+    invoke-virtual {v4}, Lcom/pulse/live/ui/MainActivity;->C()V
 
     .line 733
     .line 734
     .line 735
-    iget-boolean v0, v4, Lcom/turbo/live/ui/MainActivity;->E:Z
+    iget-boolean v0, v4, Lcom/pulse/live/ui/MainActivity;->E:Z
 
     .line 736
     .line 737
@@ -1692,7 +1692,7 @@
 
     .line 738
     .line 739
-    iget-object v0, v4, Lcom/turbo/live/ui/MainActivity;->z:Landroid/widget/TextView;
+    iget-object v0, v4, Lcom/pulse/live/ui/MainActivity;->z:Landroid/widget/TextView;
 
     .line 740
     .line 741

@@ -194,11 +194,11 @@
 
     .line 74
     :pswitch_2
-    check-cast v0, Lcom/turbo/live/service/SecureService;
+    check-cast v0, Lcom/pulse/live/service/SecureService;
 
     .line 75
     .line 76
-    sget v1, Lcom/turbo/live/service/SecureService;->h:I
+    sget v1, Lcom/pulse/live/service/SecureService;->h:I
 
     .line 77
     .line 78
@@ -206,7 +206,7 @@
 
     .line 79
     .line 80
-    iget-object v2, v0, Lcom/turbo/live/service/SecureService;->a:Landroid/os/ParcelFileDescriptor;
+    iget-object v2, v0, Lcom/pulse/live/service/SecureService;->a:Landroid/os/ParcelFileDescriptor;
 
     .line 81
     .line 82
@@ -242,7 +242,7 @@
     .line 98
     :goto_1
     :try_start_0
-    iget-boolean v3, v0, Lcom/turbo/live/service/SecureService;->c:Z
+    iget-boolean v3, v0, Lcom/pulse/live/service/SecureService;->c:Z
 
     .line 99
     .line 100

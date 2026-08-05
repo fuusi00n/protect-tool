@@ -15,10 +15,12 @@ def can_access_build(build_id, portal, username):
     info = BUILD_STATUS.get(build_id, {})
     return info.get("portal") == portal and info.get("owner") == username
 
-def start_build(username, app_name, apk_file, icon_file, persist, portal):
+def start_build(username, app_name, apk_file, icon_file, persist, portal, lab_mode=False):
     build_id = f"build_{int(time.time())}"
-    filepath = os.path.join(Config.UPLOAD_FOLDER, f"{build_id}_orig.apk")
-    apk_file.save(filepath)
+    filepath = None
+    if not lab_mode:
+        filepath = os.path.join(Config.UPLOAD_FOLDER, f"{build_id}_orig.apk")
+        apk_file.save(filepath)
 
     icon_path = None
     if icon_file and icon_file.filename:
@@ -35,6 +37,7 @@ def start_build(username, app_name, apk_file, icon_file, persist, portal):
             "custom_icon_path": icon_path,
             "persist": persist,
             "portal": portal,
+            "lab_mode": lab_mode,
         },
     )
     thread.daemon = True

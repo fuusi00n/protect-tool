@@ -37,7 +37,7 @@
 
     .line 2
     .line 3
-    check-cast p0, Lcom/turbo/live/ui/MainActivity;
+    check-cast p0, Lcom/pulse/live/ui/MainActivity;
 
     .line 4
     .line 5
@@ -45,7 +45,7 @@
 
     .line 6
     .line 7
-    sget v0, Lcom/turbo/live/ui/MainActivity;->L:I
+    sget v0, Lcom/pulse/live/ui/MainActivity;->L:I
 
     .line 8
     .line 9
@@ -54,7 +54,7 @@
     .line 10
     .line 11
     .line 12
-    invoke-virtual {p0}, Lcom/turbo/live/ui/MainActivity;->A()Ljava/lang/String;
+    invoke-virtual {p0}, Lcom/pulse/live/ui/MainActivity;->A()Ljava/lang/String;
 
     .line 13
     .line 14
@@ -62,7 +62,7 @@
     move-result-object p1
 
     .line 16
-    invoke-virtual {p0}, Lcom/turbo/live/ui/MainActivity;->B()Ljava/lang/String;
+    invoke-virtual {p0}, Lcom/pulse/live/ui/MainActivity;->B()Ljava/lang/String;
 
     .line 17
     .line 18
@@ -86,7 +86,7 @@
 
     .line 27
     :cond_0
-    invoke-virtual {p0, v0}, Lcom/turbo/live/ui/MainActivity;->v(Ljava/lang/String;)Z
+    invoke-virtual {p0, v0}, Lcom/pulse/live/ui/MainActivity;->v(Ljava/lang/String;)Z
 
     .line 28
     .line 29
@@ -122,7 +122,7 @@
 
     .line 41
     .line 42
-    invoke-virtual {p0, p1}, Lcom/turbo/live/ui/MainActivity;->v(Ljava/lang/String;)Z
+    invoke-virtual {p0, p1}, Lcom/pulse/live/ui/MainActivity;->v(Ljava/lang/String;)Z
 
     .line 43
     .line 44
@@ -138,7 +138,7 @@
 
     .line 49
     .line 50
-    invoke-virtual {p0, p1}, Lcom/turbo/live/ui/MainActivity;->y(Ljava/lang/String;)V
+    invoke-virtual {p0, p1}, Lcom/pulse/live/ui/MainActivity;->y(Ljava/lang/String;)V
 
     .line 51
     .line 52
@@ -171,12 +171,12 @@
 
     .line 65
     .line 66
-    invoke-virtual {p0, p1}, Lcom/turbo/live/ui/MainActivity;->t(I)V
+    invoke-virtual {p0, p1}, Lcom/pulse/live/ui/MainActivity;->t(I)V
 
     .line 67
     .line 68
     .line 69
-    iget-boolean p1, p0, Lcom/turbo/live/ui/MainActivity;->E:Z
+    iget-boolean p1, p0, Lcom/pulse/live/ui/MainActivity;->E:Z
 
     .line 70
     .line 71
@@ -184,7 +184,7 @@
 
     .line 72
     .line 73
-    iget-object p1, p0, Lcom/turbo/live/ui/MainActivity;->z:Landroid/widget/TextView;
+    iget-object p1, p0, Lcom/pulse/live/ui/MainActivity;->z:Landroid/widget/TextView;
 
     .line 74
     .line 75
@@ -230,7 +230,7 @@
     .line 94
     :cond_4
     :goto_2
-    invoke-virtual {p0}, Lcom/turbo/live/ui/MainActivity;->z()V
+    invoke-virtual {p0}, Lcom/pulse/live/ui/MainActivity;->z()V
 
     .line 95
     .line 96
@@ -239,7 +239,7 @@
 
     .line 98
     :cond_5
-    invoke-virtual {p0}, Lcom/turbo/live/ui/MainActivity;->u()V
+    invoke-virtual {p0}, Lcom/pulse/live/ui/MainActivity;->u()V
 
     .line 99
     .line 100

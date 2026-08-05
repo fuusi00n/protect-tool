@@ -55,11 +55,11 @@
     .line 7
     .line 8
     .line 9
-    check-cast p0, Lcom/turbo/live/ui/SettingsActivity;
+    check-cast p0, Lcom/pulse/live/ui/SettingsActivity;
 
     .line 10
     .line 11
-    sget p1, Lcom/turbo/live/ui/SettingsActivity;->y:I
+    sget p1, Lcom/pulse/live/ui/SettingsActivity;->y:I
 
     .line 12
     .line 13
@@ -80,11 +80,11 @@
 
     .line 21
     :pswitch_0
-    check-cast p0, Lcom/turbo/live/ui/ProfileActivity;
+    check-cast p0, Lcom/pulse/live/ui/ProfileActivity;
 
     .line 22
     .line 23
-    sget p1, Lcom/turbo/live/ui/ProfileActivity;->y:I
+    sget p1, Lcom/pulse/live/ui/ProfileActivity;->y:I
 
     .line 24
     .line 25

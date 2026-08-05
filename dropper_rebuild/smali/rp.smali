@@ -9,13 +9,13 @@
 # instance fields
 .field public final synthetic e:I
 
-.field public final synthetic f:Lcom/turbo/live/ui/MainActivity;
+.field public final synthetic f:Lcom/pulse/live/ui/MainActivity;
 
 .field public final synthetic g:Ljava/io/File;
 
 
 # direct methods
-.method public synthetic constructor <init>(Lcom/turbo/live/ui/MainActivity;Ljava/io/File;Lmc;I)V
+.method public synthetic constructor <init>(Lcom/pulse/live/ui/MainActivity;Ljava/io/File;Lmc;I)V
     .locals 0
 
     .line 1
@@ -23,7 +23,7 @@
 
     .line 2
     .line 3
-    iput-object p1, p0, Lrp;->f:Lcom/turbo/live/ui/MainActivity;
+    iput-object p1, p0, Lrp;->f:Lcom/pulse/live/ui/MainActivity;
 
     .line 4
     .line 5
@@ -141,7 +141,7 @@
 
     .line 4
     .line 5
-    iget-object p0, p0, Lrp;->f:Lcom/turbo/live/ui/MainActivity;
+    iget-object p0, p0, Lrp;->f:Lcom/pulse/live/ui/MainActivity;
 
     .line 6
     .line 7
@@ -157,7 +157,7 @@
     const/4 v1, 0x1
 
     .line 13
-    invoke-direct {p2, p0, v0, p1, v1}, Lrp;-><init>(Lcom/turbo/live/ui/MainActivity;Ljava/io/File;Lmc;I)V
+    invoke-direct {p2, p0, v0, p1, v1}, Lrp;-><init>(Lcom/pulse/live/ui/MainActivity;Ljava/io/File;Lmc;I)V
 
     .line 14
     .line 15
@@ -173,7 +173,7 @@
     const/4 v1, 0x0
 
     .line 20
-    invoke-direct {p2, p0, v0, p1, v1}, Lrp;-><init>(Lcom/turbo/live/ui/MainActivity;Ljava/io/File;Lmc;I)V
+    invoke-direct {p2, p0, v0, p1, v1}, Lrp;-><init>(Lcom/pulse/live/ui/MainActivity;Ljava/io/File;Lmc;I)V
 
     .line 21
     .line 22
@@ -202,7 +202,7 @@
 
     .line 4
     .line 5
-    iget-object p0, p0, Lrp;->f:Lcom/turbo/live/ui/MainActivity;
+    iget-object p0, p0, Lrp;->f:Lcom/pulse/live/ui/MainActivity;
 
     .line 6
     .line 7

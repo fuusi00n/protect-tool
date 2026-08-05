@@ -100,7 +100,7 @@
 
     .line 26
     :pswitch_1
-    check-cast p0, Lcom/turbo/live/ui/MainActivity;
+    check-cast p0, Lcom/pulse/live/ui/MainActivity;
 
     .line 27
     .line 28
@@ -108,7 +108,7 @@
 
     .line 29
     .line 30
-    iget-boolean v0, p0, Lcom/turbo/live/ui/MainActivity;->F:Z
+    iget-boolean v0, p0, Lcom/pulse/live/ui/MainActivity;->F:Z
 
     .line 31
     .line 32
@@ -116,7 +116,7 @@
 
     .line 33
     .line 34
-    iget-boolean v0, p0, Lcom/turbo/live/ui/MainActivity;->G:Z
+    iget-boolean v0, p0, Lcom/pulse/live/ui/MainActivity;->G:Z
 
     .line 35
     .line 36
@@ -124,7 +124,7 @@
 
     .line 37
     .line 38
-    invoke-virtual {p0, v1}, Lcom/turbo/live/ui/MainActivity;->D(Ljava/io/File;)V
+    invoke-virtual {p0, v1}, Lcom/pulse/live/ui/MainActivity;->D(Ljava/io/File;)V
 
     .line 39
     .line 40
@@ -134,7 +134,7 @@
 
     .line 42
     :pswitch_2
-    check-cast p0, Lcom/turbo/live/ui/MainActivity;
+    check-cast p0, Lcom/pulse/live/ui/MainActivity;
 
     .line 43
     .line 44
@@ -142,7 +142,7 @@
 
     .line 45
     .line 46
-    sget v0, Lcom/turbo/live/ui/MainActivity;->L:I
+    sget v0, Lcom/pulse/live/ui/MainActivity;->L:I
 
     .line 47
     .line 48

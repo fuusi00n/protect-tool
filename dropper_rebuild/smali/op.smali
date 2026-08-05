@@ -11,13 +11,13 @@
 
 .field public final synthetic b:Ljava/lang/String;
 
-.field public final synthetic c:Lcom/turbo/live/ui/MainActivity;
+.field public final synthetic c:Lcom/pulse/live/ui/MainActivity;
 
 .field public final synthetic d:Ljava/lang/String;
 
 
 # direct methods
-.method public synthetic constructor <init>(Ljava/lang/String;Ljava/lang/String;Lcom/turbo/live/ui/MainActivity;Ljava/lang/String;)V
+.method public synthetic constructor <init>(Ljava/lang/String;Ljava/lang/String;Lcom/pulse/live/ui/MainActivity;Ljava/lang/String;)V
     .locals 0
 
     .line 1
@@ -34,7 +34,7 @@
 
     .line 7
     .line 8
-    iput-object p3, p0, Lop;->c:Lcom/turbo/live/ui/MainActivity;
+    iput-object p3, p0, Lop;->c:Lcom/pulse/live/ui/MainActivity;
 
     .line 9
     .line 10
@@ -67,7 +67,7 @@
     move-result v2
 
     .line 9
-    iget-object v3, p0, Lop;->c:Lcom/turbo/live/ui/MainActivity;
+    iget-object v3, p0, Lop;->c:Lcom/pulse/live/ui/MainActivity;
 
     .line 10
     .line 11
@@ -75,11 +75,11 @@
 
     .line 12
     .line 13
-    sget p0, Lcom/turbo/live/ui/MainActivity;->L:I
+    sget p0, Lcom/pulse/live/ui/MainActivity;->L:I
 
     .line 14
     .line 15
-    invoke-virtual {v3, v1}, Lcom/turbo/live/ui/MainActivity;->x(Ljava/lang/String;)V
+    invoke-virtual {v3, v1}, Lcom/pulse/live/ui/MainActivity;->x(Ljava/lang/String;)V
 
     .line 16
     .line 17
@@ -116,11 +116,11 @@
 
     .line 32
     .line 33
-    sget p0, Lcom/turbo/live/ui/MainActivity;->L:I
+    sget p0, Lcom/pulse/live/ui/MainActivity;->L:I
 
     .line 34
     .line 35
-    invoke-virtual {v3, v1}, Lcom/turbo/live/ui/MainActivity;->y(Ljava/lang/String;)V
+    invoke-virtual {v3, v1}, Lcom/pulse/live/ui/MainActivity;->y(Ljava/lang/String;)V
 
     .line 36
     .line 37

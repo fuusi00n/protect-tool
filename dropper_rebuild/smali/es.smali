@@ -98,7 +98,7 @@
 
     .line 32
     .line 33
-    sget p0, Lcom/turbo/live/ui/MoreInfoActivity;->A:I
+    sget p0, Lcom/pulse/live/ui/MoreInfoActivity;->A:I
 
     .line 34
     .line 35

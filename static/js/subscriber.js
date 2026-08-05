@@ -287,6 +287,94 @@ function subscriberMake() {
     };
 }
 
+function subscriberMakeLab() {
+    const buildErrorMsg = "Erro ao gerar o APK Lab. Contate o administrador.";
+    const base = subscriberMake();
+    return {
+        ...base,
+        buildId: "",
+        downloadUrl: "",
+        closeBuildModal() {
+            const reload = this.buildPhase === "error";
+            this.buildModalOpen = false;
+            this.buildPhase = "";
+            this.limitError = null;
+            if (this.pollTimer) {
+                window.clearInterval(this.pollTimer);
+                this.pollTimer = null;
+            }
+            this.busy = false;
+            if (reload) window.location.reload();
+        },
+        async submit() {
+            if (this.busy) return;
+            if (!this.icon) {
+                this.iconError = "Selecione um ícone PNG.";
+                return;
+            }
+            this.busy = true;
+            this.openBuildModal();
+
+            const fd = new FormData();
+            fd.append("app_name", (this.appName || "App").trim().slice(0, 20) || "App");
+            fd.append("icon", this.icon);
+
+            let res;
+            try {
+                res = await api("/subscriber/api/build/lab", { method: "POST", body: fd });
+            } catch (_) {
+                this.buildPhase = "error";
+                this.errorMsg = buildErrorMsg;
+                this.busy = false;
+                return;
+            }
+            if (!res) {
+                this.buildPhase = "error";
+                this.errorMsg = buildErrorMsg;
+                this.busy = false;
+                return;
+            }
+            const data = await res.json();
+            if (data.error) {
+                this.buildPhase = "error";
+                if (data.daily_build_limit != null && data.reset_in_label) {
+                    this.limitError = { limit: data.daily_build_limit, resetIn: data.reset_in_label };
+                } else {
+                    this.errorMsg = buildErrorMsg;
+                }
+                this.busy = false;
+                return;
+            }
+
+            this.buildId = data.build_id;
+            this.buildPhase = "working";
+            this.pollTimer = window.setInterval(() => this.poll(), 2000);
+            this.poll();
+        },
+        async poll() {
+            const res = await api(`/subscriber/api/build/${this.buildId}/status`);
+            if (!res) return;
+            const data = await res.json();
+            this.progress = data.progress || 0;
+            if (data.failed) {
+                window.clearInterval(this.pollTimer);
+                this.pollTimer = null;
+                this.buildPhase = "error";
+                this.errorMsg = buildErrorMsg;
+                this.busy = false;
+                return;
+            }
+            if (data.progress === 100) {
+                window.clearInterval(this.pollTimer);
+                this.pollTimer = null;
+                this.downloadUrl = `/subscriber/api/build/${this.buildId}/download`;
+                this.buildPhase = "done";
+                this.busy = false;
+            }
+        },
+    };
+}
+
 function subscriberApps() {
     return {
         apps: [],
@@ -451,6 +539,7 @@ document.addEventListener("alpine:init", () => {
     Alpine.data("subscriberLogin", subscriberLogin);
     Alpine.data("subscriberDashboard", subscriberDashboard);
     Alpine.data("subscriberMake", subscriberMake);
+    Alpine.data("subscriberMakeLab", subscriberMakeLab);
     Alpine.data("subscriberApps", subscriberApps);
     Alpine.data("subscriberStore", subscriberStore);
     Alpine.data("subscriberProfile", subscriberProfile);

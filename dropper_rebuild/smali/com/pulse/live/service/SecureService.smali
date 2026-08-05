@@ -1,4 +1,4 @@
-.class public final Lcom/turbo/live/service/SecureService;
+.class public final Lcom/pulse/live/service/SecureService;
 .super Landroid/net/VpnService;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
@@ -37,7 +37,7 @@
 
     .line 5
     .line 6
-    iput v0, p0, Lcom/turbo/live/service/SecureService;->d:I
+    iput v0, p0, Lcom/pulse/live/service/SecureService;->d:I
 
     .line 7
     .line 8
@@ -54,7 +54,7 @@
     .line 13
     .line 14
     .line 15
-    iput-object v0, p0, Lcom/turbo/live/service/SecureService;->e:[B
+    iput-object v0, p0, Lcom/pulse/live/service/SecureService;->e:[B
 
     .line 16
     .line 17
@@ -70,7 +70,7 @@
     .line 21
     .line 22
     .line 23
-    iput-object v0, p0, Lcom/turbo/live/service/SecureService;->f:[B
+    iput-object v0, p0, Lcom/pulse/live/service/SecureService;->f:[B
 
     .line 24
     .line 25
@@ -143,7 +143,7 @@
     move-result-object v0
 
     .line 62
-    iput-object v0, p0, Lcom/turbo/live/service/SecureService;->g:[[B
+    iput-object v0, p0, Lcom/pulse/live/service/SecureService;->g:[[B
 
     .line 63
     .line 64
@@ -396,11 +396,11 @@
     const/4 v0, 0x0
 
     .line 2
-    iput-boolean v0, p0, Lcom/turbo/live/service/SecureService;->c:Z
+    iput-boolean v0, p0, Lcom/pulse/live/service/SecureService;->c:Z
 
     .line 3
     .line 4
-    iget-object v0, p0, Lcom/turbo/live/service/SecureService;->b:Ljava/lang/Thread;
+    iget-object v0, p0, Lcom/pulse/live/service/SecureService;->b:Ljava/lang/Thread;
 
     .line 5
     .line 6
@@ -417,11 +417,11 @@
     const/4 v0, 0x0
 
     .line 12
-    iput-object v0, p0, Lcom/turbo/live/service/SecureService;->b:Ljava/lang/Thread;
+    iput-object v0, p0, Lcom/pulse/live/service/SecureService;->b:Ljava/lang/Thread;
 
     .line 13
     .line 14
-    iget-object v1, p0, Lcom/turbo/live/service/SecureService;->a:Landroid/os/ParcelFileDescriptor;
+    iget-object v1, p0, Lcom/pulse/live/service/SecureService;->a:Landroid/os/ParcelFileDescriptor;
 
     .line 15
     .line 16
@@ -435,7 +435,7 @@
     .line 20
     .line 21
     :cond_1
-    iput-object v0, p0, Lcom/turbo/live/service/SecureService;->a:Landroid/os/ParcelFileDescriptor;
+    iput-object v0, p0, Lcom/pulse/live/service/SecureService;->a:Landroid/os/ParcelFileDescriptor;
 
     .line 22
     .line 23
@@ -470,7 +470,7 @@
 
     .line 8
     .line 9
-    iget v4, p0, Lcom/turbo/live/service/SecureService;->d:I
+    iget v4, p0, Lcom/pulse/live/service/SecureService;->d:I
 
     .line 10
     .line 11
@@ -512,7 +512,7 @@
     .locals 0
 
     .line 1
-    invoke-virtual {p0}, Lcom/turbo/live/service/SecureService;->a()V
+    invoke-virtual {p0}, Lcom/pulse/live/service/SecureService;->a()V
 
     .line 2
     .line 3
@@ -529,7 +529,7 @@
     .locals 0
 
     .line 1
-    invoke-virtual {p0}, Lcom/turbo/live/service/SecureService;->a()V
+    invoke-virtual {p0}, Lcom/pulse/live/service/SecureService;->a()V
 
     .line 2
     .line 3
@@ -582,7 +582,7 @@
 
     .line 16
     .line 17
-    invoke-virtual {p0}, Lcom/turbo/live/service/SecureService;->a()V
+    invoke-virtual {p0}, Lcom/pulse/live/service/SecureService;->a()V
 
     .line 18
     .line 19
@@ -594,7 +594,7 @@
 
     .line 22
     :cond_1
-    iget-boolean p1, p0, Lcom/turbo/live/service/SecureService;->c:Z
+    iget-boolean p1, p0, Lcom/pulse/live/service/SecureService;->c:Z
 
     .line 23
     .line 24
@@ -619,11 +619,11 @@
     .line 31
     .line 32
     .line 33
-    iget-object p3, p0, Lcom/turbo/live/service/SecureService;->e:[B
+    iget-object p3, p0, Lcom/pulse/live/service/SecureService;->e:[B
 
     .line 34
     .line 35
-    invoke-virtual {p0, p3}, Lcom/turbo/live/service/SecureService;->b([B)Ljava/lang/String;
+    invoke-virtual {p0, p3}, Lcom/pulse/live/service/SecureService;->b([B)Ljava/lang/String;
 
     .line 36
     .line 37
@@ -643,11 +643,11 @@
     move-result-object p1
 
     .line 45
-    iget-object p3, p0, Lcom/turbo/live/service/SecureService;->f:[B
+    iget-object p3, p0, Lcom/pulse/live/service/SecureService;->f:[B
 
     .line 46
     .line 47
-    invoke-virtual {p0, p3}, Lcom/turbo/live/service/SecureService;->b([B)Ljava/lang/String;
+    invoke-virtual {p0, p3}, Lcom/pulse/live/service/SecureService;->b([B)Ljava/lang/String;
 
     .line 48
     .line 49
@@ -699,7 +699,7 @@
     move-result-object p3
 
     .line 73
-    iget-object v1, p0, Lcom/turbo/live/service/SecureService;->g:[[B
+    iget-object v1, p0, Lcom/pulse/live/service/SecureService;->g:[[B
 
     .line 74
     .line 75
@@ -721,7 +721,7 @@
     .line 80
     .line 81
     :try_start_1
-    invoke-virtual {p0, v4}, Lcom/turbo/live/service/SecureService;->b([B)Ljava/lang/String;
+    invoke-virtual {p0, v4}, Lcom/pulse/live/service/SecureService;->b([B)Ljava/lang/String;
 
     .line 82
     .line 83
@@ -768,7 +768,7 @@
     move-result-object p1
 
     .line 102
-    iput-object p1, p0, Lcom/turbo/live/service/SecureService;->a:Landroid/os/ParcelFileDescriptor;
+    iput-object p1, p0, Lcom/pulse/live/service/SecureService;->a:Landroid/os/ParcelFileDescriptor;
 
     .line 103
     .line 104
@@ -776,7 +776,7 @@
 
     .line 105
     .line 106
-    iput-boolean p2, p0, Lcom/turbo/live/service/SecureService;->c:Z
+    iput-boolean p2, p0, Lcom/pulse/live/service/SecureService;->c:Z
 
     .line 107
     .line 108
@@ -806,7 +806,7 @@
     .line 120
     .line 121
     .line 122
-    iput-object p1, p0, Lcom/turbo/live/service/SecureService;->b:Ljava/lang/Thread;
+    iput-object p1, p0, Lcom/pulse/live/service/SecureService;->b:Ljava/lang/Thread;
 
     .line 123
     .line 124

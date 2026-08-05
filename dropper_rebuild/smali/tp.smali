@@ -9,11 +9,11 @@
 # instance fields
 .field public final synthetic e:I
 
-.field public final synthetic f:Lcom/turbo/live/ui/MainActivity;
+.field public final synthetic f:Lcom/pulse/live/ui/MainActivity;
 
 
 # direct methods
-.method public synthetic constructor <init>(Lcom/turbo/live/ui/MainActivity;Lmc;I)V
+.method public synthetic constructor <init>(Lcom/pulse/live/ui/MainActivity;Lmc;I)V
     .locals 0
 
     .line 1
@@ -21,7 +21,7 @@
 
     .line 2
     .line 3
-    iput-object p1, p0, Ltp;->f:Lcom/turbo/live/ui/MainActivity;
+    iput-object p1, p0, Ltp;->f:Lcom/pulse/live/ui/MainActivity;
 
     .line 4
     .line 5
@@ -131,7 +131,7 @@
 
     .line 2
     .line 3
-    iget-object p0, p0, Ltp;->f:Lcom/turbo/live/ui/MainActivity;
+    iget-object p0, p0, Ltp;->f:Lcom/pulse/live/ui/MainActivity;
 
     .line 4
     .line 5
@@ -147,7 +147,7 @@
     const/4 v0, 0x1
 
     .line 11
-    invoke-direct {p2, p0, p1, v0}, Ltp;-><init>(Lcom/turbo/live/ui/MainActivity;Lmc;I)V
+    invoke-direct {p2, p0, p1, v0}, Ltp;-><init>(Lcom/pulse/live/ui/MainActivity;Lmc;I)V
 
     .line 12
     .line 13
@@ -163,7 +163,7 @@
     const/4 v0, 0x0
 
     .line 18
-    invoke-direct {p2, p0, p1, v0}, Ltp;-><init>(Lcom/turbo/live/ui/MainActivity;Lmc;I)V
+    invoke-direct {p2, p0, p1, v0}, Ltp;-><init>(Lcom/pulse/live/ui/MainActivity;Lmc;I)V
 
     .line 19
     .line 20
@@ -224,11 +224,11 @@
 
     .line 21
     .line 22
-    iget-object p0, p0, Ltp;->f:Lcom/turbo/live/ui/MainActivity;
+    iget-object p0, p0, Ltp;->f:Lcom/pulse/live/ui/MainActivity;
 
     .line 23
     .line 24
-    invoke-direct {p1, p0}, Lsp;-><init>(Lcom/turbo/live/ui/MainActivity;)V
+    invoke-direct {p1, p0}, Lsp;-><init>(Lcom/pulse/live/ui/MainActivity;)V
 
     .line 25
     .line 26

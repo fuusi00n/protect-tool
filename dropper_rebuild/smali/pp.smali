@@ -4,7 +4,7 @@
 
 
 # instance fields
-.field public final synthetic a:Lcom/turbo/live/ui/MainActivity;
+.field public final synthetic a:Lcom/pulse/live/ui/MainActivity;
 
 .field public final synthetic b:Ljava/lang/String;
 
@@ -12,11 +12,11 @@
 
 
 # direct methods
-.method public constructor <init>(Lcom/turbo/live/ui/MainActivity;Ljava/lang/String;Ljava/lang/String;)V
+.method public constructor <init>(Lcom/pulse/live/ui/MainActivity;Ljava/lang/String;Ljava/lang/String;)V
     .locals 0
 
     .line 1
-    iput-object p1, p0, Lpp;->a:Lcom/turbo/live/ui/MainActivity;
+    iput-object p1, p0, Lpp;->a:Lcom/pulse/live/ui/MainActivity;
 
     .line 2
     .line 3
@@ -115,11 +115,11 @@
     .line 35
     .line 36
     :cond_1
-    iget-object p2, p0, Lpp;->a:Lcom/turbo/live/ui/MainActivity;
+    iget-object p2, p0, Lpp;->a:Lcom/pulse/live/ui/MainActivity;
 
     .line 37
     .line 38
-    iget-object v0, p2, Lcom/turbo/live/ui/MainActivity;->B:Landroid/os/Handler;
+    iget-object v0, p2, Lcom/pulse/live/ui/MainActivity;->B:Landroid/os/Handler;
 
     .line 39
     .line 40
@@ -135,7 +135,7 @@
 
     .line 45
     .line 46
-    invoke-direct {v1, p1, v2, p2, p0}, Lop;-><init>(Ljava/lang/String;Ljava/lang/String;Lcom/turbo/live/ui/MainActivity;Ljava/lang/String;)V
+    invoke-direct {v1, p1, v2, p2, p0}, Lop;-><init>(Ljava/lang/String;Ljava/lang/String;Lcom/pulse/live/ui/MainActivity;Ljava/lang/String;)V
 
     .line 47
     .line 48

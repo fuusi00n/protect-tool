@@ -9,11 +9,11 @@
 # instance fields
 .field public final synthetic a:I
 
-.field public final synthetic b:Lcom/turbo/live/ui/MoreInfoActivity;
+.field public final synthetic b:Lcom/pulse/live/ui/MoreInfoActivity;
 
 
 # direct methods
-.method public synthetic constructor <init>(Lcom/turbo/live/ui/MoreInfoActivity;I)V
+.method public synthetic constructor <init>(Lcom/pulse/live/ui/MoreInfoActivity;I)V
     .locals 0
 
     .line 1
@@ -21,7 +21,7 @@
 
     .line 2
     .line 3
-    iput-object p1, p0, Lds;->b:Lcom/turbo/live/ui/MoreInfoActivity;
+    iput-object p1, p0, Lds;->b:Lcom/pulse/live/ui/MoreInfoActivity;
 
     .line 4
     .line 5
@@ -43,7 +43,7 @@
 
     .line 2
     .line 3
-    iget-object p0, p0, Lds;->b:Lcom/turbo/live/ui/MoreInfoActivity;
+    iget-object p0, p0, Lds;->b:Lcom/pulse/live/ui/MoreInfoActivity;
 
     .line 4
     .line 5
@@ -52,7 +52,7 @@
     .line 6
     .line 7
     .line 8
-    sget p1, Lcom/turbo/live/ui/MoreInfoActivity;->A:I
+    sget p1, Lcom/pulse/live/ui/MoreInfoActivity;->A:I
 
     .line 9
     .line 10
@@ -65,7 +65,7 @@
 
     .line 13
     .line 14
-    iget-object v1, p0, Lcom/turbo/live/ui/MoreInfoActivity;->z:Ld6;
+    iget-object v1, p0, Lcom/pulse/live/ui/MoreInfoActivity;->z:Ld6;
 
     .line 15
     .line 16
@@ -122,7 +122,7 @@
 
     .line 39
     :pswitch_0
-    sget p1, Lcom/turbo/live/ui/MoreInfoActivity;->A:I
+    sget p1, Lcom/pulse/live/ui/MoreInfoActivity;->A:I
 
     .line 40
     .line 41

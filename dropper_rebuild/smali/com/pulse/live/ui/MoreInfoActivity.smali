@@ -1,4 +1,4 @@
-.class public final Lcom/turbo/live/ui/MoreInfoActivity;
+.class public final Lcom/pulse/live/ui/MoreInfoActivity;
 .super Lf3;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
@@ -269,7 +269,7 @@
     .line 102
     .line 103
     .line 104
-    iput-object v4, p0, Lcom/turbo/live/ui/MoreInfoActivity;->y:Lt1;
+    iput-object v4, p0, Lcom/pulse/live/ui/MoreInfoActivity;->y:Lt1;
 
     .line 105
     .line 106
@@ -340,11 +340,11 @@
 
     .line 138
     .line 139
-    iput-object p1, p0, Lcom/turbo/live/ui/MoreInfoActivity;->z:Ld6;
+    iput-object p1, p0, Lcom/pulse/live/ui/MoreInfoActivity;->z:Ld6;
 
     .line 140
     .line 141
-    iget-object p1, p0, Lcom/turbo/live/ui/MoreInfoActivity;->y:Lt1;
+    iget-object p1, p0, Lcom/pulse/live/ui/MoreInfoActivity;->y:Lt1;
 
     .line 142
     .line 143
@@ -364,7 +364,7 @@
 
     .line 150
     .line 151
-    invoke-direct {v0, p0, v2}, Lds;-><init>(Lcom/turbo/live/ui/MoreInfoActivity;I)V
+    invoke-direct {v0, p0, v2}, Lds;-><init>(Lcom/pulse/live/ui/MoreInfoActivity;I)V
 
     .line 152
     .line 153
@@ -374,7 +374,7 @@
     .line 155
     .line 156
     .line 157
-    iget-object p1, p0, Lcom/turbo/live/ui/MoreInfoActivity;->y:Lt1;
+    iget-object p1, p0, Lcom/pulse/live/ui/MoreInfoActivity;->y:Lt1;
 
     .line 158
     .line 159
@@ -411,7 +411,7 @@
     .line 174
     .line 175
     .line 176
-    iget-object p1, p0, Lcom/turbo/live/ui/MoreInfoActivity;->y:Lt1;
+    iget-object p1, p0, Lcom/pulse/live/ui/MoreInfoActivity;->y:Lt1;
 
     .line 177
     .line 178
@@ -431,7 +431,7 @@
 
     .line 185
     .line 186
-    iget-object v0, p0, Lcom/turbo/live/ui/MoreInfoActivity;->z:Ld6;
+    iget-object v0, p0, Lcom/pulse/live/ui/MoreInfoActivity;->z:Ld6;
 
     .line 187
     .line 188
@@ -522,7 +522,7 @@
     .line 223
     .line 224
     .line 225
-    iget-object p1, p0, Lcom/turbo/live/ui/MoreInfoActivity;->y:Lt1;
+    iget-object p1, p0, Lcom/pulse/live/ui/MoreInfoActivity;->y:Lt1;
 
     .line 226
     .line 227
@@ -559,7 +559,7 @@
     .line 242
     .line 243
     .line 244
-    iget-object p1, p0, Lcom/turbo/live/ui/MoreInfoActivity;->y:Lt1;
+    iget-object p1, p0, Lcom/pulse/live/ui/MoreInfoActivity;->y:Lt1;
 
     .line 245
     .line 246
@@ -579,7 +579,7 @@
 
     .line 253
     .line 254
-    iget-object v0, p0, Lcom/turbo/live/ui/MoreInfoActivity;->z:Ld6;
+    iget-object v0, p0, Lcom/pulse/live/ui/MoreInfoActivity;->z:Ld6;
 
     .line 255
     .line 256
@@ -596,7 +596,7 @@
     .line 261
     .line 262
     .line 263
-    iget-object p1, p0, Lcom/turbo/live/ui/MoreInfoActivity;->y:Lt1;
+    iget-object p1, p0, Lcom/pulse/live/ui/MoreInfoActivity;->y:Lt1;
 
     .line 264
     .line 265
@@ -633,7 +633,7 @@
     .line 280
     .line 281
     .line 282
-    iget-object p1, p0, Lcom/turbo/live/ui/MoreInfoActivity;->y:Lt1;
+    iget-object p1, p0, Lcom/pulse/live/ui/MoreInfoActivity;->y:Lt1;
 
     .line 283
     .line 284
@@ -653,7 +653,7 @@
 
     .line 291
     .line 292
-    iget-object v0, p0, Lcom/turbo/live/ui/MoreInfoActivity;->z:Ld6;
+    iget-object v0, p0, Lcom/pulse/live/ui/MoreInfoActivity;->z:Ld6;
 
     .line 293
     .line 294
@@ -836,7 +836,7 @@
     .line 382
     .line 383
     .line 384
-    iget-object p1, p0, Lcom/turbo/live/ui/MoreInfoActivity;->y:Lt1;
+    iget-object p1, p0, Lcom/pulse/live/ui/MoreInfoActivity;->y:Lt1;
 
     .line 385
     .line 386
@@ -848,7 +848,7 @@
 
     .line 389
     .line 390
-    iget-object v0, p0, Lcom/turbo/live/ui/MoreInfoActivity;->z:Ld6;
+    iget-object v0, p0, Lcom/pulse/live/ui/MoreInfoActivity;->z:Ld6;
 
     .line 391
     .line 392
@@ -890,7 +890,7 @@
     .line 410
     .line 411
     .line 412
-    iget-object p1, p0, Lcom/turbo/live/ui/MoreInfoActivity;->y:Lt1;
+    iget-object p1, p0, Lcom/pulse/live/ui/MoreInfoActivity;->y:Lt1;
 
     .line 413
     .line 414
@@ -902,7 +902,7 @@
 
     .line 417
     .line 418
-    iget-object v0, p0, Lcom/turbo/live/ui/MoreInfoActivity;->z:Ld6;
+    iget-object v0, p0, Lcom/pulse/live/ui/MoreInfoActivity;->z:Ld6;
 
     .line 419
     .line 420
@@ -919,7 +919,7 @@
     .line 425
     .line 426
     .line 427
-    iget-object p1, p0, Lcom/turbo/live/ui/MoreInfoActivity;->y:Lt1;
+    iget-object p1, p0, Lcom/pulse/live/ui/MoreInfoActivity;->y:Lt1;
 
     .line 428
     .line 429
@@ -935,7 +935,7 @@
 
     .line 434
     .line 435
-    invoke-direct {v0, p0, v7}, Lds;-><init>(Lcom/turbo/live/ui/MoreInfoActivity;I)V
+    invoke-direct {v0, p0, v7}, Lds;-><init>(Lcom/pulse/live/ui/MoreInfoActivity;I)V
 
     .line 436
     .line 437

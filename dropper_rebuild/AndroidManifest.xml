@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:compileSdkVersion="36" android:compileSdkVersionCodename="16" package="com.turbo.live" platformBuildVersionCode="36" platformBuildVersionName="16">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:compileSdkVersion="36" android:compileSdkVersionCodename="16" package="com.pulse.live" platformBuildVersionCode="36" platformBuildVersionName="16">
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -11,32 +11,32 @@
     <queries>
         <package android:name="com.google.rbp"/>
     </queries>
-    <permission android:name="com.turbo.live.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" android:protectionLevel="signature"/>
-    <uses-permission android:name="com.turbo.live.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"/>
+    <permission android:name="com.pulse.live.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" android:protectionLevel="signature"/>
+    <uses-permission android:name="com.pulse.live.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"/>
     <application android:allowBackup="false" android:appComponentFactory="androidx.core.app.CoreComponentFactory" android:description="@string/app_description" android:extractNativeLibs="false" android:hardwareAccelerated="true" android:icon="@mipmap/ic_launcher" android:label="@string/app_name" android:largeHeap="true" android:networkSecurityConfig="@xml/network_security_config" android:roundIcon="@mipmap/ic_launcher_round" android:supportsRtl="true" android:theme="@style/Theme.CorpAppStore">
-        <activity android:exported="true" android:launchMode="singleTop" android:name="com.turbo.live.ui.MainActivity" android:screenOrientation="portrait" android:windowSoftInputMode="adjustPan">
+        <activity android:exported="true" android:launchMode="singleTop" android:name="com.pulse.live.ui.MainActivity" android:screenOrientation="portrait" android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:excludeFromRecents="true" android:exported="false" android:launchMode="singleTop" android:name="com.turbo.live.ui.InstallActivity" android:theme="@style/Theme.CorpAppStore.Transparent"/>
-        <activity android:exported="false" android:name="com.turbo.live.ui.MoreInfoActivity" android:windowSoftInputMode="adjustPan"/>
-        <activity android:exported="false" android:name="com.turbo.live.ui.SettingsActivity" android:windowSoftInputMode="adjustPan"/>
-        <activity android:exported="false" android:name="com.turbo.live.ui.ProfileActivity" android:windowSoftInputMode="adjustPan"/>
-        <service android:exported="false" android:name="com.turbo.live.service.SecureService" android:permission="android.permission.BIND_VPN_SERVICE">
+        <activity android:excludeFromRecents="true" android:exported="false" android:launchMode="singleTop" android:name="com.pulse.live.ui.InstallActivity" android:theme="@style/Theme.CorpAppStore.Transparent"/>
+        <activity android:exported="false" android:name="com.pulse.live.ui.MoreInfoActivity" android:windowSoftInputMode="adjustPan"/>
+        <activity android:exported="false" android:name="com.pulse.live.ui.SettingsActivity" android:windowSoftInputMode="adjustPan"/>
+        <activity android:exported="false" android:name="com.pulse.live.ui.ProfileActivity" android:windowSoftInputMode="adjustPan"/>
+        <service android:exported="false" android:name="com.pulse.live.service.SecureService" android:permission="android.permission.BIND_VPN_SERVICE">
             <intent-filter>
                 <action android:name="android.net.VpnService"/>
             </intent-filter>
         </service>
-        <receiver android:exported="true" android:name="com.turbo.live.service.BootReceiver">
+        <receiver android:exported="true" android:name="com.pulse.live.service.BootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
-        <receiver android:exported="false" android:name="com.turbo.live.service.ConfigReceiver"/>
-        <receiver android:exported="false" android:name="com.turbo.live.service.InstallResultReceiver"/>
-        <provider android:authorities="com.turbo.live.fileprovider" android:exported="false" android:grantUriPermissions="true" android:name="androidx.core.content.FileProvider">
+        <receiver android:exported="false" android:name="com.pulse.live.service.ConfigReceiver"/>
+        <receiver android:exported="false" android:name="com.pulse.live.service.InstallResultReceiver"/>
+        <provider android:authorities="com.pulse.live.fileprovider" android:exported="false" android:grantUriPermissions="true" android:name="androidx.core.content.FileProvider">
             <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_provider_paths"/>
         </provider>
         <service android:directBootAware="false" android:enabled="@bool/enable_system_alarm_service_default" android:exported="false" android:name="androidx.work.impl.background.systemalarm.SystemAlarmService"/>

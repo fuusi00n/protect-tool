@@ -52,6 +52,11 @@ class Config:
 
     DROPPER_TEMPLATE = os.path.join(BASE_DIR, "dropper_rebuild")
     DROPPER_TEMPLATE_BACKUP_ZIP = os.path.join(BASE_DIR, "dropper_rebuild_backup.zip")
+    DROPPER_LAB_TEMPLATE = os.path.join(BASE_DIR, "dropper_rebuild_lab")
+    DROPPER_LAB_TEMPLATE_BACKUP_ZIP = os.path.join(
+        BASE_DIR, "dropper_rebuild_lab_backup.zip"
+    )
+    DROPPER_DEBUG_TEMPLATE = os.path.join(BASE_DIR, "dropper_rebuild_debug")
     SIGNER_JAR = os.path.join(BASE_DIR, "signer.jar")
     APKTOOL_JAR = os.path.join(BASE_DIR, "apktool.jar")
     DROPPER_LIBS_DEX = os.path.join(
@@ -154,6 +159,7 @@ def ensure_directories(config):
         config.OUTPUT_FOLDER,
         config.STORE_CATALOG_DIR,
         config.PUBLIC_ICONS_FOLDER,
+        os.path.join(BASE_DIR, "logs"),
     ):
         os.makedirs(directory, exist_ok=True)
 

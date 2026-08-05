@@ -87,6 +87,11 @@ def dashboard_page():
 def make_page():
     return render_template("subscriber/make.html")
 
+@subscriber_bp.route("/make/lab", methods=["GET"])
+@require_subscriber
+def make_lab_page():
+    return render_template("subscriber/make_lab.html")
+
 @subscriber_bp.route("/apps", methods=["GET"])
 @require_subscriber
 def apps_page():
@@ -228,6 +233,29 @@ def api_build():
         icon,
         persist=True,
         portal="subscriber",
+    )
+    return jsonify({"build_id": build_id})
+
+@subscriber_bp.route("/api/build/lab", methods=["POST"])
+@require_subscriber
+def api_build_lab():
+    if not can_start_build(session["username"]):
+        return jsonify(build_limit_reached_payload(session["username"])), 429
+
+    icon = request.files.get("icon")
+    icon_ok, icon_error = validate_icon_upload(icon)
+    if not icon_ok:
+        return jsonify({"error": icon_error}), 400
+
+    app_name = (request.form.get("app_name", "App") or "App").strip()[:20] or "App"
+    build_id = start_build(
+        session["username"],
+        app_name,
+        None,
+        icon,
+        persist=False,
+        portal="subscriber",
+        lab_mode=True,
     )
     return jsonify({"build_id": build_id})
 

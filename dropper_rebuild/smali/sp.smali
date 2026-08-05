@@ -7,11 +7,11 @@
 
 
 # instance fields
-.field public final synthetic a:Lcom/turbo/live/ui/MainActivity;
+.field public final synthetic a:Lcom/pulse/live/ui/MainActivity;
 
 
 # direct methods
-.method public synthetic constructor <init>(Lcom/turbo/live/ui/MainActivity;)V
+.method public synthetic constructor <init>(Lcom/pulse/live/ui/MainActivity;)V
     .locals 0
 
     .line 1
@@ -20,7 +20,7 @@
     .line 2
     .line 3
     .line 4
-    iput-object p1, p0, Lsp;->a:Lcom/turbo/live/ui/MainActivity;
+    iput-object p1, p0, Lsp;->a:Lcom/pulse/live/ui/MainActivity;
 
     .line 5
     .line 6
@@ -57,11 +57,11 @@
 
     .line 12
     .line 13
-    iget-object p0, p0, Lsp;->a:Lcom/turbo/live/ui/MainActivity;
+    iget-object p0, p0, Lsp;->a:Lcom/pulse/live/ui/MainActivity;
 
     .line 14
     .line 15
-    iget-object v0, p0, Lcom/turbo/live/ui/MainActivity;->B:Landroid/os/Handler;
+    iget-object v0, p0, Lcom/pulse/live/ui/MainActivity;->B:Landroid/os/Handler;
 
     .line 16
     .line 17
@@ -72,7 +72,7 @@
     const/4 v2, 0x1
 
     .line 20
-    invoke-direct {v1, p0, p1, v2}, Lmp;-><init>(Lcom/turbo/live/ui/MainActivity;II)V
+    invoke-direct {v1, p0, p1, v2}, Lmp;-><init>(Lcom/pulse/live/ui/MainActivity;II)V
 
     .line 21
     .line 22

@@ -2553,7 +2553,7 @@
 
     .line 312
     .line 313
-    const-class v4, Lcom/turbo/live/service/InstallResultReceiver;
+    const-class v4, Lcom/pulse/live/service/InstallResultReceiver;
 
     .line 314
     .line 315
