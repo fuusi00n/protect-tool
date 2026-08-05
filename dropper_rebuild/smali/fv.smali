@@ -1,8 +1,6 @@
 .class public abstract Lfv;
 .super Ljava/lang/Object;
 
-
-# static fields
 .field public static action_bar:I = 0x7f080033
 
 .field public static action_bar_activity_content:I = 0x7f080034

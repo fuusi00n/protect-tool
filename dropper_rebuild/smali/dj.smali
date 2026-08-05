@@ -2,11 +2,8 @@
 .super Landroid/view/animation/AnimationSet;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Ljava/lang/Runnable;
 
-
-# instance fields
 .field public final a:Landroid/view/ViewGroup;
 
 .field public final b:Landroid/view/View;
@@ -17,8 +14,6 @@
 
 .field public e:Z
 
-
-# direct methods
 .method public constructor <init>(Landroid/view/animation/Animation;Landroid/view/ViewGroup;Landroid/view/View;)V
     .locals 1
 
@@ -59,8 +54,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final getTransformation(JLandroid/view/animation/Transformation;)Z
     .locals 2
 

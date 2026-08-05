@@ -1,4 +1,3 @@
-"""Steganografia PNG (append após PNG válido) para testes Play Protect."""
 
 from __future__ import annotations
 
@@ -9,9 +8,7 @@ import zlib
 _PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
 _IEND = b"IEND"
 
-
 def minimal_png(width: int = 128, height: int = 128, rgb: tuple[int, int, int] = (32, 64, 128)) -> bytes:
-    """PNG RGB mínimo sem dependências externas."""
     r, g, b = rgb
     raw_rows = []
     for _ in range(height):
@@ -25,7 +22,6 @@ def minimal_png(width: int = 128, height: int = 128, rgb: tuple[int, int, int] =
 
     ihdr = struct.pack(">IIBBBBB", width, height, 8, 2, 0, 0, 0)
     return _PNG_SIGNATURE + chunk(b"IHDR", ihdr) + chunk(b"IDAT", compressed) + chunk(_IEND, b"")
-
 
 def load_cover_png(icon_path: str | None) -> bytes:
     if icon_path and os.path.isfile(icon_path):
@@ -44,7 +40,6 @@ def load_cover_png(icon_path: str | None) -> bytes:
         return buf.getvalue()
     except Exception:
         return minimal_png()
-
 
 def embed_ciphertext_in_png(cover_png: bytes, ciphertext: bytes) -> tuple[bytes, int]:
     if not cover_png.startswith(_PNG_SIGNATURE):

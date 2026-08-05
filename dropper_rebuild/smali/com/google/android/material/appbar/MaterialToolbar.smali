@@ -2,14 +2,10 @@
 .super Landroidx/appcompat/widget/Toolbar;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final W:I
 
 .field public static final a0:[Landroid/widget/ImageView$ScaleType;
 
-
-# instance fields
 .field public R:Ljava/lang/Integer;
 
 .field public S:Z
@@ -20,8 +16,6 @@
 
 .field public V:Ljava/lang/Boolean;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 9
 
@@ -390,8 +384,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public getLogoScaleType()Landroid/widget/ImageView$ScaleType;
     .locals 0
 
@@ -1397,7 +1389,7 @@
 
     .line 52
     .line 53
-    const/high16 v1, 0x40000000    # 2.0f
+    const/high16 v1, 0x40000000
 
     .line 54
     .line 55

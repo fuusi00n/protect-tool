@@ -2,8 +2,6 @@
 .super Lzt;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# direct methods
 .method public static y(Landroid/graphics/fonts/FontFamily;I)Landroid/graphics/fonts/Font;
     .locals 5
 
@@ -218,8 +216,6 @@
     return v0
 .end method
 
-
-# virtual methods
 .method public final d(Landroid/content/Context;Lpi;Landroid/content/res/Resources;I)Landroid/graphics/Typeface;
     .locals 5
 

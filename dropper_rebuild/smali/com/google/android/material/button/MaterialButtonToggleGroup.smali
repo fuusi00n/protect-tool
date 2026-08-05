@@ -2,12 +2,8 @@
 .super Landroid/widget/LinearLayout;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final k:I
 
-
-# instance fields
 .field public final a:Ljava/util/ArrayList;
 
 .field public final b:Lo0;
@@ -28,8 +24,6 @@
 
 .field public j:Ljava/util/HashSet;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 1
 
@@ -539,8 +533,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a()V
     .locals 9
 

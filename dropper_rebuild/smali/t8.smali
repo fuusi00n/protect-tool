@@ -2,14 +2,10 @@
 .super Lh70;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final k:Ljava/util/ArrayList;
 
 .field public l:I
 
-
-# direct methods
 .method public constructor <init>(Lxb;I)V
     .locals 5
 
@@ -368,8 +364,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(Lse;)V
     .locals 27
 
@@ -747,11 +741,11 @@
     iget v1, v2, Lue;->g:I
 
     :cond_15
-    const/high16 v2, 0x3f000000    # 0.5f
+    const/high16 v2, 0x3f000000
 
     if-le v15, v4, :cond_17
 
-    const/high16 v10, 0x40000000    # 2.0f
+    const/high16 v10, 0x40000000
 
     if-eqz v22, :cond_16
 
@@ -1513,7 +1507,7 @@
     :goto_28
     if-eqz v22, :cond_47
 
-    const/high16 v2, 0x3f800000    # 1.0f
+    const/high16 v2, 0x3f800000
 
     sub-float v0, v2, v0
 

@@ -1,8 +1,6 @@
 .class public abstract Lgv;
 .super Ljava/lang/Object;
 
-
-# static fields
 .field public static NO_DEBUG:I = 0x7f080006
 
 .field public static SHOW_ALL:I = 0x7f080008

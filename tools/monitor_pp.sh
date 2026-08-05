@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# Monitor Play Protect / instalação via ADB (Samsung SM-A155M etc.)
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -28,7 +27,7 @@ Exemplos:
 EOF
 }
 
-while [[ $# -gt 0 ]]; do
+while [[ $
   case "$1" in
     --clear) CLEAR=1; shift ;;
     --start) START=1; shift ;;
@@ -78,7 +77,6 @@ fi
 TS="$(date +%Y%m%d_%H%M%S)"
 LOG_FILE="$LOG_DIR/pp_monitor_${TS}.log"
 
-# Filtros Play Protect / instalação / Verify Apps
 FILTER=(
   'VerifyApps:*'
   'SafetySource:*'

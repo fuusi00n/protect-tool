@@ -2,11 +2,8 @@
 .super Lww;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Lgx;
 
-
-# instance fields
 .field public A:I
 
 .field public final B:Ls4;
@@ -51,8 +48,6 @@
 
 .field public z:I
 
-
-# direct methods
 .method public constructor <init>(Landroid/content/Context;Landroid/util/AttributeSet;II)V
     .locals 6
 
@@ -504,7 +499,7 @@
 
     .line 13
     .line 14
-    const/high16 v1, 0x40000000    # 2.0f
+    const/high16 v1, 0x40000000
 
     .line 15
     .line 16
@@ -558,8 +553,6 @@
     return p0
 .end method
 
-
-# virtual methods
 .method public final A0()Z
     .locals 3
 
@@ -5973,7 +5966,7 @@
     move-result v3
 
     .line 793
-    const/high16 v6, 0x40000000    # 2.0f
+    const/high16 v6, 0x40000000
 
     .line 794
     .line 795

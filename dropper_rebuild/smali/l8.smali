@@ -2,12 +2,8 @@
 .super Ljo;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final synthetic p:I
 
-
-# direct methods
 .method public synthetic constructor <init>(Landroid/content/Context;)V
     .locals 1
 
@@ -40,8 +36,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public b(Landroid/view/View;I)I
     .locals 1
 
@@ -148,7 +142,7 @@
     int-to-float p0, p0
 
     .line 14
-    const/high16 p1, 0x42c80000    # 100.0f
+    const/high16 p1, 0x42c80000
 
     .line 15
     .line 16

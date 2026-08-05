@@ -2,12 +2,8 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static f:I
 
-
-# instance fields
 .field public a:Ljava/util/ArrayList;
 
 .field public b:I
@@ -18,8 +14,6 @@
 
 .field public e:I
 
-
-# virtual methods
 .method public final a(Ljava/util/ArrayList;)V
     .locals 5
 

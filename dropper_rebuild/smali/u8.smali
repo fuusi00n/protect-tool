@@ -2,12 +2,8 @@
 .super Landroid/util/Property;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final synthetic a:I
 
-
-# direct methods
 .method public synthetic constructor <init>(Ljava/lang/Class;Ljava/lang/String;I)V
     .locals 0
 
@@ -24,8 +20,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final get(Ljava/lang/Object;)Ljava/lang/Object;
     .locals 1
 
@@ -284,7 +278,7 @@
     const/4 v1, 0x0
 
     .line 6
-    const/high16 v2, 0x3f800000    # 1.0f
+    const/high16 v2, 0x3f800000
 
     .line 7
     .line 8
@@ -390,7 +384,7 @@
 
     .line 56
     .line 57
-    const/high16 p2, 0x44e10000    # 1800.0f
+    const/high16 p2, 0x44e10000
 
     .line 58
     .line 59
@@ -649,7 +643,7 @@
 
     .line 179
     .line 180
-    const p2, 0x43a68000    # 333.0f
+    const p2, 0x43a68000
 
     .line 181
     .line 182
@@ -1039,7 +1033,7 @@
 
     .line 370
     .line 371
-    const p2, 0x45a8c000    # 5400.0f
+    const p2, 0x45a8c000
 
     .line 372
     .line 373
@@ -1074,7 +1068,7 @@
 
     .line 387
     .line 388
-    const/high16 v6, 0x44be0000    # 1520.0f
+    const/high16 v6, 0x44be0000
 
     .line 389
     .line 390
@@ -1085,7 +1079,7 @@
     mul-float/2addr v7, v6
 
     .line 393
-    const/high16 v6, -0x3e600000    # -20.0f
+    const/high16 v6, -0x3e600000
 
     .line 394
     .line 395
@@ -1139,7 +1133,7 @@
     move-result v7
 
     .line 418
-    const/high16 v9, 0x437a0000    # 250.0f
+    const/high16 v9, 0x437a0000
 
     .line 419
     .line 420
@@ -1221,7 +1215,7 @@
     add-float/2addr v8, v0
 
     .line 455
-    const/high16 v0, 0x43b40000    # 360.0f
+    const/high16 v0, 0x43b40000
 
     .line 456
     .line 457
@@ -1377,7 +1371,7 @@
     int-to-float v2, v2
 
     .line 528
-    const/high16 v3, 0x437f0000    # 255.0f
+    const/high16 v3, 0x437f0000
 
     .line 529
     .line 530
@@ -1485,7 +1479,7 @@
     float-to-double v9, v4
 
     .line 574
-    const-wide v11, 0x400199999999999aL    # 2.2
+    const-wide v11, 0x400199999999999aL
 
     .line 575
     .line 576
@@ -1615,7 +1609,7 @@
     float-to-double v4, v7
 
     .line 628
-    const-wide v9, 0x3fdd1745d1745d17L    # 0.45454545454545453
+    const-wide v9, 0x3fdd1745d1745d17L
 
     .line 629
     .line 630

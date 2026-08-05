@@ -1,8 +1,6 @@
 .class public abstract Lsv;
 .super Ljava/lang/Object;
 
-
-# static fields
 .field public static activity_detail:I = 0x7f0b001c
 
 .field public static activity_main:I = 0x7f0b001d

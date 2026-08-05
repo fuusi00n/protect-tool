@@ -2,11 +2,8 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Lyl;
 
-
-# static fields
 .field public static final synthetic b:Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;
 
 .field public static final synthetic c:Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;
@@ -17,8 +14,6 @@
 
 .field public static final synthetic f:J
 
-
-# instance fields
 .field private volatile synthetic _exceptionsHolder$volatile:Ljava/lang/Object;
 
 .field private volatile synthetic _isCompleting$volatile:I
@@ -27,8 +22,6 @@
 
 .field public final a:Lvs;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 6
 
@@ -163,8 +156,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a()Z
     .locals 0
 

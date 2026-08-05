@@ -2,12 +2,8 @@
 .super Ln40;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final j:Landroid/graphics/PorterDuff$Mode;
 
-
-# instance fields
 .field public b:Lu40;
 
 .field public c:Landroid/graphics/PorterDuffColorFilter;
@@ -24,8 +20,6 @@
 
 .field public final i:Landroid/graphics/Rect;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 1
 
@@ -188,8 +182,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(Landroid/content/res/ColorStateList;Landroid/graphics/PorterDuff$Mode;)Landroid/graphics/PorterDuffColorFilter;
     .locals 1
 
@@ -434,7 +426,7 @@
 
     .line 78
     .line 79
-    const/high16 v11, 0x3f800000    # 1.0f
+    const/high16 v11, 0x3f800000
 
     .line 80
     .line 81
@@ -592,7 +584,7 @@
     .line 150
     .line 151
     .line 152
-    const/high16 v9, -0x40800000    # -1.0f
+    const/high16 v9, -0x40800000
 
     .line 153
     .line 154
@@ -2154,7 +2146,7 @@
 
     .line 382
     .line 383
-    const/high16 v14, 0x3f800000    # 1.0f
+    const/high16 v14, 0x3f800000
 
     .line 384
     .line 385
@@ -2198,7 +2190,7 @@
 
     .line 404
     .line 405
-    const/high16 v13, 0x40800000    # 4.0f
+    const/high16 v13, 0x40800000
 
     .line 406
     .line 407

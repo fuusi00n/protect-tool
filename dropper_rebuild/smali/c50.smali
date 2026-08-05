@@ -2,8 +2,6 @@
 .super Lb50;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final d:Landroid/util/SparseIntArray;
 
 .field public final e:Landroid/os/Parcel;
@@ -20,8 +18,6 @@
 
 .field public k:I
 
-
-# direct methods
 .method public constructor <init>(Landroid/os/Parcel;)V
     .locals 8
 
@@ -126,8 +122,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a()Lc50;
     .locals 8
 

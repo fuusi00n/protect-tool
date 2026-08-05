@@ -2,8 +2,6 @@
 .super Landroid/widget/LinearLayout;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final a:Lcom/google/android/material/textfield/TextInputLayout;
 
 .field public final b:Landroid/widget/FrameLayout;
@@ -48,8 +46,6 @@
 
 .field public final v:Lm9;
 
-
-# direct methods
 .method public constructor <init>(Lcom/google/android/material/textfield/TextInputLayout;Ly2;)V
     .locals 17
 
@@ -982,7 +978,7 @@
 
     .line 471
     .line 472
-    const/high16 v9, 0x42a00000    # 80.0f
+    const/high16 v9, 0x42a00000
 
     .line 473
     .line 474
@@ -1178,8 +1174,6 @@
     throw v16
 .end method
 
-
-# virtual methods
 .method public final a(Landroid/view/ViewGroup;Landroid/view/LayoutInflater;I)Lcom/google/android/material/internal/CheckableImageButton;
     .locals 2
 

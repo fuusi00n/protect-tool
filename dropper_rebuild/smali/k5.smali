@@ -2,8 +2,6 @@
 .super Lyt;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final synthetic a:I
 
 .field public final synthetic b:I
@@ -12,8 +10,6 @@
 
 .field public final synthetic d:Lp5;
 
-
-# direct methods
 .method public constructor <init>(Lp5;IILjava/lang/ref/WeakReference;)V
     .locals 0
 
@@ -42,8 +38,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final o(I)V
     .locals 0
 

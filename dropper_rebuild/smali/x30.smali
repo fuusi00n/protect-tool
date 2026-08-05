@@ -2,14 +2,10 @@
 .super Lt30;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final synthetic a:I
 
 .field public b:Ls30;
 
-
-# direct methods
 .method public synthetic constructor <init>()V
     .locals 1
 
@@ -46,8 +42,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public b(Ls30;)V
     .locals 0
 

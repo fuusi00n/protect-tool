@@ -2,8 +2,6 @@
 .super Lag;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public b:F
 
 .field public c:F
@@ -14,8 +12,6 @@
 
 .field public f:F
 
-
-# virtual methods
 .method public final a(Landroid/graphics/Canvas;Landroid/graphics/Rect;FZZ)V
     .locals 8
 
@@ -85,7 +81,7 @@
     int-to-float v3, v3
 
     .line 30
-    const/high16 v4, 0x40000000    # 2.0f
+    const/high16 v4, 0x40000000
 
     .line 31
     .line 32
@@ -135,7 +131,7 @@
     .line 50
     .line 51
     .line 52
-    const/high16 p2, -0x3d4c0000    # -90.0f
+    const/high16 p2, -0x3d4c0000
 
     .line 53
     .line 54
@@ -153,7 +149,7 @@
 
     .line 61
     .line 62
-    const/high16 v0, 0x3f800000    # 1.0f
+    const/high16 v0, 0x3f800000
 
     .line 63
     .line 64
@@ -161,7 +157,7 @@
 
     .line 65
     .line 66
-    const/high16 p2, -0x40800000    # -1.0f
+    const/high16 p2, -0x40800000
 
     .line 67
     .line 68
@@ -521,7 +517,7 @@
 
     .line 2
     .line 3
-    const/high16 v2, 0x3f800000    # 1.0f
+    const/high16 v2, 0x3f800000
 
     .line 4
     .line 5
@@ -573,7 +569,7 @@
 
     .line 26
     .line 27
-    const/high16 v4, 0x3f800000    # 1.0f
+    const/high16 v4, 0x3f800000
 
     .line 28
     .line 29
@@ -602,7 +598,7 @@
     .line 38
     .line 39
     .line 40
-    const/high16 v3, 0x3f800000    # 1.0f
+    const/high16 v3, 0x3f800000
 
     .line 41
     .line 42
@@ -657,11 +653,11 @@
 
     .line 63
     .line 64
-    const/high16 v8, 0x43b40000    # 360.0f
+    const/high16 v8, 0x43b40000
 
     .line 65
     .line 66
-    const/high16 v9, 0x40000000    # 2.0f
+    const/high16 v9, 0x40000000
 
     .line 67
     .line 68
@@ -669,7 +665,7 @@
 
     .line 69
     .line 70
-    const v4, 0x3f7d70a4    # 0.99f
+    const v4, 0x3f7d70a4
 
     .line 71
     .line 72
@@ -696,7 +692,7 @@
     mul-float/2addr v10, v4
 
     .line 83
-    const v4, 0x3c23d70a    # 0.01f
+    const v4, 0x3c23d70a
 
     .line 84
     .line 85
@@ -1036,7 +1032,7 @@
 
     .line 241
     .line 242
-    const/high16 v6, 0x3f800000    # 1.0f
+    const/high16 v6, 0x3f800000
 
     .line 243
     .line 244
@@ -1122,7 +1118,7 @@
     div-float/2addr v0, v1
 
     .line 15
-    const/high16 v1, 0x40000000    # 2.0f
+    const/high16 v1, 0x40000000
 
     .line 16
     .line 17

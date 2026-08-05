@@ -2,16 +2,12 @@
 .super Landroid/widget/ArrayAdapter;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public a:Landroid/content/res/ColorStateList;
 
 .field public b:Landroid/content/res/ColorStateList;
 
 .field public final synthetic c:Leq;
 
-
-# direct methods
 .method public constructor <init>(Leq;Landroid/content/Context;I[Ljava/lang/String;)V
     .locals 0
 
@@ -33,8 +29,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a()V
     .locals 7
 

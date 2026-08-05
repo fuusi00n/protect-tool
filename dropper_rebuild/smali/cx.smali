@@ -2,8 +2,6 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final a:Ljava/util/ArrayList;
 
 .field public b:Ljava/util/ArrayList;
@@ -20,8 +18,6 @@
 
 .field public final synthetic h:Landroidx/recyclerview/widget/RecyclerView;
 
-
-# direct methods
 .method public constructor <init>(Landroidx/recyclerview/widget/RecyclerView;)V
     .locals 1
 
@@ -94,8 +90,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(Lkx;Z)V
     .locals 4
 

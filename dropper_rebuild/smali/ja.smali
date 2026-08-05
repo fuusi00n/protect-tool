@@ -2,12 +2,8 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final a:Ljava/lang/ThreadLocal;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 1
 
@@ -32,7 +28,7 @@
     .locals 17
 
     .line 1
-    const-wide v0, 0x4009ecbfb15b573fL    # 3.2406
+    const-wide v0, 0x4009ecbfb15b573fL
 
     .line 2
     .line 3
@@ -43,7 +39,7 @@
 
     .line 7
     .line 8
-    const-wide v2, -0x400767a0f9096bbaL    # -1.5372
+    const-wide v2, -0x400767a0f9096bbaL
 
     .line 9
     .line 10
@@ -57,7 +53,7 @@
     add-double/2addr v2, v0
 
     .line 16
-    const-wide v0, -0x402016f0068db8bbL    # -0.4986
+    const-wide v0, -0x402016f0068db8bbL
 
     .line 17
     .line 18
@@ -71,14 +67,14 @@
     add-double/2addr v0, v2
 
     .line 24
-    const-wide/high16 v2, 0x4059000000000000L    # 100.0
+    const-wide/high16 v2, 0x4059000000000000L
 
     .line 25
     .line 26
     div-double/2addr v0, v2
 
     .line 27
-    const-wide v4, -0x4010fec56d5cfaadL    # -0.9689
+    const-wide v4, -0x4010fec56d5cfaadL
 
     .line 28
     .line 29
@@ -89,7 +85,7 @@
 
     .line 33
     .line 34
-    const-wide v6, 0x3ffe0346dc5d6388L    # 1.8758
+    const-wide v6, 0x3ffe0346dc5d6388L
 
     .line 35
     .line 36
@@ -103,7 +99,7 @@
     add-double/2addr v6, v4
 
     .line 42
-    const-wide v4, 0x3fa53f7ced916873L    # 0.0415
+    const-wide v4, 0x3fa53f7ced916873L
 
     .line 43
     .line 44
@@ -120,7 +116,7 @@
     div-double/2addr v4, v2
 
     .line 51
-    const-wide v6, 0x3fac84b5dcc63f14L    # 0.0557
+    const-wide v6, 0x3fac84b5dcc63f14L
 
     .line 52
     .line 53
@@ -131,7 +127,7 @@
 
     .line 57
     .line 58
-    const-wide v8, -0x4035e353f7ced917L    # -0.204
+    const-wide v8, -0x4035e353f7ced917L
 
     .line 59
     .line 60
@@ -145,7 +141,7 @@
     add-double/2addr v8, v6
 
     .line 66
-    const-wide v6, 0x3ff0e978d4fdf3b6L    # 1.057
+    const-wide v6, 0x3ff0e978d4fdf3b6L
 
     .line 67
     .line 68
@@ -162,7 +158,7 @@
     div-double/2addr v6, v2
 
     .line 75
-    const-wide v2, 0x3f69a5c37387b719L    # 0.0031308
+    const-wide v2, 0x3f69a5c37387b719L
 
     .line 76
     .line 77
@@ -173,28 +169,28 @@
 
     .line 81
     .line 82
-    const-wide v9, 0x4029d70a3d70a3d7L    # 12.92
+    const-wide v9, 0x4029d70a3d70a3d7L
 
     .line 83
     .line 84
     .line 85
     .line 86
     .line 87
-    const-wide v11, 0x3fac28f5c28f5c29L    # 0.055
+    const-wide v11, 0x3fac28f5c28f5c29L
 
     .line 88
     .line 89
     .line 90
     .line 91
     .line 92
-    const-wide v13, 0x3fdaaaaaaaaaaaabL    # 0.4166666666666667
+    const-wide v13, 0x3fdaaaaaaaaaaaabL
 
     .line 93
     .line 94
     .line 95
     .line 96
     .line 97
-    const-wide v15, 0x3ff0e147ae147ae1L    # 1.055
+    const-wide v15, 0x3ff0e147ae147ae1L
 
     .line 98
     .line 99
@@ -288,7 +284,7 @@
     .line 136
     .line 137
     :goto_2
-    const-wide v6, 0x406fe00000000000L    # 255.0
+    const-wide v6, 0x406fe00000000000L
 
     .line 138
     .line 139

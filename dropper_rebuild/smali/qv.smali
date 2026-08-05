@@ -1,8 +1,6 @@
 .class public abstract Lqv;
 .super Ljava/lang/Object;
 
-
-# static fields
 .field public static expand_button:I = 0x7f0b0032
 
 .field public static image_frame:I = 0x7f0b0033

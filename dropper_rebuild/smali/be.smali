@@ -2,19 +2,14 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Ljava/lang/Runnable;
 
-
-# instance fields
 .field public final synthetic a:I
 
 .field public final synthetic b:Ljava/util/ArrayList;
 
 .field public final synthetic c:Lhe;
 
-
-# direct methods
 .method public synthetic constructor <init>(Lhe;Ljava/util/ArrayList;I)V
     .locals 0
 
@@ -39,8 +34,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final run()V
     .locals 17
 
@@ -56,7 +49,7 @@
     const/4 v2, 0x0
 
     .line 6
-    const/high16 v3, 0x3f800000    # 1.0f
+    const/high16 v3, 0x3f800000
 
     .line 7
     .line 8
@@ -438,7 +431,7 @@
     move-result-object v3
 
     .line 192
-    const/high16 v12, 0x3f800000    # 1.0f
+    const/high16 v12, 0x3f800000
 
     .line 193
     .line 194
@@ -482,7 +475,7 @@
 
     .line 213
     :cond_4
-    const/high16 v12, 0x3f800000    # 1.0f
+    const/high16 v12, 0x3f800000
 
     .line 214
     .line 215

@@ -2,17 +2,12 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Lbz;
 
-
-# instance fields
 .field public final synthetic a:I
 
 .field public final b:Ljava/lang/Object;
 
-
-# direct methods
 .method public constructor <init>(Lf3;)V
     .locals 1
 
@@ -69,8 +64,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a()Landroid/os/Bundle;
     .locals 2
 

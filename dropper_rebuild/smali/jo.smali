@@ -2,8 +2,6 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public a:I
 
 .field public b:Landroidx/recyclerview/widget/RecyclerView;
@@ -34,8 +32,6 @@
 
 .field public o:I
 
-
-# direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .locals 3
 
@@ -240,8 +236,6 @@
     return p2
 .end method
 
-
-# virtual methods
 .method public b(Landroid/view/View;I)I
     .locals 3
 
@@ -569,7 +563,7 @@
     int-to-float p0, p0
 
     .line 4
-    const/high16 p1, 0x41c80000    # 25.0f
+    const/high16 p1, 0x41c80000
 
     .line 5
     .line 6
@@ -1107,7 +1101,7 @@
 
     .line 195
     .line 196
-    const p1, 0x461c4000    # 10000.0f
+    const p1, 0x461c4000
 
     .line 197
     .line 198
@@ -1151,7 +1145,7 @@
     int-to-float p2, p2
 
     .line 216
-    const v2, 0x3f99999a    # 1.2f
+    const v2, 0x3f99999a
 
     .line 217
     .line 218
@@ -1429,7 +1423,7 @@
     int-to-double v1, v1
 
     .line 63
-    const-wide v4, 0x3fd57a786c22680aL    # 0.3356
+    const-wide v4, 0x3fd57a786c22680aL
 
     .line 64
     .line 65

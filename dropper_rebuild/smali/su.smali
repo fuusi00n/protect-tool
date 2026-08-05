@@ -1,8 +1,6 @@
 .class public abstract Lsu;
 .super Ljava/lang/Object;
 
-
-# static fields
 .field public static alpha:I = 0x7f030034
 
 .field public static fastScrollEnabled:I = 0x7f0301ea

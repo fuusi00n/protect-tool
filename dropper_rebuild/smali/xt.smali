@@ -2,14 +2,10 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public a:C
 
 .field public final b:[F
 
-
-# direct methods
 .method public constructor <init>(C[F)V
     .locals 0
 
@@ -164,7 +160,7 @@
 
     add-double v30, v18, v26
 
-    const-wide/high16 v32, 0x4000000000000000L    # 2.0
+    const-wide/high16 v32, 0x4000000000000000L
 
     div-double v30, v30, v32
 
@@ -187,11 +183,11 @@
     return-void
 
     :cond_0
-    const-wide/high16 v40, 0x3ff0000000000000L    # 1.0
+    const-wide/high16 v40, 0x3ff0000000000000L
 
     div-double v42, v40, v38
 
-    const-wide/high16 v44, 0x3fd0000000000000L    # 0.25
+    const-wide/high16 v44, 0x3fd0000000000000L
 
     sub-double v42, v42, v44
 
@@ -204,7 +200,7 @@
 
     move-result-wide v0
 
-    const-wide v4, 0x3ffffff583a53b8eL    # 1.99999
+    const-wide v4, 0x3ffffff583a53b8eL
 
     div-double/2addr v0, v4
 
@@ -297,7 +293,7 @@
     :goto_1
     if-eq v2, v7, :cond_5
 
-    const-wide v18, 0x401921fb54442d18L    # 6.283185307179586
+    const-wide v18, 0x401921fb54442d18L
 
     if-lez v3, :cond_4
 
@@ -326,11 +322,11 @@
 
     add-double v34, v34, v30
 
-    const-wide/high16 v7, 0x4010000000000000L    # 4.0
+    const-wide/high16 v7, 0x4010000000000000L
 
     mul-double v9, v0, v7
 
-    const-wide v18, 0x400921fb54442d18L    # Math.PI
+    const-wide v18, 0x400921fb54442d18L
 
     div-double v9, v9, v18
 
@@ -470,7 +466,7 @@
 
     move-result-wide v4
 
-    const-wide/high16 v44, 0x4008000000000000L    # 3.0
+    const-wide/high16 v44, 0x4008000000000000L
 
     mul-double v50, v38, v44
 
@@ -872,7 +868,7 @@
 
     .line 135
     .line 136
-    const/high16 v31, 0x40000000    # 2.0f
+    const/high16 v31, 0x40000000
 
     .line 137
     .line 138

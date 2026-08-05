@@ -2,12 +2,9 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Ldc;
 .implements Lfc;
 
-
-# instance fields
 .field public final synthetic a:I
 
 .field public b:Ljava/lang/Object;
@@ -20,8 +17,6 @@
 
 .field public f:Ljava/lang/Cloneable;
 
-
-# direct methods
 .method public synthetic constructor <init>()V
     .locals 1
 
@@ -266,8 +261,6 @@
     throw v2
 .end method
 
-
-# virtual methods
 .method public a(Lj80;Ljava/util/List;)V
     .locals 1
 

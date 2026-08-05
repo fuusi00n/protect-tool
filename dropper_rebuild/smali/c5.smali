@@ -2,18 +2,13 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Landroid/widget/ListAdapter;
 .implements Landroid/widget/SpinnerAdapter;
 
-
-# instance fields
 .field public a:Landroid/widget/SpinnerAdapter;
 
 .field public b:Landroid/widget/ListAdapter;
 
-
-# virtual methods
 .method public final areAllItemsEnabled()Z
     .locals 0
 

@@ -2,12 +2,9 @@
 .super Landroid/view/ViewGroup;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Lss;
 .implements Lts;
 
-
-# static fields
 .field public static final s:Ljava/lang/String;
 
 .field public static final t:[Ljava/lang/Class;
@@ -18,8 +15,6 @@
 
 .field public static final w:Lfu;
 
-
-# instance fields
 .field public final a:Ljava/util/ArrayList;
 
 .field public final b:Lle;
@@ -56,8 +51,6 @@
 
 .field public final r:Lus;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 2
 
@@ -1072,8 +1065,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(Landroid/view/View;Landroid/view/View;II)V
     .locals 1
 
@@ -2853,7 +2844,7 @@
 
     .line 65
     .line 66
-    const/high16 v0, 0x3f000000    # 0.5f
+    const/high16 v0, 0x3f000000
 
     .line 67
     .line 68

@@ -1,8 +1,6 @@
 .class public abstract Lqu;
 .super Ljava/lang/Object;
 
-
-# static fields
 .field public static alpha:I = 0x7f030034
 
 .field public static font:I = 0x7f030214

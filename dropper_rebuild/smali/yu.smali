@@ -1,8 +1,6 @@
 .class public abstract Lyu;
 .super Ljava/lang/Object;
 
-
-# static fields
 .field public static compat_button_inset_horizontal_material:I = 0x7f060059
 
 .field public static compat_button_inset_vertical_material:I = 0x7f06005a

@@ -1,8 +1,6 @@
 .class public abstract Lzv;
 .super Ljava/lang/Object;
 
-
-# static fields
 .field public static AlertDialog_AppCompat:I = 0x7f100000
 
 .field public static AlertDialog_AppCompat_Light:I = 0x7f100001

@@ -2,12 +2,9 @@
 .super Lco;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Ldr;
 .implements Lxr;
 
-
-# instance fields
 .field public p:Ler;
 
 .field public q:Landroid/content/Context;
@@ -30,8 +27,6 @@
 
 .field public z:Lo1;
 
-
-# direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .locals 1
 
@@ -80,7 +75,7 @@
 
     .line 17
     .line 18
-    const/high16 v1, 0x42600000    # 56.0f
+    const/high16 v1, 0x42600000
 
     .line 19
     .line 20
@@ -94,7 +89,7 @@
 
     .line 23
     .line 24
-    const/high16 v1, 0x40800000    # 4.0f
+    const/high16 v1, 0x40800000
 
     .line 25
     .line 26
@@ -236,8 +231,6 @@
     return-object p0
 .end method
 
-
-# virtual methods
 .method public final a(Lir;)Z
     .locals 2
 
@@ -1553,7 +1546,7 @@
     const/4 v4, 0x0
 
     .line 11
-    const/high16 v5, 0x40000000    # 2.0f
+    const/high16 v5, 0x40000000
 
     .line 12
     .line 13
@@ -2199,7 +2192,7 @@
 
     .line 305
     .line 306
-    const/high16 v9, 0x40000000    # 2.0f
+    const/high16 v9, 0x40000000
 
     .line 307
     .line 308
@@ -2760,7 +2753,7 @@
 
     .line 555
     .line 556
-    const/high16 v5, 0x3f000000    # 0.5f
+    const/high16 v5, 0x3f000000
 
     .line 557
     .line 558
@@ -3151,7 +3144,7 @@
 
     .line 728
     .line 729
-    const/high16 v9, 0x40000000    # 2.0f
+    const/high16 v9, 0x40000000
 
     .line 730
     .line 731
@@ -3174,7 +3167,7 @@
     add-int/2addr v6, v5
 
     .line 739
-    const/high16 v9, 0x40000000    # 2.0f
+    const/high16 v9, 0x40000000
 
     .line 740
     .line 741
@@ -3200,7 +3193,7 @@
 
     .line 751
     :cond_2d
-    const/high16 v9, 0x40000000    # 2.0f
+    const/high16 v9, 0x40000000
 
     .line 752
     .line 753

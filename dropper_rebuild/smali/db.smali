@@ -2,15 +2,12 @@
 .super Landroid/app/Activity;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Lj60;
 .implements Lpl;
 .implements Ldz;
 .implements Lrn;
 .implements Lfn;
 
-
-# instance fields
 .field public final a:Ltn;
 
 .field public final b:Lhc;
@@ -47,8 +44,6 @@
 
 .field public final r:Lu10;
 
-
-# direct methods
 .method public constructor <init>()V
     .locals 5
 
@@ -411,8 +406,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a()Lls;
     .locals 4
 

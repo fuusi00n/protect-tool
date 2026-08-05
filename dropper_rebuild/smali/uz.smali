@@ -2,12 +2,8 @@
 .super Lzz;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final c:Lwz;
 
-
-# direct methods
 .method public constructor <init>(Lwz;)V
     .locals 0
 
@@ -24,8 +20,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(Landroid/graphics/Matrix;Loz;ILandroid/graphics/Canvas;)V
     .locals 21
 
@@ -249,7 +243,7 @@
     move-result v10
 
     .line 106
-    const/high16 v12, 0x40000000    # 2.0f
+    const/high16 v12, 0x40000000
 
     .line 107
     .line 108
@@ -276,7 +270,7 @@
 
     .line 117
     .line 118
-    const/high16 v7, 0x3f800000    # 1.0f
+    const/high16 v7, 0x3f800000
 
     .line 119
     .line 120

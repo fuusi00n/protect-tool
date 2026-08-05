@@ -2,12 +2,8 @@
 .super Lf80;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final q:Lj80;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 2
 
@@ -50,8 +46,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final d(Landroid/view/View;)V
     .locals 0
 

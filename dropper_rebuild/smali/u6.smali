@@ -2,17 +2,12 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Ljava/lang/Runnable;
 
-
-# instance fields
 .field public final synthetic a:I
 
 .field public final synthetic b:Ljava/lang/Object;
 
-
-# direct methods
 .method public synthetic constructor <init>(ILjava/lang/Object;)V
     .locals 0
 
@@ -33,8 +28,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final run()V
     .locals 23
 
@@ -1256,7 +1249,7 @@
 
     .line 579
     .line 580
-    const/high16 v4, 0x3f000000    # 0.5f
+    const/high16 v4, 0x3f000000
 
     .line 581
     .line 582
@@ -1424,7 +1417,7 @@
     move-result v6
 
     .line 656
-    const/high16 v7, -0x3f800000    # -4.0f
+    const/high16 v7, -0x3f800000
 
     .line 657
     .line 658
@@ -1434,7 +1427,7 @@
     mul-float/2addr v7, v6
 
     .line 660
-    const/high16 v8, 0x40800000    # 4.0f
+    const/high16 v8, 0x40800000
 
     .line 661
     .line 662

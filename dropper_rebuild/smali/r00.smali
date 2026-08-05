@@ -2,8 +2,6 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final n:Lmg;
 
 .field public static final o:Lmg;
@@ -16,8 +14,6 @@
 
 .field public static final s:Lmg;
 
-
-# instance fields
 .field public a:F
 
 .field public b:F
@@ -44,8 +40,6 @@
 
 .field public m:Z
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 1
 
@@ -151,7 +145,7 @@
 
     .line 8
     .line 9
-    const v1, 0x7f7fffff    # Float.MAX_VALUE
+    const v1, 0x7f7fffff
 
     .line 10
     .line 11
@@ -245,7 +239,7 @@
 
     .line 55
     .line 56
-    const/high16 v3, 0x3b800000    # 0.00390625f
+    const/high16 v3, 0x3b800000
 
     .line 57
     .line 58
@@ -281,7 +275,7 @@
 
     .line 72
     :cond_2
-    const/high16 p1, 0x3f800000    # 1.0f
+    const/high16 p1, 0x3f800000
 
     .line 73
     .line 74
@@ -303,7 +297,7 @@
     .line 80
     :cond_4
     :goto_1
-    const p1, 0x3dcccccd    # 0.1f
+    const p1, 0x3dcccccd
 
     .line 81
     .line 82
@@ -331,8 +325,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(F)V
     .locals 2
 
@@ -346,7 +338,7 @@
     .line 4
     .line 5
     .line 6
-    const v0, 0x461c4000    # 10000.0f
+    const v0, 0x461c4000
 
     .line 7
     .line 8

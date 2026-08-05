@@ -2,11 +2,8 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Ljava/lang/Runnable;
 
-
-# instance fields
 .field public a:I
 
 .field public b:I
@@ -21,8 +18,6 @@
 
 .field public final synthetic g:Landroidx/recyclerview/widget/RecyclerView;
 
-
-# direct methods
 .method public constructor <init>(Landroidx/recyclerview/widget/RecyclerView;)V
     .locals 2
 
@@ -79,8 +74,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a()V
     .locals 2
 
@@ -247,7 +240,7 @@
     int-to-float v5, v5
 
     .line 53
-    const/high16 v8, 0x3f800000    # 1.0f
+    const/high16 v8, 0x3f800000
 
     .line 54
     .line 55
@@ -271,7 +264,7 @@
     int-to-float v7, v7
 
     .line 63
-    const/high16 v9, 0x3f000000    # 0.5f
+    const/high16 v9, 0x3f000000
 
     .line 64
     .line 65
@@ -324,7 +317,7 @@
     move-result p3
 
     .line 86
-    const/high16 v0, 0x447a0000    # 1000.0f
+    const/high16 v0, 0x447a0000
 
     .line 87
     .line 88
@@ -368,7 +361,7 @@
     add-float/2addr p3, v8
 
     .line 103
-    const/high16 v0, 0x43960000    # 300.0f
+    const/high16 v0, 0x43960000
 
     .line 104
     .line 105

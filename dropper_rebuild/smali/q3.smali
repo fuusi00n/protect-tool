@@ -2,11 +2,8 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Ljava/util/concurrent/Executor;
 
-
-# instance fields
 .field public final a:Ljava/lang/Object;
 
 .field public final b:Ljava/util/ArrayDeque;
@@ -15,8 +12,6 @@
 
 .field public d:Ljava/lang/Runnable;
 
-
-# direct methods
 .method public constructor <init>(Lr3;)V
     .locals 1
 
@@ -59,8 +54,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a()V
     .locals 2
 

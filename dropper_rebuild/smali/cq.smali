@@ -2,8 +2,6 @@
 .super Lnm;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# direct methods
 .method public static c0(I)I
     .locals 1
 
@@ -31,7 +29,7 @@
 
     .line 10
     :cond_1
-    const/high16 v0, 0x40000000    # 2.0f
+    const/high16 v0, 0x40000000
 
     .line 11
     .line 12
@@ -42,14 +40,14 @@
     int-to-float p0, p0
 
     .line 15
-    const/high16 v0, 0x3f400000    # 0.75f
+    const/high16 v0, 0x3f400000
 
     .line 16
     .line 17
     div-float/2addr p0, v0
 
     .line 18
-    const/high16 v0, 0x3f800000    # 1.0f
+    const/high16 v0, 0x3f800000
 
     .line 19
     .line 20

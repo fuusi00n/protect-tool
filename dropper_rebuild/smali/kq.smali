@@ -2,19 +2,14 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Landroid/view/View$OnClickListener;
 
-
-# instance fields
 .field public final synthetic a:I
 
 .field public final b:Ljava/lang/Object;
 
 .field public final synthetic c:Ljava/lang/Object;
 
-
-# direct methods
 .method public constructor <init>(Lm30;)V
     .locals 3
 
@@ -132,8 +127,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final onClick(Landroid/view/View;)V
     .locals 4
 

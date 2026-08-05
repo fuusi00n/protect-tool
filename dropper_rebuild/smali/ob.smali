@@ -2,8 +2,6 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final a:F
 
 .field public final b:F
@@ -14,8 +12,6 @@
 
 .field public final e:I
 
-
-# direct methods
 .method public constructor <init>(Landroid/content/Context;Landroid/content/res/XmlResourceParser;)V
     .locals 6
 
@@ -25,7 +21,7 @@
     .line 2
     .line 3
     .line 4
-    const/high16 v0, 0x7fc00000    # Float.NaN
+    const/high16 v0, 0x7fc00000
 
     .line 5
     .line 6

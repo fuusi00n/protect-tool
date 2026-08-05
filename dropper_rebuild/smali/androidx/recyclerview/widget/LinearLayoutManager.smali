@@ -2,11 +2,8 @@
 .super Lww;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Lgx;
 
-
-# instance fields
 .field public final A:Leo;
 
 .field public final B:Lfo;
@@ -37,8 +34,6 @@
 
 .field public z:Lho;
 
-
-# direct methods
 .method public constructor <init>(I)V
     .locals 3
 
@@ -286,8 +281,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public A0(Lhx;[I)V
     .locals 2
 
@@ -7917,7 +7910,7 @@
     const/4 v1, 0x0
 
     .line 4
-    const/high16 v2, 0x40000000    # 2.0f
+    const/high16 v2, 0x40000000
 
     .line 5
     .line 6

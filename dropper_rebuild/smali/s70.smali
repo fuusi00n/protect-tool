@@ -2,8 +2,6 @@
 .super Landroid/view/WindowInsetsAnimation$Callback;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final a:Lec;
 
 .field public b:Ljava/util/List;
@@ -12,8 +10,6 @@
 
 .field public final d:Ljava/util/HashMap;
 
-
-# direct methods
 .method public constructor <init>(Lec;)V
     .locals 1
 
@@ -46,8 +42,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(Landroid/view/WindowInsetsAnimation;)Lv70;
     .locals 5
 

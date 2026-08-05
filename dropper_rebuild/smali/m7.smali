@@ -2,12 +2,8 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final e:[B
 
-
-# instance fields
 .field public final a:Ljava/lang/CharSequence;
 
 .field public final b:I
@@ -16,8 +12,6 @@
 
 .field public d:C
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 4
 
@@ -97,8 +91,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a()B
     .locals 3
 

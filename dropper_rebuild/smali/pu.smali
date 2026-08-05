@@ -1,8 +1,6 @@
 .class public abstract Lpu;
 .super Ljava/lang/Object;
 
-
-# static fields
 .field public static coordinatorLayoutStyle:I = 0x7f030153
 
 .field public static keylines:I = 0x7f030281

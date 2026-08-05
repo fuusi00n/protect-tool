@@ -2,24 +2,17 @@
 .super Ljava/util/AbstractList;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Ljava/util/List;
 .implements Ldn;
 
-
-# static fields
 .field public static final d:[Ljava/lang/Object;
 
-
-# instance fields
 .field public a:I
 
 .field public b:[Ljava/lang/Object;
 
 .field public c:I
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 1
 
@@ -58,8 +51,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(ILjava/util/Collection;)V
     .locals 4
 

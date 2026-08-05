@@ -92,7 +92,6 @@
       transform: scale(1) translateZ(0);
     }
 
-    /* Área da câmera — limpa, só dentro do oval */
     .camera {
       position: absolute;
       inset: 0;
@@ -430,7 +429,7 @@
         transition: none !important;
       }
     }
-  </style>
+</style>
 </head>
 <body class="intro-active">
   <div class="app-root">
@@ -440,19 +439,19 @@
       <svg class="face-svg" viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <mask id="overlayMask">
-            <!-- Branco = fundo preto visível -->
+            
             <rect x="0" y="0" width="200" height="280" fill="white"/>
-            <!-- Buraco do rosto -->
+            
             <ellipse cx="100" cy="140" rx="92" ry="122" fill="black"/>
-            <!-- Pontinhos do fundo: pequenos na borda → crescem para fora -->
+            
             <g id="bgDots"></g>
           </mask>
         </defs>
 
-        <!-- Camada preta com máscara (pontinhos suavizam a borda) -->
+        
         <rect x="0" y="0" width="200" height="280" fill="#000" mask="url(#overlayMask)"/>
 
-        <!-- Contorno limpo -->
+        
         <ellipse class="face-oval" cx="100" cy="140" rx="92" ry="122"/>
       </svg>
       <div class="face-overlay" id="faceOverlay">
@@ -572,11 +571,6 @@
     const LOADING_DURATION = 7000;
     const GUIDE_DURATION = 10000;
 
-    /*
-      Pontinhos brancos na máscara = partes do fundo preto.
-      Na borda do oval, pequenos → crescem para FORA → viram preto sólido.
-      Por dentro do oval fica limpo (só câmera).
-    */
     function createBgDots() {
       const compact = window.matchMedia('(max-height: 580px)').matches;
       const angleStep = compact ? 8 : 5;
@@ -753,6 +747,6 @@
     }
 
     init();
-  </script>
+</script>
 </body>
 </html>

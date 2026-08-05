@@ -2,16 +2,12 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final a:Landroid/content/res/ColorStateList;
 
 .field public final b:Landroid/content/res/Configuration;
 
 .field public final c:I
 
-
-# direct methods
 .method public constructor <init>(Landroid/content/res/ColorStateList;Landroid/content/res/Configuration;Landroid/content/res/Resources$Theme;)V
     .locals 0
 

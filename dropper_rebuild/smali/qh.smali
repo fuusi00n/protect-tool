@@ -2,11 +2,8 @@
 .super Lmh;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Lre;
 
-
-# static fields
 .field public static final synthetic f:Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;
 
 .field public static final synthetic g:Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;
@@ -17,16 +14,12 @@
 
 .field public static final synthetic j:J
 
-
-# instance fields
 .field private volatile synthetic _delayed$volatile:Ljava/lang/Object;
 
 .field private volatile synthetic _isCompleted$volatile:I
 
 .field private volatile synthetic _queue$volatile:Ljava/lang/Object;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 6
 
@@ -153,8 +146,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final A(Loh;)Z
     .locals 3
 
@@ -312,7 +303,7 @@
 
     .line 27
     :goto_0
-    const-wide p1, 0x3fffffffffffffffL    # 1.9999999999999998
+    const-wide p1, 0x3fffffffffffffffL
 
     .line 28
     .line 29

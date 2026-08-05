@@ -2,8 +2,6 @@
 .super Lnc;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public d:J
 
 .field public e:J
@@ -14,8 +12,6 @@
 
 .field public h:I
 
-
-# direct methods
 .method public constructor <init>(Lcom/pulse/live/ui/MainActivity;Lnc;)V
     .locals 0
 
@@ -32,8 +28,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final i(Ljava/lang/Object;)Ljava/lang/Object;
     .locals 2
 

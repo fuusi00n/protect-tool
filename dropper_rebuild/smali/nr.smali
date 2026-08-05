@@ -2,17 +2,12 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Ld00;
 .implements Lvr;
 .implements Landroid/widget/AdapterView$OnItemClickListener;
 
-
-# instance fields
 .field public a:Landroid/graphics/Rect;
 
-
-# direct methods
 .method public static m(Landroid/widget/ListAdapter;Landroid/content/Context;I)I
     .locals 10
 
@@ -145,8 +140,6 @@
     return v5
 .end method
 
-
-# virtual methods
 .method public final d(Lir;)Z
     .locals 0
 

@@ -2,8 +2,6 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public A:Ljava/lang/CharSequence;
 
 .field public B:Ljava/lang/CharSequence;
@@ -120,8 +118,6 @@
 
 .field public final z:Landroid/text/TextUtils$TruncateAt;
 
-
-# direct methods
 .method public constructor <init>(Lcom/google/android/material/textfield/TextInputLayout;)V
     .locals 2
 
@@ -143,7 +139,7 @@
 
     .line 9
     .line 10
-    const/high16 v0, 0x41700000    # 15.0f
+    const/high16 v0, 0x41700000
 
     .line 11
     .line 12
@@ -174,7 +170,7 @@
 
     .line 24
     .line 25
-    const/high16 v1, 0x3f800000    # 1.0f
+    const/high16 v1, 0x3f800000
 
     .line 26
     .line 27
@@ -295,7 +291,7 @@
     .locals 5
 
     .line 1
-    const/high16 v0, 0x3f800000    # 1.0f
+    const/high16 v0, 0x3f800000
 
     .line 2
     .line 3
@@ -497,8 +493,6 @@
     return p0
 .end method
 
-
-# virtual methods
 .method public final b(Ljava/lang/CharSequence;)Z
     .locals 2
 
@@ -629,7 +623,7 @@
     int-to-float v1, v1
 
     .line 21
-    const/high16 v2, 0x3f800000    # 1.0f
+    const/high16 v2, 0x3f800000
 
     .line 22
     .line 23
@@ -645,7 +639,7 @@
     move-result v3
 
     .line 29
-    const v4, 0x3727c5ac    # 1.0E-5f
+    const v4, 0x3727c5ac
 
     .line 30
     .line 31
@@ -1655,7 +1649,7 @@
     .line 20
     .line 21
     :cond_1
-    const/high16 v3, 0x3f800000    # 1.0f
+    const/high16 v3, 0x3f800000
 
     .line 22
     .line 23
@@ -1787,7 +1781,7 @@
 
     .line 83
     .line 84
-    const/high16 v12, 0x40000000    # 2.0f
+    const/high16 v12, 0x40000000
 
     .line 85
     .line 86
@@ -2855,7 +2849,7 @@
     const/4 v0, 0x0
 
     .line 2
-    const/high16 v1, 0x3f800000    # 1.0f
+    const/high16 v1, 0x3f800000
 
     .line 3
     .line 4

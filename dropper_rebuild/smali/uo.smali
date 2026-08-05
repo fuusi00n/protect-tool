@@ -2,17 +2,12 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Ld00;
 
-
-# static fields
 .field public static final A:Ljava/lang/reflect/Method;
 
 .field public static final B:Ljava/lang/reflect/Method;
 
-
-# instance fields
 .field public final a:Landroid/content/Context;
 
 .field public b:Landroid/widget/ListAdapter;
@@ -65,8 +60,6 @@
 
 .field public final z:Lr4;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 6
 
@@ -482,8 +475,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public a(Landroid/content/Context;Z)Lgg;
     .locals 0
 
@@ -874,7 +865,7 @@
 
     .line 137
     .line 138
-    const/high16 v12, 0x40000000    # 2.0f
+    const/high16 v12, 0x40000000
 
     .line 139
     .line 140

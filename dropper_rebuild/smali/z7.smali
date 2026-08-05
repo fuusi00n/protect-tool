@@ -2,12 +2,9 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Lcn;
 .implements Ljava/io/Serializable;
 
-
-# instance fields
 .field public transient a:Lcn;
 
 .field public final b:Ljava/lang/Object;
@@ -20,8 +17,6 @@
 
 .field public final f:Z
 
-
-# direct methods
 .method public constructor <init>(Ljava/lang/Object;Ljava/lang/Class;Ljava/lang/String;Ljava/lang/String;Z)V
     .locals 0
 
@@ -54,8 +49,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final c()Lr9;
     .locals 1
 

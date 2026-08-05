@@ -2,8 +2,6 @@
 .super Lp6;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public f:[Ll00;
 
 .field public g:[Ll00;
@@ -12,8 +10,6 @@
 
 .field public i:Ls4;
 
-
-# virtual methods
 .method public final d([Z)Ll00;
     .locals 9
 
@@ -326,7 +322,7 @@
 
     .line 34
     .line 35
-    const v12, 0x38d1b717    # 1.0E-4f
+    const v12, 0x38d1b717
 
     .line 36
     .line 37

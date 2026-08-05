@@ -2,14 +2,10 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static p:Z = false
 
 .field public static q:I = 0x3e8
 
-
-# instance fields
 .field public a:Z
 
 .field public b:I
@@ -40,8 +36,6 @@
 
 .field public o:Lp6;
 
-
-# direct methods
 .method public constructor <init>()V
     .locals 5
 
@@ -270,7 +264,7 @@
 
     .line 8
     .line 9
-    const/high16 v0, 0x3f000000    # 0.5f
+    const/high16 v0, 0x3f000000
 
     .line 10
     .line 11
@@ -290,8 +284,6 @@
     return p0
 .end method
 
-
-# virtual methods
 .method public final a(I)Ll00;
     .locals 5
 
@@ -454,7 +446,7 @@
     move-result-object v0
 
     .line 5
-    const/high16 v1, 0x3f800000    # 1.0f
+    const/high16 v1, 0x3f800000
 
     .line 6
     .line 7
@@ -484,7 +476,7 @@
 
     .line 20
     .line 21
-    const/high16 p3, -0x40000000    # -2.0f
+    const/high16 p3, -0x40000000
 
     .line 22
     .line 23
@@ -497,7 +489,7 @@
 
     .line 27
     :cond_0
-    const/high16 v2, 0x3f000000    # 0.5f
+    const/high16 v2, 0x3f000000
 
     .line 28
     .line 29
@@ -509,7 +501,7 @@
 
     .line 32
     .line 33
-    const/high16 v4, -0x40800000    # -1.0f
+    const/high16 v4, -0x40800000
 
     .line 34
     .line 35
@@ -1065,7 +1057,7 @@
 
     .line 140
     .line 141
-    const/high16 v7, -0x40800000    # -1.0f
+    const/high16 v7, -0x40800000
 
     .line 142
     .line 143
@@ -1915,7 +1907,7 @@
 
     .line 68
     .line 69
-    const/high16 v1, 0x3f800000    # 1.0f
+    const/high16 v1, 0x3f800000
 
     .line 70
     .line 71
@@ -1939,7 +1931,7 @@
 
     .line 79
     .line 80
-    const/high16 v1, -0x40800000    # -1.0f
+    const/high16 v1, -0x40800000
 
     .line 81
     .line 82
@@ -2082,11 +2074,11 @@
 
     .line 38
     .line 39
-    const/high16 v3, 0x3f800000    # 1.0f
+    const/high16 v3, 0x3f800000
 
     .line 40
     .line 41
-    const/high16 v4, -0x40800000    # -1.0f
+    const/high16 v4, -0x40800000
 
     .line 42
     .line 43
@@ -2197,7 +2189,7 @@
     move-result p1
 
     .line 25
-    const/high16 p2, -0x40800000    # -1.0f
+    const/high16 p2, -0x40800000
 
     .line 26
     .line 27
@@ -2288,7 +2280,7 @@
     move-result p1
 
     .line 25
-    const/high16 p2, -0x40800000    # -1.0f
+    const/high16 p2, -0x40800000
 
     .line 26
     .line 27
@@ -2768,7 +2760,7 @@
 
     .line 54
     .line 55
-    const/high16 v2, 0x3f800000    # 1.0f
+    const/high16 v2, 0x3f800000
 
     .line 56
     .line 57
@@ -3422,7 +3414,7 @@
     const/4 v6, -0x1
 
     .line 34
-    const v7, 0x7f7fffff    # Float.MAX_VALUE
+    const v7, 0x7f7fffff
 
     .line 35
     .line 36
@@ -3907,7 +3899,7 @@
     const/4 v7, -0x1
 
     .line 65
-    const v8, 0x7f7fffff    # Float.MAX_VALUE
+    const v8, 0x7f7fffff
 
     .line 66
     .line 67

@@ -2,11 +2,8 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Lwo;
 
-
-# static fields
 .field public static final d:Z
 
 .field public static final e:Ljava/util/logging/Logger;
@@ -15,16 +12,12 @@
 
 .field public static final g:Ljava/lang/Object;
 
-
-# instance fields
 .field public volatile a:Ljava/lang/Object;
 
 .field public volatile b:Lk;
 
 .field public volatile c:Lo;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 11
 
@@ -628,8 +621,6 @@
     goto :goto_0
 .end method
 
-
-# virtual methods
 .method public final a(Ljava/lang/StringBuilder;)V
     .locals 3
 

@@ -2,18 +2,13 @@
 .super Llf;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Ljd;
 .implements Lmc;
 
-
-# static fields
 .field public static final synthetic h:Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;
 
 .field public static final synthetic i:J
 
-
-# instance fields
 .field private volatile synthetic _reusableCancellableContinuation$volatile:Ljava/lang/Object;
 
 .field public final d:Lcd;
@@ -24,8 +19,6 @@
 
 .field public final g:Ljava/lang/Object;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 3
 
@@ -133,8 +126,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(Ljava/lang/Object;Ljava/util/concurrent/CancellationException;)V
     .locals 0
 

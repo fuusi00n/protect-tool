@@ -1,8 +1,6 @@
 .class public abstract Lhw;
 .super Ljava/lang/Object;
 
-
-# static fields
 .field public static ActionBar:[I = null
 
 .field public static ActionBarLayout:[I = null
@@ -3801,8 +3799,6 @@
 
 .field public static View_theme:I = 0x4
 
-
-# direct methods
 .method public static constructor <clinit>()V
     .locals 18
 

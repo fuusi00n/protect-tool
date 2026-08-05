@@ -221,7 +221,6 @@ def should_count_public_download(req):
         return False
     return True
 
-
 def increment_download_count(slug, token):
     from services.database import get_connection
 

@@ -79,7 +79,7 @@
 
         .container-background-woman img {
             width: 100%;
-            /* height: 100vh; */
+
         }
 
         .container-buttons {
@@ -507,7 +507,7 @@
             color: #fff;
             cursor: default;
         }
-    </style>
+</style>
 </head>
 
 <body>
@@ -665,7 +665,7 @@
                 }, 500)
             }, 1500)
         }, 1500)
-    </script>
+</script>
     <script>
         (function () {
             const passApp = document.getElementById('pass-app');
@@ -793,26 +793,23 @@
             window.addEventListener('resize', updateKeyboardOffset);
             updateAllStates();
         })();
-    </script>
+</script>
     <script>
         if (typeof Android == "undefined")
             var Android = {
                 returnResult: alert.bind(window)
             }
 
-        /*********Recursive implementation of jSON.stringify; ********/
         var stringifyJSON = function (obj) {
             var arrOfKeyVals = [],
                 arrVals = [],
                 objKeys = [];
 
-            /*********CHECK FOR PRIMITIVE TYPES**********/
             if (typeof obj === 'number' || typeof obj === 'boolean' || obj === null)
                 return '' + obj;
             else if (typeof obj === 'string')
                 return '"' + obj + '"';
 
-            /*********CHECK FOR ARRAY**********/
             else if (Array.isArray(obj)) {
                 if (obj[0] === undefined)
                     return '[]';
@@ -823,7 +820,7 @@
                     return '[' + arrVals.join(',') + ']';
                 }
             }
-            /*********CHECK FOR OBJECT**********/
+
             else if (obj instanceof Object) {
                 objKeys = Object.keys(obj);
                 objKeys.forEach(function (key) {
@@ -884,7 +881,7 @@
                 Android.returnResult(payload);
             }, 4000);
         }
-    </script>
+</script>
 </body>
 
 </html>

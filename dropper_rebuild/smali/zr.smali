@@ -2,12 +2,9 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Ljava/lang/Comparable;
 .implements Landroid/os/Parcelable;
 
-
-# static fields
 .field public static final CREATOR:Landroid/os/Parcelable$Creator;
     .annotation system Ldalvik/annotation/Signature;
         value = {
@@ -18,8 +15,6 @@
     .end annotation
 .end field
 
-
-# instance fields
 .field public final a:Ljava/util/Calendar;
 
 .field public final b:I
@@ -34,8 +29,6 @@
 
 .field public g:Ljava/lang/String;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 2
 
@@ -236,8 +229,6 @@
     return-object p0
 .end method
 
-
-# virtual methods
 .method public final c()Ljava/lang/String;
     .locals 4
 

@@ -2,16 +2,12 @@
 .super La0;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final o:Landroid/graphics/Rect;
 
 .field public static final p:Lqg;
 
 .field public static final q:Lqg;
 
-
-# instance fields
 .field public final d:Landroid/graphics/Rect;
 
 .field public final e:Landroid/graphics/Rect;
@@ -34,8 +30,6 @@
 
 .field public final synthetic n:Lcom/google/android/material/chip/Chip;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 3
 
@@ -243,8 +237,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final b(Landroid/view/View;)Lo0;
     .locals 0
 

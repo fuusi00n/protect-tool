@@ -2,17 +2,12 @@
 .super Ler;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Landroid/view/SubMenu;
 
-
-# instance fields
 .field public final A:Lir;
 
 .field public final z:Ler;
 
-
-# direct methods
 .method public constructor <init>(Landroid/content/Context;Ler;Lir;)V
     .locals 0
 
@@ -33,8 +28,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final d(Lir;)Z
     .locals 0
 

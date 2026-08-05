@@ -2,12 +2,8 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final v:Lmw;
 
-
-# instance fields
 .field public a:I
 
 .field public final b:I
@@ -50,8 +46,6 @@
 
 .field public final u:Lu6;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 2
 
@@ -148,14 +142,14 @@
 
     .line 35
     .line 36
-    const/high16 v0, 0x41a00000    # 20.0f
+    const/high16 v0, 0x41a00000
 
     .line 37
     .line 38
     mul-float/2addr p3, v0
 
     .line 39
-    const/high16 v0, 0x3f000000    # 0.5f
+    const/high16 v0, 0x3f000000
 
     .line 40
     .line 41
@@ -247,8 +241,6 @@
     throw p0
 .end method
 
-
-# virtual methods
 .method public final a()V
     .locals 2
 
@@ -778,7 +770,7 @@
     div-float/2addr v1, p0
 
     .line 20
-    const/high16 p0, 0x3f800000    # 1.0f
+    const/high16 p0, 0x3f800000
 
     .line 21
     .line 22
@@ -793,7 +785,7 @@
     int-to-float v0, v0
 
     .line 27
-    const/high16 v2, 0x3f000000    # 0.5f
+    const/high16 v2, 0x3f000000
 
     .line 28
     .line 29
@@ -854,7 +846,7 @@
     move-result p0
 
     .line 54
-    const/high16 p1, 0x447a0000    # 1000.0f
+    const/high16 p1, 0x447a0000
 
     .line 55
     .line 56
@@ -897,7 +889,7 @@
     add-float/2addr p1, p0
 
     .line 72
-    const/high16 p0, 0x43800000    # 256.0f
+    const/high16 p0, 0x43800000
 
     .line 73
     .line 74

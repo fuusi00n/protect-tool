@@ -2,11 +2,8 @@
 .super Landroid/widget/EditText;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Lot;
 
-
-# instance fields
 .field public final a:Lh3;
 
 .field public final b:Lp5;
@@ -19,8 +16,6 @@
 
 .field public f:Lk4;
 
-
-# direct methods
 .method public constructor <init>(Landroid/content/Context;Landroid/util/AttributeSet;I)V
     .locals 3
 
@@ -273,8 +268,6 @@
     return-object p0
 .end method
 
-
-# virtual methods
 .method public final a(Lgc;)Lgc;
     .locals 1
 

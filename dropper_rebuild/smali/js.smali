@@ -2,12 +2,8 @@
 .super Landroid/os/RemoteCallbackList;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final synthetic a:Landroidx/room/MultiInstanceInvalidationService;
 
-
-# direct methods
 .method public constructor <init>(Landroidx/room/MultiInstanceInvalidationService;)V
     .locals 0
 
@@ -24,8 +20,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final onCallbackDied(Landroid/os/IInterface;Ljava/lang/Object;)V
     .locals 0
 

@@ -2,19 +2,14 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Lbt;
 
-
-# instance fields
 .field public final a:Ljava/lang/Object;
 
 .field public b:I
 
 .field public c:I
 
-
-# direct methods
 .method public constructor <init>(Landroid/content/Context;Landroid/content/res/XmlResourceParser;)V
     .locals 6
 
@@ -267,8 +262,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public d(Landroid/view/View;Lj80;)Lj80;
     .locals 3
 

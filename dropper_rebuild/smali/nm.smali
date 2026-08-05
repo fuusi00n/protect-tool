@@ -2,11 +2,8 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Lh60;
 
-
-# static fields
 .field public static final a:Ljava/lang/Object;
 
 .field public static final b:[Ljava/lang/Object;
@@ -47,8 +44,6 @@
 
 .field public static t:Ljava/lang/reflect/Field;
 
-
-# direct methods
 .method static synthetic constructor <clinit>()V
     .locals 3
 
@@ -479,7 +474,7 @@
 
     .line 10
     .line 11
-    const v0, 0x3fa66666    # 1.3f
+    const v0, 0x3fa66666
 
     .line 12
     .line 13
@@ -9324,7 +9319,7 @@
 
     .line 870
     :cond_37
-    const/high16 v18, 0x3f800000    # 1.0f
+    const/high16 v18, 0x3f800000
 
     .line 871
     .line 872
@@ -9510,11 +9505,11 @@
 
     .line 959
     .line 960
-    const/high16 v8, 0x3f800000    # 1.0f
+    const/high16 v8, 0x3f800000
 
     .line 961
     .line 962
-    const/high16 v13, -0x40800000    # -1.0f
+    const/high16 v13, -0x40800000
 
     .line 963
     .line 964
@@ -9538,7 +9533,7 @@
 
     .line 972
     .line 973
-    const/high16 v8, 0x3f800000    # 1.0f
+    const/high16 v8, 0x3f800000
 
     .line 974
     .line 975
@@ -9551,7 +9546,7 @@
 
     .line 979
     .line 980
-    const/high16 v7, -0x40800000    # -1.0f
+    const/high16 v7, -0x40800000
 
     .line 981
     .line 982
@@ -9576,11 +9571,11 @@
 
     .line 991
     .line 992
-    const/high16 v8, 0x3f800000    # 1.0f
+    const/high16 v8, 0x3f800000
 
     .line 993
     .line 994
-    const/high16 v13, -0x40800000    # -1.0f
+    const/high16 v13, -0x40800000
 
     .line 995
     .line 996
@@ -9627,7 +9622,7 @@
 
     .line 1017
     .line 1018
-    const/high16 v8, -0x40800000    # -1.0f
+    const/high16 v8, -0x40800000
 
     .line 1019
     .line 1020
@@ -10403,7 +10398,7 @@
 
     .line 1369
     :goto_39
-    const/high16 v5, 0x3f000000    # 0.5f
+    const/high16 v5, 0x3f000000
 
     .line 1370
     .line 1371
@@ -10813,7 +10808,7 @@
     move-object v6, v5
 
     .line 1555
-    const/high16 v5, 0x3f000000    # 0.5f
+    const/high16 v5, 0x3f000000
 
     .line 1556
     .line 1557
@@ -11029,7 +11024,7 @@
     move-result v8
 
     .line 1654
-    const/high16 v5, 0x3f000000    # 0.5f
+    const/high16 v5, 0x3f000000
 
     .line 1655
     .line 1656
@@ -11246,7 +11241,7 @@
     const/4 v9, 0x5
 
     .line 1754
-    const/high16 v5, 0x3f000000    # 0.5f
+    const/high16 v5, 0x3f000000
 
     .line 1755
     .line 1756
@@ -14476,8 +14471,6 @@
     return-object p0
 .end method
 
-
-# virtual methods
 .method public abstract G(Lw;Lw;)V
 .end method
 

@@ -2,8 +2,6 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final a:F
 
 .field public final b:F
@@ -16,8 +14,6 @@
 
 .field public final f:F
 
-
-# direct methods
 .method public constructor <init>(FFFFFF)V
     .locals 0
 
@@ -368,14 +364,14 @@
     float-to-double v7, v4
 
     .line 137
-    const-wide/high16 v11, 0x4059000000000000L    # 100.0
+    const-wide/high16 v11, 0x4059000000000000L
 
     .line 138
     .line 139
     div-double/2addr v7, v11
 
     .line 140
-    const-wide v13, 0x3fdae147ae147ae1L    # 0.42
+    const-wide v13, 0x3fdae147ae147ae1L
 
     .line 141
     .line 142
@@ -460,7 +456,7 @@
     move-result v5
 
     .line 179
-    const/high16 v8, 0x43c80000    # 400.0f
+    const/high16 v8, 0x43c80000
 
     .line 180
     .line 181
@@ -470,7 +466,7 @@
     mul-float/2addr v5, v4
 
     .line 183
-    const v11, 0x41d90a3d    # 27.13f
+    const v11, 0x41d90a3d
 
     .line 184
     .line 185
@@ -521,7 +517,7 @@
     div-float/2addr v1, v3
 
     .line 204
-    const-wide/high16 v3, 0x4026000000000000L    # 11.0
+    const-wide/high16 v3, 0x4026000000000000L
 
     .line 205
     .line 206
@@ -531,7 +527,7 @@
     mul-double/2addr v7, v3
 
     .line 208
-    const-wide/high16 v3, -0x3fd8000000000000L    # -12.0
+    const-wide/high16 v3, -0x3fd8000000000000L
 
     .line 209
     .line 210
@@ -553,7 +549,7 @@
     double-to-float v7, v11
 
     .line 216
-    const/high16 v8, 0x41300000    # 11.0f
+    const/high16 v8, 0x41300000
 
     .line 217
     .line 218
@@ -567,7 +563,7 @@
     float-to-double v11, v8
 
     .line 222
-    const-wide/high16 v13, 0x4000000000000000L    # 2.0
+    const-wide/high16 v13, 0x4000000000000000L
 
     .line 223
     .line 224
@@ -580,14 +576,14 @@
     double-to-float v3, v11
 
     .line 227
-    const/high16 v4, 0x41100000    # 9.0f
+    const/high16 v4, 0x41100000
 
     .line 228
     .line 229
     div-float/2addr v3, v4
 
     .line 230
-    const/high16 v4, 0x41a00000    # 20.0f
+    const/high16 v4, 0x41a00000
 
     .line 231
     .line 232
@@ -601,7 +597,7 @@
     add-float/2addr v8, v2
 
     .line 236
-    const/high16 v11, 0x41a80000    # 21.0f
+    const/high16 v11, 0x41a80000
 
     .line 237
     .line 238
@@ -614,7 +610,7 @@
     div-float/2addr v11, v4
 
     .line 241
-    const/high16 v8, 0x42200000    # 40.0f
+    const/high16 v8, 0x42200000
 
     .line 242
     .line 243
@@ -651,14 +647,14 @@
     double-to-float v1, v1
 
     .line 256
-    const/high16 v2, 0x43340000    # 180.0f
+    const/high16 v2, 0x43340000
 
     .line 257
     .line 258
     mul-float/2addr v1, v2
 
     .line 259
-    const v4, 0x40490fdb    # (float)Math.PI
+    const v4, 0x40490fdb
 
     .line 260
     .line 261
@@ -673,7 +669,7 @@
 
     .line 265
     .line 266
-    const/high16 v12, 0x43b40000    # 360.0f
+    const/high16 v12, 0x43b40000
 
     .line 267
     .line 268
@@ -745,7 +741,7 @@
     double-to-float v2, v2
 
     .line 295
-    const/high16 v3, 0x42c80000    # 100.0f
+    const/high16 v3, 0x42c80000
 
     .line 296
     .line 297
@@ -764,7 +760,7 @@
     .line 302
     .line 303
     .line 304
-    const/high16 v3, 0x40800000    # 4.0f
+    const/high16 v3, 0x40800000
 
     .line 305
     .line 306
@@ -774,7 +770,7 @@
     float-to-double v13, v1
 
     .line 308
-    const-wide v19, 0x403423d70a3d70a4L    # 20.14
+    const-wide v19, 0x403423d70a3d70a4L
 
     .line 309
     .line 310
@@ -803,7 +799,7 @@
     float-to-double v12, v12
 
     .line 321
-    const-wide v19, 0x400921fb54442d18L    # Math.PI
+    const-wide v19, 0x400921fb54442d18L
 
     .line 322
     .line 323
@@ -814,7 +810,7 @@
 
     .line 327
     .line 328
-    const-wide v19, 0x4066800000000000L    # 180.0
+    const-wide v19, 0x4066800000000000L
 
     .line 329
     .line 330
@@ -837,7 +833,7 @@
     move-result-wide v12
 
     .line 341
-    const-wide v17, 0x400e666666666666L    # 3.8
+    const-wide v17, 0x400e666666666666L
 
     .line 342
     .line 343
@@ -851,7 +847,7 @@
     double-to-float v3, v12
 
     .line 349
-    const/high16 v5, 0x3e800000    # 0.25f
+    const/high16 v5, 0x3e800000
 
     .line 350
     .line 351
@@ -907,7 +903,7 @@
     mul-float/2addr v3, v5
 
     .line 373
-    const v5, 0x3e9c28f6    # 0.305f
+    const v5, 0x3e9c28f6
 
     .line 374
     .line 375
@@ -925,7 +921,7 @@
     float-to-double v7, v0
 
     .line 381
-    const-wide v11, 0x3fd28f5c28f5c28fL    # 0.29
+    const-wide v11, 0x3fd28f5c28f5c28fL
 
     .line 382
     .line 383
@@ -940,7 +936,7 @@
     move-result-wide v7
 
     .line 390
-    const-wide v11, 0x3ffa3d70a3d70a3dL    # 1.64
+    const-wide v11, 0x3ffa3d70a3d70a3dL
 
     .line 391
     .line 392
@@ -950,7 +946,7 @@
     sub-double/2addr v11, v7
 
     .line 396
-    const-wide v7, 0x3fe75c28f5c28f5cL    # 0.73
+    const-wide v7, 0x3fe75c28f5c28f5cL
 
     .line 397
     .line 398
@@ -971,7 +967,7 @@
     float-to-double v7, v3
 
     .line 407
-    const-wide v11, 0x3feccccccccccccdL    # 0.9
+    const-wide v11, 0x3feccccccccccccdL
 
     .line 408
     .line 409
@@ -1031,7 +1027,7 @@
     .line 433
     .line 434
     .line 435
-    const v0, 0x3fd9999a    # 1.7f
+    const v0, 0x3fd9999a
 
     .line 436
     .line 437
@@ -1039,7 +1035,7 @@
     mul-float/2addr v0, v2
 
     .line 439
-    const v3, 0x3be56042    # 0.007f
+    const v3, 0x3be56042
 
     .line 440
     .line 441
@@ -1047,7 +1043,7 @@
     mul-float/2addr v3, v2
 
     .line 443
-    const/high16 v5, 0x3f800000    # 1.0f
+    const/high16 v5, 0x3f800000
 
     .line 444
     .line 445
@@ -1058,7 +1054,7 @@
 
     .line 447
     .line 448
-    const v0, 0x3cbac711    # 0.0228f
+    const v0, 0x3cbac711
 
     .line 449
     .line 450
@@ -1159,7 +1155,7 @@
     float-to-double v1, p0
 
     .line 6
-    const-wide/high16 v3, 0x4059000000000000L    # 100.0
+    const-wide/high16 v3, 0x4059000000000000L
 
     .line 7
     .line 8
@@ -1175,7 +1171,7 @@
 
     .line 13
     .line 14
-    const/high16 v4, 0x40800000    # 4.0f
+    const/high16 v4, 0x40800000
 
     .line 15
     .line 16
@@ -1222,7 +1218,7 @@
     .line 33
     .line 34
     .line 35
-    const v0, 0x40490fdb    # (float)Math.PI
+    const v0, 0x40490fdb
 
     .line 36
     .line 37
@@ -1230,14 +1226,14 @@
     mul-float/2addr v0, p2
 
     .line 39
-    const/high16 v1, 0x43340000    # 180.0f
+    const/high16 v1, 0x43340000
 
     .line 40
     .line 41
     div-float/2addr v0, v1
 
     .line 42
-    const v1, 0x3fd9999a    # 1.7f
+    const v1, 0x3fd9999a
 
     .line 43
     .line 44
@@ -1245,7 +1241,7 @@
     mul-float/2addr v1, p0
 
     .line 46
-    const v2, 0x3be56042    # 0.007f
+    const v2, 0x3be56042
 
     .line 47
     .line 48
@@ -1253,7 +1249,7 @@
     mul-float/2addr v2, p0
 
     .line 50
-    const/high16 v3, 0x3f800000    # 1.0f
+    const/high16 v3, 0x3f800000
 
     .line 51
     .line 52
@@ -1264,7 +1260,7 @@
 
     .line 54
     .line 55
-    const-wide v1, 0x3f9758e219652bd4L    # 0.0228
+    const-wide v1, 0x3f9758e219652bd4L
 
     .line 56
     .line 57
@@ -1277,7 +1273,7 @@
     mul-double/2addr v3, v1
 
     .line 62
-    const-wide/high16 v1, 0x3ff0000000000000L    # 1.0
+    const-wide/high16 v1, 0x3ff0000000000000L
 
     .line 63
     .line 64
@@ -1357,8 +1353,6 @@
     return-object v5
 .end method
 
-
-# virtual methods
 .method public final c(Lb70;)I
     .locals 19
 
@@ -1386,7 +1380,7 @@
 
     .line 11
     .line 12
-    const-wide/high16 v7, 0x4059000000000000L    # 100.0
+    const-wide/high16 v7, 0x4059000000000000L
 
     .line 13
     .line 14
@@ -1453,7 +1447,7 @@
     float-to-double v11, v9
 
     .line 39
-    const-wide v13, 0x3fd28f5c28f5c28fL    # 0.29
+    const-wide v13, 0x3fd28f5c28f5c28fL
 
     .line 40
     .line 41
@@ -1468,7 +1462,7 @@
     move-result-wide v11
 
     .line 48
-    const-wide v13, 0x3ffa3d70a3d70a3dL    # 1.64
+    const-wide v13, 0x3ffa3d70a3d70a3dL
 
     .line 49
     .line 50
@@ -1478,7 +1472,7 @@
     sub-double/2addr v13, v11
 
     .line 54
-    const-wide v11, 0x3fe75c28f5c28f5cL    # 0.73
+    const-wide v11, 0x3fe75c28f5c28f5cL
 
     .line 55
     .line 56
@@ -1496,7 +1490,7 @@
     div-double/2addr v2, v11
 
     .line 64
-    const-wide v11, 0x3ff1c71c71c71c72L    # 1.1111111111111112
+    const-wide v11, 0x3ff1c71c71c71c72L
 
     .line 65
     .line 66
@@ -1518,7 +1512,7 @@
 
     .line 75
     .line 76
-    const v3, 0x40490fdb    # (float)Math.PI
+    const v3, 0x40490fdb
 
     .line 77
     .line 78
@@ -1526,7 +1520,7 @@
     mul-float/2addr v0, v3
 
     .line 80
-    const/high16 v3, 0x43340000    # 180.0f
+    const/high16 v3, 0x43340000
 
     .line 81
     .line 82
@@ -1536,7 +1530,7 @@
     float-to-double v11, v0
 
     .line 84
-    const-wide/high16 v13, 0x4000000000000000L    # 2.0
+    const-wide/high16 v13, 0x4000000000000000L
 
     .line 85
     .line 86
@@ -1551,7 +1545,7 @@
     move-result-wide v13
 
     .line 91
-    const-wide v15, 0x400e666666666666L    # 3.8
+    const-wide v15, 0x400e666666666666L
 
     .line 92
     .line 93
@@ -1564,7 +1558,7 @@
     double-to-float v0, v13
 
     .line 98
-    const/high16 v3, 0x3e800000    # 0.25f
+    const/high16 v3, 0x3e800000
 
     .line 99
     .line 100
@@ -1588,7 +1582,7 @@
     float-to-double v7, v4
 
     .line 108
-    const-wide/high16 v15, 0x3ff0000000000000L    # 1.0
+    const-wide/high16 v15, 0x3ff0000000000000L
 
     .line 109
     .line 110
@@ -1671,7 +1665,7 @@
     double-to-float v7, v7
 
     .line 145
-    const v8, 0x3e9c28f6    # 0.305f
+    const v8, 0x3e9c28f6
 
     .line 146
     .line 147
@@ -1679,7 +1673,7 @@
     add-float/2addr v8, v3
 
     .line 149
-    const/high16 v9, 0x41b80000    # 23.0f
+    const/high16 v9, 0x41b80000
 
     .line 150
     .line 151
@@ -1692,7 +1686,7 @@
     mul-float/2addr v0, v9
 
     .line 154
-    const/high16 v9, 0x41300000    # 11.0f
+    const/high16 v9, 0x41300000
 
     .line 155
     .line 156
@@ -1705,7 +1699,7 @@
     add-float/2addr v9, v0
 
     .line 159
-    const/high16 v0, 0x42d80000    # 108.0f
+    const/high16 v0, 0x42d80000
 
     .line 160
     .line 161
@@ -1727,14 +1721,14 @@
     mul-float/2addr v8, v4
 
     .line 167
-    const/high16 v0, 0x43e60000    # 460.0f
+    const/high16 v0, 0x43e60000
 
     .line 168
     .line 169
     mul-float/2addr v3, v0
 
     .line 170
-    const v0, 0x43e18000    # 451.0f
+    const v0, 0x43e18000
 
     .line 171
     .line 172
@@ -1745,7 +1739,7 @@
     add-float/2addr v0, v3
 
     .line 175
-    const/high16 v2, 0x43900000    # 288.0f
+    const/high16 v2, 0x43900000
 
     .line 176
     .line 177
@@ -1755,7 +1749,7 @@
     add-float/2addr v2, v0
 
     .line 179
-    const v0, 0x44af6000    # 1403.0f
+    const v0, 0x44af6000
 
     .line 180
     .line 181
@@ -1763,7 +1757,7 @@
     div-float/2addr v2, v0
 
     .line 183
-    const v4, 0x445ec000    # 891.0f
+    const v4, 0x445ec000
 
     .line 184
     .line 185
@@ -1775,7 +1769,7 @@
 
     .line 188
     .line 189
-    const v9, 0x43828000    # 261.0f
+    const v9, 0x43828000
 
     .line 190
     .line 191
@@ -1789,7 +1783,7 @@
     div-float/2addr v4, v0
 
     .line 195
-    const/high16 v9, 0x435c0000    # 220.0f
+    const/high16 v9, 0x435c0000
 
     .line 196
     .line 197
@@ -1799,7 +1793,7 @@
     sub-float/2addr v3, v7
 
     .line 199
-    const v7, 0x45c4e000    # 6300.0f
+    const v7, 0x45c4e000
 
     .line 200
     .line 201
@@ -1824,7 +1818,7 @@
     float-to-double v7, v0
 
     .line 210
-    const-wide v11, 0x403b2147ae147ae1L    # 27.13
+    const-wide v11, 0x403b2147ae147ae1L
 
     .line 211
     .line 212
@@ -1845,7 +1839,7 @@
     float-to-double v13, v0
 
     .line 221
-    const-wide/high16 v15, 0x4079000000000000L    # 400.0
+    const-wide/high16 v15, 0x4079000000000000L
 
     .line 222
     .line 223
@@ -1875,7 +1869,7 @@
     move-result v2
 
     .line 235
-    const/high16 v7, 0x42c80000    # 100.0f
+    const/high16 v7, 0x42c80000
 
     .line 236
     .line 237
@@ -1888,7 +1882,7 @@
     float-to-double v8, v0
 
     .line 240
-    const-wide v13, 0x40030c30c30c30c3L    # 2.380952380952381
+    const-wide v13, 0x40030c30c30c30c3L
 
     .line 241
     .line 242

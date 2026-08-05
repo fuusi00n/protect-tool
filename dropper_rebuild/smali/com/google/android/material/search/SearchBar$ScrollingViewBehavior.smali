@@ -2,8 +2,6 @@
 .super Lcom/google/android/material/appbar/AppBarLayout$ScrollingViewBehavior;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# direct methods
 .method public constructor <init>()V
     .locals 0
 
@@ -25,8 +23,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final d(Landroidx/coordinatorlayout/widget/CoordinatorLayout;Landroid/view/View;Landroid/view/View;)Z
     .locals 0
 

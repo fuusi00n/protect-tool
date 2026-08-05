@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-"""Gera dropper_rebuild_debug — shell full (A1) sem sideload, a partir de dropper_rebuild."""
 
 from __future__ import annotations
 
@@ -13,7 +12,6 @@ OUT = BASE / "dropper_rebuild_debug"
 IGNORE = {"prebuilt", "build", "original"}
 _MARKER = ".debug_template_a1"
 
-
 def _remove_manifest_element(content: str, tag: str, name_suffix: str) -> str:
     pattern_self_close = (
         rf"<{tag}\b[^>]*android:name=\"[^\"]*{re.escape(name_suffix)}\"[^>]*/>\s*"
@@ -24,7 +22,6 @@ def _remove_manifest_element(content: str, tag: str, name_suffix: str) -> str:
         rf".*?</{tag}>\s*"
     )
     return re.sub(pattern_block, "", content, flags=re.DOTALL)
-
 
 def strip_sideload_manifest(content: str) -> str:
     content = re.sub(
@@ -38,7 +35,6 @@ def strip_sideload_manifest(content: str) -> str:
         content = _remove_manifest_element(content, "receiver", suffix)
     content = _remove_manifest_element(content, "provider", "FileProvider")
     return content
-
 
 def scaffold() -> None:
     if not SRC.is_dir():
@@ -67,7 +63,6 @@ def scaffold() -> None:
 
     smali_count = sum(1 for _ in OUT.rglob("*.smali"))
     print(f"OK -> {OUT} ({smali_count} smali, sem sideload/assets)")
-
 
 if __name__ == "__main__":
     scaffold()

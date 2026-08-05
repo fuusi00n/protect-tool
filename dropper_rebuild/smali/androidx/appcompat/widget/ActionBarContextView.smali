@@ -2,8 +2,6 @@
 .super Landroid/view/ViewGroup;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final a:La;
 
 .field public final b:Landroid/content/Context;
@@ -44,8 +42,6 @@
 
 .field public final t:I
 
-
-# direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .locals 1
 
@@ -455,8 +451,6 @@
     return v0
 .end method
 
-
-# virtual methods
 .method public final c(Lp1;)V
     .locals 5
 
@@ -1323,7 +1317,7 @@
     move-result-object p0
 
     .line 26
-    const/high16 v1, 0x3f800000    # 1.0f
+    const/high16 v1, 0x3f800000
 
     .line 27
     .line 28
@@ -2132,7 +2126,7 @@
     move-result v0
 
     .line 5
-    const/high16 v1, 0x40000000    # 2.0f
+    const/high16 v1, 0x40000000
 
     .line 6
     .line 7

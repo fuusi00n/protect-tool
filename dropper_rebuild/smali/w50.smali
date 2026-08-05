@@ -2,8 +2,6 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static a:Ljava/util/WeakHashMap; = null
 
 .field public static b:Ljava/lang/reflect/Field; = null
@@ -16,8 +14,6 @@
 
 .field public static final f:Li50;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 33
 

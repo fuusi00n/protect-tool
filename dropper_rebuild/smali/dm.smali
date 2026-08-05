@@ -2,8 +2,6 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public A:Landroid/content/res/ColorStateList;
 
 .field public B:Landroid/graphics/Typeface;
@@ -60,8 +58,6 @@
 
 .field public z:I
 
-
-# direct methods
 .method public constructor <init>(Lcom/google/android/material/textfield/TextInputLayout;)V
     .locals 2
 
@@ -229,8 +225,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(Lt5;I)V
     .locals 6
 
@@ -312,7 +306,7 @@
 
     .line 39
     .line 40
-    const/high16 v3, 0x3f800000    # 1.0f
+    const/high16 v3, 0x3f800000
 
     .line 41
     .line 42
@@ -685,7 +679,7 @@
 
     .line 19
     .line 20
-    const/high16 v3, 0x3f800000    # 1.0f
+    const/high16 v3, 0x3f800000
 
     .line 21
     .line 22
@@ -1466,7 +1460,7 @@
     .line 135
     .line 136
     .line 137
-    const/high16 v2, 0x3f800000    # 1.0f
+    const/high16 v2, 0x3f800000
 
     .line 138
     .line 139

@@ -2,19 +2,14 @@
 .super Landroid/widget/FrameLayout;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Lts;
 
-
-# static fields
 .field public static final B:F
 
 .field public static final C:Llq;
 
 .field public static final D:[I
 
-
-# instance fields
 .field public final A:Lff;
 
 .field public final a:F
@@ -69,13 +64,11 @@
 
 .field public z:F
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 4
 
     .line 1
-    const-wide v0, 0x3fe8f5c28f5c28f6L    # 0.78
+    const-wide v0, 0x3fe8f5c28f5c28f6L
 
     .line 2
     .line 3
@@ -90,7 +83,7 @@
     move-result-wide v0
 
     .line 10
-    const-wide v2, 0x3feccccccccccccdL    # 0.9
+    const-wide v2, 0x3feccccccccccccdL
 
     .line 11
     .line 12
@@ -372,7 +365,7 @@
 
     .line 95
     .line 96
-    const/high16 v3, 0x43200000    # 160.0f
+    const/high16 v3, 0x43200000
 
     .line 97
     .line 98
@@ -387,7 +380,7 @@
     mul-float/2addr v2, v3
 
     .line 103
-    const v3, 0x3f570a3d    # 0.84f
+    const v3, 0x3f570a3d
 
     .line 104
     .line 105
@@ -622,8 +615,6 @@
     return p0
 .end method
 
-
-# virtual methods
 .method public final a(Landroid/view/View;Landroid/view/View;II)V
     .locals 0
 
@@ -953,14 +944,14 @@
 
     .line 30
     .line 31
-    const/high16 v7, 0x3f000000    # 0.5f
+    const/high16 v7, 0x3f000000
 
     .line 32
     .line 33
     const/4 v8, 0x0
 
     .line 34
-    const/high16 v9, 0x40800000    # 4.0f
+    const/high16 v9, 0x40800000
 
     .line 35
     .line 36
@@ -2138,7 +2129,7 @@
     const/4 v3, 0x0
 
     .line 174
-    const/high16 v6, 0x43340000    # 180.0f
+    const/high16 v6, 0x43340000
 
     .line 175
     .line 176
@@ -2671,7 +2662,7 @@
 
     .line 52
     :cond_1
-    const/high16 p0, 0x3f800000    # 1.0f
+    const/high16 p0, 0x3f800000
 
     .line 53
     .line 54
@@ -2693,7 +2684,7 @@
     int-to-float p0, p0
 
     .line 6
-    const/high16 v0, 0x3f000000    # 0.5f
+    const/high16 v0, 0x3f000000
 
     .line 7
     .line 8
@@ -2893,7 +2884,7 @@
 
     .line 23
     :cond_1
-    const/high16 p0, 0x3f800000    # 1.0f
+    const/high16 p0, 0x3f800000
 
     .line 24
     .line 25
@@ -5349,7 +5340,7 @@
 
     .line 433
     .line 434
-    const v5, 0x7f7fffff    # Float.MAX_VALUE
+    const v5, 0x7f7fffff
 
     .line 435
     .line 436
@@ -5581,15 +5572,15 @@
 
     .line 538
     .line 539
-    const/high16 v14, 0x40000000    # 2.0f
+    const/high16 v14, 0x40000000
 
     .line 540
     .line 541
-    const/high16 v15, 0x3f800000    # 1.0f
+    const/high16 v15, 0x3f800000
 
     .line 542
     .line 543
-    const/high16 v17, -0x40800000    # -1.0f
+    const/high16 v17, -0x40800000
 
     .line 544
     .line 545
@@ -5744,7 +5735,7 @@
 
     .line 615
     .line 616
-    const/high16 v5, 0x3f000000    # 0.5f
+    const/high16 v5, 0x3f000000
 
     .line 617
     .line 618
@@ -5826,7 +5817,7 @@
 
     .line 651
     :goto_10
-    const/high16 v5, 0x447a0000    # 1000.0f
+    const/high16 v5, 0x447a0000
 
     .line 652
     .line 653
@@ -7303,7 +7294,7 @@
     move-result p0
 
     .line 80
-    const/high16 p1, 0x40000000    # 2.0f
+    const/high16 p1, 0x40000000
 
     .line 81
     .line 82
@@ -8301,7 +8292,7 @@
 
     .line 231
     .line 232
-    const/high16 v11, 0x3f800000    # 1.0f
+    const/high16 v11, 0x3f800000
 
     .line 233
     .line 234
@@ -10216,7 +10207,7 @@
     div-float/2addr v1, v5
 
     .line 180
-    const/high16 v5, 0x3f800000    # 1.0f
+    const/high16 v5, 0x3f800000
 
     .line 181
     .line 182
@@ -10761,7 +10752,7 @@
     int-to-float p2, p2
 
     .line 21
-    const v1, 0x3eb33333    # 0.35f
+    const v1, 0x3eb33333
 
     .line 22
     .line 23
@@ -10769,7 +10760,7 @@
     mul-float/2addr p2, v1
 
     .line 25
-    const v1, 0x3c75c28f    # 0.015f
+    const v1, 0x3c75c28f
 
     .line 26
     .line 27
@@ -10802,7 +10793,7 @@
     float-to-double v3, p2
 
     .line 40
-    const-wide/high16 v5, 0x3ff0000000000000L    # 1.0
+    const-wide/high16 v5, 0x3ff0000000000000L
 
     .line 41
     .line 42
@@ -11247,7 +11238,7 @@
     div-float/2addr p1, p0
 
     .line 49
-    const/high16 p0, 0x3f800000    # 1.0f
+    const/high16 p0, 0x3f800000
 
     .line 50
     .line 51

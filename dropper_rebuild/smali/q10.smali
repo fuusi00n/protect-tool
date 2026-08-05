@@ -2,14 +2,10 @@
 .super Landroid/view/MenuInflater;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final e:[Ljava/lang/Class;
 
 .field public static final f:[Ljava/lang/Class;
 
-
-# instance fields
 .field public final a:[Ljava/lang/Object;
 
 .field public final b:[Ljava/lang/Object;
@@ -18,8 +14,6 @@
 
 .field public d:Ljava/lang/Object;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 1
 
@@ -127,8 +121,6 @@
     return-object p0
 .end method
 
-
-# virtual methods
 .method public final b(Lorg/xmlpull/v1/XmlPullParser;Landroid/util/AttributeSet;Landroid/view/Menu;)V
     .locals 16
 

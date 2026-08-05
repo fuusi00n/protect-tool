@@ -2,16 +2,12 @@
 .super Landroid/view/ViewGroup;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final s0:[I
 
 .field public static final t0:[Ljava/lang/Class;
 
 .field public static final u0:Lmw;
 
-
-# instance fields
 .field public A:I
 
 .field public B:I
@@ -146,8 +142,6 @@
 
 .field public z:Z
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 3
 
@@ -2301,8 +2295,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final A(Landroid/view/View;)Landroid/view/View;
     .locals 2
 
@@ -4160,7 +4152,7 @@
     move-result v1
 
     .line 28
-    const/high16 v2, 0x3f000000    # 0.5f
+    const/high16 v2, 0x3f000000
 
     .line 29
     .line 30
@@ -5059,7 +5051,7 @@
 
     .line 135
     .line 136
-    const/high16 v14, 0x3f800000    # 1.0f
+    const/high16 v14, 0x3f800000
 
     .line 137
     .line 138
@@ -6804,7 +6796,7 @@
 
     .line 51
     :goto_1
-    const/high16 v5, 0x43870000    # 270.0f
+    const/high16 v5, 0x43870000
 
     .line 52
     .line 53
@@ -7046,7 +7038,7 @@
 
     .line 161
     :goto_5
-    const/high16 v7, 0x42b40000    # 90.0f
+    const/high16 v7, 0x42b40000
 
     .line 162
     .line 163
@@ -7140,7 +7132,7 @@
     move-result v1
 
     .line 204
-    const/high16 v5, 0x43340000    # 180.0f
+    const/high16 v5, 0x43340000
 
     .line 205
     .line 206
@@ -11966,7 +11958,7 @@
     move-result v1
 
     .line 87
-    const/high16 v2, 0x41f00000    # 30.0f
+    const/high16 v2, 0x41f00000
 
     .line 88
     .line 89
@@ -11982,7 +11974,7 @@
 
     .line 94
     :cond_2
-    const/high16 v1, 0x42700000    # 60.0f
+    const/high16 v1, 0x42700000
 
     .line 95
     .line 96
@@ -11991,7 +11983,7 @@
 
     .line 97
     .line 98
-    const v3, 0x4e6e6b28    # 1.0E9f
+    const v3, 0x4e6e6b28
 
     .line 99
     .line 100
@@ -12677,7 +12669,7 @@
     const/4 v6, 0x2
 
     .line 65
-    const/high16 v7, 0x3f000000    # 0.5f
+    const/high16 v7, 0x3f000000
 
     .line 66
     .line 67
@@ -13228,7 +13220,7 @@
     .line 30
     .line 31
     .line 32
-    const/high16 v3, 0x40000000    # 2.0f
+    const/high16 v3, 0x40000000
 
     .line 33
     .line 34
@@ -13920,7 +13912,7 @@
     .line 22
     iget v10, v1, Lbi;->w:I
 
-    const/high16 v11, 0x40000000    # 2.0f
+    const/high16 v11, 0x40000000
 
     if-ne v10, v8, :cond_c
 
@@ -14201,7 +14193,7 @@
 
     invoke-virtual {v13, v14, v15}, Landroid/view/MotionEvent;->offsetLocation(FF)V
 
-    const/high16 v14, 0x3f000000    # 0.5f
+    const/high16 v14, 0x3f000000
 
     if-eqz v1, :cond_53
 

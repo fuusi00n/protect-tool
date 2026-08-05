@@ -2,11 +2,8 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Landroid/app/Application$ActivityLifecycleCallbacks;
 
-
-# instance fields
 .field public a:Ljava/lang/Object;
 
 .field public b:Landroid/app/Activity;
@@ -19,8 +16,6 @@
 
 .field public f:Z
 
-
-# direct methods
 .method public constructor <init>(Landroid/app/Activity;)V
     .locals 1
 
@@ -64,8 +59,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final onActivityCreated(Landroid/app/Activity;Landroid/os/Bundle;)V
     .locals 0
 

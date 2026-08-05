@@ -2,15 +2,10 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Landroid/view/View$OnTouchListener;
 
-
-# static fields
 .field public static final r:I
 
-
-# instance fields
 .field public final a:Lt6;
 
 .field public final b:Landroid/view/animation/AccelerateInterpolator;
@@ -45,8 +40,6 @@
 
 .field public final q:Lgg;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 1
 
@@ -217,7 +210,7 @@
 
     .line 77
     .line 78
-    const v7, 0x44c4e000    # 1575.0f
+    const v7, 0x44c4e000
 
     .line 79
     .line 80
@@ -225,7 +218,7 @@
     mul-float/2addr v7, v6
 
     .line 82
-    const/high16 v8, 0x3f000000    # 0.5f
+    const/high16 v8, 0x3f000000
 
     .line 83
     .line 84
@@ -235,7 +228,7 @@
     float-to-int v7, v7
 
     .line 86
-    const v9, 0x439d8000    # 315.0f
+    const v9, 0x439d8000
 
     .line 87
     .line 88
@@ -252,7 +245,7 @@
     int-to-float v7, v7
 
     .line 93
-    const/high16 v8, 0x447a0000    # 1000.0f
+    const/high16 v8, 0x447a0000
 
     .line 94
     .line 95
@@ -291,7 +284,7 @@
 
     .line 109
     .line 110
-    const v1, 0x7f7fffff    # Float.MAX_VALUE
+    const v1, 0x7f7fffff
 
     .line 111
     .line 112
@@ -304,7 +297,7 @@
 
     .line 116
     .line 117
-    const v1, 0x3e4ccccd    # 0.2f
+    const v1, 0x3e4ccccd
 
     .line 118
     .line 119
@@ -317,7 +310,7 @@
 
     .line 123
     .line 124
-    const v1, 0x3a83126f    # 0.001f
+    const v1, 0x3a83126f
 
     .line 125
     .line 126
@@ -376,8 +369,8 @@
     .line 153
     :array_1
     .array-data 4
-        0x7f7fffff    # Float.MAX_VALUE
-        0x7f7fffff    # Float.MAX_VALUE
+        0x7f7fffff
+        0x7f7fffff
     .end array-data
 
     .line 154
@@ -418,8 +411,8 @@
     .line 177
     :array_4
     .array-data 4
-        0x7f7fffff    # Float.MAX_VALUE
-        0x7f7fffff    # Float.MAX_VALUE
+        0x7f7fffff
+        0x7f7fffff
     .end array-data
 .end method
 
@@ -454,8 +447,6 @@
     return p0
 .end method
 
-
-# virtual methods
 .method public final a(IFFF)F
     .locals 3
 
@@ -559,11 +550,11 @@
 
     .line 46
     :goto_0
-    const/high16 p3, -0x40800000    # -1.0f
+    const/high16 p3, -0x40800000
 
     .line 47
     .line 48
-    const/high16 v0, 0x3f800000    # 1.0f
+    const/high16 v0, 0x3f800000
 
     .line 49
     .line 50
@@ -736,7 +727,7 @@
 
     .line 30
     .line 31
-    const/high16 v4, 0x3f800000    # 1.0f
+    const/high16 v4, 0x3f800000
 
     .line 32
     .line 33

@@ -2,8 +2,6 @@
 .super Landroidx/recyclerview/widget/LinearLayoutManager;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public E:Z
 
 .field public F:I
@@ -20,8 +18,6 @@
 
 .field public final L:Landroid/graphics/Rect;
 
-
-# direct methods
 .method public constructor <init>(I)V
     .locals 2
 
@@ -175,8 +171,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final B0(Lhx;Lgo;Lcl;)V
     .locals 5
 
@@ -1356,7 +1350,7 @@
     const/4 v6, 0x1
 
     .line 28
-    const/high16 v8, 0x40000000    # 2.0f
+    const/high16 v8, 0x40000000
 
     .line 29
     .line 30
@@ -1567,7 +1561,7 @@
 
     .line 121
     .line 122
-    const/high16 v8, 0x40000000    # 2.0f
+    const/high16 v8, 0x40000000
 
     .line 123
     .line 124
@@ -1944,7 +1938,7 @@
     int-to-float v7, v7
 
     .line 295
-    const/high16 v12, 0x3f800000    # 1.0f
+    const/high16 v12, 0x3f800000
 
     .line 296
     .line 297
@@ -2035,7 +2029,7 @@
 
     .line 334
     .line 335
-    const/high16 v2, 0x40000000    # 2.0f
+    const/high16 v2, 0x40000000
 
     .line 336
     .line 337
@@ -2207,7 +2201,7 @@
     const/4 v9, 0x0
 
     .line 414
-    const/high16 v10, 0x40000000    # 2.0f
+    const/high16 v10, 0x40000000
 
     .line 415
     .line 416
@@ -2238,7 +2232,7 @@
     const/4 v9, 0x0
 
     .line 428
-    const/high16 v10, 0x40000000    # 2.0f
+    const/high16 v10, 0x40000000
 
     .line 429
     .line 430
@@ -2306,7 +2300,7 @@
     const/4 v9, 0x0
 
     .line 460
-    const/high16 v10, 0x40000000    # 2.0f
+    const/high16 v10, 0x40000000
 
     .line 461
     .line 462

@@ -2,8 +2,6 @@
 .super Lag;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public b:F
 
 .field public c:F
@@ -14,8 +12,6 @@
 
 .field public f:F
 
-
-# virtual methods
 .method public final a(Landroid/graphics/Canvas;Landroid/graphics/Rect;FZZ)V
     .locals 8
 
@@ -68,7 +64,7 @@
     int-to-float v3, v3
 
     .line 23
-    const/high16 v4, 0x40000000    # 2.0f
+    const/high16 v4, 0x40000000
 
     .line 24
     .line 25
@@ -142,11 +138,11 @@
 
     .line 54
     .line 55
-    const/high16 v3, -0x40800000    # -1.0f
+    const/high16 v3, -0x40800000
 
     .line 56
     .line 57
-    const/high16 v5, 0x3f800000    # 1.0f
+    const/high16 v5, 0x3f800000
 
     .line 58
     .line 59
@@ -414,7 +410,7 @@
 
     .line 26
     .line 27
-    const/high16 v0, 0x40000000    # 2.0f
+    const/high16 v0, 0x40000000
 
     .line 28
     .line 29
@@ -577,7 +573,7 @@
     const/4 v0, 0x0
 
     .line 2
-    const/high16 v1, 0x3f800000    # 1.0f
+    const/high16 v1, 0x3f800000
 
     .line 3
     .line 4
@@ -640,7 +636,7 @@
     int-to-float v3, v3
 
     .line 33
-    const v4, 0x3c23d70a    # 0.01f
+    const v4, 0x3c23d70a
 
     .line 34
     .line 35
@@ -669,7 +665,7 @@
     int-to-float v5, v5
 
     .line 46
-    const v6, 0x3f7d70a4    # 0.99f
+    const v6, 0x3f7d70a4
 
     .line 47
     .line 48
@@ -725,7 +721,7 @@
     neg-float v2, v4
 
     .line 68
-    const/high16 v3, 0x40000000    # 2.0f
+    const/high16 v3, 0x40000000
 
     .line 69
     .line 70
@@ -1059,7 +1055,7 @@
     div-float/2addr v0, p0
 
     .line 13
-    const/high16 p0, 0x40000000    # 2.0f
+    const/high16 p0, 0x40000000
 
     .line 14
     .line 15

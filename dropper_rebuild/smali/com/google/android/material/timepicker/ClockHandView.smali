@@ -2,8 +2,6 @@
 .super Landroid/view/View;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final a:Landroid/animation/ValueAnimator;
 
 .field public b:Z
@@ -30,8 +28,6 @@
 
 .field public m:I
 
-
-# direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .locals 1
 
@@ -305,8 +301,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(F)V
     .locals 6
 
@@ -325,7 +319,7 @@
     .line 7
     .line 8
     :cond_0
-    const/high16 v0, 0x43b40000    # 360.0f
+    const/high16 v0, 0x43b40000
 
     .line 9
     .line 10
@@ -336,7 +330,7 @@
 
     .line 12
     .line 13
-    const/high16 v0, 0x42b40000    # 90.0f
+    const/high16 v0, 0x42b40000
 
     .line 14
     .line 15
@@ -399,7 +393,7 @@
     int-to-float v1, v4
 
     .line 42
-    const v3, 0x3f28f5c3    # 0.66f
+    const v3, 0x3f28f5c3
 
     .line 43
     .line 44
@@ -549,7 +543,7 @@
     move-result v4
 
     .line 109
-    const v5, 0x3a83126f    # 0.001f
+    const v5, 0x3a83126f
 
     .line 110
     .line 111
@@ -632,7 +626,7 @@
     int-to-float v1, v4
 
     .line 22
-    const v3, 0x3f28f5c3    # 0.66f
+    const v3, 0x3f28f5c3
 
     .line 23
     .line 24
@@ -985,7 +979,7 @@
     int-to-float v6, v6
 
     .line 57
-    const v7, 0x3f28f5c3    # 0.66f
+    const v7, 0x3f28f5c3
 
     .line 58
     .line 59
@@ -1017,7 +1011,7 @@
     move-result-object v7
 
     .line 73
-    const/high16 v8, 0x41400000    # 12.0f
+    const/high16 v8, 0x41400000
 
     .line 74
     .line 75

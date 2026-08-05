@@ -2,12 +2,8 @@
 .super Lcom/google/android/material/progressindicator/a;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final m:I
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 1
 
@@ -196,8 +192,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(Landroid/content/Context;Landroid/util/AttributeSet;)Lf7;
     .locals 9
 

@@ -1,8 +1,6 @@
 .class public abstract Lba;
 .super Lha;
 
-
-# direct methods
 .method public static d0(Ljava/util/Collection;Ljava/lang/String;Lpk;I)Ljava/lang/String;
     .locals 4
 

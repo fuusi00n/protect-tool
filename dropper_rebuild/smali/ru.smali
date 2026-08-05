@@ -1,8 +1,6 @@
 .class public abstract Lru;
 .super Ljava/lang/Object;
 
-
-# static fields
 .field public static adjustable:I = 0x7f03002b
 
 .field public static allowDividerAbove:I = 0x7f030030

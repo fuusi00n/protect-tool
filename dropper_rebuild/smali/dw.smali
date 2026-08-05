@@ -1,8 +1,6 @@
 .class public abstract Ldw;
 .super Ljava/lang/Object;
 
-
-# static fields
 .field public static Capability:[I = null
 
 .field public static Capability_queryPatterns:I = 0x0
@@ -91,8 +89,6 @@
 
 .field public static GradientColor_android_type:I = 0x2
 
-
-# direct methods
 .method public static constructor <clinit>()V
     .locals 5
 

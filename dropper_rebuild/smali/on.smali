@@ -2,8 +2,6 @@
 .super Ljava/lang/Enum;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field private static final synthetic $VALUES:[Lon;
 
 .field public static final Companion:Lmn;
@@ -22,8 +20,6 @@
 
 .field public static final enum ON_STOP:Lon;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 9
 
@@ -242,8 +238,6 @@
     return-object v0
 .end method
 
-
-# virtual methods
 .method public final a()Lpn;
     .locals 2
 

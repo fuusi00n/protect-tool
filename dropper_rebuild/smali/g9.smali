@@ -2,11 +2,8 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Lj20;
 
-
-# static fields
 .field public static final b:Lg9;
 
 .field public static final c:Lg9;
@@ -17,12 +14,8 @@
 
 .field public static final f:Lg9;
 
-
-# instance fields
 .field public final synthetic a:I
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 2
 

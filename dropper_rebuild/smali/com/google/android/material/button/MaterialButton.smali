@@ -2,20 +2,15 @@
 .super Li3;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Landroid/widget/Checkable;
 .implements Lb00;
 
-
-# static fields
 .field public static final r:[I
 
 .field public static final s:[I
 
 .field public static final t:I
 
-
-# instance fields
 .field public final d:Lhq;
 
 .field public final e:Ljava/util/LinkedHashSet;
@@ -44,8 +39,6 @@
 
 .field public q:I
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 1
 
@@ -1216,8 +1209,6 @@
     return p0
 .end method
 
-
-# virtual methods
 .method public final a()Z
     .locals 0
 

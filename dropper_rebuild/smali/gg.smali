@@ -2,8 +2,6 @@
 .super Landroid/widget/ListView;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final a:Landroid/graphics/Rect;
 
 .field public b:I
@@ -28,8 +26,6 @@
 
 .field public l:Lu6;
 
-
-# direct methods
 .method public constructor <init>(Landroid/content/Context;Z)V
     .locals 2
 
@@ -90,8 +86,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(II)I
     .locals 11
 
@@ -255,7 +249,7 @@
 
     .line 71
     .line 72
-    const/high16 v10, 0x40000000    # 2.0f
+    const/high16 v10, 0x40000000
 
     .line 73
     .line 74

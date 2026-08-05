@@ -2,8 +2,6 @@
 .super Loc;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# annotations
 .annotation system Ldalvik/annotation/Signature;
     value = {
         "<V:",
@@ -13,12 +11,8 @@
     }
 .end annotation
 
-
-# static fields
 .field public static final e0:I
 
-
-# instance fields
 .field public final A:Lv7;
 
 .field public final B:Landroid/animation/ValueAnimator;
@@ -131,8 +125,6 @@
 
 .field public z:Z
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 1
 
@@ -179,12 +171,12 @@
 
     iput-object v2, p0, Lcom/google/android/material/bottomsheet/BottomSheetBehavior;->A:Lv7;
 
-    const/high16 v2, 0x3f000000    # 0.5f
+    const/high16 v2, 0x3f000000
 
     .line 548
     iput v2, p0, Lcom/google/android/material/bottomsheet/BottomSheetBehavior;->F:F
 
-    const/high16 v2, -0x40800000    # -1.0f
+    const/high16 v2, -0x40800000
 
     .line 549
     iput v2, p0, Lcom/google/android/material/bottomsheet/BottomSheetBehavior;->H:F
@@ -197,7 +189,7 @@
     .line 551
     iput v0, p0, Lcom/google/android/material/bottomsheet/BottomSheetBehavior;->L:I
 
-    const v0, 0x3dcccccd    # 0.1f
+    const v0, 0x3dcccccd
 
     .line 552
     iput v0, p0, Lcom/google/android/material/bottomsheet/BottomSheetBehavior;->Q:F
@@ -278,7 +270,7 @@
 
     .line 21
     .line 22
-    const/high16 v3, 0x3f000000    # 0.5f
+    const/high16 v3, 0x3f000000
 
     .line 23
     .line 24
@@ -286,7 +278,7 @@
 
     .line 25
     .line 26
-    const/high16 v4, -0x40800000    # -1.0f
+    const/high16 v4, -0x40800000
 
     .line 27
     .line 28
@@ -305,7 +297,7 @@
 
     .line 34
     .line 35
-    const v6, 0x3dcccccd    # 0.1f
+    const v6, 0x3dcccccd
 
     .line 36
     .line 37
@@ -582,7 +574,7 @@
 
     .line 174
     .line 175
-    const/high16 p2, 0x3f800000    # 1.0f
+    const/high16 p2, 0x3f800000
 
     .line 176
     .line 177
@@ -1480,7 +1472,7 @@
     move-result p0
 
     .line 17
-    const/high16 p3, 0x40000000    # 2.0f
+    const/high16 p3, 0x40000000
 
     .line 18
     .line 19
@@ -1540,8 +1532,6 @@
     return p0
 .end method
 
-
-# virtual methods
 .method public final A(I)V
     .locals 2
 
@@ -2153,7 +2143,7 @@
     div-float/2addr p0, p1
 
     .line 40
-    const/high16 p1, 0x3f000000    # 0.5f
+    const/high16 p1, 0x3f000000
 
     .line 41
     .line 42
@@ -3089,7 +3079,7 @@
 
     .line 38
     .line 39
-    const/high16 v5, 0x3f800000    # 1.0f
+    const/high16 v5, 0x3f800000
 
     .line 40
     .line 41
@@ -4048,7 +4038,7 @@
 
     .line 20
     .line 21
-    const/high16 v2, 0x3f800000    # 1.0f
+    const/high16 v2, 0x3f800000
 
     .line 22
     .line 23
@@ -4490,7 +4480,7 @@
     .line 243
     .line 244
     .line 245
-    const/high16 v4, -0x40800000    # -1.0f
+    const/high16 v4, -0x40800000
 
     .line 246
     .line 247

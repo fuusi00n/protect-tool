@@ -2,8 +2,6 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final i:[I
 
 .field public static final j:[F
@@ -12,8 +10,6 @@
 
 .field public static final l:[F
 
-
-# instance fields
 .field public final a:Landroid/graphics/Paint;
 
 .field public final b:Landroid/graphics/Paint;
@@ -30,8 +26,6 @@
 
 .field public final h:Landroid/graphics/Paint;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 2
 
@@ -93,8 +87,8 @@
     :array_0
     .array-data 4
         0x0
-        0x3f000000    # 0.5f
-        0x3f800000    # 1.0f
+        0x3f000000
+        0x3f800000
     .end array-data
 
     .line 28
@@ -111,8 +105,8 @@
     .array-data 4
         0x0
         0x0
-        0x3f000000    # 0.5f
-        0x3f800000    # 1.0f
+        0x3f000000
+        0x3f800000
     .end array-data
 .end method
 

@@ -2,19 +2,14 @@
 .super Lz7;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Lal;
 .implements Lcn;
 .implements Lzk;
 
-
-# instance fields
 .field public final g:I
 
 .field public final h:I
 
-
-# direct methods
 .method public constructor <init>(ILjava/lang/Object;Ljava/lang/Class;Ljava/lang/String;Ljava/lang/String;II)V
     .locals 7
 
@@ -78,8 +73,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final b()I
     .locals 0
 

@@ -2,8 +2,6 @@
 .super Loc;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# annotations
 .annotation system Ldalvik/annotation/Signature;
     value = {
         "<V:",
@@ -13,14 +11,10 @@
     }
 .end annotation
 
-
-# static fields
 .field public static final w:I
 
 .field public static final x:I
 
-
-# instance fields
 .field public a:Lzt;
 
 .field public final b:Lxq;
@@ -65,8 +59,6 @@
 
 .field public final v:Lt7;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 1
 
@@ -113,7 +105,7 @@
     .line 210
     iput v0, p0, Lcom/google/android/material/sidesheet/SideSheetBehavior;->h:I
 
-    const v0, 0x3dcccccd    # 0.1f
+    const v0, 0x3dcccccd
 
     .line 211
     iput v0, p0, Lcom/google/android/material/sidesheet/SideSheetBehavior;->k:F
@@ -178,7 +170,7 @@
 
     .line 16
     .line 17
-    const v1, 0x3dcccccd    # 0.1f
+    const v1, 0x3dcccccd
 
     .line 18
     .line 19
@@ -504,7 +496,7 @@
 
     .line 179
     .line 180
-    const/high16 v1, -0x40800000    # -1.0f
+    const/high16 v1, -0x40800000
 
     .line 181
     .line 182
@@ -557,8 +549,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final c(Lrc;)V
     .locals 0
 
@@ -883,7 +873,7 @@
 
     .line 40
     .line 41
-    const/high16 v7, 0x3f800000    # 1.0f
+    const/high16 v7, 0x3f800000
 
     .line 42
     .line 43
@@ -983,7 +973,7 @@
     .line 93
     .line 94
     .line 95
-    const/high16 v0, -0x40800000    # -1.0f
+    const/high16 v0, -0x40800000
 
     .line 96
     .line 97

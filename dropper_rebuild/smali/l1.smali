@@ -2,11 +2,8 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Lvr;
 
-
-# instance fields
 .field public final a:Landroid/content/Context;
 
 .field public b:Landroid/content/Context;
@@ -53,8 +50,6 @@
 
 .field public final w:Lo0;
 
-
-# direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .locals 2
 
@@ -128,8 +123,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(Ler;Z)V
     .locals 2
 

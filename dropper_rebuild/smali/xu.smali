@@ -1,8 +1,6 @@
 .class public abstract Lxu;
 .super Ljava/lang/Object;
 
-
-# static fields
 .field public static abc_background_cache_hint_selector_material_dark:I = 0x7f050000
 
 .field public static abc_background_cache_hint_selector_material_light:I = 0x7f050001

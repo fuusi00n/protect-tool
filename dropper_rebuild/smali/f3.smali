@@ -2,11 +2,8 @@
 .super Ldb;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Lj3;
 
-
-# instance fields
 .field public final s:Lo0;
 
 .field public final t:Ltn;
@@ -19,8 +16,6 @@
 
 .field public x:Lg4;
 
-
-# direct methods
 .method public constructor <init>()V
     .locals 3
 
@@ -426,8 +421,6 @@
     return v0
 .end method
 
-
-# virtual methods
 .method public final addContentView(Landroid/view/View;Landroid/view/ViewGroup$LayoutParams;)V
     .locals 2
 

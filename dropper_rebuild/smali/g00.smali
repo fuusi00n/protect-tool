@@ -2,8 +2,6 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static d:[Ljava/lang/Object;
 
 .field public static e:I
@@ -12,16 +10,12 @@
 
 .field public static g:I
 
-
-# instance fields
 .field public a:[I
 
 .field public b:[Ljava/lang/Object;
 
 .field public c:I
 
-
-# direct methods
 .method public constructor <init>()V
     .locals 1
 
@@ -283,8 +277,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(I)V
     .locals 5
 

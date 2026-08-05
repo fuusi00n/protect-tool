@@ -2,12 +2,8 @@
 .super Landroid/widget/FrameLayout;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final i:Lh7;
 
-
-# instance fields
 .field public final a:Lqz;
 
 .field public b:I
@@ -24,8 +20,6 @@
 
 .field public h:Landroid/graphics/PorterDuff$Mode;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 1
 
@@ -201,7 +195,7 @@
 
     .line 74
     .line 75
-    const/high16 v2, 0x3f800000    # 1.0f
+    const/high16 v2, 0x3f800000
 
     .line 76
     .line 77
@@ -519,8 +513,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public getActionTextColorAlpha()F
     .locals 0
 
@@ -650,7 +642,7 @@
 
     .line 13
     .line 14
-    const/high16 v0, 0x40000000    # 2.0f
+    const/high16 v0, 0x40000000
 
     .line 15
     .line 16

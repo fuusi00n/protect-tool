@@ -2,7 +2,6 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Landroid/content/ComponentCallbacks;
 .implements Landroid/view/View$OnCreateContextMenuListener;
 .implements Lrn;
@@ -10,12 +9,8 @@
 .implements Lpl;
 .implements Ldz;
 
-
-# static fields
 .field public static final S:Ljava/lang/Object;
 
-
-# instance fields
 .field public A:Z
 
 .field public final B:Z
@@ -104,8 +99,6 @@
 
 .field public z:Z
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 1
 
@@ -261,8 +254,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final A()Landroid/content/Context;
     .locals 2
 
@@ -858,7 +849,7 @@
 
     .line 17
     .line 18
-    const/high16 v1, 0x3f800000    # 1.0f
+    const/high16 v1, 0x3f800000
 
     .line 19
     .line 20

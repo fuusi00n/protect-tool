@@ -1,8 +1,6 @@
 .class public abstract Lcw;
 .super Ljava/lang/Object;
 
-
-# static fields
 .field public static CoordinatorLayout:[I = null
 
 .field public static CoordinatorLayout_Layout:[I = null
@@ -25,8 +23,6 @@
 
 .field public static CoordinatorLayout_statusBarBackground:I = 0x1
 
-
-# direct methods
 .method public static constructor <clinit>()V
     .locals 2
 

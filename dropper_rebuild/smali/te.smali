@@ -2,8 +2,6 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public a:Lyb;
 
 .field public b:Z
@@ -20,8 +18,6 @@
 
 .field public h:Ljava/util/ArrayList;
 
-
-# virtual methods
 .method public final a(Lue;ILjava/util/ArrayList;Lpy;)V
     .locals 9
 
@@ -607,7 +603,7 @@
 
     .line 55
     .line 56
-    const/high16 v15, 0x3f800000    # 1.0f
+    const/high16 v15, 0x3f800000
 
     .line 57
     .line 58
@@ -965,7 +961,7 @@
     .line 209
     .line 210
     :cond_11
-    const/high16 v20, 0x3f000000    # 0.5f
+    const/high16 v20, 0x3f000000
 
     .line 211
     .line 212
@@ -3216,7 +3212,7 @@
     .line 149
     .line 150
     .line 151
-    const/high16 v4, -0x40800000    # -1.0f
+    const/high16 v4, -0x40800000
 
     .line 152
     .line 153
@@ -3228,7 +3224,7 @@
 
     .line 155
     .line 156
-    const/high16 v6, 0x3f800000    # 1.0f
+    const/high16 v6, 0x3f800000
 
     .line 157
     .line 158
@@ -3274,7 +3270,7 @@
 
     .line 173
     .line 174
-    const/high16 v5, 0x3f000000    # 0.5f
+    const/high16 v5, 0x3f000000
 
     .line 175
     .line 176

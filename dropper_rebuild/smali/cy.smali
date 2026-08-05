@@ -2,16 +2,12 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final f:Landroid/graphics/PorterDuff$Mode;
 
 .field public static g:Lcy;
 
 .field public static final h:Lay;
 
-
-# instance fields
 .field public a:Ljava/util/WeakHashMap;
 
 .field public final b:Ljava/util/WeakHashMap;
@@ -22,8 +18,6 @@
 
 .field public e:Li4;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 2
 
@@ -287,8 +281,6 @@
     throw p0
 .end method
 
-
-# virtual methods
 .method public final a(Landroid/content/Context;ILandroid/content/res/ColorStateList;)V
     .locals 6
 
@@ -1833,7 +1825,7 @@
 
     .line 201
     .line 202
-    const p0, 0x42233333    # 40.8f
+    const p0, 0x42233333
 
     .line 203
     .line 204

@@ -2,12 +2,9 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Lh5;
 .implements Landroid/content/DialogInterface$OnClickListener;
 
-
-# instance fields
 .field public a:Lp2;
 
 .field public b:Lc5;
@@ -16,8 +13,6 @@
 
 .field public final synthetic d:Li5;
 
-
-# direct methods
 .method public constructor <init>(Li5;)V
     .locals 0
 
@@ -34,8 +29,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final b()Z
     .locals 0
 

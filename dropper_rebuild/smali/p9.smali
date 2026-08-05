@@ -2,8 +2,6 @@
 .super Ld4;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final k:[I
 
 .field public static final l:[I
@@ -14,8 +12,6 @@
 
 .field public static final o:Lu8;
 
-
-# instance fields
 .field public c:Landroid/animation/ObjectAnimator;
 
 .field public d:Landroid/animation/ObjectAnimator;
@@ -32,8 +28,6 @@
 
 .field public j:Le7;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 4
 
@@ -217,8 +211,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final c()V
     .locals 0
 
@@ -616,7 +608,7 @@
     :array_0
     .array-data 4
         0x0
-        0x3f800000    # 1.0f
+        0x3f800000
     .end array-data
 
     .line 118
@@ -630,7 +622,7 @@
     :array_1
     .array-data 4
         0x0
-        0x3f800000    # 1.0f
+        0x3f800000
     .end array-data
 .end method
 

@@ -2,11 +2,8 @@
 .super Lp1;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Lcr;
 
-
-# instance fields
 .field public c:Landroid/content/Context;
 
 .field public d:Landroidx/appcompat/widget/ActionBarContextView;
@@ -19,8 +16,6 @@
 
 .field public h:Ler;
 
-
-# virtual methods
 .method public final a()V
     .locals 1
 

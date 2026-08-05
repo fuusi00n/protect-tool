@@ -2,12 +2,8 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final f:I
 
-
-# instance fields
 .field public final a:Z
 
 .field public final b:I
@@ -18,13 +14,11 @@
 
 .field public final e:F
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 2
 
     .line 1
-    const-wide v0, 0x4014666666666667L    # 5.1000000000000005
+    const-wide v0, 0x4014666666666667L
 
     .line 2
     .line 3

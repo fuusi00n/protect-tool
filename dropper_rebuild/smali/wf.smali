@@ -2,16 +2,12 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final a:[I
 
 .field public static final b:[I
 
 .field public static final c:Landroid/graphics/Rect;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 1
 

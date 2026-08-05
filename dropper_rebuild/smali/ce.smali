@@ -2,8 +2,6 @@
 .super Landroid/animation/AnimatorListenerAdapter;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final synthetic a:I
 
 .field public final synthetic b:Lkx;
@@ -14,8 +12,6 @@
 
 .field public final synthetic e:Lhe;
 
-
-# direct methods
 .method public constructor <init>(Lhe;Lkx;Landroid/view/View;Landroid/view/ViewPropertyAnimator;)V
     .locals 1
 
@@ -72,8 +68,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public onAnimationCancel(Landroid/animation/Animator;)V
     .locals 1
 
@@ -100,7 +94,7 @@
 
     .line 11
     .line 12
-    const/high16 p1, 0x3f800000    # 1.0f
+    const/high16 p1, 0x3f800000
 
     .line 13
     .line 14
@@ -186,7 +180,7 @@
 
     .line 32
     .line 33
-    const/high16 p1, 0x3f800000    # 1.0f
+    const/high16 p1, 0x3f800000
 
     .line 34
     .line 35

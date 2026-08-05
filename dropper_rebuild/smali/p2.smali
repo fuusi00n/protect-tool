@@ -2,20 +2,15 @@
 .super Leb;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Landroid/content/DialogInterface;
 .implements Lj3;
 
-
-# instance fields
 .field public d:Lg4;
 
 .field public final e:Lh4;
 
 .field public final f:Ln2;
 
-
-# direct methods
 .method public constructor <init>(Landroid/view/ContextThemeWrapper;I)V
     .locals 4
 
@@ -238,8 +233,6 @@
     return p0
 .end method
 
-
-# virtual methods
 .method public final addContentView(Landroid/view/View;Landroid/view/ViewGroup$LayoutParams;)V
     .locals 2
 
@@ -1318,7 +1311,7 @@
 
     .line 300
     .line 301
-    const/high16 v1, 0x3f000000    # 0.5f
+    const/high16 v1, 0x3f000000
 
     .line 302
     .line 303

@@ -2,12 +2,8 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final k:Lb70;
 
-
-# instance fields
 .field public final a:F
 
 .field public final b:F
@@ -28,8 +24,6 @@
 
 .field public final j:F
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 24
 
@@ -49,7 +43,7 @@
     float-to-double v1, v1
 
     .line 8
-    const-wide v3, 0x404fd4bbab8b494cL    # 63.66197723675813
+    const-wide v3, 0x404fd4bbab8b494cL
 
     .line 9
     .line 10
@@ -59,7 +53,7 @@
     mul-double/2addr v1, v3
 
     .line 14
-    const-wide/high16 v3, 0x4059000000000000L    # 100.0
+    const-wide/high16 v3, 0x4059000000000000L
 
     .line 15
     .line 16
@@ -190,14 +184,14 @@
     neg-float v2, v1
 
     .line 69
-    const/high16 v6, 0x42280000    # 42.0f
+    const/high16 v6, 0x42280000
 
     .line 70
     .line 71
     sub-float/2addr v2, v6
 
     .line 72
-    const/high16 v6, 0x42b80000    # 92.0f
+    const/high16 v6, 0x42b80000
 
     .line 73
     .line 74
@@ -226,7 +220,7 @@
     mul-float/2addr v2, v6
 
     .line 85
-    const/high16 v6, 0x3f800000    # 1.0f
+    const/high16 v6, 0x3f800000
 
     .line 86
     .line 87
@@ -234,7 +228,7 @@
 
     .line 88
     .line 89
-    const/high16 v19, 0x3f800000    # 1.0f
+    const/high16 v19, 0x3f800000
 
     .line 90
     .line 91
@@ -245,7 +239,7 @@
     float-to-double v13, v2
 
     .line 94
-    const-wide/high16 v15, 0x3ff0000000000000L    # 1.0
+    const-wide/high16 v15, 0x3ff0000000000000L
 
     .line 95
     .line 96
@@ -281,7 +275,7 @@
     .line 109
     :cond_1
     :goto_0
-    const/high16 v10, 0x42c80000    # 100.0f
+    const/high16 v10, 0x42c80000
 
     .line 110
     .line 111
@@ -342,7 +336,7 @@
 
     .line 133
     .line 134
-    const/high16 v10, 0x40a00000    # 5.0f
+    const/high16 v10, 0x40a00000
 
     .line 135
     .line 136
@@ -372,7 +366,7 @@
     mul-float/2addr v13, v1
 
     .line 146
-    const v10, 0x3dcccccd    # 0.1f
+    const v10, 0x3dcccccd
 
     .line 147
     .line 148
@@ -383,7 +377,7 @@
     mul-float/2addr v10, v6
 
     .line 151
-    const-wide/high16 v16, 0x4014000000000000L    # 5.0
+    const-wide/high16 v16, 0x4014000000000000L
 
     .line 152
     .line 153
@@ -445,7 +439,7 @@
     double-to-float v3, v3
 
     .line 179
-    const v4, 0x3fbd70a4    # 1.48f
+    const v4, 0x3fbd70a4
 
     .line 180
     .line 181
@@ -454,7 +448,7 @@
 
     .line 183
     .line 184
-    const-wide v3, 0x3fc999999999999aL    # 0.2
+    const-wide v3, 0x3fc999999999999aL
 
     .line 185
     .line 186
@@ -472,7 +466,7 @@
     double-to-float v0, v0
 
     .line 194
-    const v1, 0x3f39999a    # 0.725f
+    const v1, 0x3f39999a
 
     .line 195
     .line 196
@@ -498,7 +492,7 @@
 
     .line 205
     .line 206
-    const-wide v3, 0x3fdae147ae147ae1L    # 0.42
+    const-wide v3, 0x3fdae147ae147ae1L
 
     .line 207
     .line 208
@@ -592,7 +586,7 @@
 
     .line 249
     .line 250
-    const/high16 v1, 0x43c80000    # 400.0f
+    const/high16 v1, 0x43c80000
 
     .line 251
     .line 252
@@ -600,7 +594,7 @@
 
     .line 253
     .line 254
-    const v6, 0x41d90a3d    # 27.13f
+    const v6, 0x41d90a3d
 
     .line 255
     .line 256
@@ -654,7 +648,7 @@
 
     .line 277
     .line 278
-    const/high16 v1, 0x40000000    # 2.0f
+    const/high16 v1, 0x40000000
 
     .line 279
     .line 280
@@ -672,7 +666,7 @@
     add-float/2addr v2, v1
 
     .line 286
-    const v1, 0x3d4ccccd    # 0.05f
+    const v1, 0x3d4ccccd
 
     .line 287
     .line 288
@@ -698,7 +692,7 @@
     float-to-double v1, v10
 
     .line 298
-    const-wide/high16 v3, 0x3fd0000000000000L    # 0.25
+    const-wide/high16 v3, 0x3fd0000000000000L
 
     .line 299
     .line 300
@@ -713,7 +707,7 @@
     double-to-float v1, v1
 
     .line 305
-    const v18, 0x3f30a3d7    # 0.69f
+    const v18, 0x3f30a3d7
 
     .line 306
     .line 307

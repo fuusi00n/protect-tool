@@ -2,20 +2,14 @@
 .super Lt4;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final g:I
 
 .field public static final h:[[I
 
-
-# instance fields
 .field public e:Landroid/content/res/ColorStateList;
 
 .field public f:Z
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 5
 
@@ -143,7 +137,7 @@
     move-result v2
 
     .line 23
-    const/high16 v3, 0x3f800000    # 1.0f
+    const/high16 v3, 0x3f800000
 
     .line 24
     .line 25
@@ -155,7 +149,7 @@
     move-result v0
 
     .line 29
-    const v3, 0x3f0a3d71    # 0.54f
+    const v3, 0x3f0a3d71
 
     .line 30
     .line 31
@@ -168,7 +162,7 @@
     move-result v3
 
     .line 36
-    const v4, 0x3ec28f5c    # 0.38f
+    const v4, 0x3ec28f5c
 
     .line 37
     .line 38
@@ -222,8 +216,6 @@
     return-object p0
 .end method
 
-
-# virtual methods
 .method public final onAttachedToWindow()V
     .locals 1
 

@@ -1,8 +1,6 @@
 .class public abstract Lnu;
 .super Ljava/lang/Object;
 
-
-# static fields
 .field public static abc_fade_in:I = 0x7f010000
 
 .field public static abc_fade_out:I = 0x7f010001

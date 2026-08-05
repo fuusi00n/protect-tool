@@ -2,8 +2,6 @@
 .super Landroid/view/ViewGroup$MarginLayoutParams;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public a:Loc;
 
 .field public b:Z
@@ -34,8 +32,6 @@
 
 .field public final o:Landroid/graphics/Rect;
 
-
-# direct methods
 .method public constructor <init>()V
     .locals 2
 
@@ -731,8 +727,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(I)Z
     .locals 1
 

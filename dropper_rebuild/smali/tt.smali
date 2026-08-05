@@ -2,8 +2,6 @@
 .super Lyw;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public a:Landroidx/recyclerview/widget/RecyclerView;
 
 .field public final b:Li00;
@@ -12,8 +10,6 @@
 
 .field public d:Lqt;
 
-
-# direct methods
 .method public constructor <init>()V
     .locals 1
 
@@ -218,8 +214,6 @@
     return-object v1
 .end method
 
-
-# virtual methods
 .method public final a(Lww;Landroid/view/View;)[I
     .locals 4
 

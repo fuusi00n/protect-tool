@@ -2,8 +2,6 @@
 .super Landroid/animation/AnimatorListenerAdapter;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final synthetic a:Landroid/view/ViewGroup;
 
 .field public final synthetic b:Landroid/view/View;
@@ -14,8 +12,6 @@
 
 .field public final synthetic e:Lme;
 
-
-# direct methods
 .method public constructor <init>(Landroid/view/ViewGroup;Landroid/view/View;ZLq00;Lme;)V
     .locals 0
 
@@ -48,8 +44,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final onAnimationEnd(Landroid/animation/Animator;)V
     .locals 2
 

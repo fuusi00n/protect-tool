@@ -2,8 +2,6 @@
 .super Lb80;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static e:Ljava/lang/reflect/Field; = null
 
 .field public static f:Z = false
@@ -12,14 +10,10 @@
 
 .field public static h:Z = false
 
-
-# instance fields
 .field public c:Landroid/view/WindowInsets;
 
 .field public d:Lhm;
 
-
-# direct methods
 .method public constructor <init>()V
     .locals 1
 
@@ -237,8 +231,6 @@
     return-object v3
 .end method
 
-
-# virtual methods
 .method public b()Lj80;
     .locals 3
 

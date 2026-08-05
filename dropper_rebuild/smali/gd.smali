@@ -2,12 +2,9 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Ljava/util/concurrent/Executor;
 .implements Ljava/io/Closeable;
 
-
-# static fields
 .field public static final synthetic h:Ljava/util/concurrent/atomic/AtomicLongFieldUpdater;
 
 .field public static final synthetic i:Ljava/util/concurrent/atomic/AtomicLongFieldUpdater;
@@ -16,8 +13,6 @@
 
 .field public static final k:Lo0;
 
-
-# instance fields
 .field private volatile synthetic _isTerminated$volatile:I
 
 .field public final a:I
@@ -38,8 +33,6 @@
 
 .field private volatile synthetic parkedWorkersStack$volatile:J
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 3
 
@@ -484,8 +477,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a()I
     .locals 11
 

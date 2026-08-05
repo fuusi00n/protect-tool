@@ -2,12 +2,8 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final s:Ljava/util/List;
 
-
-# instance fields
 .field public final a:Landroid/view/View;
 
 .field public b:Ljava/lang/ref/WeakReference;
@@ -44,8 +40,6 @@
 
 .field public r:Landroidx/recyclerview/widget/RecyclerView;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 1
 
@@ -163,8 +157,6 @@
     throw v1
 .end method
 
-
-# virtual methods
 .method public final a(I)V
     .locals 1
 

@@ -2,16 +2,12 @@
 .super Lr40;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public a:[Lxt;
 
 .field public b:Ljava/lang/String;
 
 .field public c:I
 
-
-# direct methods
 .method public constructor <init>()V
     .locals 1
 
@@ -113,8 +109,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public getPathData()[Lxt;
     .locals 0
 

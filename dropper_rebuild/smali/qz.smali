@@ -2,8 +2,6 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public a:Lnm;
 
 .field public b:Lnm;
@@ -28,8 +26,6 @@
 
 .field public l:Lqg;
 
-
-# direct methods
 .method public constructor <init>()V
     .locals 2
 
@@ -622,7 +618,7 @@
 
     .line 38
     .line 39
-    const/high16 p2, 0x3f800000    # 1.0f
+    const/high16 p2, 0x3f800000
 
     .line 40
     .line 41
@@ -647,8 +643,6 @@
     return-object p2
 .end method
 
-
-# virtual methods
 .method public final d(Landroid/graphics/RectF;)Z
     .locals 5
 

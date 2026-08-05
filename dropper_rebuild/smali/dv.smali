@@ -1,8 +1,6 @@
 .class public abstract Ldv;
 .super Ljava/lang/Object;
 
-
-# static fields
 .field public static abc_ab_share_pack_mtrl_alpha:I = 0x7f070028
 
 .field public static abc_action_bar_item_background_material:I = 0x7f070029

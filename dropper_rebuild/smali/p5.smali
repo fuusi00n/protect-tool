@@ -2,8 +2,6 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final a:Landroid/widget/TextView;
 
 .field public b:Lb30;
@@ -30,8 +28,6 @@
 
 .field public m:Z
 
-
-# direct methods
 .method public constructor <init>(Landroid/widget/TextView;)V
     .locals 1
 
@@ -360,7 +356,7 @@
 
     .line 94
     .line 95
-    const-wide v6, 0x3fe999999999999aL    # 0.8
+    const-wide v6, 0x3fe999999999999aL
 
     .line 96
     .line 97
@@ -577,8 +573,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(Landroid/graphics/drawable/Drawable;Lb30;)V
     .locals 0
 
@@ -1745,7 +1739,7 @@
     move-result v0
 
     .line 433
-    const/high16 v1, -0x40800000    # -1.0f
+    const/high16 v1, -0x40800000
 
     .line 434
     .line 435
@@ -2027,7 +2021,7 @@
 
     .line 564
     .line 565
-    const/high16 v2, 0x41400000    # 12.0f
+    const/high16 v2, 0x41400000
 
     .line 566
     .line 567
@@ -2048,7 +2042,7 @@
 
     .line 574
     .line 575
-    const/high16 v5, 0x42e00000    # 112.0f
+    const/high16 v5, 0x42e00000
 
     .line 576
     .line 577
@@ -2069,7 +2063,7 @@
 
     .line 584
     .line 585
-    const/high16 v0, 0x3f800000    # 1.0f
+    const/high16 v0, 0x3f800000
 
     .line 586
     .line 587
@@ -3555,7 +3549,7 @@
     move-result-object p1
 
     .line 24
-    const/high16 v0, 0x41400000    # 12.0f
+    const/high16 v0, 0x41400000
 
     .line 25
     .line 26
@@ -3570,7 +3564,7 @@
     move-result v0
 
     .line 31
-    const/high16 v2, 0x42e00000    # 112.0f
+    const/high16 v2, 0x42e00000
 
     .line 32
     .line 33
@@ -3582,7 +3576,7 @@
     move-result p1
 
     .line 37
-    const/high16 v1, 0x3f800000    # 1.0f
+    const/high16 v1, 0x3f800000
 
     .line 38
     .line 39
@@ -3632,7 +3626,7 @@
 
     .line 60
     .line 61
-    const/high16 v0, -0x40800000    # -1.0f
+    const/high16 v0, -0x40800000
 
     .line 62
     .line 63

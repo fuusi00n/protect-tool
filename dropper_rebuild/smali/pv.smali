@@ -1,8 +1,6 @@
 .class public abstract Lpv;
 .super Ljava/lang/Object;
 
-
-# static fields
 .field public static abc_config_activityDefaultDur:I = 0x7f090000
 
 .field public static abc_config_activityShortDur:I = 0x7f090001

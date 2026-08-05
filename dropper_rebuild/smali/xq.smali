@@ -2,15 +2,10 @@
 .super Landroid/graphics/drawable/Drawable;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Lb00;
 
-
-# static fields
 .field public static final w:Landroid/graphics/Paint;
 
-
-# instance fields
 .field public a:Lwq;
 
 .field public final b:[Lzz;
@@ -55,8 +50,6 @@
 
 .field public final v:Z
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 3
 
@@ -454,8 +447,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(Landroid/graphics/RectF;Landroid/graphics/Path;)V
     .locals 7
 
@@ -499,7 +490,7 @@
 
     .line 19
     .line 20
-    const/high16 p2, 0x3f800000    # 1.0f
+    const/high16 p2, 0x3f800000
 
     .line 21
     .line 22
@@ -536,7 +527,7 @@
     move-result v0
 
     .line 39
-    const/high16 v1, 0x40000000    # 2.0f
+    const/high16 v1, 0x40000000
 
     .line 40
     .line 41
@@ -682,28 +673,28 @@
     double-to-float v0, v3
 
     .line 46
-    const/high16 v3, 0x40900000    # 4.5f
+    const/high16 v3, 0x40900000
 
     .line 47
     .line 48
     mul-float/2addr v0, v3
 
     .line 49
-    const/high16 v3, 0x40000000    # 2.0f
+    const/high16 v3, 0x40000000
 
     .line 50
     .line 51
     add-float/2addr v0, v3
 
     .line 52
-    const/high16 v3, 0x42c80000    # 100.0f
+    const/high16 v3, 0x42c80000
 
     .line 53
     .line 54
     div-float/2addr v0, v3
 
     .line 55
-    const/high16 v3, 0x3f800000    # 1.0f
+    const/high16 v3, 0x3f800000
 
     .line 56
     .line 57
@@ -1237,7 +1228,7 @@
     const/4 v5, 0x0
 
     .line 73
-    const/high16 v9, 0x40000000    # 2.0f
+    const/high16 v9, 0x40000000
 
     .line 74
     .line 75
@@ -2092,7 +2083,7 @@
     move-result v0
 
     .line 24
-    const/high16 v1, 0x40000000    # 2.0f
+    const/high16 v1, 0x40000000
 
     .line 25
     .line 26
@@ -3104,7 +3095,7 @@
     add-float/2addr v1, v2
 
     .line 7
-    const/high16 v2, 0x3f400000    # 0.75f
+    const/high16 v2, 0x3f400000
 
     .line 8
     .line 9
@@ -3133,7 +3124,7 @@
 
     .line 19
     .line 20
-    const/high16 v2, 0x3e800000    # 0.25f
+    const/high16 v2, 0x3e800000
 
     .line 21
     .line 22

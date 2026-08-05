@@ -2,15 +2,10 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Landroid/view/Choreographer$FrameCallback;
 
-
-# instance fields
 .field public final synthetic a:Ly2;
 
-
-# direct methods
 .method public constructor <init>(Ly2;)V
     .locals 0
 
@@ -27,8 +22,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final doFrame(J)V
     .locals 31
 
@@ -226,7 +219,7 @@
     .line 91
     .line 92
     .line 93
-    const v14, 0x7f7fffff    # Float.MAX_VALUE
+    const v14, 0x7f7fffff
 
     .line 94
     .line 95
@@ -617,7 +610,7 @@
 
     .line 276
     .line 277
-    const v12, 0x7f7fffff    # Float.MAX_VALUE
+    const v12, 0x7f7fffff
 
     .line 278
     .line 279

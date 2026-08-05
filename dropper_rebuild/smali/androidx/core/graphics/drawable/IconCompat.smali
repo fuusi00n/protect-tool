@@ -2,12 +2,8 @@
 .super Landroidx/versionedparcelable/CustomVersionedParcelable;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final k:Landroid/graphics/PorterDuff$Mode;
 
-
-# instance fields
 .field public a:I
 
 .field public b:Ljava/lang/Object;
@@ -28,8 +24,6 @@
 
 .field public j:Ljava/lang/String;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 1
 
@@ -45,8 +39,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final toString()Ljava/lang/String;
     .locals 5
 

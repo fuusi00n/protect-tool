@@ -2,8 +2,6 @@
 .super Landroid/view/ViewGroup$MarginLayoutParams;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public A:I
 
 .field public B:I
@@ -140,8 +138,6 @@
 
 .field public z:I
 
-
-# virtual methods
 .method public final a()V
     .locals 6
 
@@ -308,7 +304,7 @@
 
     .line 76
     .line 77
-    const/high16 v2, -0x40800000    # -1.0f
+    const/high16 v2, -0x40800000
 
     .line 78
     .line 79
@@ -619,7 +615,7 @@
     .line 96
     .line 97
     :cond_6
-    const/high16 p1, 0x3f800000    # 1.0f
+    const/high16 p1, 0x3f800000
 
     .line 98
     .line 99
@@ -660,7 +656,7 @@
 
     .line 116
     .line 117
-    const/high16 v2, -0x40800000    # -1.0f
+    const/high16 v2, -0x40800000
 
     .line 118
     .line 119

@@ -2,8 +2,6 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public a:I
 
 .field public b:I
@@ -18,8 +16,6 @@
 
 .field public g:I
 
-
-# direct methods
 .method public constructor <init>(Landroid/content/Context;Landroid/util/AttributeSet;II)V
     .locals 8
 
@@ -409,7 +405,7 @@
     move-result-object p2
 
     .line 188
-    const p3, 0x3e4ccccd    # 0.2f
+    const p3, 0x3e4ccccd
 
     .line 189
     .line 190
@@ -427,7 +423,7 @@
     .line 196
     .line 197
     .line 198
-    const/high16 p2, 0x437f0000    # 255.0f
+    const/high16 p2, 0x437f0000
 
     .line 199
     .line 200
@@ -478,8 +474,6 @@
     throw p0
 .end method
 
-
-# virtual methods
 .method public a()V
     .locals 0
 

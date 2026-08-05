@@ -2,16 +2,11 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Lo1;
 .implements Lcr;
 
-
-# instance fields
 .field public final synthetic a:Landroidx/appcompat/widget/Toolbar;
 
-
-# direct methods
 .method public synthetic constructor <init>(Landroidx/appcompat/widget/Toolbar;)V
     .locals 0
 
@@ -28,8 +23,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public h(Ler;)V
     .locals 0
 

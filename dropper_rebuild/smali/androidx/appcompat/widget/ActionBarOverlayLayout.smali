@@ -2,20 +2,15 @@
 .super Landroid/view/ViewGroup;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Lss;
 .implements Lts;
 
-
-# static fields
 .field public static final C:[I
 
 .field public static final D:Lj80;
 
 .field public static final E:Landroid/graphics/Rect;
 
-
-# instance fields
 .field public final A:Lus;
 
 .field public final B:Ld1;
@@ -72,8 +67,6 @@
 
 .field public final z:La1;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 3
 
@@ -542,8 +535,6 @@
     return v0
 .end method
 
-
-# virtual methods
 .method public final a(Landroid/view/View;Landroid/view/View;II)V
     .locals 0
 
@@ -674,7 +665,7 @@
     add-float/2addr v2, v0
 
     .line 31
-    const/high16 v0, 0x3f000000    # 0.5f
+    const/high16 v0, 0x3f000000
 
     .line 32
     .line 33

@@ -2,14 +2,10 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final l:Landroid/graphics/RectF;
 
 .field public static final m:Ljava/util/concurrent/ConcurrentHashMap;
 
-
-# instance fields
 .field public a:I
 
 .field public b:Z
@@ -32,8 +28,6 @@
 
 .field public final k:Lv5;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 1
 
@@ -87,7 +81,7 @@
 
     .line 8
     .line 9
-    const/high16 v1, -0x40800000    # -1.0f
+    const/high16 v1, -0x40800000
 
     .line 10
     .line 11
@@ -402,8 +396,6 @@
     return-object v0
 .end method
 
-
-# virtual methods
 .method public final a()V
     .locals 3
 
@@ -1539,7 +1531,7 @@
 
     .line 27
     .line 28
-    const/high16 v0, -0x40800000    # -1.0f
+    const/high16 v0, -0x40800000
 
     .line 29
     .line 30

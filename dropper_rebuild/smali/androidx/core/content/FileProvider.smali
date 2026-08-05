@@ -2,16 +2,12 @@
 .super Landroid/content/ContentProvider;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final e:[Ljava/lang/String;
 
 .field public static final f:Ljava/io/File;
 
 .field public static final g:Ljava/util/HashMap;
 
-
-# instance fields
 .field public final a:Ljava/lang/Object;
 
 .field public b:Ljava/lang/String;
@@ -20,8 +16,6 @@
 
 .field public final d:I
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 2
 
@@ -1265,8 +1259,6 @@
     return-object v2
 .end method
 
-
-# virtual methods
 .method public final attachInfo(Landroid/content/Context;Landroid/content/pm/ProviderInfo;)V
     .locals 0
 
@@ -1825,7 +1817,7 @@
 
     .line 66
     .line 67
-    const/high16 p1, 0x3c000000    # 0.0078125f
+    const/high16 p1, 0x3c000000
 
     .line 68
     .line 69

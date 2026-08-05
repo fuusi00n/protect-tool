@@ -2,16 +2,12 @@
 .super Lyf;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final l:Lag;
 
 .field public m:Ld4;
 
 .field public n:Lw40;
 
-
-# direct methods
 .method public constructor <init>(Landroid/content/Context;Lf7;Lag;Ld4;)V
     .locals 0
 
@@ -36,8 +32,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final d(ZZZ)Z
     .locals 4
 
@@ -74,7 +68,7 @@
 
     .line 16
     .line 17
-    const/high16 v3, 0x3f800000    # 1.0f
+    const/high16 v3, 0x3f800000
 
     .line 18
     .line 19
@@ -231,7 +225,7 @@
 
     .line 31
     .line 32
-    const/high16 v7, 0x3f800000    # 1.0f
+    const/high16 v7, 0x3f800000
 
     .line 33
     .line 34
@@ -482,7 +476,7 @@
     const/4 v4, 0x0
 
     .line 148
-    const/high16 v5, 0x3f800000    # 1.0f
+    const/high16 v5, 0x3f800000
 
     .line 149
     .line 150
@@ -604,7 +598,7 @@
 
     .line 204
     .line 205
-    const/high16 v5, 0x3f800000    # 1.0f
+    const/high16 v5, 0x3f800000
 
     .line 206
     .line 207

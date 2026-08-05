@@ -2,16 +2,10 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final b:Lbp;
 
-
-# instance fields
 .field public final a:Lcp;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 3
 
@@ -188,8 +182,6 @@
     return-object p0
 .end method
 
-
-# virtual methods
 .method public final equals(Ljava/lang/Object;)Z
     .locals 1
 

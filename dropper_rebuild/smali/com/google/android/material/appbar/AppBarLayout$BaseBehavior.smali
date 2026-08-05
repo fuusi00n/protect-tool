@@ -2,8 +2,6 @@
 .super Lk60;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# annotations
 .annotation system Ldalvik/annotation/Signature;
     value = {
         "<T:",
@@ -13,8 +11,6 @@
     }
 .end annotation
 
-
-# instance fields
 .field public b:Z
 
 .field public c:I
@@ -25,8 +21,6 @@
 
 .field public f:Landroid/view/VelocityTracker;
 
-
-# direct methods
 .method public constructor <init>()V
     .locals 1
 
@@ -67,8 +61,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final f(Landroidx/coordinatorlayout/widget/CoordinatorLayout;Landroid/view/View;Landroid/view/MotionEvent;)Z
     .locals 3
 
@@ -487,7 +479,7 @@
     move-result p1
 
     .line 39
-    const/high16 v0, 0x3f000000    # 0.5f
+    const/high16 v0, 0x3f000000
 
     .line 40
     .line 41

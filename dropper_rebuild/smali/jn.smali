@@ -2,14 +2,10 @@
 .super Lzt;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final synthetic g:I
 
 .field public final h:Lcom/google/android/material/sidesheet/SideSheetBehavior;
 
-
-# direct methods
 .method public synthetic constructor <init>(Lcom/google/android/material/sidesheet/SideSheetBehavior;I)V
     .locals 0
 
@@ -30,8 +26,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(Landroid/view/ViewGroup$MarginLayoutParams;)I
     .locals 0
 
@@ -756,7 +750,7 @@
     move-result p0
 
     .line 22
-    const/high16 p1, 0x43fa0000    # 500.0f
+    const/high16 p1, 0x43fa0000
 
     .line 23
     .line 24
@@ -815,7 +809,7 @@
     move-result p0
 
     .line 48
-    const/high16 p1, 0x43fa0000    # 500.0f
+    const/high16 p1, 0x43fa0000
 
     .line 49
     .line 50
@@ -864,7 +858,7 @@
     const/4 v2, 0x1
 
     .line 5
-    const/high16 v3, 0x3f000000    # 0.5f
+    const/high16 v3, 0x3f000000
 
     .line 6
     .line 7

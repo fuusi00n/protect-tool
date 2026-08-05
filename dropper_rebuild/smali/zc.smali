@@ -2,11 +2,8 @@
 .super Lhn;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Ltk;
 
-
-# static fields
 .field public static final c:Lzc;
 
 .field public static final d:Lzc;
@@ -17,12 +14,8 @@
 
 .field public static final g:Lzc;
 
-
-# instance fields
 .field public final synthetic b:I
 
-
-# direct methods
 .method static synthetic constructor <clinit>()V
     .locals 3
 
@@ -129,8 +122,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final e(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
     .locals 0
 

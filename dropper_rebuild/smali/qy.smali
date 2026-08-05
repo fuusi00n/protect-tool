@@ -2,19 +2,14 @@
 .super Lty;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Ljava/util/Iterator;
 
-
-# instance fields
 .field public a:Lry;
 
 .field public b:Lry;
 
 .field public final synthetic c:I
 
-
-# direct methods
 .method public constructor <init>(Lry;Lry;I)V
     .locals 0
 
@@ -39,8 +34,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(Lry;)V
     .locals 3
 

@@ -2,8 +2,6 @@
 .super Lnm;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# virtual methods
 .method public final x(La00;FF)V
     .locals 4
 
@@ -12,11 +10,11 @@
 
     .line 2
     .line 3
-    const/high16 v0, 0x43340000    # 180.0f
+    const/high16 v0, 0x43340000
 
     .line 4
     .line 5
-    const/high16 v1, 0x42b40000    # 90.0f
+    const/high16 v1, 0x42b40000
 
     .line 6
     .line 7
@@ -25,7 +23,7 @@
     .line 8
     .line 9
     .line 10
-    const/high16 p0, 0x40000000    # 2.0f
+    const/high16 p0, 0x40000000
 
     .line 11
     .line 12
@@ -87,7 +85,7 @@
     .line 40
     .line 41
     .line 42
-    const/high16 p2, 0x43870000    # 270.0f
+    const/high16 p2, 0x43870000
 
     .line 43
     .line 44
@@ -99,7 +97,7 @@
 
     .line 47
     .line 48
-    const/high16 v0, 0x3f000000    # 0.5f
+    const/high16 v0, 0x3f000000
 
     .line 49
     .line 50
@@ -112,7 +110,7 @@
     div-float/2addr p3, p0
 
     .line 53
-    const-wide v0, 0x4070e00000000000L    # 270.0
+    const-wide v0, 0x4070e00000000000L
 
     .line 54
     .line 55

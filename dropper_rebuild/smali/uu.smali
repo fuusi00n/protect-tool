@@ -1,8 +1,6 @@
 .class public abstract Luu;
 .super Ljava/lang/Object;
 
-
-# static fields
 .field public static actionBarDivider:I = 0x7f030002
 
 .field public static actionBarItemBackground:I = 0x7f030003

@@ -2,18 +2,12 @@
 .super Lum;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final synthetic i:Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;
 
-
-# instance fields
 .field private volatile synthetic _invoked$volatile:I
 
 .field public final h:Lmm;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 2
 
@@ -57,8 +51,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final d(Ljava/lang/Throwable;)V
     .locals 3
 

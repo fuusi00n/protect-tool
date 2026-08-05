@@ -2,11 +2,8 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Lsm;
 
-
-# static fields
 .field public static final synthetic a:Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;
 
 .field public static final synthetic b:Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;
@@ -15,14 +12,10 @@
 
 .field public static final synthetic d:J
 
-
-# instance fields
 .field private volatile synthetic _parentHandle$volatile:Ljava/lang/Object;
 
 .field private volatile synthetic _state$volatile:Ljava/lang/Object;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 6
 
@@ -346,8 +339,6 @@
     return-object p0
 .end method
 
-
-# virtual methods
 .method public A(Lra;)V
     .locals 0
 

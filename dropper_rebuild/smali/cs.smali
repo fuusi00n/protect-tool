@@ -2,16 +2,12 @@
 .super Low;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final c:Ly7;
 
 .field public final d:Lo0;
 
 .field public final e:I
 
-
-# direct methods
 .method public constructor <init>(Landroid/view/ContextThemeWrapper;Ly7;Lo0;)V
     .locals 4
 
@@ -228,8 +224,6 @@
     throw v3
 .end method
 
-
-# virtual methods
 .method public final a()I
     .locals 0
 

@@ -2,8 +2,6 @@
 .super Landroid/widget/BaseAdapter;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final a:Ler;
 
 .field public b:I
@@ -16,8 +14,6 @@
 
 .field public final f:I
 
-
-# direct methods
 .method public constructor <init>(Ler;Landroid/view/LayoutInflater;ZI)V
     .locals 1
 
@@ -58,8 +54,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a()V
     .locals 5
 

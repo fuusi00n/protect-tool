@@ -1,8 +1,6 @@
 .class public interface abstract synthetic Landroid/window/OnBackInvokedCallback;
 .super Ljava/lang/Object;
 
-
-# direct methods
 .method static synthetic constructor <clinit>()V
     .locals 1
 

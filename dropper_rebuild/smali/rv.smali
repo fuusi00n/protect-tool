@@ -1,8 +1,6 @@
 .class public abstract Lrv;
 .super Ljava/lang/Object;
 
-
-# static fields
 .field public static abc_action_bar_title_item:I = 0x7f0b0000
 
 .field public static abc_action_bar_up_container:I = 0x7f0b0001

@@ -2,16 +2,12 @@
 .super Lg3;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public e:I
 
 .field public f:Z
 
 .field public final g:Lu6;
 
-
-# direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .locals 1
 
@@ -182,8 +178,6 @@
     return p0
 .end method
 
-
-# virtual methods
 .method public final enoughToFilter()Z
     .locals 1
 

@@ -2,14 +2,10 @@
 .super Ltw;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final C:[I
 
 .field public static final D:[I
 
-
-# instance fields
 .field public A:I
 
 .field public final B:Lu6;
@@ -66,8 +62,6 @@
 
 .field public final z:Landroid/animation/ValueAnimator;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 1
 
@@ -540,7 +534,7 @@
     :array_0
     .array-data 4
         0x0
-        0x3f800000    # 1.0f
+        0x3f800000
     .end array-data
 .end method
 
@@ -613,8 +607,6 @@
     return v1
 .end method
 
-
-# virtual methods
 .method public final b(Landroid/graphics/Canvas;Landroidx/recyclerview/widget/RecyclerView;)V
     .locals 9
 
@@ -769,11 +761,11 @@
     .line 72
     .line 73
     .line 74
-    const/high16 p2, -0x40800000    # -1.0f
+    const/high16 p2, -0x40800000
 
     .line 75
     .line 76
-    const/high16 v0, 0x3f800000    # 1.0f
+    const/high16 v0, 0x3f800000
 
     .line 77
     .line 78
@@ -1411,7 +1403,7 @@
 
     .line 32
     .line 33
-    const/high16 p0, 0x3f800000    # 1.0f
+    const/high16 p0, 0x3f800000
 
     .line 34
     .line 35

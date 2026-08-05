@@ -1,8 +1,6 @@
 .class public synthetic Landroid/view/WindowInsetsAnimation$Callback;
 .super Ljava/lang/Object;
 
-
-# direct methods
 .method static synthetic constructor <clinit>()V
     .locals 1
 

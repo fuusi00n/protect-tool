@@ -2,16 +2,12 @@
 .super Lkb;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public h:I
 
 .field public i:I
 
 .field public j:Lc7;
 
-
-# virtual methods
 .method public final g(Landroid/util/AttributeSet;)V
     .locals 2
 
@@ -247,7 +243,7 @@
     mul-float/2addr p1, v0
 
     .line 13
-    const/high16 v0, 0x3f000000    # 0.5f
+    const/high16 v0, 0x3f000000
 
     .line 14
     .line 15

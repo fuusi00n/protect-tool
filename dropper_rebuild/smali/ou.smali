@@ -1,8 +1,6 @@
 .class public abstract Lou;
 .super Ljava/lang/Object;
 
-
-# static fields
 .field public static fragment_close_enter:I = 0x7f020003
 
 .field public static fragment_close_exit:I = 0x7f020004

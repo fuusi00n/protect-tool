@@ -2,12 +2,8 @@
 .super Lc70;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public j:Lgi;
 
-
-# direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .locals 0
 
@@ -92,8 +88,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final g(Landroid/util/AttributeSet;)V
     .locals 8
 
@@ -198,7 +192,7 @@
 
     .line 50
     .line 51
-    const/high16 v4, 0x3f000000    # 0.5f
+    const/high16 v4, 0x3f000000
 
     .line 52
     .line 53
@@ -5204,7 +5198,7 @@
 
     .line 1818
     .line 1819
-    const/high16 v4, 0x40000000    # 2.0f
+    const/high16 v4, 0x40000000
 
     .line 1820
     .line 1821

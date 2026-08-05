@@ -2,8 +2,6 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final a:Lo0;
 
 .field public static final b:[I
@@ -54,8 +52,6 @@
 
 .field public static final y:Lo0;
 
-
-# direct methods
 .method static synthetic constructor <clinit>()V
     .locals 5
 
@@ -7541,7 +7537,7 @@
 
     .line 11
     .line 12
-    const/high16 p1, 0x3f800000    # 1.0f
+    const/high16 p1, 0x3f800000
 
     .line 13
     .line 14
@@ -8333,8 +8329,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public abstract C(Lo;Lo;)V
 .end method
 

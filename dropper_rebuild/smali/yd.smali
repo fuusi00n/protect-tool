@@ -2,11 +2,8 @@
 .super Lqh;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Ljava/lang/Runnable;
 
-
-# static fields
 .field private static volatile _thread:Ljava/lang/Thread;
 
 .field private static volatile debugStatus:I
@@ -15,8 +12,6 @@
 
 .field public static final l:J
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 3
 
@@ -101,8 +96,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final declared-synchronized B()V
     .locals 3
 

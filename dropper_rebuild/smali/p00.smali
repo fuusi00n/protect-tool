@@ -2,19 +2,14 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Ljava/lang/Runnable;
 
-
-# instance fields
 .field public final synthetic a:I
 
 .field public final synthetic b:Lq00;
 
 .field public final synthetic c:Loe;
 
-
-# direct methods
 .method public synthetic constructor <init>(Loe;Lq00;I)V
     .locals 0
 
@@ -39,8 +34,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final run()V
     .locals 2
 

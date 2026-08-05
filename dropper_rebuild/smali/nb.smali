@@ -2,8 +2,6 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final a:Landroidx/constraintlayout/widget/ConstraintLayout;
 
 .field public b:I
@@ -20,8 +18,6 @@
 
 .field public final synthetic h:Landroidx/constraintlayout/widget/ConstraintLayout;
 
-
-# direct methods
 .method public constructor <init>(Landroidx/constraintlayout/widget/ConstraintLayout;Landroidx/constraintlayout/widget/ConstraintLayout;)V
     .locals 0
 
@@ -83,7 +79,7 @@
     move-result p1
 
     .line 19
-    const/high16 v1, 0x40000000    # 2.0f
+    const/high16 v1, 0x40000000
 
     .line 20
     .line 21
@@ -122,8 +118,6 @@
     return p0
 .end method
 
-
-# virtual methods
 .method public final b(Lxb;Ll7;)V
     .locals 17
 
@@ -446,7 +440,7 @@
     move-result v8
 
     .line 142
-    const/high16 v13, 0x40000000    # 2.0f
+    const/high16 v13, 0x40000000
 
     .line 143
     .line 144
@@ -462,7 +456,7 @@
 
     .line 149
     :cond_c
-    const/high16 v13, 0x40000000    # 2.0f
+    const/high16 v13, 0x40000000
 
     .line 150
     .line 151
@@ -485,7 +479,7 @@
 
     .line 159
     :cond_d
-    const/high16 v13, 0x40000000    # 2.0f
+    const/high16 v13, 0x40000000
 
     .line 160
     .line 161
@@ -712,7 +706,7 @@
     move-result v3
 
     .line 258
-    const/high16 v13, 0x40000000    # 2.0f
+    const/high16 v13, 0x40000000
 
     .line 259
     .line 260
@@ -728,7 +722,7 @@
 
     .line 265
     :cond_18
-    const/high16 v13, 0x40000000    # 2.0f
+    const/high16 v13, 0x40000000
 
     .line 266
     .line 267
@@ -751,7 +745,7 @@
 
     .line 275
     :cond_19
-    const/high16 v13, 0x40000000    # 2.0f
+    const/high16 v13, 0x40000000
 
     .line 276
     .line 277
@@ -1409,7 +1403,7 @@
 
     .line 567
     .line 568
-    const/high16 v0, 0x3f000000    # 0.5f
+    const/high16 v0, 0x3f000000
 
     .line 569
     .line 570
@@ -1499,7 +1493,7 @@
     .line 602
     :cond_2f
     :goto_17
-    const/high16 v0, 0x40000000    # 2.0f
+    const/high16 v0, 0x40000000
 
     .line 603
     .line 604

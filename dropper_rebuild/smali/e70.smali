@@ -2,11 +2,8 @@
 .super Landroid/animation/AnimatorListenerAdapter;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Lr30;
 
-
-# instance fields
 .field public final a:Landroid/view/ViewGroup;
 
 .field public final b:Landroid/view/View;
@@ -17,8 +14,6 @@
 
 .field public final synthetic e:Luh;
 
-
-# direct methods
 .method public constructor <init>(Luh;Landroid/view/ViewGroup;Landroid/view/View;Landroid/view/View;)V
     .locals 0
 
@@ -54,8 +49,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final b(Ls30;)V
     .locals 0
 

@@ -2,15 +2,10 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Landroid/view/animation/Interpolator;
 
-
-# instance fields
 .field public final synthetic a:I
 
-
-# direct methods
 .method public synthetic constructor <init>(I)V
     .locals 0
 
@@ -27,8 +22,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final getInterpolation(F)F
     .locals 1
 
@@ -43,7 +36,7 @@
     .line 5
     .line 6
     :pswitch_0
-    const/high16 p0, 0x3f800000    # 1.0f
+    const/high16 p0, 0x3f800000
 
     .line 7
     .line 8

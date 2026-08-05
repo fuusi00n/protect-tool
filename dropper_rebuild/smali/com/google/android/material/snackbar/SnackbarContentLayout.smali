@@ -2,16 +2,12 @@
 .super Landroid/widget/LinearLayout;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public a:Landroid/widget/TextView;
 
 .field public b:Landroid/widget/Button;
 
 .field public c:I
 
-
-# direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .locals 1
 
@@ -48,8 +44,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(III)Z
     .locals 2
 

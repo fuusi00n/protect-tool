@@ -1,8 +1,6 @@
 .class public abstract Lbw;
 .super Ljava/lang/Object;
 
-
-# static fields
 .field public static ActionBar:[I = null
 
 .field public static ActionBarLayout:[I = null
@@ -2691,8 +2689,6 @@
 
 .field public static include_constraintSet:I = 0x0
 
-
-# direct methods
 .method public static constructor <clinit>()V
     .locals 11
 

@@ -2,12 +2,8 @@
 .super Landroid/widget/ProgressBar;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final l:I
 
-
-# instance fields
 .field public final a:Lf7;
 
 .field public b:I
@@ -30,8 +26,6 @@
 
 .field public final k:Le7;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 1
 
@@ -345,8 +339,6 @@
     return-object p0
 .end method
 
-
-# virtual methods
 .method public abstract a(Landroid/content/Context;Landroid/util/AttributeSet;)Lf7;
 .end method
 
@@ -438,7 +430,7 @@
 
     .line 42
     .line 43
-    const/high16 v1, 0x3f800000    # 1.0f
+    const/high16 v1, 0x3f800000
 
     .line 44
     .line 45
@@ -2343,7 +2335,7 @@
     div-float/2addr v0, p0
 
     .line 32
-    const p0, 0x461c4000    # 10000.0f
+    const p0, 0x461c4000
 
     .line 33
     .line 34

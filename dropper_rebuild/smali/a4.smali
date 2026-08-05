@@ -2,11 +2,8 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Landroid/view/Window$Callback;
 
-
-# instance fields
 .field public final a:Landroid/view/Window$Callback;
 
 .field public b:Z
@@ -17,8 +14,6 @@
 
 .field public final synthetic e:Lg4;
 
-
-# direct methods
 .method public constructor <init>(Lg4;Landroid/view/Window$Callback;)V
     .locals 0
 
@@ -59,8 +54,6 @@
     throw p0
 .end method
 
-
-# virtual methods
 .method public final a(Landroid/view/Window$Callback;)V
     .locals 2
 
@@ -1957,7 +1950,7 @@
 
     .line 392
     .line 393
-    const/high16 v1, 0x3f800000    # 1.0f
+    const/high16 v1, 0x3f800000
 
     .line 394
     .line 395

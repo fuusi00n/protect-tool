@@ -2,11 +2,8 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Ljava/lang/Cloneable;
 
-
-# static fields
 .field public static final w:[Landroid/animation/Animator;
 
 .field public static final x:[I
@@ -15,8 +12,6 @@
 
 .field public static final z:Ljava/lang/ThreadLocal;
 
-
-# instance fields
 .field public final a:Ljava/lang/String;
 
 .field public b:J
@@ -61,8 +56,6 @@
 
 .field public v:Lqg;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 4
 
@@ -713,8 +706,6 @@
     return p2
 .end method
 
-
-# virtual methods
 .method public A(J)V
     .locals 0
 

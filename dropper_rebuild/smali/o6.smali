@@ -2,15 +2,10 @@
 .super Lg00;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Ljava/util/Map;
 
-
-# instance fields
 .field public h:Ln6;
 
-
-# direct methods
 .method public constructor <init>(Lg00;)V
     .locals 4
 
@@ -119,8 +114,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final entrySet()Ljava/util/Set;
     .locals 2
 

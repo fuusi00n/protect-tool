@@ -2,19 +2,14 @@
 .super Lvp;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Lre;
 
-
-# instance fields
 .field public final c:Landroid/os/Handler;
 
 .field public final d:Z
 
 .field public final e:Lnl;
 
-
-# direct methods
 .method public constructor <init>(Landroid/os/Handler;Z)V
     .locals 1
 
@@ -63,8 +58,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final c(JLf8;)V
     .locals 5
 
@@ -84,7 +77,7 @@
     .line 6
     .line 7
     .line 8
-    const-wide v3, 0x3fffffffffffffffL    # 1.9999999999999998
+    const-wide v3, 0x3fffffffffffffffL
 
     .line 9
     .line 10

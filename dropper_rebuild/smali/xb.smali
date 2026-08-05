@@ -2,8 +2,6 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public A:I
 
 .field public B:F
@@ -140,8 +138,6 @@
 
 .field public z:F
 
-
-# direct methods
 .method public constructor <init>()V
     .locals 16
 
@@ -268,7 +264,7 @@
 
     .line 60
     .line 61
-    const/high16 v6, 0x3f800000    # 1.0f
+    const/high16 v6, 0x3f800000
 
     .line 62
     .line 63
@@ -543,7 +539,7 @@
 
     .line 199
     .line 200
-    const/high16 v4, 0x3f000000    # 0.5f
+    const/high16 v4, 0x3f000000
 
     .line 201
     .line 202
@@ -678,8 +674,8 @@
     .line 269
     :array_1
     .array-data 4
-        -0x40800000    # -1.0f
-        -0x40800000    # -1.0f
+        -0x40800000
+        -0x40800000
     .end array-data
 .end method
 
@@ -848,7 +844,7 @@
 
     .line 39
     .line 40
-    const/high16 p2, 0x3f800000    # 1.0f
+    const/high16 p2, 0x3f800000
 
     .line 41
     .line 42
@@ -1005,8 +1001,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public A()Z
     .locals 1
 
@@ -1247,7 +1241,7 @@
 
     .line 66
     .line 67
-    const/high16 v3, 0x3f000000    # 0.5f
+    const/high16 v3, 0x3f000000
 
     .line 68
     .line 69
@@ -1294,7 +1288,7 @@
 
     .line 89
     .line 90
-    const/high16 v3, -0x40800000    # -1.0f
+    const/high16 v3, -0x40800000
 
     .line 91
     .line 92
@@ -1339,7 +1333,7 @@
 
     .line 112
     .line 113
-    const/high16 v0, 0x3f800000    # 1.0f
+    const/high16 v0, 0x3f800000
 
     .line 114
     .line 115
@@ -4605,7 +4599,7 @@
 
     .line 736
     .line 737
-    const/high16 v38, 0x3f800000    # 1.0f
+    const/high16 v38, 0x3f800000
 
     .line 738
     .line 739
@@ -6580,7 +6574,7 @@
 
     .line 1643
     .line 1644
-    const/high16 v4, -0x40800000    # -1.0f
+    const/high16 v4, -0x40800000
 
     .line 1645
     .line 1646
@@ -6620,7 +6614,7 @@
 
     .line 1663
     .line 1664
-    const/high16 v7, 0x3f800000    # 1.0f
+    const/high16 v7, 0x3f800000
 
     .line 1665
     .line 1666
@@ -6683,7 +6677,7 @@
 
     .line 1695
     .line 1696
-    const/high16 v7, 0x3f800000    # 1.0f
+    const/high16 v7, 0x3f800000
 
     .line 1697
     .line 1698
@@ -6769,7 +6763,7 @@
 
     .line 1739
     .line 1740
-    const/high16 v5, 0x42b40000    # 90.0f
+    const/high16 v5, 0x42b40000
 
     .line 1741
     .line 1742
@@ -6979,7 +6973,7 @@
 
     .line 1839
     .line 1840
-    const/high16 v13, 0x3f000000    # 0.5f
+    const/high16 v13, 0x3f000000
 
     .line 1841
     .line 1842
@@ -7001,7 +6995,7 @@
 
     .line 1851
     .line 1852
-    const/high16 v4, -0x41000000    # -0.5f
+    const/high16 v4, -0x41000000
 
     .line 1853
     .line 1854
@@ -7631,14 +7625,14 @@
 
     move/from16 p9, v4
 
-    const/high16 v4, -0x40800000    # -1.0f
+    const/high16 v4, -0x40800000
 
     invoke-virtual {v13, v8, v4}, Lm6;->g(Ll00;F)V
 
     .line 41
     iget-object v4, v15, Lp6;->d:Lm6;
 
-    const/high16 v13, 0x3f800000    # 1.0f
+    const/high16 v13, 0x3f800000
 
     invoke-virtual {v4, v7, v13}, Lm6;->g(Ll00;F)V
 
@@ -10845,7 +10839,7 @@
 
     .line 254
     .line 255
-    const/high16 v4, 0x3f000000    # 0.5f
+    const/high16 v4, 0x3f000000
 
     .line 256
     .line 257

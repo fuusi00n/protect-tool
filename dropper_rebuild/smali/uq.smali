@@ -2,8 +2,6 @@
 .super Lef;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# annotations
 .annotation system Ldalvik/annotation/Signature;
     value = {
         "<S:",
@@ -13,8 +11,6 @@
     }
 .end annotation
 
-
-# instance fields
 .field public A0:Lxq;
 
 .field public B0:Z
@@ -63,8 +59,6 @@
 
 .field public z0:Lcom/google/android/material/internal/CheckableImageButton;
 
-
-# direct methods
 .method public constructor <init>()V
     .locals 1
 
@@ -318,8 +312,6 @@
     return p1
 .end method
 
-
-# virtual methods
 .method public final E()Landroid/app/Dialog;
     .locals 6
 

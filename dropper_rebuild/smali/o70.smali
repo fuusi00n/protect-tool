@@ -2,17 +2,12 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Lb1;
 
-
-# static fields
 .field public static final y:Landroid/view/animation/AccelerateInterpolator;
 
 .field public static final z:Landroid/view/animation/DecelerateInterpolator;
 
-
-# instance fields
 .field public a:Landroid/content/Context;
 
 .field public b:Landroid/content/Context;
@@ -61,8 +56,6 @@
 
 .field public final x:Lo0;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 1
 
@@ -306,8 +299,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(Z)V
     .locals 10
 
@@ -500,7 +491,7 @@
     move-result-object p1
 
     .line 93
-    const/high16 v0, 0x3f800000    # 1.0f
+    const/high16 v0, 0x3f800000
 
     .line 94
     .line 95
@@ -1499,7 +1490,7 @@
     const/4 v6, 0x0
 
     .line 20
-    const/high16 v7, 0x3f800000    # 1.0f
+    const/high16 v7, 0x3f800000
 
     .line 21
     .line 22

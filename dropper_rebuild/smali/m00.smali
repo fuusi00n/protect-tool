@@ -2,18 +2,13 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Landroid/text/TextWatcher;
 .implements Landroid/text/SpanWatcher;
 
-
-# instance fields
 .field public final a:Ljava/lang/Object;
 
 .field public final b:Ljava/util/concurrent/atomic/AtomicInteger;
 
-
-# direct methods
 .method public constructor <init>(Ljava/lang/Object;)V
     .locals 2
 
@@ -46,8 +41,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final afterTextChanged(Landroid/text/Editable;)V
     .locals 0
 

@@ -2,12 +2,9 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Ljava/util/Iterator;
 .implements Ldn;
 
-
-# instance fields
 .field public final a:I
 
 .field public final b:I
@@ -16,8 +13,6 @@
 
 .field public d:I
 
-
-# direct methods
 .method public constructor <init>(III)V
     .locals 2
 
@@ -89,8 +84,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final hasNext()Z
     .locals 0
 

@@ -2,18 +2,12 @@
 .super Lf3;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final synthetic A:I
 
-
-# instance fields
 .field public y:Lt1;
 
 .field public z:Ld6;
 
-
-# direct methods
 .method public constructor <init>()V
     .locals 0
 
@@ -26,8 +20,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final finish()V
     .locals 2
 
@@ -684,7 +676,7 @@
     long-to-double v5, v5
 
     .line 307
-    const-wide v8, 0x412e848000000000L    # 1000000.0
+    const-wide v8, 0x412e848000000000L
 
     .line 308
     .line 309
@@ -749,7 +741,7 @@
     long-to-double v5, v5
 
     .line 339
-    const-wide v8, 0x408f400000000000L    # 1000.0
+    const-wide v8, 0x408f400000000000L
 
     .line 340
     .line 341

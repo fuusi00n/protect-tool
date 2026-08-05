@@ -2,13 +2,10 @@
 .super Lt5;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Lwr;
 .implements Landroid/view/View$OnClickListener;
 .implements Lm1;
 
-
-# instance fields
 .field public h:Lir;
 
 .field public i:Ljava/lang/CharSequence;
@@ -31,8 +28,6 @@
 
 .field public final r:I
 
-
-# direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .locals 1
 
@@ -132,14 +127,14 @@
 
     .line 37
     .line 38
-    const/high16 p2, 0x42000000    # 32.0f
+    const/high16 p2, 0x42000000
 
     .line 39
     .line 40
     mul-float/2addr p1, p2
 
     .line 41
-    const/high16 p2, 0x3f000000    # 0.5f
+    const/high16 p2, 0x3f000000
 
     .line 42
     .line 43
@@ -173,8 +168,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a()Z
     .locals 0
 
@@ -875,7 +868,7 @@
 
     .line 57
     :goto_0
-    const/high16 v3, 0x40000000    # 2.0f
+    const/high16 v3, 0x40000000
 
     .line 58
     .line 59

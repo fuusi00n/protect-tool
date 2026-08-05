@@ -1,8 +1,6 @@
 .class public abstract Lfw;
 .super Ljava/lang/Object;
 
-
-# static fields
 .field public static BackgroundStyle:[I = null
 
 .field public static BackgroundStyle_android_selectableItemBackground:I = 0x0
@@ -283,8 +281,6 @@
 
 .field public static SwitchPreference_switchTextOn:I = 0x9
 
-
-# direct methods
 .method public static constructor <clinit>()V
     .locals 5
 

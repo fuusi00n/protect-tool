@@ -2,12 +2,8 @@
 .super Lh70;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final k:[I
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 1
 
@@ -42,7 +38,7 @@
     const/4 p3, 0x0
 
     .line 5
-    const/high16 v0, 0x3f000000    # 0.5f
+    const/high16 v0, 0x3f000000
 
     .line 6
     .line 7
@@ -170,8 +166,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(Lse;)V
     .locals 23
 
@@ -210,7 +204,7 @@
 
     .line 16
     .line 17
-    const/high16 v5, 0x3f000000    # 0.5f
+    const/high16 v5, 0x3f000000
 
     .line 18
     .line 19

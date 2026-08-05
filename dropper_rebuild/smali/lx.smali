@@ -2,14 +2,10 @@
 .super La0;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final d:Lmx;
 
 .field public final e:Ljava/util/WeakHashMap;
 
-
-# direct methods
 .method public constructor <init>(Lmx;)V
     .locals 1
 
@@ -39,8 +35,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(Landroid/view/View;Landroid/view/accessibility/AccessibilityEvent;)Z
     .locals 1
 

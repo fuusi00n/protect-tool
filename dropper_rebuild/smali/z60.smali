@@ -2,8 +2,6 @@
 .super Lzt;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static g:Z = true
 
 .field public static h:Z = true
@@ -12,8 +10,6 @@
 
 .field public static j:Z = true
 
-
-# virtual methods
 .method public A(Landroid/view/View;Landroid/graphics/Matrix;)V
     .locals 0
 

@@ -2,15 +2,10 @@
 .super Lcd;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Lre;
 
-
-# static fields
 .field public static final synthetic h:Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;
 
-
-# instance fields
 .field public final c:Lcd;
 
 .field public final d:I
@@ -23,8 +18,6 @@
 
 .field private volatile synthetic runningWorkers$volatile:I
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 2
 
@@ -131,8 +124,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final c(JLf8;)V
     .locals 0
 

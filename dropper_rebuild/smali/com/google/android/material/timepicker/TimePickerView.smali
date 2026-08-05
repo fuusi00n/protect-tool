@@ -2,16 +2,10 @@
 .super Landroidx/constraintlayout/widget/ConstraintLayout;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final synthetic t:I
 
-
-# instance fields
 .field public final s:Lcom/google/android/material/chip/Chip;
 
-
-# direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .locals 1
 
@@ -288,8 +282,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final onVisibilityChanged(Landroid/view/View;I)V
     .locals 0
 

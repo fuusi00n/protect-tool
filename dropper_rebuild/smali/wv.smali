@@ -1,8 +1,6 @@
 .class public abstract Lwv;
 .super Ljava/lang/Object;
 
-
-# static fields
 .field public static app_description:I = 0x7f0f001c
 
 .field public static app_name:I = 0x7f0f001d

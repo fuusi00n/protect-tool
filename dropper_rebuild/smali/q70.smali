@@ -2,17 +2,12 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Landroid/view/View$OnApplyWindowInsetsListener;
 
-
-# instance fields
 .field public final a:Lec;
 
 .field public b:Lj80;
 
-
-# direct methods
 .method public constructor <init>(Landroid/view/View;Lec;)V
     .locals 1
 
@@ -121,8 +116,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final onApplyWindowInsets(Landroid/view/View;Landroid/view/WindowInsets;)Landroid/view/WindowInsets;
     .locals 20
 
@@ -749,6 +742,6 @@
     :array_0
     .array-data 4
         0x0
-        0x3f800000    # 1.0f
+        0x3f800000
     .end array-data
 .end method

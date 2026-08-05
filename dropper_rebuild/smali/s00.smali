@@ -2,8 +2,6 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public a:D
 
 .field public b:D
@@ -24,8 +22,6 @@
 
 .field public final j:Lng;
 
-
-# direct methods
 .method public constructor <init>()V
     .locals 2
 
@@ -35,7 +31,7 @@
     .line 2
     .line 3
     .line 4
-    const-wide v0, 0x4097700000000000L    # 1500.0
+    const-wide v0, 0x4097700000000000L
 
     .line 5
     .line 6
@@ -54,7 +50,7 @@
 
     .line 14
     .line 15
-    const-wide/high16 v0, 0x3fe0000000000000L    # 0.5
+    const-wide/high16 v0, 0x3fe0000000000000L
 
     .line 16
     .line 17
@@ -69,7 +65,7 @@
 
     .line 21
     .line 22
-    const-wide v0, 0x7fefffffffffffffL    # Double.MAX_VALUE
+    const-wide v0, 0x7fefffffffffffffL
 
     .line 23
     .line 24
@@ -102,7 +98,7 @@
     .line 37
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    const-wide v0, 0x4097700000000000L    # 1500.0
+    const-wide v0, 0x4097700000000000L
 
     .line 38
     invoke-static {v0, v1}, Ljava/lang/Math;->sqrt(D)D
@@ -111,7 +107,7 @@
 
     iput-wide v0, p0, Ls00;->a:D
 
-    const-wide/high16 v0, 0x3fe0000000000000L    # 0.5
+    const-wide/high16 v0, 0x3fe0000000000000L
 
     .line 39
     iput-wide v0, p0, Ls00;->b:D
@@ -138,8 +134,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(DDJ)Lng;
     .locals 16
 
@@ -152,7 +146,7 @@
 
     .line 4
     .line 5
-    const-wide/high16 v2, 0x3ff0000000000000L    # 1.0
+    const-wide/high16 v2, 0x3ff0000000000000L
 
     .line 6
     .line 7
@@ -173,7 +167,7 @@
 
     .line 13
     .line 14
-    const-wide v6, 0x7fefffffffffffffL    # Double.MAX_VALUE
+    const-wide v6, 0x7fefffffffffffffL
 
     .line 15
     .line 16
@@ -338,7 +332,7 @@
     long-to-double v4, v4
 
     .line 87
-    const-wide v6, 0x408f400000000000L    # 1000.0
+    const-wide v6, 0x408f400000000000L
 
     .line 88
     .line 89
@@ -364,7 +358,7 @@
 
     .line 100
     .line 101
-    const-wide v10, 0x4005bf0a8b145769L    # Math.E
+    const-wide v10, 0x4005bf0a8b145769L
 
     .line 102
     .line 103
@@ -691,7 +685,7 @@
     mul-double/2addr v10, v4
 
     .line 242
-    const-wide v1, 0x4005bf0a8b145769L    # Math.E
+    const-wide v1, 0x4005bf0a8b145769L
 
     .line 243
     .line 244

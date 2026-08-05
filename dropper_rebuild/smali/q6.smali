@@ -2,12 +2,9 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Ljava/util/Collection;
 .implements Ljava/util/Set;
 
-
-# static fields
 .field public static final e:[I
 
 .field public static final f:[Ljava/lang/Object;
@@ -20,8 +17,6 @@
 
 .field public static j:I
 
-
-# instance fields
 .field public a:[I
 
 .field public b:[Ljava/lang/Object;
@@ -30,8 +25,6 @@
 
 .field public d:Ln6;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 2
 
@@ -276,8 +269,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(I)V
     .locals 5
 

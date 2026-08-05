@@ -2,8 +2,6 @@
 .super Loc;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# annotations
 .annotation system Ldalvik/annotation/Signature;
     value = {
         "<V:",
@@ -13,16 +11,12 @@
     }
 .end annotation
 
-
-# static fields
 .field public static final i:I
 
 .field public static final j:I
 
 .field public static final k:I
 
-
-# instance fields
 .field public final a:Ljava/util/LinkedHashSet;
 
 .field public b:I
@@ -39,8 +33,6 @@
 
 .field public h:Landroid/view/ViewPropertyAnimator;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 1
 
@@ -137,8 +129,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public g(Landroidx/coordinatorlayout/widget/CoordinatorLayout;Landroid/view/View;I)Z
     .locals 1
 

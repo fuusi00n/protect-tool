@@ -2,20 +2,14 @@
 .super Landroid/app/Fragment;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# annotations
 .annotation system Ldalvik/annotation/MemberClasses;
     value = {
         Lux$a;
     }
 .end annotation
 
-
-# static fields
 .field public static final synthetic a:I
 
-
-# direct methods
 .method public constructor <init>()V
     .locals 0
 
@@ -28,8 +22,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(Lon;)V
     .locals 2
 

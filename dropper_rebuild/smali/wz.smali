@@ -2,12 +2,8 @@
 .super Lyz;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final h:Landroid/graphics/RectF;
 
-
-# instance fields
 .field public final b:F
 
 .field public final c:F
@@ -20,8 +16,6 @@
 
 .field public g:F
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 1
 
@@ -70,8 +64,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(Landroid/graphics/Matrix;Landroid/graphics/Path;)V
     .locals 5
 

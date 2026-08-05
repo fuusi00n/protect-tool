@@ -2,16 +2,11 @@
 .super Lnr;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Landroid/view/View$OnKeyListener;
 .implements Landroid/widget/PopupWindow$OnDismissListener;
 
-
-# static fields
 .field public static final A:I
 
-
-# instance fields
 .field public final b:Landroid/content/Context;
 
 .field public final c:I
@@ -62,8 +57,6 @@
 
 .field public z:Z
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 1
 
@@ -280,8 +273,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(Ler;Z)V
     .locals 6
 

@@ -2,12 +2,8 @@
 .super Landroid/net/VpnService;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final synthetic h:I
 
-
-# instance fields
 .field public a:Landroid/os/ParcelFileDescriptor;
 
 .field public b:Ljava/lang/Thread;
@@ -22,8 +18,6 @@
 
 .field public final g:[[B
 
-
-# direct methods
 .method public constructor <init>()V
     .locals 5
 
@@ -387,8 +381,6 @@
     .end array-data
 .end method
 
-
-# virtual methods
 .method public final a()V
     .locals 2
 

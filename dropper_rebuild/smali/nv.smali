@@ -1,8 +1,6 @@
 .class public abstract Lnv;
 .super Ljava/lang/Object;
 
-
-# static fields
 .field public static BOTTOM_END:I = 0x7f080001
 
 .field public static BOTTOM_START:I = 0x7f080002

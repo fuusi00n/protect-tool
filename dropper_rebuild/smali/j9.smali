@@ -2,12 +2,8 @@
 .super Landroid/view/ViewOutlineProvider;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final synthetic a:Lcom/google/android/material/chip/Chip;
 
-
-# direct methods
 .method public constructor <init>(Lcom/google/android/material/chip/Chip;)V
     .locals 0
 
@@ -24,8 +20,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final getOutline(Landroid/view/View;Landroid/graphics/Outline;)V
     .locals 0
 

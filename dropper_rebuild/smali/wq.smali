@@ -2,8 +2,6 @@
 .super Landroid/graphics/drawable/Drawable$ConstantState;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public a:Lqz;
 
 .field public b:Lsg;
@@ -36,8 +34,6 @@
 
 .field public final p:Landroid/graphics/Paint$Style;
 
-
-# direct methods
 .method public constructor <init>(Lqz;)V
     .locals 2
 
@@ -63,7 +59,7 @@
     .line 120
     iput-object v0, p0, Lwq;->g:Landroid/graphics/Rect;
 
-    const/high16 v1, 0x3f800000    # 1.0f
+    const/high16 v1, 0x3f800000
 
     .line 121
     iput v1, p0, Lwq;->h:F
@@ -142,7 +138,7 @@
 
     .line 16
     .line 17
-    const/high16 v0, 0x3f800000    # 1.0f
+    const/high16 v0, 0x3f800000
 
     .line 18
     .line 19
@@ -341,8 +337,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final getChangingConfigurations()I
     .locals 0
 

@@ -2,8 +2,6 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public a:I
 
 .field public final b:Lub;
@@ -16,8 +14,6 @@
 
 .field public f:Ljava/util/HashMap;
 
-
-# direct methods
 .method public constructor <init>()V
     .locals 9
 
@@ -47,7 +43,7 @@
 
     .line 13
     .line 14
-    const/high16 v2, 0x3f800000    # 1.0f
+    const/high16 v2, 0x3f800000
 
     .line 15
     .line 16
@@ -55,7 +51,7 @@
 
     .line 17
     .line 18
-    const/high16 v3, 0x7fc00000    # Float.NaN
+    const/high16 v3, 0x7fc00000
 
     .line 19
     .line 20
@@ -143,7 +139,7 @@
 
     .line 61
     .line 62
-    const/high16 v6, -0x40800000    # -1.0f
+    const/high16 v6, -0x40800000
 
     .line 63
     .line 64
@@ -218,7 +214,7 @@
 
     .line 98
     .line 99
-    const/high16 v8, 0x3f000000    # 0.5f
+    const/high16 v8, 0x3f000000
 
     .line 100
     .line 101
@@ -482,8 +478,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(Lmb;)V
     .locals 1
 

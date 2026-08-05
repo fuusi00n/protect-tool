@@ -2,8 +2,6 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final synthetic e:Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;
 
 .field public static final synthetic f:Ljava/util/concurrent/atomic/AtomicLongFieldUpdater;
@@ -12,8 +10,6 @@
 
 .field public static final synthetic h:J
 
-
-# instance fields
 .field private volatile synthetic _next$volatile:Ljava/lang/Object;
 
 .field private volatile synthetic _state$volatile:J
@@ -26,8 +22,6 @@
 
 .field public final synthetic d:Ljava/util/concurrent/atomic/AtomicReferenceArray;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 3
 
@@ -158,7 +152,7 @@
 
     .line 18
     .line 19
-    const p0, 0x3fffffff    # 1.9999999f
+    const p0, 0x3fffffff
 
     .line 20
     .line 21
@@ -206,8 +200,6 @@
     throw p0
 .end method
 
-
-# virtual methods
 .method public final a(Ljava/lang/Object;)I
     .locals 14
 
@@ -226,7 +218,7 @@
     move-result-wide v3
 
     .line 7
-    const-wide/high16 v1, 0x3000000000000000L    # 1.727233711018889E-77
+    const-wide/high16 v1, 0x3000000000000000L
 
     .line 8
     .line 9
@@ -325,7 +317,7 @@
 
     .line 51
     .line 52
-    const v6, 0x3fffffff    # 1.9999999f
+    const v6, 0x3fffffff
 
     .line 53
     .line 54
@@ -397,7 +389,7 @@
     and-int/2addr v1, v6
 
     .line 85
-    const-wide v5, -0xfffffffc0000001L    # -3.1050369248997324E231
+    const-wide v5, -0xfffffffc0000001L
 
     .line 86
     .line 87
@@ -710,7 +702,7 @@
 
     .line 76
     :cond_2
-    const-wide v3, -0x1000000000000001L    # -3.1050361846014175E231
+    const-wide v3, -0x1000000000000001L
 
     .line 77
     .line 78
@@ -1116,7 +1108,7 @@
 
     .line 68
     .line 69
-    const v7, 0x3fffffff    # 1.9999999f
+    const v7, 0x3fffffff
 
     .line 70
     .line 71

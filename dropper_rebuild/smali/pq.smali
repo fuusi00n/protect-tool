@@ -2,8 +2,6 @@
 .super Lau;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# annotations
 .annotation system Ldalvik/annotation/Signature;
     value = {
         "<S:",
@@ -13,8 +11,6 @@
     }
 .end annotation
 
-
-# instance fields
 .field public U:I
 
 .field public V:Ly7;
@@ -37,8 +33,6 @@
 
 .field public e0:Landroid/view/View;
 
-
-# direct methods
 .method public constructor <init>()V
     .locals 0
 
@@ -51,8 +45,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final E(Lzr;)V
     .locals 6
 

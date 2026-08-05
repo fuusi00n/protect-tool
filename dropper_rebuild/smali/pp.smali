@@ -2,16 +2,12 @@
 .super Landroid/content/BroadcastReceiver;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final synthetic a:Lcom/pulse/live/ui/MainActivity;
 
 .field public final synthetic b:Ljava/lang/String;
 
 .field public final synthetic c:Ljava/lang/String;
 
-
-# direct methods
 .method public constructor <init>(Lcom/pulse/live/ui/MainActivity;Ljava/lang/String;Ljava/lang/String;)V
     .locals 0
 
@@ -36,8 +32,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final onReceive(Landroid/content/Context;Landroid/content/Intent;)V
     .locals 3
 

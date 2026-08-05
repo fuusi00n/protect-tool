@@ -2,17 +2,12 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Ljava/lang/Runnable;
 
-
-# static fields
 .field public static final e:Ljava/lang/ThreadLocal;
 
 .field public static final f:Ltc;
 
-
-# instance fields
 .field public a:Ljava/util/ArrayList;
 
 .field public b:J
@@ -21,8 +16,6 @@
 
 .field public d:Ljava/util/ArrayList;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 2
 
@@ -233,8 +226,6 @@
     throw p1
 .end method
 
-
-# virtual methods
 .method public final a(Landroidx/recyclerview/widget/RecyclerView;II)V
     .locals 4
 

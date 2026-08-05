@@ -2,12 +2,8 @@
 .super Ljo;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final synthetic p:Ltt;
 
-
-# direct methods
 .method public constructor <init>(Ltt;Landroid/content/Context;)V
     .locals 0
 
@@ -24,8 +20,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final d(Landroid/util/DisplayMetrics;)F
     .locals 0
 
@@ -37,7 +31,7 @@
     int-to-float p0, p0
 
     .line 4
-    const/high16 p1, 0x42c80000    # 100.0f
+    const/high16 p1, 0x42c80000
 
     .line 5
     .line 6
@@ -151,7 +145,7 @@
     int-to-double v2, v2
 
     .line 36
-    const-wide v4, 0x3fd57a786c22680aL    # 0.3356
+    const-wide v4, 0x3fd57a786c22680aL
 
     .line 37
     .line 38

@@ -2,8 +2,6 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public a:Ll00;
 
 .field public b:F
@@ -14,8 +12,6 @@
 
 .field public e:Z
 
-
-# direct methods
 .method public constructor <init>(Ly2;)V
     .locals 1
 
@@ -75,8 +71,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(Lko;I)V
     .locals 2
 
@@ -89,7 +83,7 @@
     move-result-object v0
 
     .line 5
-    const/high16 v1, 0x3f800000    # 1.0f
+    const/high16 v1, 0x3f800000
 
     .line 6
     .line 7
@@ -110,7 +104,7 @@
     move-result-object p1
 
     .line 16
-    const/high16 p2, -0x40800000    # -1.0f
+    const/high16 p2, -0x40800000
 
     .line 17
     .line 18
@@ -157,11 +151,11 @@
 
     .line 13
     .line 14
-    const/high16 p4, 0x3f800000    # 1.0f
+    const/high16 p4, 0x3f800000
 
     .line 15
     .line 16
-    const/high16 v1, -0x40800000    # -1.0f
+    const/high16 v1, -0x40800000
 
     .line 17
     .line 18
@@ -241,11 +235,11 @@
 
     .line 13
     .line 14
-    const/high16 p4, 0x3f800000    # 1.0f
+    const/high16 p4, 0x3f800000
 
     .line 15
     .line 16
-    const/high16 v1, -0x40800000    # -1.0f
+    const/high16 v1, -0x40800000
 
     .line 17
     .line 18
@@ -502,7 +496,7 @@
 
     .line 5
     .line 6
-    const/high16 v3, -0x40800000    # -1.0f
+    const/high16 v3, -0x40800000
 
     .line 7
     .line 8
@@ -549,7 +543,7 @@
 
     .line 27
     .line 28
-    const/high16 p1, 0x3f800000    # 1.0f
+    const/high16 p1, 0x3f800000
 
     .line 29
     .line 30
@@ -1059,7 +1053,7 @@
     move-result-object v6
 
     .line 87
-    const/high16 v9, -0x40800000    # -1.0f
+    const/high16 v9, -0x40800000
 
     .line 88
     .line 89
@@ -1132,7 +1126,7 @@
     .line 119
     :cond_6
     :goto_4
-    const/high16 v1, 0x3f800000    # 1.0f
+    const/high16 v1, 0x3f800000
 
     .line 120
     .line 121

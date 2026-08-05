@@ -2,22 +2,17 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Landroid/content/DialogInterface$OnKeyListener;
 .implements Landroid/content/DialogInterface$OnClickListener;
 .implements Landroid/content/DialogInterface$OnDismissListener;
 .implements Lur;
 
-
-# instance fields
 .field public a:Lk10;
 
 .field public b:Lp2;
 
 .field public c:Lmo;
 
-
-# virtual methods
 .method public final a(Ler;Z)V
     .locals 0
 

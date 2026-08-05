@@ -2,21 +2,16 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Ljava/lang/Runnable;
 .implements Ljava/lang/Comparable;
 .implements Lpf;
 
-
-# instance fields
 .field private volatile _heap:Ljava/lang/Object;
 
 .field public a:J
 
 .field public b:I
 
-
-# virtual methods
 .method public final a(JLph;Lqh;)I
     .locals 8
 

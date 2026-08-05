@@ -2,11 +2,8 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Lkotlinx/coroutines/internal/MainDispatcherFactory;
 
-
-# direct methods
 .method public constructor <init>()V
     .locals 0
 
@@ -19,8 +16,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public createDispatcher(Ljava/util/List;)Lvp;
     .locals 1
     .annotation system Ldalvik/annotation/Signature;
@@ -90,7 +85,7 @@
     .locals 0
 
     .line 1
-    const p0, 0x3fffffff    # 1.9999999f
+    const p0, 0x3fffffff
 
     .line 2
     .line 3

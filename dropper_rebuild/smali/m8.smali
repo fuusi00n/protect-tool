@@ -2,14 +2,10 @@
 .super Ltw;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final a:Landroid/graphics/Paint;
 
 .field public final b:Ljava/util/List;
 
-
-# direct methods
 .method public constructor <init>()V
     .locals 2
 
@@ -53,7 +49,7 @@
 
     .line 21
     .line 22
-    const/high16 p0, 0x40a00000    # 5.0f
+    const/high16 p0, 0x40a00000
 
     .line 23
     .line 24
@@ -75,8 +71,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final b(Landroid/graphics/Canvas;Landroidx/recyclerview/widget/RecyclerView;)V
     .locals 9
 
@@ -156,7 +150,7 @@
 
     .line 38
     .line 39
-    const/high16 v0, 0x3f800000    # 1.0f
+    const/high16 v0, 0x3f800000
 
     .line 40
     .line 41

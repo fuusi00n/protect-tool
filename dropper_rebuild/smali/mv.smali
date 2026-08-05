@@ -1,8 +1,6 @@
 .class public abstract Lmv;
 .super Ljava/lang/Object;
 
-
-# static fields
 .field public static ghost_view:I = 0x7f0800dc
 
 .field public static ghost_view_holder:I = 0x7f0800dd

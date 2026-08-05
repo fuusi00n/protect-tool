@@ -2,11 +2,8 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Landroid/os/Parcelable;
 
-
-# static fields
 .field public static final CREATOR:Landroid/os/Parcelable$Creator;
     .annotation system Ldalvik/annotation/Signature;
         value = {
@@ -19,12 +16,8 @@
 
 .field public static final b:Lb;
 
-
-# instance fields
 .field public final a:Landroid/os/Parcelable;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 2
 
@@ -152,8 +145,6 @@
     throw v0
 .end method
 
-
-# virtual methods
 .method public final describeContents()I
     .locals 0
 

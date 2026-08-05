@@ -2,17 +2,12 @@
 .super Lxq;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Landroid/graphics/drawable/Drawable$Callback;
 
-
-# static fields
 .field public static final F0:[I
 
 .field public static final G0:Landroid/graphics/drawable/ShapeDrawable;
 
-
-# instance fields
 .field public A:F
 
 .field public A0:Ljava/lang/ref/WeakReference;
@@ -133,8 +128,6 @@
 
 .field public z0:Landroid/content/res/ColorStateList;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 2
 
@@ -194,7 +187,7 @@
     .line 4
     .line 5
     .line 6
-    const/high16 p2, -0x40800000    # -1.0f
+    const/high16 p2, -0x40800000
 
     .line 7
     .line 8
@@ -520,8 +513,6 @@
     return p0
 .end method
 
-
-# virtual methods
 .method public final A(F)V
     .locals 2
 
@@ -2136,7 +2127,7 @@
 
     .line 129
     .line 130
-    const/high16 v12, 0x40000000    # 2.0f
+    const/high16 v12, 0x40000000
 
     .line 131
     .line 132
@@ -3597,7 +3588,7 @@
     int-to-float p0, p0
 
     .line 44
-    const/high16 p1, 0x437f0000    # 255.0f
+    const/high16 p1, 0x437f0000
 
     .line 45
     .line 46
@@ -4190,7 +4181,7 @@
     move-result-object p0
 
     .line 94
-    const/high16 v1, 0x41c00000    # 24.0f
+    const/high16 v1, 0x41c00000
 
     .line 95
     .line 96
@@ -4266,7 +4257,7 @@
     move-result p0
 
     .line 129
-    const/high16 p1, 0x40000000    # 2.0f
+    const/high16 p1, 0x40000000
 
     .line 130
     .line 131

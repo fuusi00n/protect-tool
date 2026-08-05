@@ -2,12 +2,8 @@
 .super Landroid/view/ViewGroup;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static r:Lc00;
 
-
-# instance fields
 .field public final a:Landroid/util/SparseArray;
 
 .field public final b:Ljava/util/ArrayList;
@@ -42,8 +38,6 @@
 
 .field public q:I
 
-
-# direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .locals 2
 
@@ -537,7 +531,7 @@
 
     .line 11
     .line 12
-    const/high16 v2, -0x40800000    # -1.0f
+    const/high16 v2, -0x40800000
 
     .line 13
     .line 14
@@ -666,7 +660,7 @@
 
     .line 74
     .line 75
-    const/high16 v6, 0x3f000000    # 0.5f
+    const/high16 v6, 0x3f000000
 
     .line 76
     .line 77
@@ -725,7 +719,7 @@
 
     .line 103
     .line 104
-    const/high16 v2, 0x3f800000    # 1.0f
+    const/high16 v2, 0x3f800000
 
     .line 105
     .line 106
@@ -968,8 +962,6 @@
     return-object v0
 .end method
 
-
-# virtual methods
 .method public final checkLayoutParams(Landroid/view/ViewGroup$LayoutParams;)Z
     .locals 0
 
@@ -1235,7 +1227,7 @@
     int-to-float v7, v7
 
     .line 119
-    const/high16 v10, 0x44870000    # 1080.0f
+    const/high16 v10, 0x44870000
 
     .line 120
     .line 121
@@ -1251,7 +1243,7 @@
     int-to-float v8, v8
 
     .line 125
-    const/high16 v11, 0x44f00000    # 1920.0f
+    const/high16 v11, 0x44f00000
 
     .line 126
     .line 127
@@ -1500,7 +1492,7 @@
 
     .line 14
     .line 15
-    const/high16 v2, -0x40800000    # -1.0f
+    const/high16 v2, -0x40800000
 
     .line 16
     .line 17
@@ -1629,7 +1621,7 @@
 
     .line 77
     .line 78
-    const/high16 v7, 0x3f000000    # 0.5f
+    const/high16 v7, 0x3f000000
 
     .line 79
     .line 80
@@ -1688,7 +1680,7 @@
 
     .line 106
     .line 107
-    const/high16 v2, 0x3f800000    # 1.0f
+    const/high16 v2, 0x3f800000
 
     .line 108
     .line 109
@@ -3251,7 +3243,7 @@
     move-result v6
 
     .line 854
-    const/high16 v7, 0x43b40000    # 360.0f
+    const/high16 v7, 0x43b40000
 
     .line 855
     .line 856
@@ -3467,7 +3459,7 @@
     .line 918
     iput p1, p0, Lmb;->b:I
 
-    const/high16 v0, -0x40800000    # -1.0f
+    const/high16 v0, -0x40800000
 
     .line 919
     iput v0, p0, Lmb;->c:F
@@ -3561,7 +3553,7 @@
     .line 946
     iput v2, p0, Lmb;->D:I
 
-    const/high16 v4, 0x3f000000    # 0.5f
+    const/high16 v4, 0x3f000000
 
     .line 947
     iput v4, p0, Lmb;->E:F
@@ -3604,7 +3596,7 @@
     .line 959
     iput v2, p0, Lmb;->Q:I
 
-    const/high16 v0, 0x3f800000    # 1.0f
+    const/high16 v0, 0x3f800000
 
     .line 960
     iput v0, p0, Lmb;->R:F
@@ -5083,7 +5075,7 @@
     move-result v12
 
     .line 128
-    const/high16 v15, 0x40000000    # 2.0f
+    const/high16 v15, 0x40000000
 
     .line 129
     .line 130
@@ -5765,7 +5757,7 @@
     .line 428
     :cond_16
     :goto_15
-    const/high16 v2, 0x40000000    # 2.0f
+    const/high16 v2, 0x40000000
 
     .line 429
     .line 430
@@ -5861,7 +5853,7 @@
 
     .line 470
     .line 471
-    const/high16 v2, 0x40000000    # 2.0f
+    const/high16 v2, 0x40000000
 
     .line 472
     .line 473
@@ -5930,7 +5922,7 @@
     move-result v6
 
     .line 501
-    const/high16 v11, 0x40000000    # 2.0f
+    const/high16 v11, 0x40000000
 
     .line 502
     .line 503
@@ -5960,7 +5952,7 @@
     .line 515
     .line 516
     :cond_1f
-    const/high16 v11, 0x40000000    # 2.0f
+    const/high16 v11, 0x40000000
 
     .line 517
     .line 518
@@ -6839,7 +6831,7 @@
     const/4 v2, 0x2
 
     .line 930
-    const/high16 v11, 0x40000000    # 2.0f
+    const/high16 v11, 0x40000000
 
     .line 931
     .line 932
@@ -7084,7 +7076,7 @@
     .line 1050
     .line 1051
     .line 1052
-    const/high16 v11, 0x40000000    # 2.0f
+    const/high16 v11, 0x40000000
 
     .line 1053
     .line 1054
@@ -10379,7 +10371,7 @@
 
     .line 631
     .line 632
-    const/high16 v9, -0x40800000    # -1.0f
+    const/high16 v9, -0x40800000
 
     .line 633
     .line 634
@@ -12094,7 +12086,7 @@
 
     .line 1433
     .line 1434
-    const/high16 v11, 0x3f800000    # 1.0f
+    const/high16 v11, 0x3f800000
 
     .line 1435
     .line 1436

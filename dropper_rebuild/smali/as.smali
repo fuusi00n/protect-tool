@@ -2,22 +2,16 @@
 .super Landroid/widget/BaseAdapter;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final d:I
 
 .field public static final e:I
 
-
-# instance fields
 .field public final a:Lzr;
 
 .field public b:Ls4;
 
 .field public final c:Ly7;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 3
 
@@ -123,8 +117,6 @@
     throw p0
 .end method
 
-
-# virtual methods
 .method public final a()I
     .locals 3
 

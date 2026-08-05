@@ -2,23 +2,16 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Ljava/lang/Cloneable;
 
-
-# static fields
 .field public static final d:Ljava/lang/Object;
 
-
-# instance fields
 .field public a:[I
 
 .field public b:[Ljava/lang/Object;
 
 .field public c:I
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 1
 
@@ -119,8 +112,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(ILjava/lang/Object;)V
     .locals 7
 

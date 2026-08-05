@@ -2,8 +2,6 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final a:Lcom/google/android/material/textfield/TextInputLayout;
 
 .field public final b:Lkh;
@@ -12,8 +10,6 @@
 
 .field public final d:Lcom/google/android/material/internal/CheckableImageButton;
 
-
-# direct methods
 .method public constructor <init>(Lkh;)V
     .locals 1
 
@@ -58,8 +54,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public a()V
     .locals 0
 

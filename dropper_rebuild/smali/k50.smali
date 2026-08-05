@@ -2,19 +2,14 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Landroid/view/View$OnApplyWindowInsetsListener;
 
-
-# instance fields
 .field public a:Lj80;
 
 .field public final synthetic b:Landroid/view/View;
 
 .field public final synthetic c:Lbt;
 
-
-# direct methods
 .method public constructor <init>(Landroid/view/View;Lbt;)V
     .locals 0
     .annotation system Ldalvik/annotation/Signature;
@@ -47,8 +42,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public onApplyWindowInsets(Landroid/view/View;Landroid/view/WindowInsets;)Landroid/view/WindowInsets;
     .locals 5
 

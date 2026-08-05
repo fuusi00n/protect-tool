@@ -1,8 +1,6 @@
 .class public abstract Lev;
 .super Ljava/lang/Object;
 
-
-# static fields
 .field public static appIcon:I = 0x7f080051
 
 .field public static appInfoSection:I = 0x7f080052

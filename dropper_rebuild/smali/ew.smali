@@ -1,8 +1,6 @@
 .class public abstract Lew;
 .super Ljava/lang/Object;
 
-
-# static fields
 .field public static Fragment:[I = null
 
 .field public static FragmentContainerView:[I = null
@@ -17,8 +15,6 @@
 
 .field public static Fragment_android_tag:I = 0x2
 
-
-# direct methods
 .method public static constructor <clinit>()V
     .locals 3
 

@@ -2,8 +2,6 @@
 .super Landroidx/constraintlayout/widget/ConstraintLayout;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final A:La9;
 
 .field public final B:[I
@@ -40,8 +38,6 @@
 
 .field public final z:Landroid/util/SparseArray;
 
-
-# direct methods
 .method public constructor <init>(Landroid/content/Context;)V
     .locals 1
 
@@ -107,7 +103,7 @@
 
     .line 21
     .line 22
-    const/high16 v2, 0x3f000000    # 0.5f
+    const/high16 v2, 0x3f000000
 
     .line 23
     .line 24
@@ -882,13 +878,11 @@
     :array_0
     .array-data 4
         0x0
-        0x3f666666    # 0.9f
-        0x3f800000    # 1.0f
+        0x3f666666
+        0x3f800000
     .end array-data
 .end method
 
-
-# virtual methods
 .method public final addView(Landroid/view/View;ILandroid/view/ViewGroup$LayoutParams;)V
     .locals 0
 
@@ -977,7 +971,7 @@
 
     .line 6
     .line 7
-    const v2, 0x7f7fffff    # Float.MAX_VALUE
+    const v2, 0x7f7fffff
 
     .line 8
     .line 9
@@ -1254,7 +1248,7 @@
     move-result v8
 
     .line 136
-    const/high16 v14, 0x3f000000    # 0.5f
+    const/high16 v14, 0x3f000000
 
     .line 137
     .line 138
@@ -1584,7 +1578,7 @@
     int-to-float v3, v5
 
     .line 130
-    const v5, 0x3f28f5c3    # 0.66f
+    const v5, 0x3f28f5c3
 
     .line 131
     .line 132
@@ -1743,7 +1737,7 @@
     int-to-float v7, v7
 
     .line 208
-    const/high16 v8, 0x43b40000    # 360.0f
+    const/high16 v8, 0x43b40000
 
     .line 209
     .line 210
@@ -1956,7 +1950,7 @@
     div-float/2addr p2, p1
 
     .line 26
-    const/high16 p1, 0x3f800000    # 1.0f
+    const/high16 p1, 0x3f800000
 
     .line 27
     .line 28
@@ -1982,7 +1976,7 @@
     float-to-int p1, v0
 
     .line 38
-    const/high16 p2, 0x40000000    # 2.0f
+    const/high16 p2, 0x40000000
 
     .line 39
     .line 40

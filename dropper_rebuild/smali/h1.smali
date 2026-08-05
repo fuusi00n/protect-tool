@@ -2,14 +2,10 @@
 .super Lpr;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final synthetic l:I
 
 .field public final synthetic m:Ll1;
 
-
-# direct methods
 .method public constructor <init>(Ll1;Landroid/content/Context;Ler;Landroid/view/View;)V
     .locals 8
 
@@ -173,8 +169,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final c()V
     .locals 4
 

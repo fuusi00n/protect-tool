@@ -2,12 +2,8 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final p:Landroid/graphics/Matrix;
 
-
-# instance fields
 .field public final a:Landroid/graphics/Path;
 
 .field public final b:Landroid/graphics/Path;
@@ -38,8 +34,6 @@
 
 .field public final o:Lo6;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 1
 
@@ -330,8 +324,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(Lq40;Landroid/graphics/Matrix;Landroid/graphics/Canvas;II)V
     .locals 20
 
@@ -794,7 +786,7 @@
 
     .line 218
     .line 219
-    const/high16 v14, 0x3f800000    # 1.0f
+    const/high16 v14, 0x3f800000
 
     .line 220
     .line 221
@@ -973,7 +965,7 @@
 
     .line 304
     .line 305
-    const/high16 v15, 0x437f0000    # 255.0f
+    const/high16 v15, 0x437f0000
 
     .line 306
     .line 307
@@ -1483,8 +1475,8 @@
     :array_0
     .array-data 4
         0x0
-        0x3f800000    # 1.0f
-        0x3f800000    # 1.0f
+        0x3f800000
+        0x3f800000
         0x0
     .end array-data
 .end method
@@ -1504,7 +1496,7 @@
     int-to-float p0, p0
 
     .line 6
-    const/high16 v0, 0x437f0000    # 255.0f
+    const/high16 v0, 0x437f0000
 
     .line 7
     .line 8
@@ -1529,7 +1521,7 @@
     .locals 1
 
     .line 1
-    const/high16 v0, 0x437f0000    # 255.0f
+    const/high16 v0, 0x437f0000
 
     .line 2
     .line 3

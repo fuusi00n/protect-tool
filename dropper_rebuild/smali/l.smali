@@ -2,8 +2,6 @@
 .super Ld40;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final A:Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;
 
 .field public final B:Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;
@@ -14,8 +12,6 @@
 
 .field public final z:Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;
 
-
-# direct methods
 .method public constructor <init>(Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;)V
     .locals 0
 
@@ -48,8 +44,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final C(Lo;Lo;)V
     .locals 0
 

@@ -6,7 +6,6 @@ import zipfile
 
 _WIN_ABS = re.compile(r"^[a-zA-Z]:[/\\]")
 
-
 def is_safe_zip_member(name: str) -> bool:
     if not name:
         return False
@@ -14,7 +13,6 @@ def is_safe_zip_member(name: str) -> bool:
         return False
     parts = [part for part in name.replace("\\", "/").split("/") if part not in ("", ".")]
     return ".." not in parts
-
 
 def safe_zip_extract(zip_path: str, dest_dir: str) -> int:
     os.makedirs(dest_dir, exist_ok=True)

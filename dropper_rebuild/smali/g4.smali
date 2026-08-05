@@ -2,20 +2,15 @@
 .super Ls3;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Lcr;
 .implements Landroid/view/LayoutInflater$Factory2;
 
-
-# static fields
 .field public static final g0:Lg00;
 
 .field public static final h0:[I
 
 .field public static final i0:Z
 
-
-# instance fields
 .field public A:Landroid/widget/TextView;
 
 .field public B:Landroid/view/View;
@@ -114,8 +109,6 @@
 
 .field public z:Landroid/view/ViewGroup;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 2
 
@@ -851,8 +844,6 @@
     return-object p1
 .end method
 
-
-# virtual methods
 .method public final A(Landroid/content/Context;I)I
     .locals 2
 

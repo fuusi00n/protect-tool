@@ -2,8 +2,6 @@
 .super Ls30;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final A:[Ljava/lang/String;
 
 .field public static final B:Lu8;
@@ -16,8 +14,6 @@
 
 .field public static final F:Lu8;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 5
 
@@ -280,8 +276,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final d(La40;)V
     .locals 0
 

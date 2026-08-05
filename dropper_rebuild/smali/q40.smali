@@ -2,8 +2,6 @@
 .super Lr40;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final a:Landroid/graphics/Matrix;
 
 .field public final b:Ljava/util/ArrayList;
@@ -26,8 +24,6 @@
 
 .field public k:Ljava/lang/String;
 
-
-# direct methods
 .method public constructor <init>()V
     .locals 2
 
@@ -59,7 +55,7 @@
     .line 240
     iput v0, p0, Lq40;->e:F
 
-    const/high16 v1, 0x3f800000    # 1.0f
+    const/high16 v1, 0x3f800000
 
     .line 241
     iput v1, p0, Lq40;->f:F
@@ -138,7 +134,7 @@
 
     .line 24
     .line 25
-    const/high16 v1, 0x3f800000    # 1.0f
+    const/high16 v1, 0x3f800000
 
     .line 26
     .line 27
@@ -384,7 +380,7 @@
 
     .line 147
     .line 148
-    const/high16 v6, 0x40800000    # 4.0f
+    const/high16 v6, 0x40800000
 
     .line 149
     .line 150
@@ -563,8 +559,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a()Z
     .locals 4
 

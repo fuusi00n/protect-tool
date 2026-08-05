@@ -2,8 +2,6 @@
 .super Lcom/google/android/material/behavior/SwipeDismissBehavior;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# annotations
 .annotation system Ldalvik/annotation/Signature;
     value = {
         "Lcom/google/android/material/behavior/SwipeDismissBehavior<",
@@ -12,12 +10,8 @@
     }
 .end annotation
 
-
-# instance fields
 .field public final h:Lqg;
 
-
-# direct methods
 .method public constructor <init>()V
     .locals 4
 
@@ -43,7 +37,7 @@
     const/4 v1, 0x0
 
     .line 12
-    const v2, 0x3dcccccd    # 0.1f
+    const v2, 0x3dcccccd
 
     .line 13
     .line 14
@@ -56,7 +50,7 @@
     move-result v2
 
     .line 19
-    const/high16 v3, 0x3f800000    # 1.0f
+    const/high16 v3, 0x3f800000
 
     .line 20
     .line 21
@@ -72,7 +66,7 @@
 
     .line 26
     .line 27
-    const v2, 0x3f19999a    # 0.6f
+    const v2, 0x3f19999a
 
     .line 28
     .line 29
@@ -111,8 +105,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final f(Landroidx/coordinatorlayout/widget/CoordinatorLayout;Landroid/view/View;Landroid/view/MotionEvent;)Z
     .locals 3
 

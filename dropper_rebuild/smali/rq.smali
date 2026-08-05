@@ -2,8 +2,6 @@
 .super Lk3;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final A:[I
 
 .field public static final B:[[I
@@ -14,8 +12,6 @@
 
 .field public static final z:[I
 
-
-# instance fields
 .field public final e:Ljava/util/LinkedHashSet;
 
 .field public final f:Ljava/util/LinkedHashSet;
@@ -56,8 +52,6 @@
 
 .field public final x:Le7;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 6
 
@@ -881,7 +875,7 @@
     move-result v3
 
     .line 29
-    const/high16 v4, 0x3f800000    # 1.0f
+    const/high16 v4, 0x3f800000
 
     .line 30
     .line 31
@@ -901,7 +895,7 @@
     move-result v0
 
     .line 39
-    const v4, 0x3f0a3d71    # 0.54f
+    const v4, 0x3f0a3d71
 
     .line 40
     .line 41
@@ -914,7 +908,7 @@
     move-result v4
 
     .line 46
-    const v5, 0x3ec28f5c    # 0.38f
+    const v5, 0x3ec28f5c
 
     .line 47
     .line 48
@@ -1019,8 +1013,6 @@
     return-object p0
 .end method
 
-
-# virtual methods
 .method public final a()V
     .locals 7
 

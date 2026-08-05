@@ -2,14 +2,10 @@
 .super Landroidx/preference/Preference;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final h:I
 
 .field public final i:I
 
-
-# direct methods
 .method public constructor <init>(Landroid/content/Context;Landroid/util/AttributeSet;)V
     .locals 3
 
@@ -173,8 +169,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final c(Landroid/content/res/TypedArray;I)Ljava/lang/Object;
     .locals 0
 

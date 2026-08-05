@@ -44,7 +44,6 @@ def start_build(username, app_name, apk_file, icon_file, persist, portal, lab_mo
     thread.start()
     return build_id
 
-
 def build_status_payload(build_id):
     info = BUILD_STATUS.get(build_id, {"progress": 0})
     progress = info.get("progress", 0)
@@ -75,14 +74,12 @@ def build_download_response(build_id, portal, username):
             return send_file(file_path, as_attachment=True, download_name=output_file)
     return jsonify({"error": "Arquivo nao disponivel"}), 404
 
-
 def _safe_unlink(path):
     try:
         if path and os.path.isfile(path):
             os.remove(path)
     except OSError:
         pass
-
 
 def delete_user_build(username, build_id, confirm_name=None):
     from psycopg.rows import dict_row

@@ -2,11 +2,8 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Lse;
 
-
-# instance fields
 .field public a:I
 
 .field public b:Lxb;
@@ -27,8 +24,6 @@
 
 .field public j:I
 
-
-# direct methods
 .method public constructor <init>(Lxb;)V
     .locals 1
 
@@ -365,8 +360,6 @@
     return-object p0
 .end method
 
-
-# virtual methods
 .method public final c(Lue;Lue;ILgf;)V
     .locals 1
 
@@ -640,7 +633,7 @@
 
     .line 38
     .line 39
-    const/high16 v5, 0x3f000000    # 0.5f
+    const/high16 v5, 0x3f000000
 
     .line 40
     .line 41

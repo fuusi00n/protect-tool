@@ -2,8 +2,6 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final a:F
 
 .field public final b:F
@@ -12,8 +10,6 @@
 
 .field public final d:I
 
-
-# direct methods
 .method public constructor <init>(Landroid/window/BackEvent;)V
     .locals 4
 
@@ -78,8 +74,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final toString()Ljava/lang/String;
     .locals 2
 

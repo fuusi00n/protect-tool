@@ -2,12 +2,8 @@
 .super Lf3;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final synthetic L:I
 
-
-# instance fields
 .field public A:Landroid/animation/AnimatorSet;
 
 .field public final B:Landroid/os/Handler;
@@ -34,8 +30,6 @@
 
 .field public z:Landroid/widget/TextView;
 
-
-# direct methods
 .method public constructor <init>()V
     .locals 8
 
@@ -578,8 +572,6 @@
     return-object v0
 .end method
 
-
-# virtual methods
 .method public final A()Ljava/lang/String;
     .locals 9
 
@@ -2067,7 +2059,7 @@
 
     .line 350
     .line 351
-    const/high16 v9, 0x3fc00000    # 1.5f
+    const/high16 v9, 0x3fc00000
 
     .line 352
     .line 353
@@ -2318,9 +2310,9 @@
     .line 479
     :array_0
     .array-data 4
-        0x3f19999a    # 0.6f
-        0x3f99999a    # 1.2f
-        0x3f19999a    # 0.6f
+        0x3f19999a
+        0x3f99999a
+        0x3f19999a
     .end array-data
 
     .line 480
@@ -2335,9 +2327,9 @@
     .line 489
     :array_1
     .array-data 4
-        0x3f19999a    # 0.6f
-        0x3f99999a    # 1.2f
-        0x3f19999a    # 0.6f
+        0x3f19999a
+        0x3f99999a
+        0x3f19999a
     .end array-data
 
     .line 490
@@ -2352,9 +2344,9 @@
     .line 499
     :array_2
     .array-data 4
-        0x3f000000    # 0.5f
-        0x3f800000    # 1.0f
-        0x3f000000    # 0.5f
+        0x3f000000
+        0x3f800000
+        0x3f000000
     .end array-data
 
     .line 500
@@ -2370,7 +2362,7 @@
     :array_3
     .array-data 4
         0x0
-        -0x3f000000    # -8.0f
+        -0x3f000000
         0x0
     .end array-data
 .end method

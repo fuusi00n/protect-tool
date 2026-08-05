@@ -2,8 +2,6 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final a:Landroid/view/View;
 
 .field public final b:Lj4;
@@ -16,8 +14,6 @@
 
 .field public f:Lb30;
 
-
-# direct methods
 .method public constructor <init>(Landroid/view/View;)V
     .locals 1
 
@@ -53,8 +49,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a()V
     .locals 5
 

@@ -2,15 +2,10 @@
 .super Lui;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Lwr;
 
-
-# static fields
 .field public static final G:[I
 
-
-# instance fields
 .field public A:Landroid/widget/FrameLayout;
 
 .field public B:Lir;
@@ -33,8 +28,6 @@
 
 .field public final z:Landroid/widget/CheckedTextView;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 1
 
@@ -297,8 +290,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final c(Lir;)V
     .locals 6
 

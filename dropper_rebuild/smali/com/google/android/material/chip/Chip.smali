@@ -2,12 +2,9 @@
 .super Lk3;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Lb00;
 .implements Landroid/widget/Checkable;
 
-
-# static fields
 .field public static final w:I
 
 .field public static final x:Landroid/graphics/Rect;
@@ -16,8 +13,6 @@
 
 .field public static final z:[I
 
-
-# instance fields
 .field public e:Ll9;
 
 .field public f:Landroid/graphics/drawable/InsetDrawable;
@@ -54,8 +49,6 @@
 
 .field public final v:Li9;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 1
 
@@ -970,7 +963,7 @@
 
     .line 410
     .line 411
-    const/high16 v11, -0x40800000    # -1.0f
+    const/high16 v11, -0x40800000
 
     .line 412
     .line 413
@@ -1648,7 +1641,7 @@
     move-result-object p2
 
     .line 757
-    const/high16 p3, 0x42400000    # 48.0f
+    const/high16 p3, 0x42400000
 
     .line 758
     .line 759
@@ -2304,8 +2297,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final b(I)V
     .locals 10
 

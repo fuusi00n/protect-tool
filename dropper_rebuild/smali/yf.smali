@@ -2,15 +2,10 @@
 .super Landroid/graphics/drawable/Drawable;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Landroid/graphics/drawable/Animatable;
 
-
-# static fields
 .field public static final k:Lu8;
 
-
-# instance fields
 .field public final a:Landroid/content/Context;
 
 .field public final b:Lf7;
@@ -31,8 +26,6 @@
 
 .field public j:I
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 4
 
@@ -134,8 +127,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final b()F
     .locals 2
 
@@ -173,7 +164,7 @@
 
     .line 15
     :cond_1
-    const/high16 p0, 0x3f800000    # 1.0f
+    const/high16 p0, 0x3f800000
 
     .line 16
     .line 17
@@ -209,7 +200,7 @@
 
     .line 13
     .line 14
-    const/high16 v2, 0x3f800000    # 1.0f
+    const/high16 v2, 0x3f800000
 
     .line 15
     .line 16
@@ -802,7 +793,7 @@
     :array_0
     .array-data 4
         0x0
-        0x3f800000    # 1.0f
+        0x3f800000
     .end array-data
 
     .line 254
@@ -815,7 +806,7 @@
     .line 261
     :array_1
     .array-data 4
-        0x3f800000    # 1.0f
+        0x3f800000
         0x0
     .end array-data
 .end method

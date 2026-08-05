@@ -2,15 +2,10 @@
 .super Lg;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Lwc;
 
-
-# static fields
 .field public static final b:Lbd;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 3
 
@@ -55,8 +50,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final b(Lxc;)Lwc;
     .locals 3
 

@@ -2,11 +2,8 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Lr10;
 
-
-# instance fields
 .field public a:Ljava/lang/CharSequence;
 
 .field public b:Ljava/lang/CharSequence;
@@ -39,8 +36,6 @@
 
 .field public p:I
 
-
-# virtual methods
 .method public final a(Ljr;)Lr10;
     .locals 0
 

@@ -2,8 +2,6 @@
 .super Ls30;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public A:Ljava/util/ArrayList;
 
 .field public B:Z
@@ -14,8 +12,6 @@
 
 .field public E:I
 
-
-# virtual methods
 .method public final A(J)V
     .locals 3
 

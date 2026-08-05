@@ -2,12 +2,8 @@
 .super Lwq;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final q:Landroid/graphics/RectF;
 
-
-# direct methods
 .method public constructor <init>(Lqd;)V
     .locals 0
 
@@ -40,8 +36,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final newDrawable()Landroid/graphics/drawable/Drawable;
     .locals 1
 

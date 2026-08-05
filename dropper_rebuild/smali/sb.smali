@@ -2,12 +2,8 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final p0:Landroid/util/SparseIntArray;
 
-
-# instance fields
 .field public A:I
 
 .field public B:F
@@ -142,8 +138,6 @@
 
 .field public z:I
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 4
 
@@ -926,8 +920,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(Landroid/content/Context;Landroid/util/AttributeSet;)V
     .locals 6
 
@@ -993,7 +985,7 @@
     .line 29
     .line 30
     .line 31
-    const/high16 v5, 0x3f800000    # 1.0f
+    const/high16 v5, 0x3f800000
 
     .line 32
     .line 33

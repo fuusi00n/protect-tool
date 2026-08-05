@@ -2,8 +2,6 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# direct methods
 .method public static final A(Ljava/lang/String;JJJ)J
     .locals 21
 
@@ -83,7 +81,7 @@
 
     .line 32
     .line 33
-    const-wide v11, -0x7fffffffffffffffL    # -4.9E-324
+    const-wide v11, -0x7fffffffffffffffL
 
     .line 34
     .line 35
@@ -162,14 +160,14 @@
     move-wide v13, v15
 
     .line 67
-    const-wide p1, -0x38e38e38e38e38eL    # -2.772000429909333E291
+    const-wide p1, -0x38e38e38e38e38eL
 
     .line 68
     .line 69
     .line 70
     .line 71
     .line 72
-    const-wide v15, -0x38e38e38e38e38eL    # -2.772000429909333E291
+    const-wide v15, -0x38e38e38e38e38eL
 
     .line 73
     .line 74
@@ -2358,7 +2356,7 @@
     int-to-float p1, p1
 
     .line 17
-    const/high16 v0, 0x3f800000    # 1.0f
+    const/high16 v0, 0x3f800000
 
     .line 18
     .line 19
@@ -2371,8 +2369,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public abstract C(Landroid/view/View;I)Z
 .end method
 

@@ -2,16 +2,12 @@
 .super Ld4;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final synthetic c:I
 
 .field public final synthetic d:Lg4;
 
 .field public final e:Ljava/lang/Object;
 
-
-# direct methods
 .method public constructor <init>(Lg4;Landroid/content/Context;)V
     .locals 1
 
@@ -81,8 +77,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final f()Landroid/content/IntentFilter;
     .locals 1
 

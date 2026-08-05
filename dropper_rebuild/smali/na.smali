@@ -2,8 +2,6 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final a:Ljava/lang/Object;
 
 .field public final b:Lc8;
@@ -14,8 +12,6 @@
 
 .field public final e:Ljava/lang/Throwable;
 
-
-# direct methods
 .method public constructor <init>(Ljava/lang/Object;Lc8;Lpk;Ljava/lang/Object;Ljava/lang/Throwable;)V
     .locals 0
 
@@ -161,8 +157,6 @@
     return-object v0
 .end method
 
-
-# virtual methods
 .method public final equals(Ljava/lang/Object;)Z
     .locals 4
 

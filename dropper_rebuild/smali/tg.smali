@@ -2,16 +2,12 @@
 .super Landroid/text/Editable$Factory;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final a:Ljava/lang/Object;
 
 .field public static volatile b:Ltg;
 
 .field public static c:Ljava/lang/Class;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 1
 
@@ -32,8 +28,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final newEditable(Ljava/lang/CharSequence;)Landroid/text/Editable;
     .locals 1
 

@@ -2,8 +2,6 @@
 .super Landroid/view/ViewGroup;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public a:Z
 
 .field public b:I
@@ -34,8 +32,6 @@
 
 .field public o:I
 
-
-# direct methods
 .method public constructor <init>(Landroid/content/Context;Landroid/util/AttributeSet;I)V
     .locals 11
 
@@ -200,7 +196,7 @@
 
     .line 77
     .line 78
-    const/high16 p2, -0x40800000    # -1.0f
+    const/high16 p2, -0x40800000
 
     .line 79
     .line 80
@@ -305,8 +301,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public checkLayoutParams(Landroid/view/ViewGroup$LayoutParams;)Z
     .locals 0
 
@@ -2758,7 +2752,7 @@
     const/4 v9, 0x0
 
     .line 7
-    const/high16 v10, 0x40000000    # 2.0f
+    const/high16 v10, 0x40000000
 
     .line 8
     .line 9
@@ -3284,7 +3278,7 @@
     .line 248
     .line 249
     :cond_9
-    const/high16 v1, 0x40000000    # 2.0f
+    const/high16 v1, 0x40000000
 
     .line 250
     .line 251
@@ -3513,7 +3507,7 @@
     const/4 v7, -0x2
 
     .line 348
-    const/high16 v10, 0x40000000    # 2.0f
+    const/high16 v10, 0x40000000
 
     .line 349
     .line 350
@@ -3820,7 +3814,7 @@
 
     .line 489
     .line 490
-    const/high16 v7, 0x40000000    # 2.0f
+    const/high16 v7, 0x40000000
 
     .line 491
     .line 492
@@ -3900,7 +3894,7 @@
     move-result v8
 
     .line 528
-    const/high16 v10, 0x40000000    # 2.0f
+    const/high16 v10, 0x40000000
 
     .line 529
     .line 530
@@ -4108,7 +4102,7 @@
 
     .line 624
     .line 625
-    const/high16 v13, 0x40000000    # 2.0f
+    const/high16 v13, 0x40000000
 
     .line 626
     .line 627
@@ -4149,7 +4143,7 @@
 
     .line 642
     :cond_1f
-    const/high16 v13, 0x40000000    # 2.0f
+    const/high16 v13, 0x40000000
 
     .line 643
     .line 644
@@ -4247,7 +4241,7 @@
     move-result v9
 
     .line 687
-    const/high16 v14, 0x40000000    # 2.0f
+    const/high16 v14, 0x40000000
 
     .line 688
     .line 689
@@ -4408,7 +4402,7 @@
 
     .line 757
     .line 758
-    const/high16 v13, 0x40000000    # 2.0f
+    const/high16 v13, 0x40000000
 
     .line 759
     .line 760
@@ -4487,7 +4481,7 @@
     move-result v1
 
     .line 795
-    const/high16 v13, 0x40000000    # 2.0f
+    const/high16 v13, 0x40000000
 
     .line 796
     .line 797
@@ -4748,7 +4742,7 @@
 
     .line 918
     .line 919
-    const/high16 v1, 0x40000000    # 2.0f
+    const/high16 v1, 0x40000000
 
     .line 920
     .line 921
@@ -4984,7 +4978,7 @@
 
     .line 1028
     .line 1029
-    const/high16 v1, 0x40000000    # 2.0f
+    const/high16 v1, 0x40000000
 
     .line 1030
     .line 1031
@@ -5170,7 +5164,7 @@
 
     .line 1117
     .line 1118
-    const/high16 v1, 0x40000000    # 2.0f
+    const/high16 v1, 0x40000000
 
     .line 1119
     .line 1120
@@ -5430,7 +5424,7 @@
     .line 1233
     :cond_37
     :goto_23
-    const/high16 v1, 0x40000000    # 2.0f
+    const/high16 v1, 0x40000000
 
     .line 1234
     .line 1235
@@ -6231,7 +6225,7 @@
 
     .line 1595
     .line 1596
-    const/high16 v14, 0x40000000    # 2.0f
+    const/high16 v14, 0x40000000
 
     .line 1597
     .line 1598
@@ -6303,7 +6297,7 @@
 
     .line 1629
     .line 1630
-    const/high16 v14, 0x40000000    # 2.0f
+    const/high16 v14, 0x40000000
 
     .line 1631
     .line 1632
@@ -6589,7 +6583,7 @@
 
     .line 1764
     .line 1765
-    const/high16 v15, 0x40000000    # 2.0f
+    const/high16 v15, 0x40000000
 
     .line 1766
     .line 1767
@@ -6630,7 +6624,7 @@
 
     .line 1782
     :cond_53
-    const/high16 v15, 0x40000000    # 2.0f
+    const/high16 v15, 0x40000000
 
     .line 1783
     .line 1784
@@ -6740,7 +6734,7 @@
     .line 1831
     .line 1832
     :goto_38
-    const/high16 v1, 0x40000000    # 2.0f
+    const/high16 v1, 0x40000000
 
     .line 1833
     .line 1834
@@ -7204,7 +7198,7 @@
 
     .line 2040
     .line 2041
-    const/high16 v1, 0x40000000    # 2.0f
+    const/high16 v1, 0x40000000
 
     .line 2042
     .line 2043
@@ -7291,7 +7285,7 @@
     move-result v1
 
     .line 2083
-    const/high16 v13, 0x40000000    # 2.0f
+    const/high16 v13, 0x40000000
 
     .line 2084
     .line 2085

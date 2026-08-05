@@ -1,8 +1,6 @@
 .class public abstract Lgw;
 .super Ljava/lang/Object;
 
-
-# static fields
 .field public static ColorStateListItem:[I = null
 
 .field public static ColorStateListItem_alpha:I = 0x3
@@ -111,8 +109,6 @@
 
 .field public static RecyclerView_stackFromEnd:I = 0xb
 
-
-# direct methods
 .method public static constructor <clinit>()V
     .locals 5
 

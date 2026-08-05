@@ -2,8 +2,6 @@
 .super Lzt;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static n:Ljava/lang/Class; = null
 
 .field public static o:Ljava/lang/reflect/Constructor; = null
@@ -14,8 +12,6 @@
 
 .field public static r:Z = false
 
-
-# instance fields
 .field public final g:Ljava/lang/Class;
 
 .field public final h:Ljava/lang/reflect/Constructor;
@@ -30,8 +26,6 @@
 
 .field public final m:Ljava/lang/reflect/Method;
 
-
-# direct methods
 .method public constructor <init>()V
     .locals 9
 
@@ -500,8 +494,6 @@
     throw p1
 .end method
 
-
-# virtual methods
 .method public A(Ljava/lang/Object;)Landroid/graphics/Typeface;
     .locals 4
 

@@ -2,8 +2,6 @@
 .super Llh;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final e:I
 
 .field public final f:I
@@ -22,8 +20,6 @@
 
 .field public m:Landroid/animation/ValueAnimator;
 
-
-# direct methods
 .method public constructor <init>(Lkh;)V
     .locals 3
 
@@ -177,8 +173,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a()V
     .locals 1
 
@@ -558,8 +552,8 @@
     .line 121
     :array_0
     .array-data 4
-        0x3f4ccccd    # 0.8f
-        0x3f800000    # 1.0f
+        0x3f4ccccd
+        0x3f800000
     .end array-data
 
     .line 122
@@ -573,7 +567,7 @@
     :array_1
     .array-data 4
         0x0
-        0x3f800000    # 1.0f
+        0x3f800000
     .end array-data
 
     .line 130
@@ -586,7 +580,7 @@
     .line 137
     :array_2
     .array-data 4
-        0x3f800000    # 1.0f
+        0x3f800000
         0x0
     .end array-data
 .end method

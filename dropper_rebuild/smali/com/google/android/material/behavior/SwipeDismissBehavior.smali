@@ -2,8 +2,6 @@
 .super Loc;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# annotations
 .annotation system Ldalvik/annotation/Signature;
     value = {
         "<V:",
@@ -13,8 +11,6 @@
     }
 .end annotation
 
-
-# instance fields
 .field public a:La60;
 
 .field public b:Z
@@ -29,8 +25,6 @@
 
 .field public final g:Lt10;
 
-
-# direct methods
 .method public constructor <init>()V
     .locals 1
 
@@ -54,7 +48,7 @@
 
     .line 9
     .line 10
-    const/high16 v0, 0x3f000000    # 0.5f
+    const/high16 v0, 0x3f000000
 
     .line 11
     .line 12
@@ -78,8 +72,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public f(Landroidx/coordinatorlayout/widget/CoordinatorLayout;Landroid/view/View;Landroid/view/MotionEvent;)Z
     .locals 4
 

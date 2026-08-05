@@ -2,16 +2,10 @@
 .super Lpa;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final synthetic c:Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;
 
-
-# instance fields
 .field private volatile synthetic _resumed$volatile:I
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 2
 

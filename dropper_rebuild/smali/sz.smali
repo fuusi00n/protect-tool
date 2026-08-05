@@ -2,8 +2,6 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final a:[La00;
 
 .field public final b:[Landroid/graphics/Matrix;
@@ -28,8 +26,6 @@
 
 .field public final l:Z
 
-
-# direct methods
 .method public constructor <init>()V
     .locals 4
 
@@ -240,8 +236,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(Lqz;FLandroid/graphics/RectF;Lo0;Landroid/graphics/Path;)V
     .locals 21
 
@@ -1001,7 +995,7 @@
     double-to-float v9, v9
 
     .line 371
-    const v10, 0x3a83126f    # 0.001f
+    const v10, 0x3a83126f
 
     .line 372
     .line 373
@@ -1117,7 +1111,7 @@
     .line 426
     .line 427
     :goto_7
-    const/high16 v10, 0x43870000    # 270.0f
+    const/high16 v10, 0x43870000
 
     .line 428
     .line 429
@@ -1585,7 +1579,7 @@
     move-result p1
 
     .line 47
-    const/high16 v0, 0x3f800000    # 1.0f
+    const/high16 v0, 0x3f800000
 
     .line 48
     .line 49

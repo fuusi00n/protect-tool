@@ -1,8 +1,6 @@
 .class public abstract Luv;
 .super Ljava/lang/Object;
 
-
-# static fields
 .field public static copy:I = 0x7f0f0030
 
 .field public static expand_button_title:I = 0x7f0f003f

@@ -2,11 +2,8 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Landroid/animation/ValueAnimator$AnimatorUpdateListener;
 
-
-# instance fields
 .field public final synthetic a:Lv70;
 
 .field public final synthetic b:Lj80;
@@ -17,8 +14,6 @@
 
 .field public final synthetic e:Landroid/view/View;
 
-
-# direct methods
 .method public constructor <init>(Lv70;Lj80;Lj80;ILandroid/view/View;)V
     .locals 0
 
@@ -51,8 +46,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final onAnimationUpdate(Landroid/animation/ValueAnimator;)V
     .locals 14
 
@@ -232,7 +225,7 @@
     int-to-float v6, v6
 
     .line 85
-    const/high16 v7, 0x3f800000    # 1.0f
+    const/high16 v7, 0x3f800000
 
     .line 86
     .line 87
@@ -245,7 +238,7 @@
     float-to-double v8, v6
 
     .line 90
-    const-wide/high16 v10, 0x3fe0000000000000L    # 0.5
+    const-wide/high16 v10, 0x3fe0000000000000L
 
     .line 91
     .line 92

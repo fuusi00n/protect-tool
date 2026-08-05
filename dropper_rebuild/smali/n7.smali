@@ -2,8 +2,6 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final b:Ljava/lang/String;
 
 .field public static final c:Ljava/lang/String;
@@ -12,12 +10,8 @@
 
 .field public static final e:Ln7;
 
-
-# instance fields
 .field public final a:Z
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 2
 
@@ -651,8 +645,6 @@
     .end packed-switch
 .end method
 
-
-# virtual methods
 .method public final c(Ljava/lang/CharSequence;)Landroid/text/SpannableStringBuilder;
     .locals 9
 

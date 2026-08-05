@@ -2,8 +2,6 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final a:Lq3;
 
 .field public static final b:I
@@ -22,8 +20,6 @@
 
 .field public static final i:Ljava/lang/Object;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 3
 
@@ -372,8 +368,6 @@
     throw p0
 .end method
 
-
-# virtual methods
 .method public abstract b()V
 .end method
 

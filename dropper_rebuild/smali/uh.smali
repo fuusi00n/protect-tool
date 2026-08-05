@@ -2,16 +2,10 @@
 .super Ls30;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final B:[Ljava/lang/String;
 
-
-# instance fields
 .field public final A:I
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 2
 
@@ -543,8 +537,6 @@
     return-object v0
 .end method
 
-
-# virtual methods
 .method public final J(Landroid/view/View;FF)Landroid/animation/ObjectAnimator;
     .locals 2
 
@@ -814,7 +806,7 @@
 
     .line 33
     .line 34
-    const/high16 v8, 0x3f800000    # 1.0f
+    const/high16 v8, 0x3f800000
 
     .line 35
     .line 36
@@ -1564,7 +1556,7 @@
     int-to-float v3, v3
 
     .line 384
-    const/high16 v19, 0x49800000    # 1048576.0f
+    const/high16 v19, 0x49800000
 
     .line 385
     .line 386
@@ -1572,7 +1564,7 @@
 
     .line 387
     .line 388
-    const/high16 v0, 0x3f800000    # 1.0f
+    const/high16 v0, 0x3f800000
 
     .line 389
     .line 390
@@ -1766,7 +1758,7 @@
 
     .line 483
     .line 484
-    const/high16 v3, 0x40000000    # 2.0f
+    const/high16 v3, 0x40000000
 
     .line 485
     .line 486
@@ -2014,7 +2006,7 @@
     .line 601
     .line 602
     .line 603
-    const/high16 v3, 0x3f800000    # 1.0f
+    const/high16 v3, 0x3f800000
 
     .line 604
     .line 605
@@ -2172,7 +2164,7 @@
     .line 681
     .line 682
     .line 683
-    const/high16 v3, 0x3f800000    # 1.0f
+    const/high16 v3, 0x3f800000
 
     .line 684
     .line 685

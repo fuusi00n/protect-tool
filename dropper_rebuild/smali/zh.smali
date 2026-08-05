@@ -2,12 +2,8 @@
 .super Lzw;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final synthetic a:Lbi;
 
-
-# direct methods
 .method public constructor <init>(Lbi;)V
     .locals 0
 
@@ -24,8 +20,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final b(Landroidx/recyclerview/widget/RecyclerView;II)V
     .locals 7
 
@@ -175,7 +169,7 @@
 
     .line 67
     :cond_2
-    const/high16 p3, 0x40000000    # 2.0f
+    const/high16 p3, 0x40000000
 
     .line 68
     .line 69

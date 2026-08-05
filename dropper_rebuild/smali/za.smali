@@ -2,13 +2,10 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Landroid/view/ViewTreeObserver$OnDrawListener;
 .implements Ljava/lang/Runnable;
 .implements Ljava/util/concurrent/Executor;
 
-
-# instance fields
 .field public final a:J
 
 .field public b:Ljava/lang/Runnable;
@@ -17,8 +14,6 @@
 
 .field public final synthetic d:Lf3;
 
-
-# direct methods
 .method public constructor <init>(Lf3;)V
     .locals 4
 
@@ -54,8 +49,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final execute(Ljava/lang/Runnable;)V
     .locals 2
 

@@ -2,11 +2,8 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Ljava/util/Comparator;
 
-
-# instance fields
 .field public final a:Landroid/graphics/Rect;
 
 .field public final b:Landroid/graphics/Rect;
@@ -15,8 +12,6 @@
 
 .field public final d:Lqg;
 
-
-# direct methods
 .method public constructor <init>(Lqg;Z)V
     .locals 1
 
@@ -63,8 +58,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final compare(Ljava/lang/Object;Ljava/lang/Object;)I
     .locals 2
 

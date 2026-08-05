@@ -2,8 +2,6 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public a:F
 
 .field public b:F
@@ -18,8 +16,6 @@
 
 .field public final g:Ljava/util/ArrayList;
 
-
-# direct methods
 .method public constructor <init>()V
     .locals 2
 
@@ -58,7 +54,7 @@
     const/4 v0, 0x0
 
     .line 19
-    const/high16 v1, 0x43870000    # 270.0f
+    const/high16 v1, 0x43870000
 
     .line 20
     .line 21
@@ -70,8 +66,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(F)V
     .locals 4
 
@@ -96,7 +90,7 @@
 
     .line 9
     .line 10
-    const/high16 v1, 0x43b40000    # 360.0f
+    const/high16 v1, 0x43b40000
 
     .line 11
     .line 12
@@ -106,7 +100,7 @@
     rem-float/2addr v0, v1
 
     .line 14
-    const/high16 v1, 0x43340000    # 180.0f
+    const/high16 v1, 0x43340000
 
     .line 15
     .line 16
@@ -284,7 +278,7 @@
     move-result v0
 
     .line 28
-    const/high16 v2, 0x43870000    # 270.0f
+    const/high16 v2, 0x43870000
 
     .line 29
     .line 30
@@ -357,7 +351,7 @@
     add-float/2addr p2, p3
 
     .line 11
-    const/high16 p1, 0x43b40000    # 360.0f
+    const/high16 p1, 0x43b40000
 
     .line 12
     .line 13

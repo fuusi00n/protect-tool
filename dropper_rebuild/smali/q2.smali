@@ -2,15 +2,10 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Landroid/text/method/TransformationMethod;
 
-
-# instance fields
 .field public a:Ljava/util/Locale;
 
-
-# virtual methods
 .method public final getTransformation(Ljava/lang/CharSequence;Landroid/view/View;)Ljava/lang/CharSequence;
     .locals 0
 

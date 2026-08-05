@@ -2,15 +2,10 @@
 .super Ljava/lang/Enum;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Ljava/util/concurrent/Executor;
 
-
-# static fields
 .field public static final synthetic a:[Lhf;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 3
 
@@ -92,8 +87,6 @@
     return-object v0
 .end method
 
-
-# virtual methods
 .method public final execute(Ljava/lang/Runnable;)V
     .locals 0
 

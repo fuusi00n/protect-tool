@@ -2,8 +2,6 @@
 .super Lg3;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final e:Luo;
 
 .field public final f:Landroid/view/accessibility/AccessibilityManager;
@@ -20,8 +18,6 @@
 
 .field public l:Landroid/content/res/ColorStateList;
 
-
-# direct methods
 .method public constructor <init>(Landroid/content/Context;Landroid/util/AttributeSet;)V
     .locals 7
 
@@ -403,8 +399,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final b()Lcom/google/android/material/textfield/TextInputLayout;
     .locals 1
 

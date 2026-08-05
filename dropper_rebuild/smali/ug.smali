@@ -2,14 +2,10 @@
 .super Landroid/view/inputmethod/InputConnectionWrapper;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final a:Landroid/widget/TextView;
 
 .field public final b:Lqg;
 
-
-# direct methods
 .method public constructor <init>(Landroid/widget/TextView;Landroid/view/inputmethod/InputConnection;)V
     .locals 2
 
@@ -46,8 +42,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final deleteSurroundingText(II)Z
     .locals 2
 

@@ -2,8 +2,6 @@
 .super Lxb;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public A0:I
 
 .field public B0:[Ls8;
@@ -48,8 +46,6 @@
 
 .field public z0:I
 
-
-# direct methods
 .method public constructor <init>()V
     .locals 4
 
@@ -883,8 +879,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final C()V
     .locals 1
 
@@ -2805,7 +2799,7 @@
     const/16 v19, 0x0
 
     :goto_2
-    const/high16 v20, 0x3f000000    # 0.5f
+    const/high16 v20, 0x3f000000
 
     if-ge v2, v3, :cond_7
 

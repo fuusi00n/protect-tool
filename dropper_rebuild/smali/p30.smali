@@ -2,16 +2,12 @@
 .super Landroid/animation/AnimatorListenerAdapter;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final synthetic a:I
 
 .field public final synthetic b:Ljava/lang/Object;
 
 .field public final synthetic c:Ljava/lang/Object;
 
-
-# direct methods
 .method public constructor <init>(Ls30;Lo6;)V
     .locals 1
 
@@ -56,8 +52,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final onAnimationEnd(Landroid/animation/Animator;)V
     .locals 2
 
@@ -83,7 +77,7 @@
 
     .line 11
     .line 12
-    const/high16 p1, 0x3f800000    # 1.0f
+    const/high16 p1, 0x3f800000
 
     .line 13
     .line 14

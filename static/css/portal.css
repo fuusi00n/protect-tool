@@ -3295,7 +3295,7 @@ tbody tr:last-child td {
 }
 
 .store-grid--booting {
-    
+
 }
 
 .store-grid {
@@ -4188,7 +4188,6 @@ tbody tr:last-child td {
         left: auto;
     }
 
-
     .store-card__actions {
         flex-direction: column;
     }
@@ -4223,7 +4222,6 @@ tbody tr:last-child td {
     .store-grid {
         grid-template-columns: 1fr;
     }
-
 
     .table-actions {
         flex-direction: column;

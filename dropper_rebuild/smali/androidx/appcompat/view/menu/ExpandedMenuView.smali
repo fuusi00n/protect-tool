@@ -2,21 +2,14 @@
 .super Landroid/widget/ListView;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Ldr;
 .implements Lxr;
 .implements Landroid/widget/AdapterView$OnItemClickListener;
 
-
-# static fields
 .field public static final b:[I
 
-
-# instance fields
 .field public a:Ler;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 2
 
@@ -157,8 +150,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(Lir;)Z
     .locals 2
 

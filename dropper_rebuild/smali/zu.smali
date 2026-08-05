@@ -1,8 +1,6 @@
 .class public abstract Lzu;
 .super Ljava/lang/Object;
 
-
-# static fields
 .field public static abc_action_bar_content_inset_material:I = 0x7f060000
 
 .field public static abc_action_bar_content_inset_with_nav:I = 0x7f060001

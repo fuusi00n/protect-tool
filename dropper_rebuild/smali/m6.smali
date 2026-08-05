@@ -2,8 +2,6 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public a:I
 
 .field public final b:Lp6;
@@ -24,8 +22,6 @@
 
 .field public j:Z
 
-
-# direct methods
 .method public constructor <init>(Lp6;Ly2;)V
     .locals 3
 
@@ -100,13 +96,11 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(Ll00;FZ)V
     .locals 11
 
     .line 1
-    const v0, -0x457ced91    # -0.001f
+    const v0, -0x457ced91
 
     .line 2
     .line 3
@@ -115,7 +109,7 @@
 
     .line 5
     .line 6
-    const v2, 0x3a83126f    # 0.001f
+    const v2, 0x3a83126f
 
     .line 7
     .line 8

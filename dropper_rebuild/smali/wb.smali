@@ -2,24 +2,18 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final d:[I
 
 .field public static final e:Landroid/util/SparseIntArray;
 
 .field public static final f:Landroid/util/SparseIntArray;
 
-
-# instance fields
 .field public final a:Ljava/util/HashMap;
 
 .field public final b:Z
 
 .field public final c:Ljava/util/HashMap;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 16
 
@@ -3591,7 +3585,7 @@
 
     .line 491
     .line 492
-    const/high16 v12, 0x3f800000    # 1.0f
+    const/high16 v12, 0x3f800000
 
     .line 493
     .line 494
@@ -3613,7 +3607,7 @@
     .line 502
     .line 503
     :pswitch_1a
-    const/high16 v12, 0x3f800000    # 1.0f
+    const/high16 v12, 0x3f800000
 
     .line 504
     .line 505
@@ -5786,7 +5780,7 @@
     .line 1553
     .line 1554
     :pswitch_6a
-    const/high16 v13, 0x3f800000    # 1.0f
+    const/high16 v13, 0x3f800000
 
     .line 1555
     .line 1556
@@ -5810,7 +5804,7 @@
     .line 1564
     .line 1565
     :pswitch_6b
-    const/high16 v13, 0x3f800000    # 1.0f
+    const/high16 v13, 0x3f800000
 
     .line 1566
     .line 1567
@@ -5834,7 +5828,7 @@
     .line 1575
     .line 1576
     :pswitch_6c
-    const/high16 v13, 0x3f800000    # 1.0f
+    const/high16 v13, 0x3f800000
 
     .line 1577
     .line 1578
@@ -5862,7 +5856,7 @@
     .line 1588
     .line 1589
     :pswitch_6d
-    const/high16 v13, 0x3f800000    # 1.0f
+    const/high16 v13, 0x3f800000
 
     .line 1590
     .line 1591
@@ -5890,7 +5884,7 @@
     .line 1601
     .line 1602
     :pswitch_6e
-    const/high16 v13, 0x3f800000    # 1.0f
+    const/high16 v13, 0x3f800000
 
     .line 1603
     .line 1604
@@ -8606,7 +8600,7 @@
     move-result p1
 
     .line 289
-    const/high16 p2, 0x3f800000    # 1.0f
+    const/high16 p2, 0x3f800000
 
     .line 290
     .line 291
@@ -9068,8 +9062,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(Landroidx/constraintlayout/widget/ConstraintLayout;)V
     .locals 18
 
@@ -10150,7 +10142,7 @@
     int-to-float v1, v6
 
     .line 525
-    const/high16 v6, 0x40000000    # 2.0f
+    const/high16 v6, 0x40000000
 
     .line 526
     .line 527

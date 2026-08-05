@@ -2,17 +2,12 @@
 .super Landroid/widget/LinearLayout;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Landroid/view/ViewTreeObserver$OnGlobalLayoutListener;
 
-
-# static fields
 .field public static final C0:I
 
 .field public static final D0:[[I
 
-
-# instance fields
 .field public A:Landroid/content/res/ColorStateList;
 
 .field public A0:Z
@@ -167,8 +162,6 @@
 
 .field public z0:Z
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 2
 
@@ -921,7 +914,7 @@
 
     .line 346
     .line 347
-    const/high16 v4, -0x40800000    # -1.0f
+    const/high16 v4, -0x40800000
 
     .line 348
     .line 349
@@ -2120,7 +2113,7 @@
     const/4 v3, 0x2
 
     .line 27
-    const v4, 0x3dcccccd    # 0.1f
+    const v4, 0x3dcccccd
 
     .line 28
     .line 29
@@ -3289,8 +3282,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(F)V
     .locals 6
 
@@ -3914,7 +3905,7 @@
     move-result p0
 
     .line 21
-    const/high16 v0, 0x40000000    # 2.0f
+    const/high16 v0, 0x40000000
 
     .line 22
     .line 23
@@ -4355,7 +4346,7 @@
 
     .line 49
     .line 50
-    const/high16 v4, 0x3f800000    # 1.0f
+    const/high16 v4, 0x3f800000
 
     .line 51
     .line 52
@@ -7283,7 +7274,7 @@
 
     .line 130
     .line 131
-    const/high16 v3, 0x40000000    # 2.0f
+    const/high16 v3, 0x40000000
 
     .line 132
     .line 133
@@ -7791,7 +7782,7 @@
 
     .line 32
     .line 33
-    const/high16 v5, 0x40000000    # 2.0f
+    const/high16 v5, 0x40000000
 
     .line 34
     .line 35
@@ -9189,7 +9180,7 @@
 
     .line 74
     .line 75
-    const/high16 p3, 0x3f000000    # 0.5f
+    const/high16 p3, 0x3f000000
 
     .line 76
     .line 77
@@ -9781,7 +9772,7 @@
     int-to-float p3, p3
 
     .line 361
-    const/high16 v1, 0x40000000    # 2.0f
+    const/high16 v1, 0x40000000
 
     .line 362
     .line 363
@@ -17151,7 +17142,7 @@
     .line 273
     .line 274
     :cond_12
-    const/high16 p2, 0x3f800000    # 1.0f
+    const/high16 p2, 0x3f800000
 
     .line 275
     .line 276

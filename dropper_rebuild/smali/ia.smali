@@ -2,12 +2,8 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final a:Ljava/lang/ThreadLocal;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 1
 
@@ -443,7 +439,7 @@
     move-result v12
 
     .line 160
-    const/high16 v13, 0x3f800000    # 1.0f
+    const/high16 v13, 0x3f800000
 
     .line 161
     .line 162
@@ -511,7 +507,7 @@
 
     .line 190
     .line 191
-    const/high16 v4, -0x40800000    # -1.0f
+    const/high16 v4, -0x40800000
 
     .line 192
     .line 193
@@ -715,7 +711,7 @@
 
     .line 285
     .line 286
-    const/high16 v11, 0x42c80000    # 100.0f
+    const/high16 v11, 0x42c80000
 
     .line 287
     .line 288
@@ -782,7 +778,7 @@
     mul-float/2addr v13, v12
 
     .line 316
-    const/high16 v12, 0x3f000000    # 0.5f
+    const/high16 v12, 0x3f000000
 
     .line 317
     .line 318
@@ -834,7 +830,7 @@
     float-to-double v14, v9
 
     .line 340
-    const-wide/high16 v20, 0x3ff0000000000000L    # 1.0
+    const-wide/high16 v20, 0x3ff0000000000000L
 
     .line 341
     .line 342
@@ -880,7 +876,7 @@
     int-to-double v14, v14
 
     .line 362
-    const-wide/high16 v20, 0x4059000000000000L    # 100.0
+    const-wide/high16 v20, 0x4059000000000000L
 
     .line 363
     .line 364
@@ -921,7 +917,7 @@
 
     .line 380
     :cond_11
-    const/high16 v14, 0x43b40000    # 360.0f
+    const/high16 v14, 0x43b40000
 
     .line 381
     .line 382
@@ -965,7 +961,7 @@
     move-result v23
 
     .line 400
-    const v24, 0x3ecccccd    # 0.4f
+    const v24, 0x3ecccccd
 
     .line 401
     .line 402
@@ -978,7 +974,7 @@
 
     .line 406
     .line 407
-    const/high16 v23, 0x447a0000    # 1000.0f
+    const/high16 v23, 0x447a0000
 
     .line 408
     .line 409
@@ -1011,7 +1007,7 @@
     move-result v28
 
     .line 423
-    const v29, 0x3c23d70a    # 0.01f
+    const v29, 0x3c23d70a
 
     .line 424
     .line 425
@@ -1020,7 +1016,7 @@
 
     .line 427
     .line 428
-    const/high16 v29, 0x40000000    # 2.0f
+    const/high16 v29, 0x40000000
 
     .line 429
     .line 430
@@ -1212,14 +1208,14 @@
     double-to-float v0, v0
 
     .line 523
-    const/high16 v1, 0x42e80000    # 116.0f
+    const/high16 v1, 0x42e80000
 
     .line 524
     .line 525
     mul-float/2addr v0, v1
 
     .line 526
-    const/high16 v1, 0x41800000    # 16.0f
+    const/high16 v1, 0x41800000
 
     .line 527
     .line 528
@@ -1240,7 +1236,7 @@
     move-result v0
 
     .line 536
-    const v1, 0x3e4ccccd    # 0.2f
+    const v1, 0x3e4ccccd
 
     .line 537
     .line 538
@@ -1370,7 +1366,7 @@
 
     .line 599
     .line 600
-    const-wide v2, 0x3fe428f5c28f5c29L    # 0.63
+    const-wide v2, 0x3fe428f5c28f5c29L
 
     .line 601
     .line 602
@@ -1385,7 +1381,7 @@
     move-result-wide v0
 
     .line 609
-    const-wide v2, 0x3ff68f5c28f5c28fL    # 1.41
+    const-wide v2, 0x3ff68f5c28f5c28fL
 
     .line 610
     .line 611

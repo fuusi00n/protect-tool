@@ -2,18 +2,13 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Lyc;
 .implements Ljava/io/Serializable;
 
-
-# instance fields
 .field public final a:Lyc;
 
 .field public final b:Lwc;
 
-
-# direct methods
 .method public constructor <init>(Lwc;Lyc;)V
     .locals 0
 
@@ -44,8 +39,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final b(Lxc;)Lwc;
     .locals 1
 

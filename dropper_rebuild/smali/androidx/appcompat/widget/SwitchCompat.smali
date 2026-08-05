@@ -2,14 +2,10 @@
 .super Landroid/widget/CompoundButton;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final Q:Lu8;
 
 .field public static final R:[I
 
-
-# instance fields
 .field public A:I
 
 .field public B:I
@@ -94,8 +90,6 @@
 
 .field public z:F
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 4
 
@@ -997,7 +991,7 @@
 
     .line 395
     .line 396
-    const/high16 v13, -0x41800000    # -0.25f
+    const/high16 v13, -0x41800000
 
     .line 397
     .line 398
@@ -1247,7 +1241,7 @@
 
     .line 2
     .line 3
-    const/high16 v0, 0x3f000000    # 0.5f
+    const/high16 v0, 0x3f000000
 
     .line 4
     .line 5
@@ -1299,7 +1293,7 @@
 
     .line 11
     .line 12
-    const/high16 v0, 0x3f800000    # 1.0f
+    const/high16 v0, 0x3f800000
 
     .line 13
     .line 14
@@ -1322,7 +1316,7 @@
     mul-float/2addr v1, p0
 
     .line 22
-    const/high16 p0, 0x3f000000    # 0.5f
+    const/high16 p0, 0x3f000000
 
     .line 23
     .line 24
@@ -1624,8 +1618,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a()V
     .locals 2
 
@@ -3650,7 +3642,7 @@
     const/4 v9, 0x1
 
     .line 35
-    const/high16 v7, 0x3f800000    # 1.0f
+    const/high16 v7, 0x3f800000
 
     .line 36
     .line 37
@@ -3727,7 +3719,7 @@
     const/4 v9, 0x1
 
     .line 69
-    const/high16 v7, 0x3f800000    # 1.0f
+    const/high16 v7, 0x3f800000
 
     .line 70
     .line 71
@@ -4201,7 +4193,7 @@
 
     .line 45
     .line 46
-    const/high16 v2, 0x3f800000    # 1.0f
+    const/high16 v2, 0x3f800000
 
     .line 47
     .line 48
@@ -4234,7 +4226,7 @@
 
     .line 59
     :cond_3
-    const/high16 v0, -0x40800000    # -1.0f
+    const/high16 v0, -0x40800000
 
     .line 60
     .line 61
@@ -5031,7 +5023,7 @@
     const/4 v1, 0x0
 
     .line 86
-    const/high16 v2, 0x3f800000    # 1.0f
+    const/high16 v2, 0x3f800000
 
     .line 87
     .line 88

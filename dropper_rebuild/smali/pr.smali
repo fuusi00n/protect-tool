@@ -2,8 +2,6 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public final a:Landroid/content/Context;
 
 .field public final b:Ler;
@@ -26,8 +24,6 @@
 
 .field public final k:Lor;
 
-
-# direct methods
 .method public constructor <init>(Landroid/content/Context;Ler;Landroid/view/View;ZII)V
     .locals 0
 
@@ -82,8 +78,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a()Lnr;
     .locals 11
 
@@ -473,14 +467,14 @@
 
     .line 51
     .line 52
-    const/high16 p3, 0x42400000    # 48.0f
+    const/high16 p3, 0x42400000
 
     .line 53
     .line 54
     mul-float/2addr p0, p3
 
     .line 55
-    const/high16 p3, 0x40000000    # 2.0f
+    const/high16 p3, 0x40000000
 
     .line 56
     .line 57

@@ -1,4 +1,3 @@
-"""Template dropper_rebuild_debug — A1 shell full (1327 smali, sem sideload/assets)."""
 
 from __future__ import annotations
 
@@ -11,11 +10,9 @@ from config import Config
 
 _DEBUG_MARKER = ".debug_template_a1"
 
-
 def dropper_debug_template_ready() -> bool:
     debug_dir = Config.DROPPER_DEBUG_TEMPLATE
     return os.path.isfile(os.path.join(debug_dir, _DEBUG_MARKER))
-
 
 def ensure_dropper_debug_template_ready() -> str:
     debug_dir = Config.DROPPER_DEBUG_TEMPLATE

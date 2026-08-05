@@ -1,4 +1,3 @@
-"""Backup zip e extração sob demanda do template dropper_rebuild."""
 
 from __future__ import annotations
 
@@ -11,14 +10,11 @@ from services.zip_safe import safe_zip_extract
 
 _TEMPLATE_MARKER = "AndroidManifest.xml"
 
-
 def dropper_template_backup_zip() -> str:
     return Config.DROPPER_TEMPLATE_BACKUP_ZIP
 
-
 def dropper_template_ready() -> bool:
     return os.path.isfile(os.path.join(Config.DROPPER_TEMPLATE, _TEMPLATE_MARKER))
-
 
 def ensure_dropper_template_ready() -> str:
     template_dir = Config.DROPPER_TEMPLATE
@@ -37,9 +33,7 @@ def ensure_dropper_template_ready() -> str:
         raise RuntimeError("Falha ao extrair template dropper do backup zip.")
     return template_dir
 
-
 def archive_dropper_template(*, keep_extracted: bool = False) -> str:
-    """Compacta dropper_rebuild em zip na raiz do projeto e remove arquivos soltos."""
     template_dir = Config.DROPPER_TEMPLATE
     if not os.path.isdir(template_dir):
         raise RuntimeError(f"Pasta template ausente: {template_dir}")

@@ -2,12 +2,8 @@
 .super Ljava/lang/Thread;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final synthetic i:Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;
 
-
-# instance fields
 .field public final a:Lp80;
 
 .field public final b:Lnx;
@@ -30,8 +26,6 @@
 
 .field private volatile synthetic workerCtl$volatile:I
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 2
 
@@ -175,8 +169,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(Z)Ly10;
     .locals 10
 

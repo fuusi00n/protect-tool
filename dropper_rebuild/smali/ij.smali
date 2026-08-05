@@ -2,8 +2,6 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public a:Z
 
 .field public final b:Ljava/util/concurrent/CopyOnWriteArrayList;
@@ -12,8 +10,6 @@
 
 .field public final synthetic d:Lpj;
 
-
-# direct methods
 .method public constructor <init>(Lpj;)V
     .locals 0
 

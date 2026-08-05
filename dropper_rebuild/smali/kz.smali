@@ -1,8 +1,6 @@
 .class public abstract Lkz;
 .super Llz;
 
-
-# direct methods
 .method public static F(Ljz;)Ljava/util/List;
     .locals 2
 

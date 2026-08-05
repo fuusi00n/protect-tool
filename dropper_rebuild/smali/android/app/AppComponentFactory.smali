@@ -1,8 +1,6 @@
 .class public synthetic Landroid/app/AppComponentFactory;
 .super Ljava/lang/Object;
 
-
-# direct methods
 .method static synthetic constructor <clinit>()V
     .locals 1
 

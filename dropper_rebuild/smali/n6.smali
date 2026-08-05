@@ -2,8 +2,6 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public a:Lzp;
 
 .field public b:Lzp;
@@ -14,8 +12,6 @@
 
 .field public final synthetic e:Ljava/lang/Object;
 
-
-# direct methods
 .method public synthetic constructor <init>(ILjava/lang/Object;)V
     .locals 0
 
@@ -111,8 +107,6 @@
     return p0
 .end method
 
-
-# virtual methods
 .method public final a()V
     .locals 1
 

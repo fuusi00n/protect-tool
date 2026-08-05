@@ -2,8 +2,6 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final synthetic b:Ljava/util/concurrent/atomic/AtomicReferenceFieldUpdater;
 
 .field public static final synthetic c:Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;
@@ -14,8 +12,6 @@
 
 .field public static final synthetic f:J
 
-
-# instance fields
 .field public final a:Ljava/util/concurrent/atomic/AtomicReferenceArray;
 
 .field private volatile synthetic blockingTasksInBuffer$volatile:I
@@ -26,8 +22,6 @@
 
 .field private volatile synthetic producerIndex$volatile:I
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 3
 
@@ -160,8 +154,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final a(Ly10;Z)Ly10;
     .locals 2
 

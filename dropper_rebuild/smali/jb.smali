@@ -2,8 +2,6 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# instance fields
 .field public a:Z
 
 .field public b:I
@@ -18,8 +16,6 @@
 
 .field public g:I
 
-
-# direct methods
 .method public constructor <init>(Ljb;Ljava/lang/Object;)V
     .locals 1
 
@@ -428,7 +424,7 @@
 
     .line 172
     .line 173
-    const/high16 v3, 0x7fc00000    # Float.NaN
+    const/high16 v3, 0x7fc00000
 
     .line 174
     .line 175
@@ -608,8 +604,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final b(Ljava/lang/Object;)V
     .locals 1
 

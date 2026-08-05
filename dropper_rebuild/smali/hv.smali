@@ -1,8 +1,6 @@
 .class public abstract Lhv;
 .super Ljava/lang/Object;
 
-
-# static fields
 .field public static accessibility_action_clickable_span:I = 0x7f08000f
 
 .field public static accessibility_custom_action_0:I = 0x7f080010

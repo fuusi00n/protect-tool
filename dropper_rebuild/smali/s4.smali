@@ -2,24 +2,17 @@
 .super Ljava/lang/Object;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-# interfaces
 .implements Lh8;
 .implements Lbt;
 
-
-# static fields
 .field public static final d:[I
 
-
-# instance fields
 .field public final synthetic a:I
 
 .field public b:Ljava/lang/Object;
 
 .field public c:Ljava/lang/Object;
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 2
 
@@ -134,7 +127,7 @@
     :array_0
     .array-data 4
         0x0
-        0x3f800000    # 1.0f
+        0x3f800000
     .end array-data
 .end method
 
@@ -169,8 +162,8 @@
     :array_0
     .array-data 4
         0x0
-        0x3f000000    # 0.5f
-        0x3f800000    # 1.0f
+        0x3f000000
+        0x3f800000
     .end array-data
 .end method
 
@@ -961,8 +954,6 @@
     return v3
 .end method
 
-
-# virtual methods
 .method public A(Landroid/view/inputmethod/InputConnection;)Lug;
     .locals 1
 
@@ -3395,14 +3386,14 @@
     .line 209
     :array_0
     .array-data 4
-        0x40a00000    # 5.0f
-        0x40a00000    # 5.0f
-        0x40a00000    # 5.0f
-        0x40a00000    # 5.0f
-        0x40a00000    # 5.0f
-        0x40a00000    # 5.0f
-        0x40a00000    # 5.0f
-        0x40a00000    # 5.0f
+        0x40a00000
+        0x40a00000
+        0x40a00000
+        0x40a00000
+        0x40a00000
+        0x40a00000
+        0x40a00000
+        0x40a00000
     .end array-data
 .end method
 

@@ -2,12 +2,8 @@
 .super Lyf;
 .source "r8-map-id-a86625cdcb32a8fe400ec98e86bf11f4b713cc23eacbad547e5a79ad7d438f4a"
 
-
-# static fields
 .field public static final q:Lwe;
 
-
-# instance fields
 .field public final l:Lag;
 
 .field public final m:Ls00;
@@ -18,8 +14,6 @@
 
 .field public p:Z
 
-
-# direct methods
 .method static constructor <clinit>()V
     .locals 1
 
@@ -86,7 +80,7 @@
 
     .line 22
     .line 23
-    const-wide/high16 v0, 0x3ff0000000000000L    # 1.0
+    const-wide/high16 v0, 0x3ff0000000000000L
 
     .line 24
     .line 25
@@ -98,7 +92,7 @@
 
     .line 28
     .line 29
-    const-wide/high16 v0, 0x4049000000000000L    # 50.0
+    const-wide/high16 v0, 0x4049000000000000L
 
     .line 30
     .line 31
@@ -139,7 +133,7 @@
 
     .line 49
     .line 50
-    const/high16 p2, 0x3f800000    # 1.0f
+    const/high16 p2, 0x3f800000
 
     .line 51
     .line 52
@@ -164,8 +158,6 @@
     return-void
 .end method
 
-
-# virtual methods
 .method public final d(ZZZ)Z
     .locals 2
 
@@ -203,7 +195,7 @@
 
     .line 17
     .line 18
-    const/high16 v0, 0x3f800000    # 1.0f
+    const/high16 v0, 0x3f800000
 
     .line 19
     .line 20
@@ -244,7 +236,7 @@
 
     .line 35
     .line 36
-    const/high16 v1, 0x42480000    # 50.0f
+    const/high16 v1, 0x42480000
 
     .line 37
     .line 38
@@ -561,7 +553,7 @@
     const/4 v4, 0x0
 
     .line 118
-    const v5, 0x3c23d70a    # 0.01f
+    const v5, 0x3c23d70a
 
     .line 119
     .line 120
@@ -603,7 +595,7 @@
 
     .line 136
     .line 137
-    const/high16 v5, 0x3f800000    # 1.0f
+    const/high16 v5, 0x3f800000
 
     .line 138
     .line 139
@@ -633,7 +625,7 @@
     const/4 v4, 0x0
 
     .line 150
-    const/high16 v5, 0x3f800000    # 1.0f
+    const/high16 v5, 0x3f800000
 
     .line 151
     .line 152
@@ -751,7 +743,7 @@
     int-to-float v0, v0
 
     .line 11
-    const v1, 0x461c4000    # 10000.0f
+    const v1, 0x461c4000
 
     .line 12
     .line 13
@@ -787,7 +779,7 @@
 
     .line 4
     .line 5
-    const v2, 0x461c4000    # 10000.0f
+    const v2, 0x461c4000
 
     .line 6
     .line 7
@@ -900,7 +892,7 @@
     float-to-double v0, p0
 
     .line 57
-    const-wide v5, 0x47efffffe0000000L    # 3.4028234663852886E38
+    const-wide v5, 0x47efffffe0000000L
 
     .line 58
     .line 59
@@ -918,7 +910,7 @@
 
     .line 66
     .line 67
-    const-wide v6, -0x3810000020000000L    # -3.4028234663852886E38
+    const-wide v6, -0x3810000020000000L
 
     .line 68
     .line 69
@@ -937,7 +929,7 @@
 
     .line 77
     .line 78
-    const/high16 v0, 0x3f400000    # 0.75f
+    const/high16 v0, 0x3f400000
 
     .line 79
     .line 80
@@ -959,7 +951,7 @@
 
     .line 87
     .line 88
-    const-wide v6, 0x404f400000000000L    # 62.5
+    const-wide v6, 0x404f400000000000L
 
     .line 89
     .line 90
@@ -1050,7 +1042,7 @@
 
     .line 133
     .line 134
-    const p1, 0x7f7fffff    # Float.MAX_VALUE
+    const p1, 0x7f7fffff
 
     .line 135
     .line 136
